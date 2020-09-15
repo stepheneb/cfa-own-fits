@@ -1,23 +1,264 @@
-<html lang="en"><head>
-  <title>CFA OWN Lagoon Nebula Demo</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="./styles.css" rel="stylesheet" type="text/css"/>
-</head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>
+      CFA OWN Lagoon Nebula Demo
+    </title>
+    <link href='http://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'><!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link href="./styles.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-6">
+          <h1>What's Red + Green + Blue?</h1>
+          <p>
+            Use this image software to combine 3 filtered images from Hubble.
+            The result represents the actual colors emmitted by X.
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-3">
+          <h3>
+            Lagoon Nebula: Red
+          </h3>
+          <h4>Select one of the captured light wave images.</h4>
+          <form>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-red1" name="select-rgb" value="Red" checked>
+              </div>
+              <div class="col-4">
+                <label for="select-red1">Red</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-green1" name="select-rgb" value="Green" disabled>
+              </div>
+              <div class="col-4">
+                <label for="select-green1">Green</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-blue1" name="select-rgb" value="Blue" disabled>
+              </div>
+              <div class="col-4">
+                <label for="select-blue1">Blue</label>
+              </div>
+            </div>
+          </form>
 
-<body>
-  <p>Lagoon Nebula: Red</p>
-  <canvas id="canvasred"></canvas>
+          <h4>Adjust brightness, contrast, and color shift.</h4>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="brightness1">Brightness</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="brightness1" name="brightness"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
 
-  <p>Lagoon Nebula: Green</p>
-  <canvas id="canvasgreen"></canvas>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="contrast1">Contrast</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="contrast1" name="contrast"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
 
-  <p>Lagoon Nebula: Blue</p>
-  <canvas id="canvasblue"></canvas>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="color-shift1">Color Shift</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="color-shift1" name="color-shift"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
 
-</body>
+        </div>
+        <div class="col-9">
+          <canvas id="canvasred"></canvas>
+        </div>
+      </div>
 
-<script src="render-canvas.js"></script>
-<script src="readbin.js"></script>
+      <div class="row">
+        <div class="col-3">
+          <h3>
+            Lagoon Nebula: Green
+          </h3>
 
+          <h4>Select one of the captured light wave images.</h4>
+          <form>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-red2" name="select-rgb" value="Red" disabled>
+              </div>
+              <div class="col-4">
+                <label for="select-red2">Red</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-green2" name="select-rgb" value="Green" checked>
+              </div>
+              <div class="col-4">
+                <label for="select-green2">Green</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-blue2" name="select-rgb" value="Blue" disabled>
+              </div>
+              <div class="col-4">
+                <label for="select-blue2">Blue</label>
+              </div>
+            </div>
+          </form>
+
+          <h4>Adjust brightness, contrast, and color shift.</h4>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="brightness2">Brightness</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="brightness2" name="brightness"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="contrast2">Contrast</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="contrast2" name="contrast"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="color-shift2">Color Shift</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="color-shift2" name="color-shift"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <canvas id="canvasgreen"></canvas>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-3">
+          <h3>
+            Lagoon Nebula: Blue
+          </h3>
+
+          <h4>Select one of the captured light wave images.</h4>
+          <form>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-red3" name="select-rgb" value="Red" disabled>
+              </div>
+              <div class="col-4">
+                <label for="select-red3">Red</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-green3" name="select-rgb" value="Green" disabled>
+              </div>
+              <div class="col-4">
+                <label for="select-green3">Green</label>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1"></div>
+              <div class="col-2">
+                <input type="radio" id="select-blue3" name="select-rgb" value="Blue" checked>
+              </div>
+              <div class="col-4">
+                <label for="select-blue3">Blue</label>
+              </div>
+            </div>
+          </form>
+
+          <h4>Adjust brightness, contrast, and color shift.</h4>
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="brightness3">Brightness</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="brightness3" name="brightness"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="contrast3">Contrast</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="contrast3" name="contrast"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label for="color-shift3">Color Shift</label>
+            </div>
+            <div class="col-7">
+              <input type="range" id="color-shift3" name="color-shift"
+                 min="0" max="10" value="5" disabled>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-9">
+          <canvas id="canvasblue"></canvas>
+        </div>
+      </div>
+
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script> 
+    <!-- Custom JavaScript -->
+    <script src="render-canvas.js"></script> 
+    <script src="readbin.js"></script>
+  </body>
 </html>

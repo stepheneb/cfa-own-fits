@@ -20,7 +20,7 @@ oReqRed.onload = function (oEvent) {
   if (arrayBuffer) {
     redRawData = new Float32Array(arrayBuffer);
     [redMin, redMax] = forLoopMinMax(redRawData);
-    setupCanvas(canvasred, redRawData, redMin, redMax);
+    setupCanvas(canvasred, redRawData, redMin, redMax, "red");
   }
 };
 
@@ -39,7 +39,7 @@ oReqGreen.onload = function (oEvent) {
   if (arrayBuffer) {
     greenRawData = new Float32Array(arrayBuffer);
     [greenMin, greenMax] = forLoopMinMax(greenRawData);
-    setupCanvas(canvasgreen, greenRawData, greenMin, greenMax);
+    setupCanvas(canvasgreen, greenRawData, greenMin, greenMax, "green");
   }
 };
 
@@ -58,7 +58,7 @@ oReqBlue.onload = function (oEvent) {
   if (arrayBuffer) {
     blueRawData = new Float32Array(arrayBuffer);
     [blueMin, blueMax] = forLoopMinMax(blueRawData);
-    setupCanvas(canvasblue, blueRawData, blueMin, blueMax);
+    setupCanvas(canvasblue, blueRawData, blueMin, blueMax, "blue");
   }
 };
 

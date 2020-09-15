@@ -8,11 +8,35 @@ html {
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 85%;
+    font-family: Lato, Arial, Helvetica, sans-serif;
+    font-size: 16px;
     line-height: 1.2em; /*color: #393939;*/
+    margin: 1rem 1rem;
 }
 
+.h1, h1 {
+    font-size: 2rem;
+}
+
+.h2, h2 {
+    font-size: 1.5rem;
+}
+
+.h3, h3 {
+    font-size: 1.3rem;
+}
+
+.h4, h4 {
+    font-size: 1.1rem;
+}
+
+button, input {
+    width: 100%;
+}
+
+input:checked {
+  border: 6px solid red;
+}
 
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
 canvas {
@@ -26,4 +50,5 @@ canvas {
   image-rendering: pixelated;
   width: auto;
   height: 100%;
+  max-height: 80vh;
 }

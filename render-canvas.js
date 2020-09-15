@@ -7,7 +7,7 @@ var ctx, canvas_columns, canvas_rows, imageData, pd;
 var nx = 2600,
   ny = 2500;
 
-setupCanvas = function(canvas, rawdata, min, max) {
+setupCanvas = function(canvas, rawdata, min, max, color) {
   if (canvas) {
     ctx = canvas.getContext('2d');
     ctx.fillStyle = "rgb(0,0,0)";
