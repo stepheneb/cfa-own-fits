@@ -12,11 +12,7 @@ The red green and blue rawdata images are included in the repository to make it 
 
 **Under the hood.**
 
-The python program `./extract.py` processes three fits files for the Lagoon Nebula and generates raw data images used by the simple web application.
-
-https://github.com/esheldon/fitsio
-
-Make sure you have the [`numpy`](https://numpy.org/) and [`fitsio`] python packages installed(https://github.com/esheldon/fitsio).
+The python program `./extract.py` processes three fits files for the Lagoon Nebula and generates raw data images used by the simple web application. To run use `pip` to install the [`numpy`](https://numpy.org/) and [`fitsio`](https://github.com/esheldon/fitsio) python packages.
 
 ```
 $ python3 -V
