@@ -1,5 +1,11 @@
 /*jshint esversion: 6 */
 
+var pageNum = 1,
+  pageCount = 4,
+  startOverButton = document.getElementById('btn-start-over'),
+  backButton = document.getElementById('btn-back'),
+  forwardButton = document.getElementById('btn-forward');
+
 var canvasred = document.getElementById("canvasred"),
   canvasgreen = document.getElementById("canvasgreen"),
   canvasblue = document.getElementById("canvasblue"),
@@ -72,6 +78,7 @@ function showRGB() {
   if (canvasrgb) {
     setupCanvas(canvasrgb, redRawData, redMin, redMax, greenRawData, greenMin, greenMax, blueRawData, blueMin, blueMax);
   }
+  scrollToPage(1);
 }
 
 const forLoopMinMax = (array) => {
@@ -88,8 +95,16 @@ const forLoopMinMax = (array) => {
 };
 
 document.addEventListener("keydown", function (e) {
-  if (e.keyCode == 13) {
+  switch (e.key) {
+  case 'Enter':
     toggleFullScreen();
+    break;
+  case 'ArrowRight':
+    nextPage();
+    break;
+  case 'ArrowLeft':
+    previousPage();
+    break;
   }
 }, false);
 
@@ -100,5 +115,51 @@ function toggleFullScreen() {
     if (document.exitFullscreen) {
       document.exitFullscreen();
     }
+  }
+}
+
+startOverButton.addEventListener('click', event => {
+  scrollToPage(1);
+});
+
+backButton.addEventListener('click', event => {
+  previousPage();
+});
+
+forwardButton.addEventListener('click', event => {
+  nextPage();
+});
+
+function nextPage() {
+  if (pageNum < pageCount) {
+    scrollToPage(++pageNum);
+  }
+}
+
+function previousPage() {
+  if (pageNum > 1) {
+    scrollToPage(--pageNum);
+  }
+}
+
+function scrollToPage(num) {
+  var p = document.getElementById('page-' + num);
+  p.scrollIntoView(true);
+  pageNum = num;
+  updatePageNavigationButtonState();
+}
+
+function updatePageNavigationButtonState() {
+  if (pageNum == 1) {
+    startOverButton.disabled = true;
+    backButton.disabled = true;
+  } else {
+    startOverButton.disabled = false;
+    backButton.disabled = false;
+  }
+  if (pageNum == pageCount) {
+    forwardButton.disabled = true;
+  } else {
+    forwardButton.disabled = false;
   }
 }
