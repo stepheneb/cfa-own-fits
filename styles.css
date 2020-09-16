@@ -20,12 +20,13 @@ html {
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
   font-size: 16px;
+  font-size: 1.2vw;
   color: lightgray;
   background-image: url("background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  line-height: 1.2em;
+  line-height: 1.2rem;
 }
 
 .content {
@@ -35,31 +36,37 @@ body {
 .activity-page {
   height: 100vh;
   width: 100vw:
-  margin: 1rem 1rem;
+  margin: 1vw 1vw;
 }
 
 .page-navigation {
-  margin: 1rem;
+  margin: 1vw;
 }
 
 .page-navigation-button {
   background-color: black;
+  font-size: 1.3vw;
+  height: 4.8vh;
 }
 
 .h1, h1 {
-  font-size: 2rem;
+  font-size: 1.8rem;
+  font-size: 2.4vw;
 }
 
 .h2, h2 {
   font-size: 1.5rem;
+  font-size: 2vw;
 }
 
 .h3, h3 {
   font-size: 1.3rem;
+  font-size: 1.8vw;
 }
 
 .h4, h4 {
   font-size: 1.1rem;
+  font-size: 1.4vw;
 }
 
 button, input {
