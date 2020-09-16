@@ -8,7 +8,8 @@
   <title>
     CFA OWN Lagoon Nebula Demo
   </title>
-  <link href='https://fonts.googleapis.com/css?family=Lato&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'><!-- Bootstrap CSS -->
+  <link href='https://fonts.googleapis.com/css?family=Rajdhani&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <link href="./styles.css" rel="stylesheet" type="text/css">
 </head>
@@ -17,12 +18,13 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-6">
-        <h1>What's Red + Green + Blue?</h1>
-        <p>
+        <h1 class="page-title">What's Red + Green + Blue?</h1>
+        <p class="page-subtitle">
           Use this image software to combine 3 filtered images from Hubble.
           The result represents the actual colors emmitted by X.
       </div>
     </div>
+
     <div class="row">
       <div class="col-3">
         <h3>
@@ -92,9 +94,11 @@
 
       </div>
       <div class="col-9">
-        <canvas id="canvasred"></canvas>
+        <canvas id="canvasred" class="page-image"></canvas>
       </div>
     </div>
+
+    <div class="row-spacer"></div>
 
     <div class="row">
       <div class="col-3">
@@ -170,6 +174,8 @@
       </div>
     </div>
 
+    <div class="row-spacer"></div>
+
     <div class="row">
       <div class="col-3">
         <h3>
@@ -244,6 +250,7 @@
       </div>
     </div>
 
+    <div class="row-spacer"></div>
 
     <div class="row">
       <div class="col-3">

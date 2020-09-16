@@ -1,37 +1,69 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-    overflow-y: scroll;
+  overflow-y: scroll;
+}
+
+/* color variables */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
+:root {
+  --bright-green: #bff5aa;
+  --bright-teal: #3ddaf6;
+  --dark-teal: #2b88ac;
+  --bright-blue: #032741;
+  --bright-pink: #f33c85;
 }
 
 body {
-    font-family: Lato, Arial, Helvetica, sans-serif;
-    font-size: 16px;
-    line-height: 1.2em; /*color: #393939;*/
-    margin: 1rem 1rem;
+  font-family: Rajdhani, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: lightgray;
+  background-image: url("background.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  line-height: 1.2em;
+  /*color: #393939;*/
+  margin: 1rem 1rem;
 }
 
 .h1, h1 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 .h2, h2 {
-    font-size: 1.5rem;
+  font-size: 1.5rem;
 }
 
 .h3, h3 {
-    font-size: 1.3rem;
+  font-size: 1.3rem;
 }
 
 .h4, h4 {
-    font-size: 1.1rem;
+  font-size: 1.1rem;
 }
 
 button, input {
-    width: 100%;
+  width: 100%;
+}
+
+.page-title {
+  color: var(--bright-green);
+}
+
+.page-subtitle {
+  color: var(--bright-teal);
+}
+
+.page-image {
+  border: 3px solid white;
+}
+
+.row-spacer {
+    min-height: 6vh;
 }
 
 input:checked {
@@ -43,11 +75,10 @@ canvas {
   image-rendering: optimize-contrast !important;
   -ms-interpolation-mode: nearest-neighbor !important;
   image-rendering: crisp-edges !important;
-
   image-rendering: -moz-crisp-edges !important;
-
   image-rendering: optimizeSpeed !important;
   image-rendering: pixelated;
+  background-color: black;
   width: auto;
   height: 100%;
   max-height: 80vh;
