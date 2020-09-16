@@ -4,7 +4,8 @@ var pageNum = 1,
   pageCount = 4,
   startOverButton = document.getElementById('btn-start-over'),
   backButton = document.getElementById('btn-back'),
-  forwardButton = document.getElementById('btn-forward');
+  forwardButton = document.getElementById('btn-forward'),
+  toggleFullscreenButton = document.getElementById('btn-toggle-fullscreen');
 
 var canvasred = document.getElementById("canvasred"),
   canvasgreen = document.getElementById("canvasgreen"),
@@ -107,6 +108,10 @@ document.addEventListener("keydown", function (e) {
     break;
   }
 }, false);
+
+toggleFullscreenButton.addEventListener('click', event => {
+  toggleFullScreen();
+});
 
 function toggleFullScreen() {
   if (!document.fullscreenElement) {
