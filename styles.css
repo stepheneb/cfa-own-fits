@@ -62,6 +62,10 @@ button, input {
   border: 3px solid white;
 }
 
+.pagerow {
+  height: 100vh;
+}
+
 .row-spacer {
     min-height: 6vh;
 }
