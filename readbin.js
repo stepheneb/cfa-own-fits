@@ -2,7 +2,8 @@
 
 var canvasred = document.getElementById("canvasred"),
   canvasgreen = document.getElementById("canvasgreen"),
-  canvasblue = document.getElementById("canvasblue");
+  canvasblue = document.getElementById("canvasblue"),
+  canvasrgb = document.getElementById("canvasrgb");
 
 var redRawData, redMin, redMax;
 var greenRawData, greenMin, greenMax;
@@ -20,7 +21,10 @@ oReqRed.onload = function (oEvent) {
   if (arrayBuffer) {
     redRawData = new Float32Array(arrayBuffer);
     [redMin, redMax] = forLoopMinMax(redRawData);
-    setupCanvas(canvasred, redRawData, redMin, redMax, "red");
+    [redMin, redMax] = [4, 24];
+    setupCanvas(canvasred, redRawData, redMin, redMax, 'red');
+    oReqGreen.send(null);
+
   }
 };
 
@@ -33,17 +37,16 @@ var oReqGreen = new XMLHttpRequest();
 oReqGreen.open("GET", "rawdata/green.bin", true);
 oReqGreen.responseType = "arraybuffer";
 
-
 oReqGreen.onload = function (oEvent) {
   var arrayBuffer = oReqGreen.response; // Note: not oReq.responseText
   if (arrayBuffer) {
     greenRawData = new Float32Array(arrayBuffer);
     [greenMin, greenMax] = forLoopMinMax(greenRawData);
-    setupCanvas(canvasgreen, greenRawData, greenMin, greenMax, "green");
+    [greenMin, greenMax] = [0, 64];
+    setupCanvas(canvasgreen, greenRawData, greenMin, greenMax, 'green');
+    oReqBlue.send(null);
   }
 };
-
-oReqGreen.send(null);
 
 // Blue
 
@@ -52,20 +55,28 @@ var oReqBlue = new XMLHttpRequest();
 oReqBlue.open("GET", "rawdata/blue.bin", true);
 oReqBlue.responseType = "arraybuffer";
 
-
 oReqBlue.onload = function (oEvent) {
   var arrayBuffer = oReqBlue.response; // Note: not oReq.responseText
   if (arrayBuffer) {
     blueRawData = new Float32Array(arrayBuffer);
     [blueMin, blueMax] = forLoopMinMax(blueRawData);
-    setupCanvas(canvasblue, blueRawData, blueMin, blueMax, "blue");
+    [blueMin, blueMax] = [4, 24];
+    setupCanvas(canvasblue, blueRawData, blueMin, blueMax, 'blue');
+    showRGB();
   }
 };
 
-oReqBlue.send(null);
+// RGB
+
+function showRGB() {
+  if (canvasrgb) {
+    setupCanvas(canvasrgb, redRawData, redMin, redMax, greenRawData, greenMin, greenMax, blueRawData, blueMin, blueMax);
+  }
+}
 
 const forLoopMinMax = (array) => {
-  let min = array[0], max = array[0];
+  let min = array[0],
+    max = array[0];
 
   for (let i = 1; i < array.length; i++) {
     let value = array[i];

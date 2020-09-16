@@ -1,6 +1,8 @@
-Displays red green and blue grayscale images taken by the Hubble of the Lagoon Nebula.
+Displays red green and blue images taken by the Hubble of the Lagoon Nebula
+and also displays an RGB image that combines them together.
 
-Clone or download this repository and open a terminal shell in the directory and start a the simple built-in python web server.
+Clone or download this repository and open a terminal shell in the directory
+and start a the simple built-in python web server.
 
 ```
 $ python3 -m http.server
@@ -8,11 +10,15 @@ $ python3 -m http.server
 
 Open the demo in Chrome: http://localhost:8000
 
-The red green and blue rawdata images are included in the repository to make it easier to load the web application.
+The red green and blue rawdata images are included in the repository to make it
+easier to load the web application.
 
 **Under the hood.**
 
-The python program `./extract.py` processes three fits files for the Lagoon Nebula and generates raw data images used by the simple web application. To run use `pip` to install the [`numpy`](https://numpy.org/) and [`fitsio`](https://github.com/esheldon/fitsio) python packages.
+The python program `./extract.py` processes three fits files for the Lagoon Nebula
+and generates raw data images used by the simple web application. To run use `pip`
+to install the [`numpy`](https://numpy.org/) and [`fitsio`](https://github.com/esheldon/fitsio)
+python packages.
 
 ```
 $ python3 -V
@@ -52,4 +58,5 @@ writing: rawdata/blue.bin
 
 **Note**
 
-Because the raw data in the image in the `HST_Lagoon_f656Green.fits` has a minimum value of about -796 I'm setting the minimum displayed value to 0 in the web app.
+Because the raw data in the image in the `HST_Lagoon_f656Green.fits` has a minimum
+value of about -796 I'm setting the minimum displayed value to 0 in the web app.
