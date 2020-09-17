@@ -156,10 +156,8 @@ function scrollToPage(num) {
 
 function updatePageNavigationButtonState() {
   if (pageNum == 1) {
-    startOverButton.disabled = true;
     backButton.disabled = true;
   } else {
-    startOverButton.disabled = false;
     backButton.disabled = false;
   }
   if (pageNum == pageCount) {
