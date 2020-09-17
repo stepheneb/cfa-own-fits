@@ -184,9 +184,11 @@ toggleFullscreenButton.addEventListener('click', event => {
 function toggleFullScreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
+    scrollToPage(pageNum);
   } else {
     if (document.exitFullscreen) {
       document.exitFullscreen();
+      scrollToPage(pageNum);
     }
   }
 }
