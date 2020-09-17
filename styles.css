@@ -95,12 +95,16 @@ input:checked {
 
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
 canvas {
-  image-rendering: optimize-contrast !important;
+  /* image-rendering: optimize-contrast !important;
   -ms-interpolation-mode: nearest-neighbor !important;
   image-rendering: crisp-edges !important;
   image-rendering: -moz-crisp-edges !important;
   image-rendering: optimizeSpeed !important;
-  image-rendering: pixelated;
+  image-rendering: pixelated; */
+  image-rendering: auto;
+  /* image-rendering: pixelated;
+  image-rendering: -webkit-optimize-contrast; */
+
   background-color: black;
   width: auto;
   height: 100%;

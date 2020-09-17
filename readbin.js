@@ -31,7 +31,6 @@ oReqRed.onload = function (oEvent) {
     [redMin, redMax] = [4, 24];
     setupCanvas(canvasred, redRawData, redMin, redMax, 'red');
     oReqGreen.send(null);
-
   }
 };
 
@@ -77,7 +76,7 @@ oReqBlue.onload = function (oEvent) {
 
 function showRGB() {
   if (canvasrgb) {
-    setupCanvas(canvasrgb, redRawData, redMin, redMax, greenRawData, greenMin, greenMax, blueRawData, blueMin, blueMax);
+    setupCanvasRGB(canvasrgb, redRawData, redMin, redMax, greenRawData, greenMin, greenMax, blueRawData, blueMin, blueMax);
   }
   scrollToPage(1);
 }
