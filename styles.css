@@ -72,8 +72,13 @@ button, input {
   width: 100%;
 }
 
+label, button {
+  text-transform: uppercase;
+}
+
 .page-title {
   color: var(--bright-green);
+  text-transform: uppercase;
 }
 
 .page-subtitle {
