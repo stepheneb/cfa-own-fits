@@ -178,20 +178,18 @@ document.addEventListener("keydown", function (e) {
 }, false);
 
 toggleFullscreenButton.addEventListener('click', event => {
-  toggleFullScreen();
-});
-
-function toggleFullScreen() {
   if (!document.fullscreenElement) {
     document.documentElement.requestFullscreen();
-    scrollToPage(pageNum);
   } else {
     if (document.exitFullscreen) {
       document.exitFullscreen();
-      scrollToPage(pageNum);
     }
   }
-}
+});
+
+window.addEventListener('resize', event => {
+  scrollToPage(pageNum);
+});
 
 startOverButton.addEventListener('click', event => {
   scrollToPage(1);
