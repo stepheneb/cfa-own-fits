@@ -133,11 +133,11 @@ oReqBlue.onload = function (oEvent) {
 };
 
 function restoreOriginalValues() {
-  redBrightness = 128;
+  redBrightness = sliderInitialBrightness;
   brightnessRedSlider.value = redBrightness;
-  greenBrightness = 128;
+  greenBrightness = sliderInitialBrightness;
   brightnessGreenSlider.value = greenBrightness;
-  blueBrightness = 128;
+  blueBrightness = sliderInitialBrightness;
   brightnessBlueSlider.value = blueBrightness;
 }
 
