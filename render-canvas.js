@@ -72,7 +72,7 @@ renderCanvasRed = function (canvas, rawdata, min, max) {
   var pix_index, ycols, x, y, val, scaledval,
     i = 0,
     range = max - min,
-    scale = 256 / range * 10,
+    scale = redBrightness / range,
     pixel_data = redUint8data;
   for (y = 0; y < ny; y++) {
     ycols = y * ny;
@@ -80,7 +80,7 @@ renderCanvasRed = function (canvas, rawdata, min, max) {
     for (x = 0; x < nx; x++) {
       i = y * ny + x;
       val = rawdata[i];
-      scaledval = Math.min(255, val * scale + min);
+      scaledval = Math.min(255, val * scale - min);
       pixel_data[pix_index] = scaledval;
       pixel_data[pix_index + 1] = 0;
       pixel_data[pix_index + 2] = 0;
@@ -95,7 +95,7 @@ renderCanvasGreen = function (canvas, rawdata, min, max) {
   var pix_index, ycols, x, y, val, scaledval,
     i = 0,
     range = max - min,
-    scale = 256 / range * 10,
+    scale = greenBrightness / range,
     pixel_data = greenUint8data;
   for (y = 0; y < ny; y++) {
     ycols = y * ny;
@@ -103,7 +103,7 @@ renderCanvasGreen = function (canvas, rawdata, min, max) {
     for (x = 0; x < nx; x++) {
       i = y * ny + x;
       val = rawdata[i];
-      scaledval = Math.min(255, val * scale + min);
+      scaledval = Math.min(255, val * scale - min);
       pixel_data[pix_index] = 0;
       pixel_data[pix_index + 1] = scaledval;
       pixel_data[pix_index + 2] = 0;
@@ -118,7 +118,7 @@ renderCanvasBlue = function (canvas, rawdata, min, max) {
   var pix_index, ycols, x, y, val, scaledval,
     i = 0,
     range = max - min,
-    scale = 256 / range * 10,
+    scale = blueBrightness / range,
     pixel_data = blueUint8data;
   for (y = 0; y < ny; y++) {
     ycols = y * ny;
@@ -126,7 +126,7 @@ renderCanvasBlue = function (canvas, rawdata, min, max) {
     for (x = 0; x < nx; x++) {
       i = y * ny + x;
       val = rawdata[i];
-      scaledval = Math.min(255, val * scale + min);
+      scaledval = Math.min(255, val * scale - min);
       pixel_data[pix_index] = 0;
       pixel_data[pix_index + 1] = 0;
       pixel_data[pix_index + 2] = scaledval;
@@ -141,7 +141,7 @@ renderCanvasGray = function (canvas, rawdata, min, max) {
   var pix_index, ycols, x, y, val, scaledval,
     i = 0,
     range = max - min,
-    scale = 256 / range * 10,
+    scale = 256 / range,
     pixel_data = grayUint8data;
   for (y = 0; y < ny; y++) {
     ycols = y * ny;
@@ -149,7 +149,7 @@ renderCanvasGray = function (canvas, rawdata, min, max) {
     for (x = 0; x < nx; x++) {
       i = y * ny + x;
       val = rawdata[i];
-      scaledval = Math.min(255, val * scale + min);
+      scaledval = Math.min(255, val * scale - min);
       pixel_data[pix_index] = scaledval;
       pixel_data[pix_index + 1] = scaledval;
       pixel_data[pix_index + 2] = scaledval;
@@ -167,13 +167,13 @@ renderCanvasRGB = function (canvas, rawdataRed, redMin, redMax, rawdataGreen, gr
     blueVal, scaledBlueVal,
     i = 0,
     redRange = redMax - redMin,
-    redScale = 256 / redRange * 10,
+    redScale = redBrightness / redRange,
 
     greenRange = greenMax - greenMin,
-    greenScale = 256 / greenRange * 10,
+    greenScale = greenBrightness / greenRange,
 
     blueRange = blueMax - blueMin,
-    blueScale = 256 / blueRange * 10,
+    blueScale = blueBrightness / blueRange,
 
     pixel_data = rgbUint8data;
   for (y = 0; y < ny; y++) {
@@ -182,13 +182,13 @@ renderCanvasRGB = function (canvas, rawdataRed, redMin, redMax, rawdataGreen, gr
     for (x = 0; x < nx; x++) {
       i = y * ny + x;
       redVal = rawdataRed[i];
-      scaledRedVal = Math.min(255, redVal * redScale + redMin);
+      scaledRedVal = Math.min(255, redVal * redScale - redMin);
 
       greenVal = rawdataGreen[i];
-      scaledGreenVal = Math.min(255, greenVal * greenScale + greenMin);
+      scaledGreenVal = Math.min(255, greenVal * greenScale - greenMin);
 
       blueVal = rawdataBlue[i];
-      scaledBlueVal = Math.min(255, blueVal * blueScale + blueMin);
+      scaledBlueVal = Math.min(255, blueVal * blueScale - blueMin);
 
       pixel_data[pix_index] = scaledRedVal;
       pixel_data[pix_index + 1] = scaledGreenVal;
