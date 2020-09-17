@@ -178,11 +178,22 @@ document.addEventListener("keydown", function (e) {
 }, false);
 
 toggleFullscreenButton.addEventListener('click', event => {
-  if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen();
-  } else {
+  if (document.documentElement.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement) {
     if (document.exitFullscreen) {
       document.exitFullscreen();
+    } else {
+      if (document.webkitCancelFullScreen) {
+        document.webkitCancelFullScreen();
+      }
+    }
+  } else {
+    const _element = document.documentElement;
+    if (_element.requestFullscreen) {
+      _element.requestFullscreen();
+    } else {
+      if (_element.webkitRequestFullscreen) {
+        _element.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
     }
   }
 });
