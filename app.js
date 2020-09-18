@@ -401,8 +401,8 @@ let renderOffscreenCanvas = function (image, source) {
 
     for (i = 0; i < len; i += 4) {
       pixeldata[i] = pixeldataRed[i];
-      pixeldata[i + 1] = pixeldataRed[i + 1];
-      pixeldata[i + 3] = pixeldataRed[i + 2];
+      pixeldata[i + 1] = pixeldataGreen[i + 1];
+      pixeldata[i + 3] = pixeldataBlue[i + 2];
       pixeldata[i + 3] = 255;
     }
     break;
