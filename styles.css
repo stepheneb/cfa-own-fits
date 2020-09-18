@@ -4,48 +4,58 @@
 }
 
 html {
-  overflow-y: scroll;
+  overflow-y: hidden;
 }
 
 /* color variables */
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
 :root {
+  /* colors */
   --bright-green: #bff5aa;
   --bright-teal: #3ddaf6;
   --dark-teal: #2b88ac;
   --bright-blue: #032741;
   --bright-pink: #f33c85;
+  /* font sizes */
+  --page-title: 3.4vh;
+  --page-subtitle: 2.0vh;
 }
 
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
   font-size: 16px;
-  font-size: 1.2vw;
+  font-size: 1.6vh;
   color: lightgray;
   background-image: url("background.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
   line-height: 1.2rem;
+  height: 100vh;
+  width: 98vw;
+  margin: 0;
+  padding: 0;
 }
 
 .content {
+  margin: 0.5vw 1vw;
   overflow: hidden;
 }
 
 .activity-page {
-  height: 100vh;
-  width: 100vw: margin: 1vw 1vw;
+  margin: 1.5vh 1vw 0vh 2vw;
 }
 
 .page-navigation {
+  font-size: 1.2vh;
   margin: 1vw;
 }
 
 .page-navigation-button {
   background-color: black;
-  font-size: 2.0vh;
-  height: 4.0vh;
+  font-size: 1.2vh;
+  /* height: 4.0vh; */
+  */
 }
 
 .h1, h1 {
@@ -76,13 +86,60 @@ label, button {
   text-transform: uppercase;
 }
 
+.page-header {
+  margin: 0.5rem 0rem 1rem 0rem;
+}
+
 .page-title {
+  font-size: 3.4vh;
+  font-size: var(--page-title);
+  padding: 0.5rem 0rem;
   color: var(--bright-green);
   text-transform: uppercase;
 }
 
 .page-subtitle {
+  font-size: 2.0vh;
+  font-size: var(--page-subtitle);
+  padding: 0.5rem 0rem;
   color: var(--bright-teal);
+}
+
+.main-image-content {
+  display: inline-block;
+}
+
+.about-telescope {
+  padding: 0.75rem 0rem;
+  font-size: var(--page-subtitle);
+  text-transform: uppercase;
+}
+
+.control-collection {
+  background-color: var(--dark-teal);
+  background-color: #042842;
+  margin-bottom: 1px;
+  padding: 0.5rem;
+}
+
+.control-collection-text {
+  padding: 0rem 0rem 0.5rem 0rem;
+}
+
+.select-filter-radio {
+  padding-left: 1rem;
+  min-width: 3rem;
+}
+
+.solid-right-arrow {
+  color: red;
+  padding-right: 0.2rem;
+}
+
+.image-name {
+  font-size: var(--page-subtitle);
+  color: var(--bright-teal);
+  text-transform: uppercase;
 }
 
 .page-image {
@@ -91,6 +148,20 @@ label, button {
 
 .row-spacer {
   min-height: 6vh;
+}
+
+.display-layer-checkbox {
+  width: 1.5em;
+}
+
+.select-layer-label {
+  padding-right: 0rem;
+}
+
+.select-layer-checkbox {
+  padding-right: 1.5rem;
+  width: 3rem;
+  font-size: 120%;
 }
 
 input:checked {
@@ -111,7 +182,21 @@ canvas {
   background-color: black;
   width: auto;
   height: 100%;
-  max-height: 80vh;
+  max-height: 76vh;
+}
+
+canvas.image-layer-preview {
+  height: 24vh;
+  width: 100%;
+  background-color: black;
+  border: 2px solid white;
+}
+
+canvas.image-about-telescope {
+  height: 20vh;
+  width: 100%;
+  background-color: black;
+  border: 2px solid var(--dark-teal);
 }
 
 @media print {
