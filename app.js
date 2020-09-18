@@ -253,7 +253,7 @@ renderPageNavigation = page => {
       <div class="pl-1 pr-1">
         <button type="button" id="btn-back" class="btn btn-outline-primary btn-small page-navigation-button">&#9664 Back</button>
       </div>
-      <div class="pl-1 pr-1">
+      <div class="pl-1 pr-1" style="display: none">
         <button type="button" id="btn-forward" class="btn btn-outline-primary btn-small page-navigation-button">Forward &nbsp&#9654</button>
       </div>
       <div class="pl-1 pr-1 ml-auto">
