@@ -158,6 +158,11 @@ label, button {
   padding-right: 0rem;
 }
 
+.select-layer-label:hover {
+  color: white;
+  font-weight: bold;
+}
+
 .select-layer-checkbox {
   padding-right: 1.5rem;
   width: 3rem;

@@ -13,7 +13,7 @@
     },
     "nx": 2600,
     "ny": 2500,
-    "maximumBrightness": 6,
+    "maximumBrightness": 8,
     "sources": [
       {
         "type": "rawdata",

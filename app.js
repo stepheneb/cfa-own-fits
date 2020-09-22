@@ -26,6 +26,7 @@ request({ url: "page.json" })
   .then(data => {
     let page = JSON.parse(data);
     page.image.selectedSource = 0;
+    page.image.selectedMainLayers = '100';
     renderPage(page);
     setupEventHandlers();
     page.image.destinations = {
@@ -43,6 +44,8 @@ request({ url: "page.json" })
     getImages(page);
     controllerImageSelectFilterLayerToAdjust(page, 0);
     controllerImageAdjustFilterLayer(page);
+    updateImageAdjustFilterLayer(page);
+    controllerImageSelectMainLayer(page);
   })
   .catch(error => {
     console.log(error);
@@ -102,7 +105,8 @@ let controllerImageSelectFilterLayerToAdjust = (page, layerNum) => {
 let selectImageFilterLayerToAdjust = (page, layerNum) => {
   page.image.selectedSource = layerNum;
   renderOffscreenCanvas(page.image.sources[layerNum], page.image.nx, page.image.ny);
-  copyOffscreenCanvasToDestination(page.image.sources[layerNum], page.image.destinations.main, page.image.destinations.preview);
+  copyOffscreenCanvasToPreview(page.image.sources[layerNum], page.image.destinations.preview);
+  // copyOffscreenCanvasToDestination(page.image.sources[layerNum], page.image.destinations.main, page.image.destinations.preview);
   updateImageAdjustFilterLayer(page);
 };
 
@@ -162,7 +166,8 @@ let controllerImageAdjustFilterLayer = page => {
     let brightness = e.target.valueAsNumber;
     source.brightness = brightness;
     renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-    copyOffscreenCanvasToDestination(source, page.image.destinations.main, page.image.destinations.preview);
+    copyOffscreenCanvasToPreview(source, page.image.destinations.preview);
+    renderMainLayers(page.image);
   });
 };
 
@@ -217,29 +222,38 @@ let renderMainImageContent = page => {
   `;
 };
 
+let controllerImageSelectMainLayer = page => {
+  let elem = document.getElementById("image-select-main-layer");
+  elem.addEventListener('change', (e) => {
+    let checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"'));
+    page.image.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
+    renderMainLayers(page.image);
+  });
+};
+
 let renderUnderMainImageRow = page => {
   return `
     <div class="d-flex flex-row justify-content-start">
       <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
-      <form>
+      <form id="image-select-main-layer">
         <div class="d-flex flex-row justify-content-start">
           <div class="select-layer-label">
             <label for='select-layer-red'>Red</label>
           </div>
           <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-red' name='select-layer-red' value='Red' disabled>
+            <input type='checkbox' id='select-layer-red' name='select-layer-red' value='0' checked>
           </div>
           <div class="select-layer-label">
             <label for='select-layer-green'>Green</label>
           </div>
           <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-green' name='select-layer-green' value='Green' disabled>
+            <input type='checkbox' id='select-layer-green' name='select-layer-green' value='1'>
           </div>
           <div class="select-layer-label">
             <label for='select-layer-blue'>Blue</label>
           </div>
           <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-blue' name='select-layer-blue' value='Blue' disabled>
+            <input type='checkbox' id='select-layer-blue' name='select-layer-blue' value='2'>
           </div>
         </div>
       </form>
@@ -250,55 +264,7 @@ let renderUnderMainImageRow = page => {
   `;
 };
 
-let renderImageSelectMainLayer = () => {
-  return `
-      <form>
-        <div id="select-layer" class="d-flex flex-row justify-content-start">
-          <div id='select-layer-radio' class="pl-4 pr-4">
-            <input type='radio' id='select-layer-red' name='select-layer-red' value='Red' checked>
-            <label for='select-layer-red'>Redabc</label>
-          </div>
-          <div id='select-layer-radio' class="pl-4 pr-4">
-            <input type='radio' id='select-layer-green' name='select-layer-green' value='Green'>
-            <label for='select-layer-green'>Green</label>
-          </div>
-          <div id='select-layer-radio' class="pl-4 pr-4">
-            <input type='radio' id='select-layer-blue' name='select-layer-blue' value='Blue'>
-            <label for='select-layer-blue'>Blue</label>
-          </div>
-          <div id='select-layer-radio' class="pl-4 pr-4">
-            <input type='radio' id='select-layer-rgb' name='select-layer-rgb' value='RGB'>
-            <label for='select-layer-rgb'>RGB</label>
-          </div>
-        </div>
-      </form>
-  `;
-};
-
-let renderImageSelectMainLayers = () => {
-  return `
-    <div id="display-layers" class="d-flex flex-row justify-content-start">
-      <div class="form-check form-check-inline">
-        <input class="form-check-input display-layer-checkbox" type="checkbox" id="inlineCheckbox1" value="option1">
-        <label class="form-check-label" for="inlineCheckbox1">Red</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input display-layer-checkbox" type="checkbox" id="inlineCheckbox2" value="option2">
-        <label class="form-check-label" for="inlineCheckbox2">Green</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input display-layer-checkbox" type="checkbox" id="inlineCheckbox3" value="option3">
-        <label class="form-check-label" for="inlineCheckbox3">Blue</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input display-layer-checkbox" type="checkbox" id="inlineCheckbox3" value="option3">
-        <label class="form-check-label" for="inlineCheckbox3">RGB</label>
-      </div>
-    </div>
-  `;
-};
-
-renderPageNavigation = page => {
+let renderPageNavigation = page => {
   return `
     <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
       <div class="pl-1 pr-1">
@@ -322,12 +288,19 @@ renderPageNavigation = page => {
 //
 
 let getImages = page => {
+  // get inital image layer, render offscreen and copy to main canvas
   let source = page.image.sources[0];
   fetchImage(page, source, renderFuncFetchImageFirstSource);
+  // step through rest of image layers and fetch all rawdata images
   for (var s = 1; s < page.image.sources.length; s++) {
     source = page.image.sources[s];
-    if (source.type == "rawdata") {
+    switch (source.type) {
+    case 'rawdata':
       fetchImage(page, source, renderFuncFetchImageSubsequentSource);
+      break;
+    case 'composite':
+      initializeOffscreenCanvas(source, page.image.nx, page.image.ny);
+      break;
     }
   }
 };
@@ -359,7 +332,9 @@ let initializeCanvasDestinations = (image) => {
 let renderFuncFetchImageFirstSource = (image, source, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
   renderOffscreenCanvas(source, nx, ny);
-  copyOffscreenCanvasToDestination(source, image.destinations.main, image.destinations.preview);
+  copyOffscreenCanvasToPreview(source, image.destinations.preview);
+  copyOffscreenCanvasToMain(source, image.destinations.main);
+  // copyOffscreenCanvasToDestination(source, image.destinations.main, image.destinations.preview);
   // copyOffscreenCanvasToDestination(source, image.destinations.preview);
 };
 
@@ -374,8 +349,6 @@ let initializeCanvas = function (destination, nx, ny) {
   destination.ctx.fillStyle = "rgb(0,0,0)";
   destination.ctx.imageSmoothingEnabled = true;
   destination.ctx.globalCompositeOperation = "source-over";
-  // destination.canvas.width = nx;
-  // destination.canvas.height = ny;
 };
 
 let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny) {
@@ -400,10 +373,10 @@ let initializeOffscreenCanvas = function (source, nx, ny) {
   source.offscreenCanvas.height = ny;
 };
 
-let renderAndCopyOffscreenCanvasToDestination = function (source, destination, nx, ny, preview) {
-  renderOffscreenCanvas(source, nx, ny);
-  copyOffscreenCanvasToDestination(source, destination, preview);
-};
+// let renderAndCopyOffscreenCanvasToDestination = function (source, destination, nx, ny, preview) {
+//   renderOffscreenCanvas(source, nx, ny);
+//   copyOffscreenCanvasToDestination(source, destination, preview);
+// };
 
 let copyOffscreenCanvasToDestination = function (source, destination, preview) {
 
@@ -448,6 +421,28 @@ let copyOffscreenCanvasToDestination = function (source, destination, preview) {
   //   let x = blob;
   //   preview.img.src = URL.createObjectURL(blob);
   // });
+};
+
+let copyOffscreenCanvasToMain = function (source, destination) {
+  let bitmap = source.offscreenCanvas.transferToImageBitmap();
+  destination.ctx.transferFromImageBitmap(bitmap);
+};
+
+let copyOffscreenCanvasToPreview = function (source, preview) {
+  let { width, height } = preview.canvas.getBoundingClientRect();
+  let resizeHeight = height;
+  let resizeWidth = height * 26 / 25;
+  let imageData = new ImageData(source.uint8Data, 2600, 2500);
+  let bitmapP2 = createImageBitmap(imageData, 0, 0, 2600, 2500, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
+
+  bitmapP2.then(smallbitmap => {
+    let { width, height } = preview.canvas.getBoundingClientRect();
+    let posx = width / 2 - smallbitmap.width / 2;
+    let posy = height / 2 - smallbitmap.height / 2;
+    preview.canvas.width = smallbitmap.width;
+    preview.canvas.height = smallbitmap.height;
+    preview.ctx.drawImage(smallbitmap, 0, 0);
+  });
 };
 
 let renderOffscreenCanvas = function (source, nx, ny) {
@@ -523,6 +518,100 @@ let renderOffscreenCanvas = function (source, nx, ny) {
     break;
   }
   source.ctx.putImageData(source.imageData, 0, 0);
+};
+
+const containsAll = (arr1, arr2) =>
+  arr2.every(arr2Item => arr1.includes(arr2Item));
+
+const sameMembers = (arr1, arr2) =>
+  containsAll(arr1, arr2) && containsAll(arr2, arr1);
+
+let renderMainLayers = image => {
+  let rgbsource = image.sources[3];
+  let pixeldata = rgbsource.uint8Data;
+  let pixeldataRed = image.sources[0].uint8Data;
+  let pixeldataGreen = image.sources[1].uint8Data;
+  let pixeldataBlue = image.sources[2].uint8Data;
+  let i = 0;
+  let len = pixeldataRed.length;
+
+  switch (image.selectedMainLayers) {
+  case '000': // No layers
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = 0;
+      pixeldata[i + 1] = 0;
+      pixeldata[i + 2] = 0;
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '100': // Red
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = pixeldataRed[i];
+      pixeldata[i + 1] = 0;
+      pixeldata[i + 2] = 0;
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '010': // Green
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = 0;
+      pixeldata[i + 1] = pixeldataGreen[i + 1];
+      pixeldata[i + 2] = 0;
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '001': // Blue
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = 0;
+      pixeldata[i + 1] = 0;
+      pixeldata[i + 2] = pixeldataBlue[i + 2];
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '110': // Red, Green
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = pixeldataRed[i];
+      pixeldata[i + 1] = pixeldataGreen[i + 1];
+      pixeldata[i + 2] = 0;
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '011': // Green, Blue
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = 0;
+      pixeldata[i + 1] = pixeldataGreen[i + 1];
+      pixeldata[i + 2] = pixeldataBlue[i + 2];
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '101': // Red, blue
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = pixeldataRed[i];
+      pixeldata[i + 1] = 0;
+      pixeldata[i + 2] = pixeldataBlue[i + 2];
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  case '111': // Red, Green, Blue
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = pixeldataRed[i];
+      pixeldata[i + 1] = pixeldataGreen[i + 1];
+      pixeldata[i + 2] = pixeldataBlue[i + 2];
+      pixeldata[i + 3] = 255;
+    }
+    break;
+
+  }
+  rgbsource.ctx.putImageData(rgbsource.imageData, 0, 0);
+  let bitmap = rgbsource.offscreenCanvas.transferToImageBitmap();
+  image.destinations.main.ctx.transferFromImageBitmap(bitmap);
 };
 
 // brightnessRedSlider.addEventListener('input', e => {
