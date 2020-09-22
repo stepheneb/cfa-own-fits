@@ -2,7 +2,7 @@
   "title": "What's Red + Green + Blue?",
   "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
   "selectfiltertext": "Select and adjust each of the light wave images",
-  "adjustimagetext": "Use these sliders to show more detail in tthe image",
+  "adjustimagetext": "Use these sliders to show more detail in the image",
   "image": {
     "name": "Lagoon Nebula",
     "about": {
@@ -13,7 +13,7 @@
     },
     "nx": 2600,
     "ny": 2500,
-    "maximumBrightness": 4,
+    "maximumBrightness": 6,
     "sources": [
       {
         "type": "rawdata",

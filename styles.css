@@ -186,7 +186,7 @@ canvas {
 }
 
 canvas.image-layer-preview {
-  height: 24vh;
+  height: 30vh;
   width: 100%;
   background-color: black;
   border: 2px solid white;
@@ -206,7 +206,7 @@ canvas.image-about-telescope {
     height: 100vh;
   }
 
-  #canvasrgb {
+  #main-image-canvas {
     visibility: visible;
     display: block;
     background-color: white;

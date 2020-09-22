@@ -25,9 +25,24 @@ let request = obj => {
 request({ url: "page.json" })
   .then(data => {
     let page = JSON.parse(data);
+    page.image.selectedSource = 0;
     renderPage(page);
     setupEventHandlers();
+    page.image.destinations = {
+      main: {
+        canvas: document.getElementById("main-image-canvas")
+      },
+      preview: {
+        canvas: document.getElementById('image-layer-preview'),
+        img: document.getElementById('image-layer-preview')
+      }
+    };
+
+    initializeCanvasDestinations(page.image);
+    initializeCanvas(page.image.destinations.preview);
     getImages(page);
+    controllerImageSelectFilterLayerToAdjust(page, 0);
+    controllerImageAdjustFilterLayer(page);
   })
   .catch(error => {
     console.log(error);
@@ -40,19 +55,19 @@ request({ url: "page.json" })
 let renderPage = page => {
   let html = `
     <div id='page-1' class='activity-page'>
-      ${pageHeader(page)}
+      ${renderPageHeader(page)}
 
       <div class='row'>
         <div class='col-3'>
-          ${imageSelectFilterLayerToAdjust(page)}
-          ${imageLayerPreview(page)}
-          ${imageAdjustFilterLayer(page)}
+          ${renderImageSelectFilterLayerToAdjust(page)}
+          ${renderImageLayerPreview(page)}
+          ${renderImageAdjustFilterLayer(page)}
         </div>
         <div class='col-7'>
-          ${mainImageContent(page)}
+          ${renderMainImageContent(page)}
         </div>
         <div class='col-2'>
-          ${imageAboutTelescope(page)}
+          ${renderImageAboutTelescope(page)}
         </div>
       </div>
     </div>
@@ -61,7 +76,7 @@ let renderPage = page => {
   document.getElementById("content").innerHTML = html;
 };
 
-let pageHeader = page => {
+let renderPageHeader = page => {
   return `
     <div class='row page-header'>
       <div class='col-6'>
@@ -72,47 +87,67 @@ let pageHeader = page => {
   `;
 };
 
-let imageSelectFilterLayerToAdjust = page => {
+let controllerImageSelectFilterLayerToAdjust = (page, layerNum) => {
+  let elem = document.getElementById("image-select-filter-layer-to-adjust");
+  elem.addEventListener('change', (e) => {
+    let i = Number(event.target.value);
+    selectImageFilterLayerToAdjust(page, i);
+  });
+  if (typeof layerNum == 'number') {
+    elem.querySelector(`[value='${layerNum}']`).checked = true;
+    page.image.selectedSource = layerNum;
+  }
+};
+
+let selectImageFilterLayerToAdjust = (page, layerNum) => {
+  page.image.selectedSource = layerNum;
+  renderOffscreenCanvas(page.image.sources[layerNum], page.image.nx, page.image.ny);
+  copyOffscreenCanvasToDestination(page.image.sources[layerNum], page.image.destinations.main, page.image.destinations.preview);
+  updateImageAdjustFilterLayer(page);
+};
+
+let renderImageSelectFilterLayerToAdjust = page => {
   return `
     <div class='control-collection'>
       <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
-      <form>
-        <div class='row'>
-          <div class='select-filter-radio'>
-            <input type='radio' id='select-red1' name='select-rgb' value='Red Filter' checked>
-          </div>
-          <div class=''>
-            <label for='select-red1'>Red</label>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='select-filter-radio'>
-            <input type='radio' id='select-green1' name='select-rgb' value='Green Filter' disabled>
-          </div>
-          <div class=''>
-            <label for='select-green1'>Green</label>
-          </div>
-        </div>
-        <div class='row'>
-          <div class='select-filter-radio'>
-            <input type='radio' id='select-blue1' name='select-rgb' value='Blue Filter' disabled>
-          </div>
-          <div class=''>
-            <label for='select-blue1'>Blue</label>
-          </div>
-        </div>
+      <form id="image-select-filter-layer-to-adjust">
+        ${renderRadioButtons(page)}
       </form>
     </div>
   `;
+
+  function renderRadioButtons(page) {
+    let sources = page.image.sources;
+    let html = '';
+    for (var i = 0; i < sources.length; i++) {
+      let source = sources[i];
+      if (source.type == "rawdata") {
+        html += `
+              <div class='row'>
+                <div class='select-filter-radio'>
+                  <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
+                </div>
+                <div class=''>
+                  <label for='select-rgb-${i}'>${source.name}</label>
+                </div>
+              </div>
+            `;
+      }
+    }
+    return html;
+  }
 };
 
-let imageLayerPreview = page => {
+let renderImageLayerPreview = page => {
   return `
-    <canvas class='image-layer-preview'></canvas>
+    <canvas id='image-layer-preview' class='image-layer-preview'></canvas>
   `;
+  // return `
+  //   <image id='image-layer-preview' class='image-layer-preview'></image>
+  // `;
 };
 
-let imageAboutTelescope = page => {
+let renderImageAboutTelescope = page => {
   return `
     <div>These images were taken with the</div>
     <div class="about-telescope">${page.image.about.telescope} Telescope</div>
@@ -120,7 +155,25 @@ let imageAboutTelescope = page => {
   `;
 };
 
-let imageAdjustFilterLayer = page => {
+let controllerImageAdjustFilterLayer = page => {
+  let elem = document.getElementById("brightness");
+  elem.addEventListener('input', (e) => {
+    let source = page.image.sources[page.image.selectedSource];
+    let brightness = e.target.valueAsNumber;
+    source.brightness = brightness;
+    renderOffscreenCanvas(source, page.image.nx, page.image.ny);
+    copyOffscreenCanvasToDestination(source, page.image.destinations.main, page.image.destinations.preview);
+  });
+};
+
+let updateImageAdjustFilterLayer = page => {
+  let source = page.image.sources[page.image.selectedSource];
+  let elem = document.getElementById("brightness");
+  elem.value = source.brightness;
+};
+
+let renderImageAdjustFilterLayer = page => {
+  let source = page.image.sources[page.image.selectedSource];
   return `
     <div class='control-collection'>
       <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
@@ -129,7 +182,8 @@ let imageAdjustFilterLayer = page => {
           <label class="pl-2" for='brightness'>Brightness</label>
         </div>
         <div class='col-8'>
-          <input type='range' id='brightness' name='brightness'>
+          <input type='range' id='brightness' name='brightness'  min='0' max='${page.image.maximumBrightness}' value='${page.image.maximumBrightness / 2}'
+            step='0.05'>
         </div>
       </div>
 
@@ -154,16 +208,16 @@ let imageAdjustFilterLayer = page => {
   `;
 };
 
-let mainImageContent = page => {
+let renderMainImageContent = page => {
   return `
     <div class='main-image-content'>
       <canvas id='main-image-canvas' class='page-image'></canvas>
-      ${underMainImageRow(page)}
+      ${renderUnderMainImageRow(page)}
     </div>
   `;
 };
 
-let underMainImageRow = page => {
+let renderUnderMainImageRow = page => {
   return `
     <div class="d-flex flex-row justify-content-start">
       <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
@@ -173,19 +227,19 @@ let underMainImageRow = page => {
             <label for='select-layer-red'>Red</label>
           </div>
           <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-red' name='select-layer-red' value='Red' checked>
+            <input type='checkbox' id='select-layer-red' name='select-layer-red' value='Red' disabled>
           </div>
           <div class="select-layer-label">
             <label for='select-layer-green'>Green</label>
           </div>
           <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-green' name='select-layer-green' value='Green'>
+            <input type='checkbox' id='select-layer-green' name='select-layer-green' value='Green' disabled>
           </div>
           <div class="select-layer-label">
             <label for='select-layer-blue'>Blue</label>
           </div>
           <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-blue' name='select-layer-blue' value='Blue'>
+            <input type='checkbox' id='select-layer-blue' name='select-layer-blue' value='Blue' disabled>
           </div>
         </div>
       </form>
@@ -196,7 +250,7 @@ let underMainImageRow = page => {
   `;
 };
 
-let imageSelectMainLayer = () => {
+let renderImageSelectMainLayer = () => {
   return `
       <form>
         <div id="select-layer" class="d-flex flex-row justify-content-start">
@@ -221,7 +275,7 @@ let imageSelectMainLayer = () => {
   `;
 };
 
-let imageSelectMainLayers = () => {
+let renderImageSelectMainLayers = () => {
   return `
     <div id="display-layers" class="d-flex flex-row justify-content-start">
       <div class="form-check form-check-inline">
@@ -263,21 +317,20 @@ renderPageNavigation = page => {
   `;
 };
 
-let getImages = page => {
-  page.image.canvas = document.getElementById("main-image-canvas");
-  let source = page.image.sources[0];
-  fetchImage(page, source, initializeAndRenderFirstCanvas);
-  for (var s = 1; s < page.image.sources.length; s++) {
-    source = page.image.sources[s];
-    if (source.type == "rawdata") {
-      fetchImage(page, source, initializeAndRenderOffscreenCanvas);
-    }
-  }
-};
-
 //
 // Image fetching and rendering ...
 //
+
+let getImages = page => {
+  let source = page.image.sources[0];
+  fetchImage(page, source, renderFuncFetchImageFirstSource);
+  for (var s = 1; s < page.image.sources.length; s++) {
+    source = page.image.sources[s];
+    if (source.type == "rawdata") {
+      fetchImage(page, source, renderFuncFetchImageSubsequentSource);
+    }
+  }
+};
 
 let fetchImage = (page, source, renderFunc) => {
   fetch(source.path)
@@ -290,7 +343,7 @@ let fetchImage = (page, source, renderFunc) => {
     })
     .then(arrayBuffer => {
       source.rawdata = new Float32Array(arrayBuffer);
-      renderFunc(page.image, source);
+      renderFunc(page.image, source, page.image.nx, page.image.ny);
 
     })
     .catch(e => {
@@ -298,30 +351,44 @@ let fetchImage = (page, source, renderFunc) => {
     });
 };
 
-let initializeAndRenderFirstCanvas = (image, source) => {
-  initializeMainCanvasForUseWithOffScreen(image);
-  initializeOffscreenCanvas(image, source);
-  renderOffscreenCanvas(image, source);
-  copyOffscreenCanvas(image, source);
+let initializeCanvasDestinations = (image) => {
+  initializeCanvasForUseWithOffScreenTransfer(image.destinations.main, image.nx, image.ny);
+  // initializeCanvasForUseWithOffScreenTransfer(image.destinations.preview, image.nx, image.ny);
 };
 
-let initializeAndRenderOffscreenCanvas = (image, layerNum) => {
-  initializeOffscreenCanvas(image, layerNum);
-  renderOffscreenCanvas(image, layerNum);
+let renderFuncFetchImageFirstSource = (image, source, nx, ny) => {
+  initializeOffscreenCanvas(source, nx, ny);
+  renderOffscreenCanvas(source, nx, ny);
+  copyOffscreenCanvasToDestination(source, image.destinations.main, image.destinations.preview);
+  // copyOffscreenCanvasToDestination(source, image.destinations.preview);
 };
 
-let initializeMainCanvasForUseWithOffScreen = function (image) {
-  image.ctx = image.canvas.getContext('bitmaprenderer');
-  image.ctx.fillStyle = "rgb(0,0,0)";
-  image.ctx.imageSmoothingEnabled = true;
-  image.ctx.globalCompositeOperation = "source-over";
-  image.canvas.width = image.nx;
-  image.canvas.height = image.ny;
+let renderFuncFetchImageSubsequentSource = (image, source, nx, ny) => {
+  initializeOffscreenCanvas(source, nx, ny);
+  renderOffscreenCanvas(source, nx, ny);
 };
 
-let initializeOffscreenCanvas = function (image, source) {
-  let ny = image.ny;
-  let nx = image.nx;
+let initializeCanvas = function (destination, nx, ny) {
+  let canvas = destination.canvas;
+  destination.ctx = canvas.getContext('2d');
+  destination.ctx.fillStyle = "rgb(0,0,0)";
+  destination.ctx.imageSmoothingEnabled = true;
+  destination.ctx.globalCompositeOperation = "source-over";
+  // destination.canvas.width = nx;
+  // destination.canvas.height = ny;
+};
+
+let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny) {
+  let canvas = destination.canvas;
+  destination.ctx = canvas.getContext('bitmaprenderer');
+  destination.ctx.fillStyle = "rgb(0,0,0)";
+  destination.ctx.imageSmoothingEnabled = true;
+  destination.ctx.globalCompositeOperation = "source-over";
+  destination.canvas.width = nx;
+  destination.canvas.height = ny;
+};
+
+let initializeOffscreenCanvas = function (source, nx, ny) {
   source.offscreenCanvas = new OffscreenCanvas(nx, ny);
   source.ctx = source.offscreenCanvas.getContext('2d');
   source.ctx.fillStyle = "rgb(0,0,0)";
@@ -333,11 +400,59 @@ let initializeOffscreenCanvas = function (image, source) {
   source.offscreenCanvas.height = ny;
 };
 
-let renderOffscreenCanvas = function (image, source) {
+let renderAndCopyOffscreenCanvasToDestination = function (source, destination, nx, ny, preview) {
+  renderOffscreenCanvas(source, nx, ny);
+  copyOffscreenCanvasToDestination(source, destination, preview);
+};
+
+let copyOffscreenCanvasToDestination = function (source, destination, preview) {
+
+  let { width, height } = preview.canvas.getBoundingClientRect();
+  let resizeHeight = height;
+  let resizeWidth = height * 26 / 25;
+  let imageData = new ImageData(source.uint8Data, 2600, 2500);
+  let bitmapP2 = createImageBitmap(imageData, 0, 0, 2600, 2500, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
+
+  bitmapP2.then(smallbitmap => {
+    let { width, height } = preview.canvas.getBoundingClientRect();
+    let posx = width / 2 - smallbitmap.width / 2;
+    let posy = height / 2 - smallbitmap.height / 2;
+    preview.canvas.width = smallbitmap.width;
+    preview.canvas.height = smallbitmap.height;
+    preview.ctx.drawImage(smallbitmap, 0, 0);
+  });
+
+  let bitmap = source.offscreenCanvas.transferToImageBitmap();
+  destination.ctx.transferFromImageBitmap(bitmap);
+
+  // let px = preview.canvas.width;
+  // let py = preview.canvas.height;
+
+  // let blobPromise = source.offscreenCanvas.convertToBlob();
+
+  // createImageBitmap(source.offscreenCanvas, 0, 0, { resizeWidth: 300 })
+  //   .then(smallbitmap => {
+  //     preview.ctx.drawImage(smallbitmap, 0, 0);
+  //     // preview.img.src = URL.createObjectURL(smallbitmap);
+  //   });
+
+  // preview.img.src = URL.createObjectURL(smallbitmap);
+  // bitmapPromise.then(bitmap => {
+  //   preview.img.src = URL.createObjectURL(blob);
+  // });
+
+  // blobPromise = source.offscreenCanvas.convertToBlob();
+  // blobPromise.then(blob => {
+  //   // preview.ctx.drawImage(b, 0, 0);
+  //   // var img = document.body.appendChild(new Image());
+  //   let x = blob;
+  //   preview.img.src = URL.createObjectURL(blob);
+  // });
+};
+
+let renderOffscreenCanvas = function (source, nx, ny) {
   let rawdata = source.rawdata;
   let pixeldata = source.uint8Data;
-  let ny = image.ny;
-  let nx = image.nx;
   let min = source.min;
   let max = source.max;
   let range = max - min;
@@ -386,8 +501,8 @@ let renderOffscreenCanvas = function (image, source) {
         scaledval = val * scale - min;
         pixeldata[pixindex] = 0;
         pixeldata[pixindex + 1] = 0;
-        pixeldata[pixindex + 2] = 0;
-        pixeldata[pixindex + 3] = scaledval;
+        pixeldata[pixindex + 2] = scaledval;
+        pixeldata[pixindex + 3] = 255;
         pixindex += 4;
       }
     }
@@ -408,11 +523,6 @@ let renderOffscreenCanvas = function (image, source) {
     break;
   }
   source.ctx.putImageData(source.imageData, 0, 0);
-};
-
-let copyOffscreenCanvas = function (image, source) {
-  let bitmap = source.offscreenCanvas.transferToImageBitmap();
-  image.ctx.transferFromImageBitmap(bitmap);
 };
 
 // brightnessRedSlider.addEventListener('input', e => {
@@ -454,4 +564,21 @@ let setupEventHandlers = () => {
   } else {
     console.log('btn-toggle-fullscreen not found');
   }
+};
+
+//
+// Utilities
+//
+
+const forLoopMinMax = (array) => {
+  let min = array[0],
+    max = array[0];
+
+  for (let i = 1; i < array.length; i++) {
+    let value = array[i];
+    min = (value < min) ? value : min;
+    max = (value > max) ? value : max;
+  }
+
+  return [min, max];
 };
