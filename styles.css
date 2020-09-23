@@ -131,6 +131,11 @@ label, button {
   min-width: 3rem;
 }
 
+.select-filter-label:hover {
+  color: white;
+  font-weight: bold;
+}
+
 .solid-right-arrow {
   color: red;
   padding-right: 0.2rem;
