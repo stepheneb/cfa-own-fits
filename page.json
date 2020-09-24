@@ -13,16 +13,17 @@
     },
     "nx": 2600,
     "ny": 2500,
-    "maximumBrightness": 8,
+    "maximumBrightness": 2,
     "sources": [
       {
         "type": "rawdata",
         "name": "Red",
         "path": "rawdata/red.bin",
         "filter": "red",
-        "min": 4,
-        "max": 10,
-        "brightness": 2
+        "min": 0,
+        "max": 6,
+        "brightness": 1,
+        "contrast": 1
       },
       {
         "type": "rawdata",
@@ -30,8 +31,9 @@
         "path": "rawdata/green.bin",
         "filter": "green",
         "min": 0,
-        "max": 64,
-        "brightness": 2
+        "max": 14,
+        "brightness": 1,
+        "contrast": 1
       },
       {
         "type": "rawdata",
@@ -39,8 +41,9 @@
         "path": "rawdata/blue.bin",
         "filter": "blue",
         "min": 0,
-        "max": 12,
-        "brightness": 2
+        "max": 3,
+        "brightness": 1,
+        "contrast": 1
       },
       {
         "type": "composite",

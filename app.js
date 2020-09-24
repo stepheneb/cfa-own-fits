@@ -106,7 +106,7 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
   page.image.selectedSource = layerNum;
   renderOffscreenCanvas(page.image.sources[layerNum], page.image.nx, page.image.ny);
   copyOffscreenCanvasToPreview(page.image.sources[layerNum], page.image.destinations.preview);
-  // copyOffscreenCanvasToDestination(page.image.sources[layerNum], page.image.destinations.main, page.image.destinations.preview);
+  consoleLogHistogram(page.image.sources[layerNum]);
   updateImageAdjustFilterLayer(page);
 };
 
@@ -131,7 +131,7 @@ let renderImageSelectFilterLayerToAdjust = page => {
                 <div class='select-filter-radio'>
                   <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
                 </div>
-                <div class=''>
+                <div class='select-filter-label'>
                   <label for='select-rgb-${i}'>${source.name}</label>
                 </div>
               </div>
@@ -146,9 +146,6 @@ let renderImageLayerPreview = page => {
   return `
     <canvas id='image-layer-preview' class='image-layer-preview'></canvas>
   `;
-  // return `
-  //   <image id='image-layer-preview' class='image-layer-preview'></image>
-  // `;
 };
 
 let renderImageAboutTelescope = page => {
@@ -160,8 +157,8 @@ let renderImageAboutTelescope = page => {
 };
 
 let controllerImageAdjustFilterLayer = page => {
-  let elem = document.getElementById("brightness");
-  elem.addEventListener('input', (e) => {
+  let elemBrightness = document.getElementById("brightness");
+  elemBrightness.addEventListener('input', (e) => {
     let source = page.image.sources[page.image.selectedSource];
     let brightness = e.target.valueAsNumber;
     source.brightness = brightness;
@@ -169,12 +166,26 @@ let controllerImageAdjustFilterLayer = page => {
     copyOffscreenCanvasToPreview(source, page.image.destinations.preview);
     renderMainLayers(page.image);
   });
+
+  let elemContrast = document.getElementById("contrast");
+  elemContrast.addEventListener('input', (e) => {
+    let source = page.image.sources[page.image.selectedSource];
+    source.contrast = e.target.valueAsNumber;
+    let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
+    source.max = source.originalMax - contrastShift;
+    source.min = Math.max(0, source.originalMin + contrastShift);
+    consoleLogHistogram(source);
+    renderOffscreenCanvas(source, page.image.nx, page.image.ny);
+    copyOffscreenCanvasToPreview(source, page.image.destinations.preview);
+    renderMainLayers(page.image);
+  });
+
 };
 
 let updateImageAdjustFilterLayer = page => {
   let source = page.image.sources[page.image.selectedSource];
-  let elem = document.getElementById("brightness");
-  elem.value = source.brightness;
+  document.getElementById("brightness").value = source.brightness;
+  document.getElementById("contrast").value = source.contrast;
 };
 
 let renderImageAdjustFilterLayer = page => {
@@ -197,7 +208,7 @@ let renderImageAdjustFilterLayer = page => {
           <label class="pl-2" for='contrast'>Contrast</label>
         </div>
         <div class='col-8'>
-          <input type='range' id='contrast' name='contrast' min='0' max='10' value='5' disabled>
+          <input type='range' id='contrast' name='contrast' min='0.04' max='1.96' value='1' step='0.01'>
         </div>
       </div>
 
@@ -290,13 +301,14 @@ let renderPageNavigation = page => {
 let getImages = page => {
   // get inital image layer, render offscreen and copy to main canvas
   let source = page.image.sources[0];
-  fetchImage(page, source, renderFuncFetchImageFirstSource);
+  addRawDataSourceAttributes(source);
+  fetchRawDataForImage(page, source, renderFuncfetchRawDataForImageFirstSource);
   // step through rest of image layers and fetch all rawdata images
   for (var s = 1; s < page.image.sources.length; s++) {
     source = page.image.sources[s];
     switch (source.type) {
     case 'rawdata':
-      fetchImage(page, source, renderFuncFetchImageSubsequentSource);
+      fetchRawDataForImage(page, source, renderFuncfetchRawDataForImageSubsequentSource);
       break;
     case 'composite':
       initializeOffscreenCanvas(source, page.image.nx, page.image.ny);
@@ -305,7 +317,7 @@ let getImages = page => {
   }
 };
 
-let fetchImage = (page, source, renderFunc) => {
+let fetchRawDataForImage = (page, source, renderFunc) => {
   fetch(source.path)
     .then(response => {
       if (!response.ok) {
@@ -316,6 +328,8 @@ let fetchImage = (page, source, renderFunc) => {
     })
     .then(arrayBuffer => {
       source.rawdata = new Float32Array(arrayBuffer);
+      addRawDataSourceAttributes(source);
+      consoleLogHistogram(source);
       renderFunc(page.image, source, page.image.nx, page.image.ny);
 
     })
@@ -324,21 +338,25 @@ let fetchImage = (page, source, renderFunc) => {
     });
 };
 
-let initializeCanvasDestinations = (image) => {
-  initializeCanvasForUseWithOffScreenTransfer(image.destinations.main, image.nx, image.ny);
-  // initializeCanvasForUseWithOffScreenTransfer(image.destinations.preview, image.nx, image.ny);
+let addRawDataSourceAttributes = source => {
+  source.originalMax = source.max;
+  source.originalMin = source.min;
+  source.originalRange = source.originalMax - source.originalMin;
+  [source.rawDataMax, source.rawDataMin] = forLoopMinMax(source);
 };
 
-let renderFuncFetchImageFirstSource = (image, source, nx, ny) => {
+let initializeCanvasDestinations = (image) => {
+  initializeCanvasForUseWithOffScreenTransfer(image.destinations.main, image.nx, image.ny);
+};
+
+let renderFuncfetchRawDataForImageFirstSource = (image, source, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
   renderOffscreenCanvas(source, nx, ny);
   copyOffscreenCanvasToPreview(source, image.destinations.preview);
   copyOffscreenCanvasToMain(source, image.destinations.main);
-  // copyOffscreenCanvasToDestination(source, image.destinations.main, image.destinations.preview);
-  // copyOffscreenCanvasToDestination(source, image.destinations.preview);
 };
 
-let renderFuncFetchImageSubsequentSource = (image, source, nx, ny) => {
+let renderFuncfetchRawDataForImageSubsequentSource = (image, source, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
   renderOffscreenCanvas(source, nx, ny);
 };
@@ -364,6 +382,7 @@ let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny)
 let initializeOffscreenCanvas = function (source, nx, ny) {
   source.offscreenCanvas = new OffscreenCanvas(nx, ny);
   source.ctx = source.offscreenCanvas.getContext('2d');
+  // source.ctx.globalAlpha = 1.0;
   source.ctx.fillStyle = "rgb(0,0,0)";
   source.ctx.imageSmoothingEnabled = true;
   source.ctx.globalCompositeOperation = "source-over";
@@ -371,12 +390,18 @@ let initializeOffscreenCanvas = function (source, nx, ny) {
   source.uint8Data = source.imageData.data;
   source.offscreenCanvas.width = nx;
   source.offscreenCanvas.height = ny;
+  setAlpha(source, 255);
 };
 
-// let renderAndCopyOffscreenCanvasToDestination = function (source, destination, nx, ny, preview) {
-//   renderOffscreenCanvas(source, nx, ny);
-//   copyOffscreenCanvasToDestination(source, destination, preview);
-// };
+let setAlpha = (source, value) => {
+  let i,
+    pixeldata = source.uint8Data,
+    len = pixeldata.length;
+
+  for (i = 3; i < len; i += 4) {
+    pixeldata[i] = value;
+  }
+};
 
 let copyOffscreenCanvasToDestination = function (source, destination, preview) {
 
@@ -397,30 +422,6 @@ let copyOffscreenCanvasToDestination = function (source, destination, preview) {
 
   let bitmap = source.offscreenCanvas.transferToImageBitmap();
   destination.ctx.transferFromImageBitmap(bitmap);
-
-  // let px = preview.canvas.width;
-  // let py = preview.canvas.height;
-
-  // let blobPromise = source.offscreenCanvas.convertToBlob();
-
-  // createImageBitmap(source.offscreenCanvas, 0, 0, { resizeWidth: 300 })
-  //   .then(smallbitmap => {
-  //     preview.ctx.drawImage(smallbitmap, 0, 0);
-  //     // preview.img.src = URL.createObjectURL(smallbitmap);
-  //   });
-
-  // preview.img.src = URL.createObjectURL(smallbitmap);
-  // bitmapPromise.then(bitmap => {
-  //   preview.img.src = URL.createObjectURL(blob);
-  // });
-
-  // blobPromise = source.offscreenCanvas.convertToBlob();
-  // blobPromise.then(blob => {
-  //   // preview.ctx.drawImage(b, 0, 0);
-  //   // var img = document.body.appendChild(new Image());
-  //   let x = blob;
-  //   preview.img.src = URL.createObjectURL(blob);
-  // });
 };
 
 let copyOffscreenCanvasToMain = function (source, destination) {
@@ -446,6 +447,7 @@ let copyOffscreenCanvasToPreview = function (source, preview) {
 };
 
 let renderOffscreenCanvas = function (source, nx, ny) {
+  let startTime = performance.now();
   let rawdata = source.rawdata;
   let pixeldata = source.uint8Data;
   let min = source.min;
@@ -463,9 +465,6 @@ let renderOffscreenCanvas = function (source, nx, ny) {
         val = rawdata[i];
         scaledval = val * scale - min;
         pixeldata[pixindex] = scaledval;
-        pixeldata[pixindex + 1] = 0;
-        pixeldata[pixindex + 2] = 0;
-        pixeldata[pixindex + 3] = 255;
         pixindex += 4;
       }
     }
@@ -478,10 +477,7 @@ let renderOffscreenCanvas = function (source, nx, ny) {
         i = y * ny + x;
         val = rawdata[i];
         scaledval = val * scale - min;
-        pixeldata[pixindex] = 0;
         pixeldata[pixindex + 1] = scaledval;
-        pixeldata[pixindex + 2] = 0;
-        pixeldata[pixindex + 3] = 255;
         pixindex += 4;
       }
     }
@@ -494,10 +490,7 @@ let renderOffscreenCanvas = function (source, nx, ny) {
         i = y * ny + x;
         val = rawdata[i];
         scaledval = val * scale - min;
-        pixeldata[pixindex] = 0;
-        pixeldata[pixindex + 1] = 0;
         pixeldata[pixindex + 2] = scaledval;
-        pixeldata[pixindex + 3] = 255;
         pixindex += 4;
       }
     }
@@ -513,11 +506,13 @@ let renderOffscreenCanvas = function (source, nx, ny) {
       pixeldata[i] = pixeldataRed[i];
       pixeldata[i + 1] = pixeldataGreen[i + 1];
       pixeldata[i + 3] = pixeldataBlue[i + 2];
-      pixeldata[i + 3] = 255;
     }
     break;
   }
+  let renderTime = performance.now();
   source.ctx.putImageData(source.imageData, 0, 0);
+  let putImageDataTime = performance.now();
+  console.log(`renderOffscreenCanvas: ${source.filter}: render: ${roundNumber(renderTime  - startTime, 4)}`);
 };
 
 const containsAll = (arr1, arr2) =>
@@ -527,6 +522,7 @@ const sameMembers = (arr1, arr2) =>
   containsAll(arr1, arr2) && containsAll(arr2, arr1);
 
 let renderMainLayers = image => {
+  let startTime = performance.now();
   let rgbsource = image.sources[3];
   let pixeldata = rgbsource.uint8Data;
   let pixeldataRed = image.sources[0].uint8Data;
@@ -541,7 +537,6 @@ let renderMainLayers = image => {
       pixeldata[i] = 0;
       pixeldata[i + 1] = 0;
       pixeldata[i + 2] = 0;
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -550,7 +545,6 @@ let renderMainLayers = image => {
       pixeldata[i] = pixeldataRed[i];
       pixeldata[i + 1] = 0;
       pixeldata[i + 2] = 0;
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -559,7 +553,6 @@ let renderMainLayers = image => {
       pixeldata[i] = 0;
       pixeldata[i + 1] = pixeldataGreen[i + 1];
       pixeldata[i + 2] = 0;
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -568,7 +561,6 @@ let renderMainLayers = image => {
       pixeldata[i] = 0;
       pixeldata[i + 1] = 0;
       pixeldata[i + 2] = pixeldataBlue[i + 2];
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -577,7 +569,6 @@ let renderMainLayers = image => {
       pixeldata[i] = pixeldataRed[i];
       pixeldata[i + 1] = pixeldataGreen[i + 1];
       pixeldata[i + 2] = 0;
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -586,7 +577,6 @@ let renderMainLayers = image => {
       pixeldata[i] = 0;
       pixeldata[i + 1] = pixeldataGreen[i + 1];
       pixeldata[i + 2] = pixeldataBlue[i + 2];
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -595,7 +585,6 @@ let renderMainLayers = image => {
       pixeldata[i] = pixeldataRed[i];
       pixeldata[i + 1] = 0;
       pixeldata[i + 2] = pixeldataBlue[i + 2];
-      pixeldata[i + 3] = 255;
     }
     break;
 
@@ -604,24 +593,19 @@ let renderMainLayers = image => {
       pixeldata[i] = pixeldataRed[i];
       pixeldata[i + 1] = pixeldataGreen[i + 1];
       pixeldata[i + 2] = pixeldataBlue[i + 2];
-      pixeldata[i + 3] = 255;
     }
     break;
 
   }
+  let renderTime = performance.now();
   rgbsource.ctx.putImageData(rgbsource.imageData, 0, 0);
+
+  let putImageDataTime = performance.now();
   let bitmap = rgbsource.offscreenCanvas.transferToImageBitmap();
   image.destinations.main.ctx.transferFromImageBitmap(bitmap);
+  let transferToImageBitmapTime = performance.now();
+  console.log(`renderMainLayers: ${roundNumber(image.selectedMainLayers, 4)}: render: ${roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
 };
-
-// brightnessRedSlider.addEventListener('input', e => {
-//   redBrightness = e.target.valueAsNumber;
-//   renderCanvasRed(canvasred, redRawData, redMin, redMax);
-// });
-//
-// brightnessRedSlider.addEventListener('change', e => {
-//   renderCanvasRGB(canvasrgb, redRawData, redMin, redMax, greenRawData, greenMin, greenMax, blueRawData, blueMin, blueMax);
-// });
 
 //
 // Event handling
@@ -670,4 +654,36 @@ const forLoopMinMax = (array) => {
   }
 
   return [min, max];
+};
+
+const histogram = (array, numbuckets, min, max) => {
+  let i, index, val, sval,
+    range = max - min,
+    bucketSize = range / numbuckets,
+    scale = numbuckets / range,
+    buckets = Array(numbuckets);
+
+  for (i = 0; i < buckets.length; i++) {
+    let bucketStart = roundNumber(i * bucketSize + min, 2);
+    buckets[i] = [bucketStart, 0];
+  }
+  for (i = 0; i < array.length; i++) {
+    val = array[i];
+    if (val >= min && val <= max) {
+      sval = (val - min) * scale;
+      index = Math.floor(sval);
+      buckets[index][1] += 1;
+    }
+  }
+  return buckets;
+};
+
+let consoleLogHistogram = source => {
+  let h = histogram(source.rawdata, 30, source.min, source.max);
+  console.log(`Histogram: ${source.name}, min: ${roundNumber(source.min, 4)}, max: ${roundNumber(source.max, 4)}, contrast: ${roundNumber(source.contrast, 4)}`);
+  console.table(h);
+};
+
+let roundNumber = (value, precision = 1) => {
+  return Number(Number.parseFloat(value).toPrecision(precision));
 };
