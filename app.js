@@ -541,27 +541,15 @@ let renderMainLayers = image => {
     break;
 
   case '100': // Red
-    for (i = 0; i < len; i += 4) {
-      pixeldata[i] = pixeldataRed[i];
-      pixeldata[i + 1] = 0;
-      pixeldata[i + 2] = 0;
-    }
+    pixeldata.set(pixeldataRed);
     break;
 
   case '010': // Green
-    for (i = 0; i < len; i += 4) {
-      pixeldata[i] = 0;
-      pixeldata[i + 1] = pixeldataGreen[i + 1];
-      pixeldata[i + 2] = 0;
-    }
+    pixeldata.set(pixeldataGreen);
     break;
 
   case '001': // Blue
-    for (i = 0; i < len; i += 4) {
-      pixeldata[i] = 0;
-      pixeldata[i + 1] = 0;
-      pixeldata[i + 2] = pixeldataBlue[i + 2];
-    }
+    pixeldata.set(pixeldataBlue);
     break;
 
   case '110': // Red, Green
