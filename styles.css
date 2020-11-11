@@ -44,6 +44,22 @@ body {
 
 .activity-page {
   margin: 1.5vh 1vw 0vh 2vw;
+  height: 94vh;
+}
+
+.activity-page-menu {
+  margin: 20vh 20vw;
+}
+
+.activity-page-menu>.row {
+  margin-bottom: 2em;
+}
+
+.start-activity-page {
+  background-color: black;
+  font-size: 1.8vh;
+  width: 10em;
+  height: fit-content;
 }
 
 .page-navigation {

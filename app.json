@@ -1,0 +1,131 @@
+{
+  "splash": {
+    "title1": "Welcome To",
+    "title2": "Observing With NASA",
+    "begin": "Touch to Begin"
+  },
+  "menu": {
+    "title": "Observing With NASA",
+    "subtitle": "Learn how to enhance real NASA data. Choose a challenge below."
+  },
+  "pages": [
+    {
+      "title": "What's Red + Green + Blue?",
+      "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+      "selectfiltertext": "Select and adjust each of the light wave images",
+      "adjustimagetext": "Use these sliders to show more detail in the image",
+      "image": {
+        "name": "Lagoon Nebula",
+        "about": {
+          "prologue": "These images were taken with the",
+          "telescope": "Hubble",
+          "imagepath": "images/hubble-small.jpg",
+          "description": "more info about the Hubble telescope goes here ..."
+        },
+        "nx": 2600,
+        "ny": 2500,
+        "maximumBrightness": 2,
+        "sources": [
+          {
+            "type": "rawdata",
+            "name": "Red",
+            "path": "rawdata/HST_Lagoon/HST_Lagoon_f658Red.bin",
+            "filter": "red",
+            "min": 0,
+            "max": 6,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Green",
+            "path": "rawdata/HST_Lagoon//HST_Lagoon_f656Green.bin",
+            "filter": "green",
+            "min": 0,
+            "max": 14,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Blue",
+            "path": "rawdata/HST_Lagoon/HST_Lagoon_f502Blue.bin",
+            "filter": "blue",
+            "min": 0,
+            "max": 3,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "composite",
+            "name": "RGB",
+            "layers": [
+              "Red",
+              "Green",
+              "Blue"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Reveal an Image using 'Invisible Light'",
+      "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+      "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+      "adjustimagetext": "Use these sliders to show more detail in the image",
+      "image": {
+        "name": "M82",
+        "about": {
+          "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
+          "telescope": "Hubble, Spitzer, and Chandra",
+          "imagepath": "images/hubble-small.jpg",
+          "description": "more info about the Hubble telescope goes here ..."
+        },
+        "nx": 1270,
+        "ny": 1270,
+        "maximumBrightness": 20,
+        "sources": [
+          {
+            "type": "rawdata",
+            "name": "Infrared",
+            "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
+            "filter": "red",
+            "min": 0,
+            "max": 4000,
+            "brightness": 8,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Optical",
+            "path": "rawdata/M82/M82_Hubble_Optical.bin",
+            "filter": "green",
+            "min": 0,
+            "max": 2000,
+            "brightness": 8,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "X-Ray",
+            "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
+            "filter": "blue",
+            "min": 0,
+            "max": 200,
+            "brightness": 8,
+            "contrast": 1
+          },
+          {
+            "type": "composite",
+            "name": "RGB",
+            "layers": [
+              "Red",
+              "Green",
+              "Blue"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

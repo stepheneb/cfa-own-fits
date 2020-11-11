@@ -1,100 +1,94 @@
 #!/usr/local/bin/python3
 
+import sys
+import os.path
+from os import path
+import time
+import glob
+
 import numpy as np
+print("using numpy version: " +  np.version.version)
+
+import matplotlib
+import matplotlib.pyplot as plt
+print("using matplotlib version: " +  matplotlib.__version__)
+
 import fitsio
 from fitsio import FITS,FITSHDR
 
-indir = "fits"
-outdir = "rawdata"
+if len(sys.argv) < 2:
+    print("*** error: no FITS input file directory specified")
+    quit()
 
-# red
+indir = sys.argv[1]
+exists = path.exists(indir)
 
-filename = "HST_Lagoon_f658Red.fits"
-inpath = indir + '/' + filename
+if exists:
+    print("input path exists: " + indir)
+else:
+    print("path not found: " + indir)
+    quit()
 
-print("processing: "+ inpath)
+head_tail = os.path.split(indir)
 
-fits=fitsio.FITS(inpath)
+dirname = head_tail[1]
+print("dirname: " + dirname)
 
-print("hdus: " + str(len(fits)))
+outdir = "rawdata/" + dirname
 
-img = fits[0].read()
+def extract_raw_image_data(infile, outdir):
+    print("processing: "+ infile)
 
-y = len(img)
-x = len(img[0])
+    original_filename = os.path.split(infile)[1]
+    print("original_filename: " + original_filename)
 
-print("x: " + str(x))
-print("y: " + str(y))
+    base_filename = os.path.splitext(original_filename)[0]
+    print("base_filename: " + base_filename)
 
-print ("min: " + str(np.min(img)))
-print ("max: " + str(np.max(img)))
+    if not os.path.exists(outdir):
+        print("creating output directory for rawdata: " + outdir)
+        os.makedirs(outdir)
 
-outpath = outdir + '/red.bin'
+    fits=fitsio.FITS(infile)
 
-output_file = open(outpath, 'wb')
-img.tofile(output_file)
-output_file.close()
+    print("hdus: " + str(len(fits)))
 
-print("writing: " + outpath)
-print("")
+    img = fits[0].read()
 
-# green
+    dtype = str(img.dtype)
+    print("img datatype: " + dtype)
+    if dtype != 'float32':
+        print("converting img to float32")
+        img = img.astype('float32')
 
-filename = "HST_Lagoon_f656Green.fits"
-inpath = indir + '/' + filename
+    y = len(img)
+    x = len(img[0])
 
-print("processing: "+ inpath)
+    print("x: " + str(x))
+    print("y: " + str(y))
 
-fits=fitsio.FITS(inpath)
+    print ("min: " + str(np.min(img)))
+    print ("max: " + str(np.max(img)))
 
-print("hdus: " + str(len(fits)))
+    outfile = outdir + '/' + base_filename + '.bin'
 
-img = fits[0].read()
+    output_file = open(outfile, 'wb')
+    img.tofile(output_file)
+    output_file.close()
 
-y = len(img)
-x = len(img[0])
+    print("writing: " + outfile)
+    print("")
 
-print("x: " + str(x))
-print("y: " + str(y))
-print ("min: " + str(np.min(img)))
-print ("max: " + str(np.max(img)))
+    # fig, ax = plt.subplots(2)
+    # ax[0].hist(img.flatten(), bins=100, range=(0.1, 40), density=False);
+    # ax[0].set_title("M82_Chandra_Xray_mid_energy");
+    # ax[1].hist(img.flatten(), bins=100, range=(0.1, 40), density=False);
+    # ax[1].set_yscale('log', nonpositive='clip');
+    # fig.show()
+    # time.sleep(10)
 
-outpath = outdir + '/green.bin'
 
-output_file = open(outpath, 'wb')
-img.tofile(output_file)
-output_file.close()
-
-print("writing: " + outpath)
-print("")
-
-# blue
-
-filename = "HST_Lagoon_f502Blue.fits"
-inpath = indir + '/' + filename
-
-print("processing: "+ inpath)
-
-fits=fitsio.FITS(inpath)
-
-print("hdus: " + str(len(fits)))
-
-img = fits[0].read()
-
-y = len(img)
-x = len(img[0])
-
-print("x: " + str(x))
-print("y: " + str(y))
-print ("min: " + str(np.min(img)))
-print ("max: " + str(np.max(img)))
-
-outpath = outdir + '/blue.bin'
-
-output_file = open(outpath, 'wb')
-img.tofile(output_file)
-output_file.close()
-
-print("writing: " + outpath)
-print("")
-
+for entry in os.scandir(indir):
+    if (entry.path.endswith(".fits") or entry.path.endswith(".FITS")):
+        print(entry.path)
+        extract_raw_image_data(entry.path, outdir)

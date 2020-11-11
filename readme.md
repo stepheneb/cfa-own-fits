@@ -15,45 +15,109 @@ easier to load the web application.
 
 **Under the hood.**
 
-The python program `./extract.py` processes three fits files for the Lagoon Nebula
-and generates raw data images used by the simple web application. To run use `pip`
-to install the [`numpy`](https://numpy.org/) and [`fitsio`](https://github.com/esheldon/fitsio)
+The python program `./extract.py` processes fits files in directories in the `./fits` directory and generates corresponding directories in the `./rawdata` directory containing binary arrays of `float32` values extracted from image ddata in the original `fits` files.
+
+To run use `pip`
+to install the [`numpy`](https://numpy.org/), [`matplotlib`](https://matplotlib.org/) and [`fitsio`](https://github.com/esheldon/fitsio)
 python packages.
 
 ```
 $ python3 -V
 Python 3.8.3
 
-$ pip3 install fitsio numpy
+$ pip3 install numpy matplotlib fitsio
 ```
 
-Extract raw data image files for the red, green, and blue HST_Lagoon fits files.
+Generate the raw data image files for infrared, xray, and optical M82 fits files.
 
 ```
-$ ./extract.py
-processing: fits/HST_Lagoon_f658Red.fits
+$ ./extract.py fits/M82
+using numpy version: 1.19.1
+using matplotlib version: 3.3.2
+input path exists: fits/M82
+dirname: M82
+fits/M82/M82_Spitzer_mid_Infrared.FITS
+processing: fits/M82/M82_Spitzer_mid_Infrared.FITS
+original_filename: M82_Spitzer_mid_Infrared.FITS
+base_filename: M82_Spitzer_mid_Infrared
 hdus: 1
+img datatype: float64
+converting img to float32
+x: 1270
+y: 1270
+min: 0.0
+max: 3107.06
+writing: rawdata/M82/M82_Spitzer_mid_Infrared.bin
+
+fits/M82/M82_Hubble_Optical.FITS
+processing: fits/M82/M82_Hubble_Optical.FITS
+original_filename: M82_Hubble_Optical.FITS
+base_filename: M82_Hubble_Optical
+hdus: 1
+img datatype: float64
+converting img to float32
+x: 1270
+y: 1270
+min: -11.974789
+max: 17955.271
+writing: rawdata/M82/M82_Hubble_Optical.bin
+
+fits/M82/M82_Chandra_Xray_mid_energy.FITS
+processing: fits/M82/M82_Chandra_Xray_mid_energy.FITS
+original_filename: M82_Chandra_Xray_mid_energy.FITS
+base_filename: M82_Chandra_Xray_mid_energy
+hdus: 1
+img datatype: float32
+x: 1270
+y: 1270
+min: 0.0
+max: 478.33334
+writing: rawdata/M82/M82_Chandra_Xray_mid_energy.bin
+```
+
+Generate the raw data image files for red, green, and blue HST_Lagoon fits files.
+
+```
+$ ./extract.py fits/HST_Lagoon
+using numpy version: 1.19.1
+using matplotlib version: 3.3.2
+input path exists: fits/HST_Lagoon
+dirname: HST_Lagoon
+fits/HST_Lagoon/HST_Lagoon_f658Red.fits
+processing: fits/HST_Lagoon/HST_Lagoon_f658Red.fits
+original_filename: HST_Lagoon_f658Red.fits
+base_filename: HST_Lagoon_f658Red
+hdus: 1
+img datatype: float32
 x: 2600
 y: 2500
 min: -0.36013964
 max: 118.715904
-writing: rawdata/red.bin
+writing: rawdata/HST_Lagoon/HST_Lagoon_f658Red.bin
 
-processing: fits/HST_Lagoon_f656Green.fits
+fits/HST_Lagoon/HST_Lagoon_f656Green.fits
+processing: fits/HST_Lagoon/HST_Lagoon_f656Green.fits
+original_filename: HST_Lagoon_f656Green.fits
+base_filename: HST_Lagoon_f656Green
 hdus: 1
+img datatype: float32
 x: 2600
 y: 2500
 min: -796.92163
 max: 107.68571
-writing: rawdata/green.bin
+writing: rawdata/HST_Lagoon/HST_Lagoon_f656Green.bin
 
-processing: fits/HST_Lagoon_f502Blue.fits
+fits/HST_Lagoon/HST_Lagoon_f502Blue.fits
+processing: fits/HST_Lagoon/HST_Lagoon_f502Blue.fits
+original_filename: HST_Lagoon_f502Blue.fits
+base_filename: HST_Lagoon_f502Blue
 hdus: 1
+img datatype: float32
 x: 2600
 y: 2500
 min: -0.02703963
 max: 105.01603
-writing: rawdata/blue.bin
+writing: rawdata/HST_Lagoon/HST_Lagoon_f502Blue.bin
 ```
 
 **Note**

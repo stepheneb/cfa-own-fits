@@ -22,38 +22,84 @@ let request = obj => {
   });
 };
 
-request({ url: "page.json" })
-  .then(data => {
-    let page = JSON.parse(data);
-    page.image.selectedSource = 0;
-    page.image.selectedMainLayers = '100';
-    renderPage(page);
-    setupEventHandlers();
-    page.image.destinations = {
-      main: {
-        canvas: document.getElementById("main-image-canvas")
-      },
-      preview: {
-        canvas: document.getElementById('image-layer-preview'),
-        img: document.getElementById('image-layer-preview')
-      }
-    };
+let page0 = document.getElementById('btn-start-page-0');
+let page1 = document.getElementById('btn-start-page-1');
+let app = {};
 
-    initializeCanvasDestinations(page.image);
-    initializeCanvas(page.image.destinations.preview);
-    getImages(page);
-    controllerImageSelectFilterLayerToAdjust(page, 0);
-    controllerImageAdjustFilterLayer(page);
-    updateImageAdjustFilterLayer(page);
-    controllerImageSelectMainLayer(page);
+request({ url: "app.json" })
+  .then(data => {
+    app = JSON.parse(data);
+    renderActivityMenuPage(app);
   })
   .catch(error => {
     console.log(error);
   });
 
+let renderActivityPage = page => {
+  page.image.selectedSource = 0;
+  page.image.selectedMainLayers = '100';
+  renderPage(page);
+  setupEventHandlers();
+  page.image.destinations = {
+    main: {
+      canvas: document.getElementById("main-image-canvas")
+    },
+    preview: {
+      canvas: document.getElementById('image-layer-preview'),
+      img: document.getElementById('image-layer-preview')
+    }
+  };
+
+  initializeCanvasDestinations(page.image);
+  initializeCanvas(page.image.destinations.preview);
+  getImages(page);
+  controllerImageSelectFilterLayerToAdjust(page, 0);
+  controllerImageAdjustFilterLayer(page);
+  updateImageAdjustFilterLayer(page);
+  controllerImageSelectMainLayer(page);
+  document.getElementById('btn-back').addEventListener('click', event => {
+    renderActivityMenuPage(app);
+  });
+
+};
+
 //
 // Component rendering ...
 //
+
+let renderActivityMenuPage = app => {
+  let html = `
+    <div class="activity-page-menu">
+      <div class="row">
+        <div class="col-6">
+          <h1 class="page-title">What's Red + Green + Blue?</h1>
+          <p class="page-subtitle">
+            Use this image software to combine 3 filtered images from Hubble.
+            The result represents the actual colors emmitted by X.
+          </p>
+          <button type="button" id="btn-start-page-0" class="btn btn-outline-primary btn-small start-activity-page">Start</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <h1 class="page-title">Reveal an Image using 'Invisible Light'</h1>
+          <p class="page-subtitle">
+            Combine these images and reveal the secrets of objects in space.
+            NASA uses space telescopes that see wavelengths of light invisible to human eyes.
+          </p>
+          <button type="button" id="btn-start-page-1" class="btn btn-outline-primary btn-small start-activity-page">Start</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById("content").innerHTML = html;
+  document.getElementById('btn-start-page-0').addEventListener('click', event => {
+    renderActivityPage(app.pages[0]);
+  });
+  document.getElementById('btn-start-page-1').addEventListener('click', event => {
+    renderActivityPage(app.pages[1]);
+  });
+};
 
 let renderPage = page => {
   let html = `
@@ -105,7 +151,7 @@ let controllerImageSelectFilterLayerToAdjust = (page, layerNum) => {
 let selectImageFilterLayerToAdjust = (page, layerNum) => {
   page.image.selectedSource = layerNum;
   renderOffscreenCanvas(page.image.sources[layerNum], page.image.nx, page.image.ny);
-  copyOffscreenCanvasToPreview(page.image.sources[layerNum], page.image.destinations.preview);
+  copyOffscreenCanvasToPreview(page.image.sources[layerNum], page.image.destinations.preview, page.image.nx, page.image.ny);
   consoleLogHistogram(page.image.sources[layerNum]);
   updateImageAdjustFilterLayer(page);
 };
@@ -150,7 +196,7 @@ let renderImageLayerPreview = page => {
 
 let renderImageAboutTelescope = page => {
   return `
-    <div>These images were taken with the</div>
+    <div>${page.image.about.prologue}</div>
     <div class="about-telescope">${page.image.about.telescope} Telescope</div>
     <canvas class='image-about-telescope'></canvas>
   `;
@@ -163,7 +209,7 @@ let controllerImageAdjustFilterLayer = page => {
     let brightness = e.target.valueAsNumber;
     source.brightness = brightness;
     renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-    copyOffscreenCanvasToPreview(source, page.image.destinations.preview);
+    copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     renderMainLayers(page.image);
   });
 
@@ -176,7 +222,7 @@ let controllerImageAdjustFilterLayer = page => {
     source.min = Math.max(0, source.originalMin + contrastShift);
     consoleLogHistogram(source);
     renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-    copyOffscreenCanvasToPreview(source, page.image.destinations.preview);
+    copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     renderMainLayers(page.image);
   });
 
@@ -248,24 +294,7 @@ let renderUnderMainImageRow = page => {
       <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
       <form id="image-select-main-layer">
         <div class="d-flex flex-row justify-content-start">
-          <div class="select-layer-label">
-            <label for='select-layer-red'>Red</label>
-          </div>
-          <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-red' name='select-layer-red' value='0' checked>
-          </div>
-          <div class="select-layer-label">
-            <label for='select-layer-green'>Green</label>
-          </div>
-          <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-green' name='select-layer-green' value='1'>
-          </div>
-          <div class="select-layer-label">
-            <label for='select-layer-blue'>Blue</label>
-          </div>
-          <div class="select-layer-checkbox">
-            <input type='checkbox' id='select-layer-blue' name='select-layer-blue' value='2'>
-          </div>
+          ${renderUnderMainImageLayerSelectors(page)}
         </div>
       </form>
       <div class="image-name pl-2 pr-2 ml-auto">
@@ -275,10 +304,34 @@ let renderUnderMainImageRow = page => {
   `;
 };
 
+let renderUnderMainImageLayerSelectors = page => {
+  let sources = page.image.sources;
+  let html = '';
+  for (var i = 0; i < sources.length; i++) {
+    let source = sources[i];
+    let checkedState = "checked";
+    if (source.type == "rawdata") {
+      let name = source.name;
+      if (i > 0) {
+        checkedState = "";
+      }
+      html += `
+            <div class="select-layer-label">
+              <label for='select-layer-${name}'>${name}</label>
+            </div>
+            <div class="select-layer-checkbox">
+              <input type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>
+            </div>
+          `;
+    }
+  }
+  return html;
+};
+
 let renderPageNavigation = page => {
   return `
     <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
-      <div class="pl-1 pr-1">
+      <div class="pl-1 pr-1" style="display: none">
         <button type="button" id="btn-start-over" class="btn btn-outline-primary btn-small page-navigation-button">Start Over</button>
       </div>
       <div class="pl-1 pr-1">
@@ -352,7 +405,7 @@ let initializeCanvasDestinations = (image) => {
 let renderFuncfetchRawDataForImageFirstSource = (image, source, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
   renderOffscreenCanvas(source, nx, ny);
-  copyOffscreenCanvasToPreview(source, image.destinations.preview);
+  copyOffscreenCanvasToPreview(source, image.destinations.preview, nx, ny);
   copyOffscreenCanvasToMain(source, image.destinations.main);
 };
 
@@ -403,13 +456,13 @@ let setAlpha = (source, value) => {
   }
 };
 
-let copyOffscreenCanvasToDestination = function (source, destination, preview) {
+let copyOffscreenCanvasToDestination = function (source, destination, preview, nx, ny) {
 
   let { width, height } = preview.canvas.getBoundingClientRect();
   let resizeHeight = height;
   let resizeWidth = height * 26 / 25;
-  let imageData = new ImageData(source.uint8Data, 2600, 2500);
-  let bitmapP2 = createImageBitmap(imageData, 0, 0, 2600, 2500, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
+  let imageData = new ImageData(source.uint8Data, nx, ny);
+  let bitmapP2 = createImageBitmap(imageData, 0, 0, nx, ny, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
 
   bitmapP2.then(smallbitmap => {
     let { width, height } = preview.canvas.getBoundingClientRect();
@@ -429,12 +482,12 @@ let copyOffscreenCanvasToMain = function (source, destination) {
   destination.ctx.transferFromImageBitmap(bitmap);
 };
 
-let copyOffscreenCanvasToPreview = function (source, preview) {
+let copyOffscreenCanvasToPreview = function (source, preview, nx, ny) {
   let { width, height } = preview.canvas.getBoundingClientRect();
   let resizeHeight = height;
   let resizeWidth = height * 26 / 25;
-  let imageData = new ImageData(source.uint8Data, 2600, 2500);
-  let bitmapP2 = createImageBitmap(imageData, 0, 0, 2600, 2500, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
+  let imageData = new ImageData(source.uint8Data, nx, ny);
+  let bitmapP2 = createImageBitmap(imageData, 0, 0, nx, ny, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
 
   bitmapP2.then(smallbitmap => {
     let { width, height } = preview.canvas.getBoundingClientRect();
@@ -512,7 +565,7 @@ let renderOffscreenCanvas = function (source, nx, ny) {
   let renderTime = performance.now();
   source.ctx.putImageData(source.imageData, 0, 0);
   let putImageDataTime = performance.now();
-  console.log(`renderOffscreenCanvas: ${source.filter}: render: ${roundNumber(renderTime  - startTime, 4)}`);
+  console.log(`renderOffscreenCanvas: name: ${source.name}, filter: ${source.filter}: render: ${roundNumber(renderTime  - startTime, 4)}`);
 };
 
 const containsAll = (arr1, arr2) =>
@@ -660,7 +713,11 @@ const histogram = (array, numbuckets, min, max) => {
     if (val >= min && val <= max) {
       sval = (val - min) * scale;
       index = Math.floor(sval);
-      buckets[index][1] += 1;
+      if (index < 0 || index >= numbuckets) {
+        console.log(index);
+      } else {
+        buckets[index][1] += 1;
+      }
     }
   }
   return buckets;
