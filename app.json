@@ -11,6 +11,7 @@
   "pages": [
     {
       "title": "What's Red + Green + Blue?",
+      "menuimage": "images/menu-whats-red-green-blue.jpg",
       "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
       "selectfiltertext": "Select and adjust each of the light wave images",
       "adjustimagetext": "Use these sliders to show more detail in the image",
@@ -32,7 +33,7 @@
             "path": "rawdata/HST_Lagoon/HST_Lagoon_f658Red.bin",
             "filter": "red",
             "min": 0,
-            "max": 6,
+            "max": 10,
             "brightness": 1,
             "contrast": 1
           },
@@ -42,7 +43,7 @@
             "path": "rawdata/HST_Lagoon//HST_Lagoon_f656Green.bin",
             "filter": "green",
             "min": 0,
-            "max": 14,
+            "max": 10,
             "brightness": 1,
             "contrast": 1
           },
@@ -52,7 +53,67 @@
             "path": "rawdata/HST_Lagoon/HST_Lagoon_f502Blue.bin",
             "filter": "blue",
             "min": 0,
-            "max": 3,
+            "max": 10,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "composite",
+            "name": "RGB",
+            "layers": [
+              "Red",
+              "Green",
+              "Blue"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Colliding Galaxies?",
+      "menuimage": "images/menu-whats-red-green-blue.jpg",
+      "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+      "selectfiltertext": "Select and adjust each of the light wave images",
+      "adjustimagetext": "Use these sliders to show more detail in the image",
+      "image": {
+        "name": "Antennae galaxies: heic0615",
+        "about": {
+          "prologue": "These images were taken with the",
+          "telescope": "Hubble",
+          "imagepath": "images/hubble-small.jpg",
+          "description": "more info about the Hubble telescope goes here ..."
+        },
+        "nx": 1055,
+        "ny": 1075,
+        "maximumBrightness": 2,
+        "sources": [
+          {
+            "type": "rawdata",
+            "name": "Red",
+            "path": "rawdata/heic0615/red.bin",
+            "filter": "red",
+            "min": 0,
+            "max": 10,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Green",
+            "path": "rawdata/heic0615/green.bin",
+            "filter": "green",
+            "min": 0,
+            "max": 10,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Blue",
+            "path": "rawdata/heic0615/blue.bin",
+            "filter": "blue",
+            "min": 0,
+            "max": 10,
             "brightness": 1,
             "contrast": 1
           },
@@ -70,6 +131,7 @@
     },
     {
       "title": "Reveal an Image using 'Invisible Light'",
+      "menuimage": "images/menu-invisible-light.jpg",
       "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
       "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
       "adjustimagetext": "Use these sliders to show more detail in the image",
@@ -83,7 +145,7 @@
         },
         "nx": 1270,
         "ny": 1270,
-        "maximumBrightness": 20,
+        "maximumBrightness": 2,
         "sources": [
           {
             "type": "rawdata",
@@ -91,8 +153,8 @@
             "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
             "filter": "red",
             "min": 0,
-            "max": 4000,
-            "brightness": 8,
+            "max": 10,
+            "brightness": 1,
             "contrast": 1
           },
           {
@@ -101,8 +163,8 @@
             "path": "rawdata/M82/M82_Hubble_Optical.bin",
             "filter": "green",
             "min": 0,
-            "max": 2000,
-            "brightness": 8,
+            "max": 10,
+            "brightness": 1,
             "contrast": 1
           },
           {
@@ -111,8 +173,8 @@
             "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
             "filter": "blue",
             "min": 0,
-            "max": 200,
-            "brightness": 8,
+            "max": 10,
+            "brightness": 1,
             "contrast": 1
           },
           {
@@ -122,6 +184,65 @@
               "Red",
               "Green",
               "Blue"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "title": "Create Your Own Masterpiece",
+      "menuimage": "images/menu-masterpiece.jpg",
+      "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+      "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+      "adjustimagetext": "Use these sliders to show more detail in the image",
+      "image": {
+        "name": "M82",
+        "about": {
+          "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
+          "telescope": "Hubble, Spitzer, and Chandra",
+          "imagepath": "images/hubble-small.jpg",
+          "description": "more info about the Hubble telescope goes here ..."
+        },
+        "nx": 2376,
+        "ny": 2381,
+        "maximumBrightness": 2,
+        "sources": [
+          {
+            "type": "rawdata",
+            "name": "Infrared",
+            "path": "rawdata/orion-nebula-Messier-42/m42_40min_ir.bin",
+            "filter": "red",
+            "min": 0,
+            "max": 10,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Optical",
+            "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
+            "filter": "green",
+            "min": 0,
+            "max": 10,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "rawdata",
+            "name": "Optical",
+            "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
+            "filter": "blue",
+            "min": 0,
+            "max": 10,
+            "brightness": 1,
+            "contrast": 1
+          },
+          {
+            "type": "composite",
+            "name": "RGB",
+            "layers": [
+              "Red",
+              "Green"
             ]
           }
         ]

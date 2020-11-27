@@ -22,20 +22,151 @@ let request = obj => {
   });
 };
 
-let page0 = document.getElementById('btn-start-page-0');
-let page1 = document.getElementById('btn-start-page-1');
 let app = {};
+let pageRendered = false;
+let pageNum = -1;
 
 request({ url: "app.json" })
   .then(data => {
     app = JSON.parse(data);
-    renderActivityMenuPage(app);
+    pageRendered = false;
+    router();
   })
   .catch(error => {
     console.log(error);
   });
 
-let renderActivityPage = page => {
+// router
+
+let router = () => {
+  let hash = window.location.hash;
+  let match = hash.match(/#(?<page>\d+)/);
+  if (match) {
+    let num = Number.parseInt(match.groups['page']);
+    if (num == pageNum && pageRendered) {
+      // do nothing
+    } else {
+      pageNum = num;
+      if (pageNum == 0) {
+        renderActivityMenuPage(app);
+      } else {
+        if (pageNum <= app.pages.length) {
+          renderActivityPage(pageNum);
+        } else {
+          renderActivityMenuPage(app);
+        }
+      }
+    }
+  } else {
+    renderSplashPage();
+  }
+};
+
+window.addEventListener('hashchange', event => {
+  pageJustLoaded = false;
+  router();
+});
+
+// Splash page
+
+let renderSplashPage = () => {
+  window.location.hash = '';
+  let splash = document.getElementById('splash');
+  if (splash) {
+    splash.addEventListener('click', event => {
+      splash.parentNode.removeChild(splash);
+      renderActivityMenuPage(app);
+    });
+  }
+};
+
+let removeSplash = () => {
+  let splash = document.getElementById('splash');
+  if (splash) {
+    splash.parentNode.removeChild(splash);
+  }
+};
+
+// Activity Menu page
+
+let renderActivityMenuPage = app => {
+  removeSplash();
+  window.location.hash = '0';
+  let html = renderActivityMenuPageHeader(app);
+  html += `
+      <div class="activity-page-menu">
+        ${renderActivityMenuPageItems(app)}
+      </div>
+      ${renderMenuPageButtons()}
+    `;
+  document.getElementById("content").innerHTML = html;
+
+  let addMenuItemListener = (pageNum) => {
+    let id = `start-page-${pageNum}`;
+    document.getElementById(id).addEventListener('click', event => {
+      renderActivityPage(pageNum);
+    }, {
+      once: true,
+      passive: true,
+      capture: true
+    });
+  };
+
+  for (let i = 0; i < app.pages.length; i++) {
+    let pageNum = i + 1;
+    addMenuItemListener(pageNum);
+  }
+  setupEventHandlers();
+  pageRendered = true;
+};
+
+let renderActivityMenuPageHeader = app => {
+  return `
+    <div class='row menu-page-header'>
+      <div class='col-6'>
+        <div class='menu-page-title'>${app.menu.title}</div>
+        <div class='menu-page-subtitle'>${app.menu.subtitle}</div>
+      </div>
+    </div>
+  `;
+};
+
+let renderActivityMenuPageItems = app => {
+  let html = '';
+  let pages = app.pages;
+  let activityCount = pages.length;
+  let rowCount = 6;
+  let subset = [];
+  for (var i = 0; i < activityCount; i += rowCount) {
+    html += `
+        <div class="row">
+      `;
+    subset = pages.slice(i, i + rowCount);
+    for (var j = 0; j < subset.length; j++) {
+      let page = pages[i + j];
+      let pageNum = i + j + 1;
+      html += `
+        <div class="col-2"  id="start-page-${pageNum}">
+          <img src="${page.menuimage}" class="menu-activity-page-title"></img>
+          <div class="menu-activity-page-title">
+            <header class="menu-activity-page-title">${page.title}</header>
+          </div>
+        </div>
+      `;
+    }
+    html += `
+        </div>
+      `;
+  }
+  return html;
+};
+
+// Activity page
+
+let renderActivityPage = pageNum => {
+  removeSplash();
+  let page = app.pages[pageNum - 1];
+  window.location.hash = pageNum;
   page.image.selectedSource = 0;
   page.image.selectedMainLayers = '100';
   renderPage(page);
@@ -60,46 +191,12 @@ let renderActivityPage = page => {
   document.getElementById('btn-back').addEventListener('click', event => {
     renderActivityMenuPage(app);
   });
-
+  pageRendered = true;
 };
 
 //
 // Component rendering ...
 //
-
-let renderActivityMenuPage = app => {
-  let html = `
-    <div class="activity-page-menu">
-      <div class="row">
-        <div class="col-6">
-          <h1 class="page-title">What's Red + Green + Blue?</h1>
-          <p class="page-subtitle">
-            Use this image software to combine 3 filtered images from Hubble.
-            The result represents the actual colors emmitted by X.
-          </p>
-          <button type="button" id="btn-start-page-0" class="btn btn-outline-primary btn-small start-activity-page">Start</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-6">
-          <h1 class="page-title">Reveal an Image using 'Invisible Light'</h1>
-          <p class="page-subtitle">
-            Combine these images and reveal the secrets of objects in space.
-            NASA uses space telescopes that see wavelengths of light invisible to human eyes.
-          </p>
-          <button type="button" id="btn-start-page-1" class="btn btn-outline-primary btn-small start-activity-page">Start</button>
-        </div>
-      </div>
-    </div>
-  `;
-  document.getElementById("content").innerHTML = html;
-  document.getElementById('btn-start-page-0').addEventListener('click', event => {
-    renderActivityPage(app.pages[0]);
-  });
-  document.getElementById('btn-start-page-1').addEventListener('click', event => {
-    renderActivityPage(app.pages[1]);
-  });
-};
 
 let renderPage = page => {
   let html = `
@@ -120,7 +217,7 @@ let renderPage = page => {
         </div>
       </div>
     </div>
-    ${renderPageNavigation(page)}
+    ${renderPageNavigation()}
   `;
   document.getElementById("content").innerHTML = html;
 };
@@ -328,21 +425,35 @@ let renderUnderMainImageLayerSelectors = page => {
   return html;
 };
 
-let renderPageNavigation = page => {
+let renderPageNavigation = () => {
   return `
     <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
-      <div class="pl-1 pr-1" style="display: none">
-        <button type="button" id="btn-start-over" class="btn btn-outline-primary btn-small page-navigation-button">Start Over</button>
-      </div>
-      <div class="pl-1 pr-1">
-        <button type="button" id="btn-back" class="btn btn-outline-primary btn-small page-navigation-button">&#9664 Back</button>
-      </div>
-      <div class="pl-1 pr-1" style="display: none">
-        <button type="button" id="btn-forward" class="btn btn-outline-primary btn-small page-navigation-button">Forward &nbsp&#9654</button>
-      </div>
-      <div class="pl-1 pr-1 ml-auto">
-        <button type="button" id="btn-toggle-fullscreen" class="btn btn-outline-primary btn-small page-navigation-button">Toggle Full Screen</button>
-      </div>
+      ${renderPageNavigationButtonBack()}
+      ${renderPageNavigationButtonFullScreen()}
+    </div>
+  `;
+};
+
+let renderMenuPageButtons = () => {
+  return `
+    <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
+      ${renderPageNavigationButtonFullScreen()}
+    </div>
+  `;
+};
+
+let renderPageNavigationButtonBack = () => {
+  return `
+    <div class="pl-1 pr-1">
+      <button type="button" id="btn-back" class="btn btn-outline-primary btn-small page-navigation-button">&#9664 Back</button>
+    </div>
+  `;
+};
+
+let renderPageNavigationButtonFullScreen = () => {
+  return `
+    <div class="pl-1 pr-1 ml-auto">
+      <button type="button" id="btn-toggle-fullscreen" class="btn btn-outline-primary btn-small page-navigation-button">Toggle Full Screen</button>
     </div>
   `;
 };
@@ -687,13 +798,11 @@ let setupEventHandlers = () => {
 const forLoopMinMax = (array) => {
   let min = array[0],
     max = array[0];
-
   for (let i = 1; i < array.length; i++) {
     let value = array[i];
-    min = (value < min) ? value : min;
-    max = (value > max) ? value : max;
+    if (value < min) min = value;
+    if (value > max) max = value;
   }
-
   return [min, max];
 };
 
@@ -714,7 +823,7 @@ const histogram = (array, numbuckets, min, max) => {
       sval = (val - min) * scale;
       index = Math.floor(sval);
       if (index < 0 || index >= numbuckets) {
-        console.log(index);
+        // console.log(index);
       } else {
         buckets[index][1] += 1;
       }
@@ -725,7 +834,8 @@ const histogram = (array, numbuckets, min, max) => {
 
 let consoleLogHistogram = source => {
   let h = histogram(source.rawdata, 30, source.min, source.max);
-  console.log(`Histogram: ${source.name}, min: ${roundNumber(source.min, 4)}, max: ${roundNumber(source.max, 4)}, contrast: ${roundNumber(source.contrast, 4)}`);
+  let [min, max] = forLoopMinMax(source.rawdata);
+  console.log(`Histogram (raw data): name: ${source.name}, min: ${roundNumber(min, 3)}, max: ${roundNumber(max, 3)}, hmin: ${roundNumber(source.min, 4)}, hmax: ${roundNumber(source.max, 4)}, contrast: ${roundNumber(source.contrast, 4)}`);
   console.table(h);
 };
 
