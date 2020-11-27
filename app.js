@@ -83,7 +83,7 @@ let renderSplashPage = () => {
 let removeSplash = () => {
   let splash = document.getElementById('splash');
   if (splash) {
-    splash.parentNode.removeChild(splash);
+    splash.parentElement.removeChild(splash);
   }
 };
 
