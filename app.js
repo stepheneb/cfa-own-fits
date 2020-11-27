@@ -117,6 +117,7 @@ let renderActivityMenuPage = app => {
     addMenuItemListener(pageNum);
   }
   setupEventHandlers();
+  checkBrowserFeatureCapability();
   pageRendered = true;
 };
 
@@ -161,6 +162,17 @@ let renderActivityMenuPageItems = app => {
   return html;
 };
 
+// Test for browser features
+
+let checkBrowserFeatureCapability = () => {
+  if (typeof OffscreenCanvas != "function") {
+    alert("This browser doesn't support the OffscreenCanvas() function. \nPlease try again with Chrome, Edge or Opera.");
+    return false;
+  } else {
+    return true;
+  }
+};
+
 // Activity page
 
 let renderActivityPage = pageNum => {
@@ -180,14 +192,15 @@ let renderActivityPage = pageNum => {
       img: document.getElementById('image-layer-preview')
     }
   };
-
   initializeCanvasDestinations(page.image);
   initializeCanvas(page.image.destinations.preview);
-  getImages(page);
-  controllerImageSelectFilterLayerToAdjust(page, 0);
-  controllerImageAdjustFilterLayer(page);
-  updateImageAdjustFilterLayer(page);
-  controllerImageSelectMainLayer(page);
+  if (checkBrowserFeatureCapability()) {
+    getImages(page);
+    controllerImageSelectFilterLayerToAdjust(page, 0);
+    controllerImageAdjustFilterLayer(page);
+    updateImageAdjustFilterLayer(page);
+    controllerImageSelectMainLayer(page);
+  }
   document.getElementById('btn-back').addEventListener('click', event => {
     renderActivityMenuPage(app);
   });
