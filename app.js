@@ -44,7 +44,7 @@ let router = () => {
   if (match) {
     let num = Number.parseInt(match.groups['page']);
     if (num == pageNum && pageRendered) {
-      // do nothing
+      hideSplash();
     } else {
       pageNum = num;
       if (pageNum == 0) {
@@ -58,39 +58,38 @@ let router = () => {
       }
     }
   } else {
-    renderSplashPage();
+    showSplashPage();
   }
 };
 
 window.addEventListener('hashchange', event => {
-  pageJustLoaded = false;
+  // pageRendered = false;
   router();
 });
 
 // Splash page
 
-let renderSplashPage = () => {
+let showSplashPage = () => {
   window.location.hash = '';
   let splash = document.getElementById('splash');
-  if (splash) {
-    splash.addEventListener('click', event => {
-      splash.parentNode.removeChild(splash);
-      renderActivityMenuPage(app);
-    });
-  }
+  splash.style.zIndex = "100";
+  splash.style.display = "block";
+  splash.addEventListener('click', splashListener);
 };
 
-let removeSplash = () => {
+let hideSplash = () => {
   let splash = document.getElementById('splash');
-  if (splash) {
-    splash.parentElement.removeChild(splash);
-  }
+  splash.style.display = "none";
+};
+
+let splashListener = e => {
+  hideSplash();
+  renderActivityMenuPage(app);
 };
 
 // Activity Menu page
 
 let renderActivityMenuPage = app => {
-  removeSplash();
   window.location.hash = '0';
   let html = renderActivityMenuPageHeader(app);
   html += `
@@ -118,6 +117,7 @@ let renderActivityMenuPage = app => {
   }
   setupEventHandlers();
   checkBrowserFeatureCapability();
+  hideSplash();
   pageRendered = true;
 };
 
@@ -176,7 +176,7 @@ let checkBrowserFeatureCapability = () => {
 // Activity page
 
 let renderActivityPage = pageNum => {
-  removeSplash();
+  hideSplash();
   let page = app.pages[pageNum - 1];
   window.location.hash = pageNum;
   page.image.selectedSource = 0;
