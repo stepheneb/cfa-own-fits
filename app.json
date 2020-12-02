@@ -1,252 +1,334 @@
 {
+  "title": "Observing With NASA",
+  "subtitle": "Learn how to enhance real NASA data. Choose a challenge below.",
   "splash": {
     "title1": "Welcome To",
     "title2": "Observing With NASA",
     "begin": "Touch to Begin"
   },
-  "menu": {
-    "title": "Observing With NASA",
-    "subtitle": "Learn how to enhance real NASA data. Choose a challenge below."
-  },
-  "pages": [
+  "action": "Choose an Image",
+  "categories": [
     {
+      "type": "rgb",
       "title": "What's Red + Green + Blue?",
-      "menuimage": "images/menu-whats-red-green-blue.jpg",
-      "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
-      "selectfiltertext": "Select and adjust each of the light wave images",
-      "adjustimagetext": "Use these sliders to show more detail in the image",
-      "image": {
-        "name": "Lagoon Nebula",
-        "about": {
-          "prologue": "These images were taken with the",
-          "telescope": "Hubble",
-          "imagepath": "images/hubble-small.jpg",
-          "description": "more info about the Hubble telescope goes here ..."
-        },
-        "nx": 2600,
-        "ny": 2500,
-        "maximumBrightness": 2,
-        "sources": [
-          {
-            "type": "rawdata",
-            "name": "Red",
-            "path": "rawdata/HST_Lagoon/HST_Lagoon_f658Red.bin",
-            "filter": "red",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Green",
-            "path": "rawdata/HST_Lagoon//HST_Lagoon_f656Green.bin",
-            "filter": "green",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Blue",
-            "path": "rawdata/HST_Lagoon/HST_Lagoon_f502Blue.bin",
-            "filter": "blue",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "composite",
-            "name": "RGB",
-            "layers": [
-              "Red",
-              "Green",
-              "Blue"
+      "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
+      "menuimage": "/images/menu-whats-red-green-blue.jpg",
+      "pages": [
+        {
+          "name": "whats-red-green-blue",
+          "title": "What's Red + Green + Blue?",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Lagoon Nebula",
+            "about": {
+              "prologue": "These images were taken with the",
+              "telescope": "Hubble",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 2600,
+            "ny": 2500,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": "rawdata/HST_Lagoon/HST_Lagoon_f658Red.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/HST_Lagoon//HST_Lagoon_f656Green.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/HST_Lagoon/HST_Lagoon_f502Blue.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
             ]
           }
-        ]
-      }
+        },
+        {
+          "name": "colliding-galaxies",
+          "title": "Colliding Galaxies?",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Antennae galaxies: heic0615",
+            "about": {
+              "prologue": "These images were taken with the",
+              "telescope": "Hubble",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 1055,
+            "ny": 1075,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": "rawdata/heic0615/red.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/heic0615/green.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/heic0615/blue.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
+        }
+      ]
     },
     {
-      "title": "Colliding Galaxies?",
-      "menuimage": "images/menu-whats-red-green-blue.jpg",
-      "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
-      "selectfiltertext": "Select and adjust each of the light wave images",
-      "adjustimagetext": "Use these sliders to show more detail in the image",
-      "image": {
-        "name": "Antennae galaxies: heic0615",
-        "about": {
-          "prologue": "These images were taken with the",
-          "telescope": "Hubble",
-          "imagepath": "images/hubble-small.jpg",
-          "description": "more info about the Hubble telescope goes here ..."
-        },
-        "nx": 1055,
-        "ny": 1075,
-        "maximumBrightness": 2,
-        "sources": [
-          {
-            "type": "rawdata",
-            "name": "Red",
-            "path": "rawdata/heic0615/red.bin",
-            "filter": "red",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Green",
-            "path": "rawdata/heic0615/green.bin",
-            "filter": "green",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Blue",
-            "path": "rawdata/heic0615/blue.bin",
-            "filter": "blue",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "composite",
-            "name": "RGB",
-            "layers": [
-              "Red",
-              "Green",
-              "Blue"
+      "type": "multi-wave",
+      "title": "Reveal an Image using 'Invisible Light",
+      "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
+      "menuimage": "/images/menu-invisible-light.jpg",
+      "pages": [
+        {
+          "name": "reveal-m82",
+          "title": "Reveal an Image using 'Invisible Light",
+          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "M82",
+            "about": {
+              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
+              "telescope": "Hubble, Spitzer, and Chandra",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 1270,
+            "ny": 1270,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Infrared",
+                "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Optical",
+                "path": "rawdata/M82/M82_Hubble_Optical.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "X-Ray",
+                "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
             ]
           }
-        ]
-      }
+        }
+      ]
     },
     {
-      "title": "Reveal an Image using 'Invisible Light'",
-      "menuimage": "images/menu-invisible-light.jpg",
-      "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
-      "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
-      "adjustimagetext": "Use these sliders to show more detail in the image",
-      "image": {
-        "name": "M82",
-        "about": {
-          "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
-          "telescope": "Hubble, Spitzer, and Chandra",
-          "imagepath": "images/hubble-small.jpg",
-          "description": "more info about the Hubble telescope goes here ..."
-        },
-        "nx": 1270,
-        "ny": 1270,
-        "maximumBrightness": 2,
-        "sources": [
-          {
-            "type": "rawdata",
-            "name": "Infrared",
-            "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
-            "filter": "red",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Optical",
-            "path": "rawdata/M82/M82_Hubble_Optical.bin",
-            "filter": "green",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "X-Ray",
-            "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
-            "filter": "blue",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "composite",
-            "name": "RGB",
-            "layers": [
-              "Red",
-              "Green",
-              "Blue"
+      "type": "masterpiece",
+      "title": "Make a Masterpiece",
+      "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
+      "menuimage": "/images/menu-masterpiece.jpg",
+      "pages": [
+        {
+          "name": "m82",
+          "title": "Create Your Own Masterpiece",
+          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "M82",
+            "about": {
+              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
+              "telescope": "Hubble, Spitzer, and Chandra",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 2376,
+            "ny": 2381,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Infrared",
+                "path": "rawdata/orion-nebula-Messier-42/m42_40min_ir.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Optical",
+                "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Optical",
+                "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green"
+                ]
+              }
             ]
           }
-        ]
-      }
-    },
-    {
-      "title": "Create Your Own Masterpiece",
-      "menuimage": "images/menu-masterpiece.jpg",
-      "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
-      "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
-      "adjustimagetext": "Use these sliders to show more detail in the image",
-      "image": {
-        "name": "M82",
-        "about": {
-          "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
-          "telescope": "Hubble, Spitzer, and Chandra",
-          "imagepath": "images/hubble-small.jpg",
-          "description": "more info about the Hubble telescope goes here ..."
         },
-        "nx": 2376,
-        "ny": 2381,
-        "maximumBrightness": 2,
-        "sources": [
-          {
-            "type": "rawdata",
-            "name": "Infrared",
-            "path": "rawdata/orion-nebula-Messier-42/m42_40min_ir.bin",
-            "filter": "red",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Optical",
-            "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
-            "filter": "green",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "rawdata",
-            "name": "Optical",
-            "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
-            "filter": "blue",
-            "min": 0,
-            "max": 10,
-            "brightness": 1,
-            "contrast": 1
-          },
-          {
-            "type": "composite",
-            "name": "RGB",
-            "layers": [
-              "Red",
-              "Green"
+        {
+          "name": "ngc-4038",
+          "title": "Antennae Galaxies: NGC 4038/4039",
+          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Antennae Galaxies",
+            "about": {
+              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
+              "telescope": "Hubble, Spitzer, and Chandra",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 2100,
+            "ny": 2100,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Infrared",
+                "path": "rawdata/ngc-4038/hst_05962_01_wfpc2_f814w_wf_drz.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/ngc-4038/hst_05962_01_wfpc2_f555w_wf_drz.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/ngc-4038/hst_05962_01_wfpc2_f439w_wf_drz.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green"
+                ]
+              }
             ]
           }
-        ]
-      }
+        }
+      ]
     }
   ]
 }

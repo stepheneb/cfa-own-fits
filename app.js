@@ -23,13 +23,13 @@ let request = obj => {
 };
 
 let app = {};
-let pageRendered = false;
+let hashRendered = "start";
 let pageNum = -1;
 
 request({ url: "app.json" })
   .then(data => {
     app = JSON.parse(data);
-    pageRendered = false;
+    hashRendered = "start";
     router();
   })
   .catch(error => {
@@ -40,41 +40,53 @@ request({ url: "app.json" })
 
 let router = () => {
   let hash = window.location.hash;
-  let match = hash.match(/#(?<page>\d+)/);
-  if (match) {
-    let num = Number.parseInt(match.groups['page']);
-    if (num == pageNum && pageRendered) {
-      hideSplash();
-    } else {
-      pageNum = num;
-      if (pageNum == 0) {
-        renderActivityMenuPage(app);
+  if (hash != hashRendered) {
+    let match = hash.match(/#(?<action>menu|run)(\/((?<category>[\w-]+)))?(\/((?<page>[\w-]+)))?/);
+    if (match) {
+      let actionName = match.groups.action;
+      let categoryName = match.groups.category;
+      let pageName = match.groups.page;
+      if (actionName == 'menu') {
+        renderActivityMenuPage(categoryName);
+      } else if (actionName == 'run') {
+        routeToRenderActivityPage(categoryName, pageName);
       } else {
-        if (pageNum <= app.pages.length) {
-          renderActivityPage(pageNum);
-        } else {
-          renderActivityMenuPage(app);
-        }
+        showSplashPage();
       }
+    } else {
+      showSplashPage();
     }
+  }
+};
+
+let routeToRenderActivityPage = (categoryType, pageName) => {
+  let category = false;
+  let page = false;
+  category = app.categories.find(c => c.type == categoryType);
+  if (category) {
+    page = category.pages.find(p => p.name == pageName);
+  }
+
+  if (category && page) {
+    renderActivityPage(category, page);
   } else {
-    showSplashPage();
+    window.location.hash = "menu";
   }
 };
 
 window.addEventListener('hashchange', event => {
-  // pageRendered = false;
   router();
 });
 
 // Splash page
 
 let showSplashPage = () => {
-  window.location.hash = '';
   let splash = document.getElementById('splash');
   splash.style.zIndex = "100";
   splash.style.display = "block";
   splash.addEventListener('click', splashListener);
+  window.location.hash = '';
+  hashRendered = window.location.hash;
 };
 
 let hideSplash = () => {
@@ -84,81 +96,188 @@ let hideSplash = () => {
 
 let splashListener = e => {
   hideSplash();
-  renderActivityMenuPage(app);
+  renderActivityMenuPage();
 };
 
 // Activity Menu page
 
-let renderActivityMenuPage = app => {
-  window.location.hash = '0';
+let renderActivityMenuPage = (categoryType) => {
+  let hash = "menu";
+  let category = false;
+  category = app.categories.find(c => c.type == categoryType);
+  if (category) {
+    hash = `menu/${category.type}`;
+  }
+
   let html = renderActivityMenuPageHeader(app);
   html += `
-      <div class="activity-page-menu">
-        ${renderActivityMenuPageItems(app)}
+      <div class="activity-category-menu">
+        ${renderActivityCategoryMenu(app)}
       </div>
+
+      ${renderActivityCategoryPagesMenu(app)}
+
       ${renderMenuPageButtons()}
     `;
   document.getElementById("content").innerHTML = html;
 
-  let addMenuItemListener = (pageNum) => {
-    let id = `start-page-${pageNum}`;
+  if (category) {
+    renderMenuCategoryPages(category);
+  }
+
+  let addMenuCategoryListener = (category) => {
+    let id = `menu-category-${category.type}`;
     document.getElementById(id).addEventListener('click', event => {
-      renderActivityPage(pageNum);
-    }, {
-      once: true,
-      passive: true,
-      capture: true
+      renderMenuCategoryPages(category);
     });
   };
 
-  for (let i = 0; i < app.pages.length; i++) {
-    let pageNum = i + 1;
-    addMenuItemListener(pageNum);
-  }
+  app.categories.forEach(addMenuCategoryListener);
+
+  let addSVGCloseMenuCategoryPagesListener = (category) => {
+    let id = `svg-close-menu-${category.type}-pages`;
+    document.getElementById(id).addEventListener('click', event => {
+      renderMenuCategoryPages(category);
+    });
+  };
+
+  app.categories.forEach(addSVGCloseMenuCategoryPagesListener);
+
+  let addStartPageListener = (category, page) => {
+    let id = `open-page-${category.type}-${page.name}`;
+    document.getElementById(id).addEventListener('click', event => {
+      renderActivityPage(category, page);
+    });
+  };
+
+  app.categories.forEach((category) => {
+    category.pages.forEach((page) => {
+      addStartPageListener(category, page);
+    });
+  });
+
   setupEventHandlers();
   checkBrowserFeatureCapability();
   hideSplash();
-  pageRendered = true;
+  hashRendered = hash;
+  window.location.hash = hash;
 };
 
 let renderActivityMenuPageHeader = app => {
   return `
     <div class='row menu-page-header'>
-      <div class='col-6'>
-        <div class='menu-page-title'>${app.menu.title}</div>
-        <div class='menu-page-subtitle'>${app.menu.subtitle}</div>
+      <div class='col-8'>
+        <div class='title'>${app.title}</div>
+        <div class='subtitle'>${app.subtitle}</div>
       </div>
     </div>
   `;
 };
 
-let renderActivityMenuPageItems = app => {
-  let html = '';
-  let pages = app.pages;
-  let activityCount = pages.length;
-  let rowCount = 6;
-  let subset = [];
-  for (var i = 0; i < activityCount; i += rowCount) {
+let renderActivityCategoryMenu = app => {
+  let html = `
+      <div class="row">
+    `;
+  let categories = app.categories;
+  let categoryCount = categories.length;
+  for (var i = 0; i < categoryCount; i++) {
+    let category = categories[i];
+    let type = category.type;
     html += `
-        <div class="row">
-      `;
-    subset = pages.slice(i, i + rowCount);
-    for (var j = 0; j < subset.length; j++) {
-      let page = pages[i + j];
-      let pageNum = i + j + 1;
-      html += `
-        <div class="col-2"  id="start-page-${pageNum}">
-          <img src="${page.menuimage}" class="menu-activity-page-title"></img>
-          <div class="menu-activity-page-title">
-            <header class="menu-activity-page-title">${page.title}</header>
+        <div class="category col-2"  id="menu-category-${type}" data-num="${i}">
+          <img src="${category.menuimage}"></img>
+          <div class="menu-activity-category-title">
+            <header class="menu-activity-category-title">${category.title}</header>
           </div>
         </div>
       `;
-    }
-    html += `
-        </div>
-      `;
   }
+  html += `
+      </div>
+    `;
+  return html;
+};
+
+let renderMenuCategoryPages = (category) => {
+  var elem, categoryPagesElement;
+  let hash = "";
+  let categories = app.categories;
+  let selectedCategory = category;
+  let type = selectedCategory.type;
+  let categoryElements = document.getElementsByClassName('category');
+  let selectedCategoryElement = document.getElementById(`menu-category-${type}`);
+  if (selectedCategoryElement.classList.contains("selected")) {
+    for (category of categories) {
+      elem = document.getElementById(`menu-category-${category.type}`);
+      categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
+      elem.classList.remove("selected", "not-selected");
+      categoryPagesElement.classList.remove("selected");
+      hash = `menu`;
+    }
+  } else {
+    for (category of categories) {
+      elem = document.getElementById(`menu-category-${category.type}`);
+      categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
+      if (elem == selectedCategoryElement) {
+        elem.classList.add("selected");
+        elem.classList.remove("not-selected");
+        categoryPagesElement.classList.add("selected");
+        hash = `menu/${category.type}`;
+      } else {
+        elem.classList.add("not-selected");
+        elem.classList.remove("selected");
+        categoryPagesElement.classList.remove("selected");
+      }
+    }
+  }
+  hasRendered = hash;
+  window.location.hash = hash;
+};
+
+let renderActivityCategoryPagesMenu = app => {
+  let html = '';
+  app.categories.forEach((category, i) => {
+    let type = category.type;
+    let id = `menu-category-${type}-pages`;
+    let svgCloseId = `svg-close-menu-${type}-pages`;
+    let title = category.title;
+    let subtitle = category.subtitle;
+    let pages = category.pages;
+    html += `
+      <div id="${id}" class="menu-category-pages">
+        <svg id="${svgCloseId}">
+          <circle />
+          <line x1="40%" y1="35%" x2="60%" y2="65%"/>
+          <line x1="60%" y1="35%" x2="40%" y2="65%"/>
+        </svg>
+        <div class="header">
+          <div class="title">${title}</div>
+          <div class="subtitle">${subtitle}</div>
+          <div class="action">${app.action}</div>
+
+        </div>
+        <div class="body">
+          ${renderMenuCategoryPageCollection(category)}
+        </div>
+      </div>
+    `;
+  });
+  return html;
+};
+
+let renderMenuCategoryPageCollection = category => {
+  let html = '';
+  let type = category.type;
+  category.pages.forEach((page) => {
+    var id = `open-page-${category.type}-${page.name}`;
+    html += `
+      <div id="${id}" class="menu-category-page">
+        <img src="/images/page-images/${type}-${page.name}.jpg"></img>
+        <div class="name">${page.image.name}</div>
+        <div class="telescope">${page.image.about.telescope}</div>
+      </div>
+    `;
+  });
   return html;
 };
 
@@ -175,10 +294,9 @@ let checkBrowserFeatureCapability = () => {
 
 // Activity page
 
-let renderActivityPage = pageNum => {
+let renderActivityPage = (category, page) => {
   hideSplash();
-  let page = app.pages[pageNum - 1];
-  window.location.hash = pageNum;
+  window.location.hash = `run/${category.type}/${page.name}`;
   page.image.selectedSource = 0;
   page.image.selectedMainLayers = '100';
   renderPage(page);
@@ -202,9 +320,9 @@ let renderActivityPage = pageNum => {
     controllerImageSelectMainLayer(page);
   }
   document.getElementById('btn-back').addEventListener('click', event => {
-    renderActivityMenuPage(app);
+    window.location.hash = `menu/${category.type}`;
   });
-  pageRendered = true;
+  hashRendered = window.location.hash;
 };
 
 //
