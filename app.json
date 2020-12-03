@@ -212,13 +212,13 @@
       "menuimage": "images/menu-invisible-light.jpg",
       "pages": [
         {
-          "name": "reveal-m82",
+          "name": "m82",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "M82",
+            "name": "Messier 82",
             "about": {
               "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
               "telescope": "Hubble, Spitzer, and Chandra",
@@ -236,7 +236,7 @@
                 "filter": "red",
                 "min": 0,
                 "max": 10,
-                "scaling": "linear",
+                "scaling": "log",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -247,7 +247,7 @@
                 "filter": "green",
                 "min": 0,
                 "max": 10,
-                "scaling": "linear",
+                "scaling": "log",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -258,7 +258,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
-                "scaling": "linear",
+                "scaling": "log",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -283,13 +283,13 @@
       "menuimage": "images/menu-masterpiece.jpg",
       "pages": [
         {
-          "name": "reveal-m82",
+          "name": "m82",
           "title": "Make a Masterpiece using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "M82",
+            "name": "Messier 82",
             "about": {
               "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
               "telescope": "Hubble, Spitzer, and Chandra",
@@ -340,68 +340,6 @@
                   "Red",
                   "Green",
                   "Blue"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "m82",
-          "title": "Create Your Own Masterpiece",
-          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
-          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
-          "adjustimagetext": "Use these sliders to show more detail in the image",
-          "image": {
-            "name": "M82",
-            "about": {
-              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
-              "telescope": "Hubble, Spitzer, and Chandra",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
-            },
-            "nx": 2376,
-            "ny": 2381,
-            "maximumBrightness": 2,
-            "sources": [
-              {
-                "type": "rawdata",
-                "name": "Infrared",
-                "path": "rawdata/orion-nebula-Messier-42/m42_40min_ir.bin",
-                "filter": "red",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Optical",
-                "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
-                "filter": "green",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Optical",
-                "path": "rawdata/orion-nebula-Messier-42/m42_40min_red.bin",
-                "filter": "blue",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "composite",
-                "name": "RGB",
-                "layers": [
-                  "Red",
-                  "Green"
                 ]
               }
             ]
