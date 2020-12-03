@@ -61,8 +61,34 @@ div#splash {
   height: inherit;
 }
 
-.content {
-  margin: 0.5vw 1vw;
+#splash-center {
+  position: fixed;
+  height: 100%;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-transform: uppercase;
+}
+
+#splash-center .title1 {
+  font-size: 6vh;
+  height: 6vh;
+  margin-bottom: 1em;
+}
+
+#splash-center .title2 {
+  font-size: 12vh;
+  height: 20vh;
+  font-weight: 500;
+}
+
+#splash-footer {
+  height: 8vh;
+  text-transform: uppercase;
+}
+
+#splash-footer .start {
+  font-size: 4vh;
 }
 
 .menu-page-header {

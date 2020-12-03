@@ -24,6 +24,7 @@ let request = obj => {
 
 let app = {};
 let hashRendered = "start";
+let splashRendered = false;
 let pageNum = -1;
 
 request({ url: "app.json" })
@@ -82,8 +83,26 @@ window.addEventListener('hashchange', event => {
 
 let showSplashPage = () => {
   let splash = document.getElementById('splash');
+  if (splashRendered == false) {
+    splash.innerHTML = `
+      <img src="images/splash.jpg"></img>
+      <div id="splash-center" class="d-flex align-items-center justify-content-center">
+        <div classs="col-12 h-100">
+          <div class="title1 row justify-content-center">${app.splash.title1}</div>
+          <div class="title2 row justify-content-center">${app.splash.title2}</div>
+        </div>
+      </div>
+      <div id="splash-footer" class="fixed-bottom d-flex flex-row justify-content-center">
+        <div class="pl-1 pr-1">
+          <div class="start text align-self-center p-2">${app.splash.begin}</div>
+        </div>
+      </div>
+    `;
+    splashRendered = true;
+  }
   splash.style.zIndex = "100";
   splash.style.display = "block";
+
   splash.addEventListener('click', splashListener);
   window.location.hash = '';
   hashRendered = window.location.hash;
