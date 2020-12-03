@@ -39,6 +39,7 @@
                 "filter": "red",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -49,6 +50,7 @@
                 "filter": "green",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -59,6 +61,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -99,6 +102,7 @@
                 "filter": "red",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -109,6 +113,7 @@
                 "filter": "green",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -119,6 +124,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -141,7 +147,7 @@
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Antennae galaxies: heic0615",
+            "name": "Antennae galaxies",
             "about": {
               "prologue": "These images were taken with the",
               "telescope": "Hubble",
@@ -159,6 +165,7 @@
                 "filter": "red",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -169,6 +176,7 @@
                 "filter": "green",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -179,6 +187,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -227,6 +236,7 @@
                 "filter": "red",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -237,6 +247,7 @@
                 "filter": "green",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -247,6 +258,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -270,6 +282,69 @@
       "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
       "menuimage": "images/menu-masterpiece.jpg",
       "pages": [
+        {
+          "name": "reveal-m82",
+          "title": "Make a Masterpiece using 'Invisible Light",
+          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "M82",
+            "about": {
+              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
+              "telescope": "Hubble, Spitzer, and Chandra",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 1270,
+            "ny": 1270,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Infrared",
+                "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "scaling": "log",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Optical",
+                "path": "rawdata/M82/M82_Hubble_Optical.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "scaling": "log",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "X-Ray",
+                "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "scaling": "log",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
+        },
         {
           "name": "m82",
           "title": "Create Your Own Masterpiece",
@@ -295,6 +370,7 @@
                 "filter": "red",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -305,6 +381,7 @@
                 "filter": "green",
                 "min": 0,
                 "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },
@@ -315,65 +392,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "composite",
-                "name": "RGB",
-                "layers": [
-                  "Red",
-                  "Green"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "ngc-4038",
-          "title": "Antennae Galaxies: NGC 4038/4039",
-          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
-          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
-          "adjustimagetext": "Use these sliders to show more detail in the image",
-          "image": {
-            "name": "Antennae Galaxies",
-            "about": {
-              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
-              "telescope": "Hubble, Spitzer, and Chandra",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
-            },
-            "nx": 2100,
-            "ny": 2100,
-            "maximumBrightness": 2,
-            "sources": [
-              {
-                "type": "rawdata",
-                "name": "Infrared",
-                "path": "rawdata/ngc-4038/hst_05962_01_wfpc2_f814w_wf_drz.bin",
-                "filter": "red",
-                "min": 0,
-                "max": 10,
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Green",
-                "path": "rawdata/ngc-4038/hst_05962_01_wfpc2_f555w_wf_drz.bin",
-                "filter": "green",
-                "min": 0,
-                "max": 10,
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Blue",
-                "path": "rawdata/ngc-4038/hst_05962_01_wfpc2_f439w_wf_drz.bin",
-                "filter": "blue",
-                "min": 0,
-                "max": 10,
+                "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1
               },

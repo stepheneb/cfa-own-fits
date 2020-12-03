@@ -453,6 +453,14 @@ input:checked {
   border: 6px solid red;
 }
 
+#select-scaling input {
+  width: 2em;
+}
+
+#select-scaling .select-scaling-label {
+  margin-left: 1em;
+}
+
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
 canvas {
   /* image-rendering: optimize-contrast !important;

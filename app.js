@@ -450,6 +450,7 @@ let renderImageAboutTelescope = page => {
 };
 
 let controllerImageAdjustFilterLayer = page => {
+
   let elemBrightness = document.getElementById("brightness");
   elemBrightness.addEventListener('input', (e) => {
     let source = page.image.sources[page.image.selectedSource];
@@ -473,12 +474,24 @@ let controllerImageAdjustFilterLayer = page => {
     renderMainLayers(page.image);
   });
 
+  let elemScaling = document.getElementById("select-scaling");
+  elemScaling.addEventListener('change', (e) => {
+    let source = page.image.sources[page.image.selectedSource];
+    source.scaling = event.target.value;
+    renderOffscreenCanvas(source, page.image.nx, page.image.ny);
+    copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
+    renderMainLayers(page.image);
+  });
+
 };
 
 let updateImageAdjustFilterLayer = page => {
   let source = page.image.sources[page.image.selectedSource];
   document.getElementById("brightness").value = source.brightness;
   document.getElementById("contrast").value = source.contrast;
+  let elemScaling = document.getElementById("select-scaling");
+  let radios = elemScaling.elements.scaling;
+  radios.value = source.scaling;
 };
 
 let renderImageAdjustFilterLayer = page => {
@@ -512,6 +525,26 @@ let renderImageAdjustFilterLayer = page => {
         <div class='col-8'>
           <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' disabled>
         </div>
+      </div>
+
+      <div class='row'>
+        <div class='col-4'>
+          <label class="pl-2">Scaling</label>
+        </div>
+        <form id="select-scaling" class="d-flex flex-row justify-content-start">
+          <div class="select-scaling-label">
+            <label for="select-scaling-linear">Linear</label>
+          </div>
+          <div class="select-scaling-radio">
+            <input id="select-scaling-linear" type="radio" name="scaling" value="linear">
+          </div>
+          <div class="select-scaling-label">
+            <label for="select-scaling-log">Log</label>
+          </div>
+          <div class="select-scaling-radio">
+            <input id="select-scaling-log" type="radio" name="scaling" value="log">
+          </div>
+        </form>
       </div>
     </div>
   `;
@@ -769,57 +802,125 @@ let renderOffscreenCanvas = function (source, nx, ny) {
   let range = max - min;
   let scale = source.brightness * 256 / range;
   let i, pixindex, ycols, x, y, val, scaledval;
-  switch (source.filter) {
-  case 'red':
-    pixindex = 0;
-    for (y = 0; y < ny; y++) {
-      for (x = 0; x < nx; x++) {
-        i = y * nx + x;
-        val = rawdata[i];
-        scaledval = val * scale - min;
-        pixeldata[pixindex] = scaledval;
-        pixindex += 4;
-      }
-    }
-    break;
-  case 'green':
-    pixindex = 0;
-    for (y = 0; y < ny; y++) {
-      for (x = 0; x < nx; x++) {
-        i = y * nx + x;
-        val = rawdata[i];
-        scaledval = val * scale - min;
-        pixeldata[pixindex + 1] = scaledval;
-        pixindex += 4;
-      }
-    }
-    break;
-  case 'blue':
-    pixindex = 0;
-    for (y = 0; y < ny; y++) {
-      for (x = 0; x < nx; x++) {
-        i = y * nx + x;
-        val = rawdata[i];
-        scaledval = val * scale - min;
-        pixeldata[pixindex + 2] = scaledval;
-        pixindex += 4;
-      }
-    }
-    break;
-  case 'RGB':
-    let pixeldataRed = image.sources[0].uint8Data;
-    let pixeldataGreen = image.sources[1].uint8Data;
-    let pixeldataBlue = image.sources[2].uint8Data;
 
-    let len = pixeldata.length;
+  let renderLinear = () => {
+    switch (source.filter) {
+    case 'red':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = val * scale - min;
+          pixeldata[pixindex] = scaledval;
+          pixindex += 4;
+        }
+      }
+      break;
+    case 'green':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = val * scale - min;
+          pixeldata[pixindex + 1] = scaledval;
+          pixindex += 4;
+        }
+      }
+      break;
+    case 'blue':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = val * scale - min;
+          pixeldata[pixindex + 2] = scaledval;
+          pixindex += 4;
+        }
+      }
+      break;
+    case 'RGB':
+      let pixeldataRed = image.sources[0].uint8Data;
+      let pixeldataGreen = image.sources[1].uint8Data;
+      let pixeldataBlue = image.sources[2].uint8Data;
 
-    for (i = 0; i < len; i += 4) {
-      pixeldata[i] = pixeldataRed[i];
-      pixeldata[i + 1] = pixeldataGreen[i + 1];
-      pixeldata[i + 3] = pixeldataBlue[i + 2];
+      let len = pixeldata.length;
+
+      for (i = 0; i < len; i += 4) {
+        pixeldata[i] = pixeldataRed[i];
+        pixeldata[i + 1] = pixeldataGreen[i + 1];
+        pixeldata[i + 3] = pixeldataBlue[i + 2];
+      }
+      break;
     }
+  };
+
+  let renderLog = () => {
+    scale = source.brightness * 256 / Math.log(11);
+    switch (source.filter) {
+    case 'red':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = Math.log(val + 1) * scale;
+          pixeldata[pixindex] = scaledval;
+          pixindex += 4;
+        }
+      }
+      break;
+    case 'green':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = Math.log(val + 1) * scale;
+          pixeldata[pixindex + 1] = scaledval;
+          pixindex += 4;
+        }
+      }
+      break;
+    case 'blue':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = Math.log(val + 1) * scale;
+          pixeldata[pixindex + 2] = scaledval;
+          pixindex += 4;
+        }
+      }
+      break;
+    case 'RGB':
+      let pixeldataRed = image.sources[0].uint8Data;
+      let pixeldataGreen = image.sources[1].uint8Data;
+      let pixeldataBlue = image.sources[2].uint8Data;
+
+      let len = pixeldata.length;
+
+      for (i = 0; i < len; i += 4) {
+        pixeldata[i] = pixeldataRed[i];
+        pixeldata[i + 1] = pixeldataGreen[i + 1];
+        pixeldata[i + 3] = pixeldataBlue[i + 2];
+      }
+      break;
+    }
+  };
+
+  switch (source.scaling) {
+  case 'linear':
+    renderLinear();
+    break;
+  case 'log':
+    renderLog();
     break;
   }
+
   let renderTime = performance.now();
   source.ctx.putImageData(source.imageData, 0, 0);
   let putImageDataTime = performance.now();
