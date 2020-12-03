@@ -61,7 +61,8 @@ def extract_raw_image_data(infile, outdir):
     normalize_img_datatype = {
         "float32": lambda img: img,
         "float64": lambda img: img.astype('float32'),
-        "int16": lambda img: img.astype('float32') / 3276.8
+        "int16": lambda img: img.astype('float32') / 3276.8,
+        "uint16": lambda img: img.astype('float32')
     }
 
     dtype = str(img.dtype)
@@ -106,17 +107,16 @@ def extract_raw_image_data(infile, outdir):
     print (f"percentile 99: {str(percentile_99)}")
     print (f"percentile 99.9: {str(percentile_999)}")
 
-    print("\nclip:")
     bottom = percentile_001
     if (original_min >= 0):
         bottom = original_min
     top = percentile_999
 
+    print(f"Clipping to: {str(bottom)}, {str(top)}")
     img =  np.clip(img, bottom, top)
 
     clipped_min = np.min(img)
     clipped_max = np.max(img)
-
     print (f"min: {str(clipped_min)}")
     print (f"max: {str(clipped_max)}")
 
