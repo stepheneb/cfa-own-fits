@@ -172,7 +172,7 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/heic0615/green.bin",
+                "path": "rawdata/heic0615/green-resized-to1055x1075.bin",
                 "filter": "green",
                 "min": 0,
                 "max": 10,
