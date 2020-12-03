@@ -371,6 +371,9 @@ label, button {
   padding: 0.5rem 0rem;
   color: var(--bright-green);
   text-transform: uppercase;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .page-subtitle {
