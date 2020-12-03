@@ -75,6 +75,66 @@
           }
         },
         {
+          "name": "m51-whirlpool",
+          "title": "Messier 51 (The Whirlpool Galaxy)",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Messier 51",
+            "about": {
+              "prologue": "These images were taken with the",
+              "telescope": "Hubble",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 2384,
+            "ny": 3600,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": "rawdata/m51/m51_optical_R.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/m51/m51_optical_G.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/m51/m51_optical_B.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "colliding-galaxies",
           "title": "Colliding Galaxies?",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",

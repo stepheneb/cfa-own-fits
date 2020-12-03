@@ -771,11 +771,10 @@ let renderOffscreenCanvas = function (source, nx, ny) {
   let i, pixindex, ycols, x, y, val, scaledval;
   switch (source.filter) {
   case 'red':
+    pixindex = 0;
     for (y = 0; y < ny; y++) {
-      ycols = y * ny;
-      pixindex = ycols * 4;
       for (x = 0; x < nx; x++) {
-        i = y * ny + x;
+        i = y * nx + x;
         val = rawdata[i];
         scaledval = val * scale - min;
         pixeldata[pixindex] = scaledval;
@@ -784,11 +783,10 @@ let renderOffscreenCanvas = function (source, nx, ny) {
     }
     break;
   case 'green':
+    pixindex = 0;
     for (y = 0; y < ny; y++) {
-      ycols = y * ny;
-      pixindex = ycols * 4;
       for (x = 0; x < nx; x++) {
-        i = y * ny + x;
+        i = y * nx + x;
         val = rawdata[i];
         scaledval = val * scale - min;
         pixeldata[pixindex + 1] = scaledval;
@@ -797,11 +795,10 @@ let renderOffscreenCanvas = function (source, nx, ny) {
     }
     break;
   case 'blue':
+    pixindex = 0;
     for (y = 0; y < ny; y++) {
-      ycols = y * ny;
-      pixindex = ycols * 4;
       for (x = 0; x < nx; x++) {
-        i = y * ny + x;
+        i = y * nx + x;
         val = rawdata[i];
         scaledval = val * scale - min;
         pixeldata[pixindex + 2] = scaledval;
