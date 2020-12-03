@@ -12,7 +12,7 @@
       "type": "rgb",
       "title": "What's Red + Green + Blue?",
       "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
-      "menuimage": "/images/menu-whats-red-green-blue.jpg",
+      "menuimage": "images/menu-whats-red-green-blue.jpg",
       "pages": [
         {
           "name": "whats-red-green-blue",
@@ -140,7 +140,7 @@
       "type": "multi-wave",
       "title": "Reveal an Image using 'Invisible Light",
       "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
-      "menuimage": "/images/menu-invisible-light.jpg",
+      "menuimage": "images/menu-invisible-light.jpg",
       "pages": [
         {
           "name": "reveal-m82",
@@ -208,7 +208,7 @@
       "type": "masterpiece",
       "title": "Make a Masterpiece",
       "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
-      "menuimage": "/images/menu-masterpiece.jpg",
+      "menuimage": "images/menu-masterpiece.jpg",
       "pages": [
         {
           "name": "m82",

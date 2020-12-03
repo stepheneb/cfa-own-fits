@@ -291,7 +291,7 @@ let renderMenuCategoryPageCollection = category => {
     var id = `open-page-${category.type}-${page.name}`;
     html += `
       <div id="${id}" class="menu-category-page">
-        <img src="/images/page-images/${type}-${page.name}.jpg"></img>
+        <img src="images/page-images/${type}-${page.name}.jpg"></img>
         <div class="name">${page.image.name}</div>
         <div class="telescope">${page.image.about.telescope}</div>
       </div>
