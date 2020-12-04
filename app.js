@@ -815,7 +815,7 @@ let copyOffscreenCanvasToMain = function (source, destination) {
 
 let copyOffscreenCanvasToPreview = function (source, preview, nx, ny) {
   let aspectRatio = nx / ny;
-  let { width, height } = preview.canvas.getBoundingClientRect();
+  let { width, height } = preview.canvas.parentElement.getBoundingClientRect();
   let sourceAspectRatio = nx / ny;
   let destinationAspectRatio = width / height;
   let resizeWidth, resizeHeight;
