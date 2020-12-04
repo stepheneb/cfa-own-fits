@@ -487,7 +487,9 @@ let renderImageSelectFilterLayerToAdjust = page => {
 
 let renderImageLayerPreview = page => {
   return `
-    <canvas id='image-layer-preview' class='image-layer-preview'></canvas>
+    <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+      <canvas id='image-layer-preview'></canvas>
+    </div>
   `;
 };
 
@@ -603,7 +605,9 @@ let renderImageAdjustFilterLayer = page => {
 let renderMainImageContent = page => {
   return `
     <div class='main-image-content'>
-      <canvas id='main-image-canvas' class='page-image'></canvas>
+      <div id="main-image-canvas-container" class="row d-flex justify-content-center">
+        <canvas id='main-image-canvas'></canvas>
+      </div>
       ${renderUnderMainImageRow(page)}
     </div>
   `;
@@ -804,36 +808,24 @@ let setAlpha = (source, value) => {
   }
 };
 
-let copyOffscreenCanvasToDestination = function (source, destination, preview, nx, ny) {
-
-  let { width, height } = preview.canvas.getBoundingClientRect();
-  let resizeHeight = height;
-  let resizeWidth = height * 26 / 25;
-  let imageData = new ImageData(source.uint8Data, nx, ny);
-  let bitmapP2 = createImageBitmap(imageData, 0, 0, nx, ny, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
-
-  bitmapP2.then(smallbitmap => {
-    let { width, height } = preview.canvas.getBoundingClientRect();
-    let posx = width / 2 - smallbitmap.width / 2;
-    let posy = height / 2 - smallbitmap.height / 2;
-    preview.canvas.width = smallbitmap.width;
-    preview.canvas.height = smallbitmap.height;
-    preview.ctx.drawImage(smallbitmap, 0, 0);
-  });
-
-  let bitmap = source.offscreenCanvas.transferToImageBitmap();
-  destination.ctx.transferFromImageBitmap(bitmap);
-};
-
 let copyOffscreenCanvasToMain = function (source, destination) {
   let bitmap = source.offscreenCanvas.transferToImageBitmap();
   destination.ctx.transferFromImageBitmap(bitmap);
 };
 
 let copyOffscreenCanvasToPreview = function (source, preview, nx, ny) {
+  let aspectRatio = nx / ny;
   let { width, height } = preview.canvas.getBoundingClientRect();
-  let resizeHeight = height;
-  let resizeWidth = height * 26 / 25;
+  let sourceAspectRatio = nx / ny;
+  let destinationAspectRatio = width / height;
+  let resizeWidth, resizeHeight;
+  if (destinationAspectRatio >= sourceAspectRatio) {
+    resizeHeight = height;
+    resizeWidth = height * sourceAspectRatio;
+  } else {
+    resizeWidth = width;
+    resizeHeight = height * sourceAspectRatio;
+  }
   let imageData = new ImageData(source.uint8Data, nx, ny);
   let bitmapP2 = createImageBitmap(imageData, 0, 0, nx, ny, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
 
