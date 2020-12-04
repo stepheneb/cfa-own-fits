@@ -624,7 +624,7 @@ let controllerImageSelectMainLayer = page => {
 
 let renderUnderMainImageRow = page => {
   return `
-    <div class="d-flex flex-row justify-content-start">
+    <div class="d-flex flex-row justify-content-start mt-2">
       <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
       <form id="image-select-main-layer">
         <div class="d-flex flex-row justify-content-start">
