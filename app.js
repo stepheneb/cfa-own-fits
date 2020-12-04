@@ -27,6 +27,38 @@ let hashRendered = "start";
 let splashRendered = false;
 let pageNum = -1;
 
+let spinner = (function (e) {
+  var elem = e;
+  var count = 0;
+  this.show = function (mesg) {
+    elem.classList.remove("hide");
+    count++;
+    log("show", `count: ${count}, ${mesg}`);
+  };
+  this.hide = function (mesg) {
+    if (count > 1) {
+      count--;
+      log("hide", `count: ${count}, ${mesg}`);
+    } else {
+      count = 0;
+      elem.classList.add("hide");
+      log("hide", `count: ${count}, ${mesg}`);
+    }
+  };
+  this.cancel = function (mesg) {
+    count = 0;
+    elem.classList.add("hide");
+    log("cancel", mesg);
+  };
+
+  function log(name, mesg) {
+    if (mesg) {
+      console.log(`spinner.${name}: ${mesg}`);
+    }
+  }
+  return this;
+})(document.getElementById("loading-spinner"));
+
 let showSpinner = (mesg) => {
   let spinner = document.getElementById("loading-spinner");
   spinner.classList.remove("hide");
@@ -43,7 +75,7 @@ let hideSpinner = (mesg) => {
   }
 };
 
-hideSpinner();
+spinner.hide("startup");
 
 request({ url: "app.json" })
   .then(data => {
@@ -676,14 +708,16 @@ let getImages = page => {
       fetchRawDataForImage(page, source, renderFuncfetchRawDataForImageSubsequentSource);
       break;
     case 'composite':
+      spinner.show("initializeOffscreenCanvas");
       initializeOffscreenCanvas(source, page.image.nx, page.image.ny);
+      spinner.hide("initializeOffscreenCanvas");
       break;
     }
   }
 };
 
 let fetchRawDataForImage = (page, source, renderFunc) => {
-  showSpinner("fetch");
+  spinner.show("fetchRawDataForImage");
   fetch(source.path)
     .then(response => {
       if (!response.ok) {
@@ -697,10 +731,10 @@ let fetchRawDataForImage = (page, source, renderFunc) => {
       addRawDataSourceAttributes(source);
       consoleLogHistogram(source);
       renderFunc(page.image, source, page.image.nx, page.image.ny);
-      hideSpinner("renderFunc");
+      spinner.hide("then renderFunc");
     })
     .catch(e => {
-      hideSpinner("fetchError");
+      spinner.cancel("fetchError");
       console.log('There has been a problem with your fetch operation: ' + e.message);
     });
 };
