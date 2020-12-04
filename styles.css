@@ -482,9 +482,18 @@ input:checked {
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
 div#main-image-canvas-container {
   width: 50vw;
+  height: 72vh;
   margin: 0;
+  padding: 0;
   background-color: var(--almost-black);
   border: 3px solid white;
+}
+
+canvas {
+  background-color: black;
+  height: 100%;
+  width: auto;
+  max-height: 76vh;
 }
 
 div#preview-image-canvas-container {
@@ -495,17 +504,25 @@ div#preview-image-canvas-container {
   border: 2px solid white;
 }
 
-canvas {
-  background-color: black;
-  height: 100%;
-  width: auto;
-  max-height: 76vh;
-}
-
 canvas#image-layer-preview {
   background-color: black;
   height: 100%;
   width: auto;
+}
+
+div#image-layer-histogram-container {
+  height: 45%;
+  width: 100%;
+  margin: 0.5em 0em;
+  padding: 2px;
+  background-color: var(--almost-black);
+  border: 1px solid var(--bright-teal);
+}
+
+canvas#image-layer-histogram {
+  background-color: black;
+  height: 100%;
+  width: 100%;
 }
 
 canvas.image-about-telescope {

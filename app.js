@@ -414,6 +414,7 @@ let renderPage = page => {
         </div>
         <div class='col-2'>
           ${renderImageAboutTelescope(page)}
+          ${renderImageLayerHistogram()}
         </div>
       </div>
     </div>
@@ -447,10 +448,11 @@ let controllerImageSelectFilterLayerToAdjust = (page, layerNum) => {
 
 let selectImageFilterLayerToAdjust = (page, layerNum) => {
   page.image.selectedSource = layerNum;
-  renderOffscreenCanvas(page.image.sources[layerNum], page.image.nx, page.image.ny);
-  copyOffscreenCanvasToPreview(page.image.sources[layerNum], page.image.destinations.preview, page.image.nx, page.image.ny);
-  consoleLogHistogram(page.image.sources[layerNum]);
+  let source = page.image.sources[layerNum];
+  renderOffscreenCanvas(source, page.image.nx, page.image.ny);
+  copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
   updateImageAdjustFilterLayer(page);
+  consoleLogCanvasDataHistogram(source);
 };
 
 let renderImageSelectFilterLayerToAdjust = page => {
@@ -511,6 +513,7 @@ let controllerImageAdjustFilterLayer = page => {
     renderOffscreenCanvas(source, page.image.nx, page.image.ny);
     copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     renderMainLayers(page.image);
+    consoleLogCanvasDataHistogram(source);
   });
 
   let elemContrast = document.getElementById("contrast");
@@ -520,10 +523,10 @@ let controllerImageAdjustFilterLayer = page => {
     let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
     source.max = source.originalMax - contrastShift;
     source.min = Math.max(0, source.originalMin + contrastShift);
-    consoleLogHistogram(source);
     renderOffscreenCanvas(source, page.image.nx, page.image.ny);
     copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     renderMainLayers(page.image);
+    consoleLogCanvasDataHistogram(source);
   });
 
   let elemScaling = document.getElementById("select-scaling");
@@ -533,6 +536,7 @@ let controllerImageAdjustFilterLayer = page => {
     renderOffscreenCanvas(source, page.image.nx, page.image.ny);
     copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     renderMainLayers(page.image);
+    consoleLogCanvasDataHistogram(source);
   });
 
 };
@@ -600,6 +604,45 @@ let renderImageAdjustFilterLayer = page => {
       </div>
     </div>
   `;
+};
+
+let renderImageLayerHistogram = () => {
+  let html = `
+    <div class="mt-2">Image Layer Histogram (uint8Data)</div>
+    <div id="image-layer-histogram-container" class="col-12">
+      <canvas id="image-layer-histogram"></canvas>
+    </div>
+  `;
+  return html;
+};
+
+let updateImageLayerHistogram = (h, scaling) => {
+  let canvas = document.getElementById("image-layer-histogram");
+  let { width, height } = canvas.parentElement.getBoundingClientRect();
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  let histogram = h.slice(1, h.length - 1);
+  let bars = histogram.length;
+  let columnWidth = width / bars;
+  let barWidth = Math.floor(columnWidth - 1);
+  let barHeight = 1;
+  let data = histogram.map(row => row[1]);
+  let maxCount = Math.max(...data);
+  ctx.fillStyle = '#080808';
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = '#bff5aa';
+  for (var i = 0; i < bars; i++) {
+    switch (scaling) {
+    case "linear":
+      barHeight = data[i] / maxCount * height * 0.9;
+      break;
+    case "log":
+      barHeight = data[i] / maxCount * height * 0.9;
+      break;
+    }
+    ctx.fillRect(i * columnWidth, height - barHeight, barWidth, barHeight);
+  }
 };
 
 let renderMainImageContent = page => {
@@ -699,7 +742,7 @@ let renderPageNavigationButtonFullScreen = () => {
 // Image fetching and rendering ...
 //
 
-let getImages = page => {
+let getImages = (page, callback) => {
   // get inital image layer, render offscreen and copy to main canvas
   let source = page.image.sources[0];
   addRawDataSourceAttributes(source);
@@ -733,7 +776,7 @@ let fetchRawDataForImage = (page, source, renderFunc) => {
     .then(arrayBuffer => {
       source.rawdata = new Float32Array(arrayBuffer);
       addRawDataSourceAttributes(source);
-      consoleLogHistogram(source);
+      consoleLogRawDataHistogram(source);
       renderFunc(page.image, source, page.image.nx, page.image.ny);
       spinner.hide("then renderFunc");
     })
@@ -780,8 +823,21 @@ let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny)
   destination.ctx.fillStyle = "rgb(0,0,0)";
   destination.ctx.imageSmoothingEnabled = true;
   destination.ctx.globalCompositeOperation = "source-over";
-  destination.canvas.width = nx;
-  destination.canvas.height = ny;
+
+  let aspectRatio = nx / ny;
+  let { width, height } = destination.canvas.parentElement.getBoundingClientRect();
+  let sourceAspectRatio = nx / ny;
+  let destinationAspectRatio = width / height;
+  let resizeWidth, resizeHeight;
+  if (destinationAspectRatio >= sourceAspectRatio) {
+    resizeHeight = height;
+    resizeWidth = height * sourceAspectRatio;
+  } else {
+    resizeWidth = width;
+    resizeHeight = height * sourceAspectRatio;
+  }
+  destination.canvas.width = resizeWidth;
+  destination.canvas.height = resizeHeight;
 };
 
 let initializeOffscreenCanvas = function (source, nx, ny) {
@@ -1108,7 +1164,7 @@ const histogram = (array, numbuckets, min, max) => {
     buckets = Array(numbuckets);
 
   for (i = 0; i < buckets.length; i++) {
-    let bucketStart = roundNumber(i * bucketSize + min, 2);
+    let bucketStart = roundNumber(i * bucketSize + min, 3);
     buckets[i] = [bucketStart, 0];
   }
   for (i = 0; i < array.length; i++) {
@@ -1126,7 +1182,22 @@ const histogram = (array, numbuckets, min, max) => {
   return buckets;
 };
 
-let consoleLogHistogram = source => {
+let consoleLogCanvasDataHistogram = source => {
+  let h = histogram(source.uint8Data, 64, 0, 256);
+  let [min, max] = forLoopMinMax(source.uint8Data);
+  let str = `
+    Histogram (canvas uint8Data): name: ${source.name}, min: ${min}, max: ${max}
+    hmin: ${roundNumber(source.min, 4)}, hmax: ${roundNumber(source.max, 4)}
+    brightness: ${roundNumber(source.brightness, 4)}
+    contrast: ${roundNumber(source.contrast, 4)}
+    scaling: ${source.scaling}
+  `;
+  console.log(str);
+  console.table(h);
+  updateImageLayerHistogram(h, source.scaling);
+};
+
+let consoleLogRawDataHistogram = source => {
   let h = histogram(source.rawdata, 30, source.min, source.max);
   let [min, max] = forLoopMinMax(source.rawdata);
   console.log(`Histogram (raw data): name: ${source.name}, min: ${roundNumber(min, 3)}, max: ${roundNumber(max, 3)}, hmin: ${roundNumber(source.min, 4)}, hmax: ${roundNumber(source.max, 4)}, contrast: ${roundNumber(source.contrast, 4)}`);
