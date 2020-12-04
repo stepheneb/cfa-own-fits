@@ -27,6 +27,24 @@ let hashRendered = "start";
 let splashRendered = false;
 let pageNum = -1;
 
+let showSpinner = (mesg) => {
+  let spinner = document.getElementById("loading-spinner");
+  spinner.classList.remove("hide");
+  if (mesg) {
+    console.log(`showSpinner: ${mesg}`);
+  }
+};
+
+let hideSpinner = (mesg) => {
+  let spinner = document.getElementById("loading-spinner");
+  spinner.classList.add("hide");
+  if (mesg) {
+    console.log(`hideSpinner: ${mesg}`);
+  }
+};
+
+hideSpinner();
+
 request({ url: "app.json" })
   .then(data => {
     app = JSON.parse(data);
@@ -665,6 +683,7 @@ let getImages = page => {
 };
 
 let fetchRawDataForImage = (page, source, renderFunc) => {
+  showSpinner("fetch");
   fetch(source.path)
     .then(response => {
       if (!response.ok) {
@@ -678,9 +697,10 @@ let fetchRawDataForImage = (page, source, renderFunc) => {
       addRawDataSourceAttributes(source);
       consoleLogHistogram(source);
       renderFunc(page.image, source, page.image.nx, page.image.ny);
-
+      hideSpinner("renderFunc");
     })
     .catch(e => {
+      hideSpinner("fetchError");
       console.log('There has been a problem with your fetch operation: ' + e.message);
     });
 };

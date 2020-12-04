@@ -92,6 +92,20 @@ div#splash {
   font-size: 4vh;
 }
 
+#loading-spinner {
+  position: absolute;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  z-index: 300;
+  width: 100%;
+  height: 100%;
+}
+
+#loading-spinner.hide {
+  display: none !important
+}
+
 .menu-page-header {
   margin: 2rem 0rem 1rem 3rem;
 }
