@@ -1,0 +1,31 @@
+{
+  "name": "cfa-own-fits",
+  "version": "1.0.0",
+  "description": "Simple astronomical image manipulation",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stepheneb/cfa-own-fits.git"
+  },
+  "keywords": [
+    "hubble",
+    "fits"
+  ],
+  "author": "Stephen Bannasch <stephen.bannasch@gmail.com> (http://stepheneb.github.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stepheneb/cfa-own-fits/issues"
+  },
+  "homepage": "https://github.com/stepheneb/cfa-own-fits#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "browser-sync": "^2.26.13",
+    "esm": "^3.2.25",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.1.0",
+    "node-sass": "^5.0.0"
+  }
+}

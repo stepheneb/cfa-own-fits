@@ -1,19 +1,70 @@
-Displays red green and blue images taken by the Hubble of the Lagoon Nebula
-and also displays an RGB image that combines them together.
 
-Clone or download this repository and open a terminal shell in the directory
-and start a the simple built-in python web server.
+Development dependencies for web application:
+
+- node v14.15.1 which is the LTS version of the fermium series
+
+I recommend using nvm -- a node package manager to enable the use of different versions of node for different projects: https://github.com/nvm-sh/nvm
+
+Setting up dpendencies on macos:
+```
+# install or upgrade nvm
+
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+
+# restart terminal or reload terminal startup script
+
+. ~/.bash_profile
+
+# install latest LTS version of node
+
+nvm install --lts=fermium
+
+# Installing with latest version of LTS line: fermium
+# v14.15.1 is already installed.
+# Now using node v14.15.1 (npm v6.14.8
+```
+
+Clone or download this repository and open a terminal shell in the directory.
+
+Setup the development environment for this application.
+```
+# install npm development packages for this application
+
+npm install
+
+# install the gulp-cli package globally
+
+npm install --global gulp-cli
+```
+
+Use gulp to start the server and reload/compile files that change and reload the browser.
 
 ```
-$ python3 -m http.server
+gulp
+
+# [01:24:52] Requiring external module esm
+# [01:24:54] Using gulpfile ~/dev/00-clients/rlmg/cfa-own-fits/gulpfile.esm.js
+# [01:24:54] Starting 'default'...
+# [01:24:54] Starting 'serve'...
+# [01:24:54] Finished 'serve' after 12 ms
+# [01:24:54] Starting 'watch'...
+# [Browsersync] Access URLs:
+#  --------------------------------------
+#        Local: http://localhost:3000
+#     External: http://192.168.1.108:3000#
+#  --------------------------------------
+#           UI: http://localhost:3001
+#  UI External: http://localhost:3001
+#  --------------------------------------
+
 ```
+A chrome browser window will automatically open at address: http://localhost:3000 when the gulp process starts.
 
-Open the demo in Chrome: http://localhost:8000
+The browser will automatically reload the page when changes are saved to the html, javascript, json or css styles file.
 
-The red green and blue rawdata images are included in the repository to make it
-easier to load the web application.
+The css styles are written in the scss variant of Sass and when changes are saved the css files are generated from the scss files and the browser will reload the page.
 
-**Under the hood.**
+**Processing FITS images**
 
 The python program `./extract.py` processes fits files in directories in the `./fits` directory and generates corresponding directories in the `./rawdata` directory containing binary arrays of `float32` values extracted from image ddata in the original `fits` files.
 
