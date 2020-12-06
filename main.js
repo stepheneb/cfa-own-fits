@@ -1,86 +1,19 @@
 /*jshint esversion: 6 */
 
-// XMLHttpRequest wrapper using callbacks
-let request = obj => {
-  return new Promise((resolve, reject) => {
-    let xhr = new XMLHttpRequest();
-    xhr.open(obj.method || "GET", obj.url);
-    if (obj.headers) {
-      Object.keys(obj.headers).forEach(key => {
-        xhr.setRequestHeader(key, obj.headers[key]);
-      });
-    }
-    xhr.onload = () => {
-      if (xhr.status >= 200 && xhr.status < 300) {
-        resolve(xhr.response);
-      } else {
-        reject(xhr.statusText);
-      }
-    };
-    xhr.onerror = () => reject(xhr.statusText);
-    xhr.send(obj.body);
-  });
-};
+import request from './modules/request.js';
+import Spinner from './modules/spinner.js';
 
 let app = {};
-let hashRendered = "start";
-let splashRendered = false;
-let pageNum = -1;
 
-let spinner = (function (e) {
-  var elem = e;
-  var count = 0;
-  this.show = function (mesg) {
-    elem.classList.remove("hide");
-    count++;
-    log("show", `count: ${count}, ${mesg}`);
-  };
-  this.hide = function (mesg) {
-    if (count > 1) {
-      count--;
-      log("hide", `count: ${count}, ${mesg}`);
-    } else {
-      count = 0;
-      elem.classList.add("hide");
-      log("hide", `count: ${count}, ${mesg}`);
-    }
-  };
-  this.cancel = function (mesg) {
-    count = 0;
-    elem.classList.add("hide");
-    log("cancel", mesg);
-  };
-
-  function log(name, mesg) {
-    if (mesg) {
-      console.log(`spinner.${name}: ${mesg}`);
-    }
-  }
-  return this;
-})(document.getElementById("loading-spinner"));
-
-let showSpinner = (mesg) => {
-  let spinner = document.getElementById("loading-spinner");
-  spinner.classList.remove("hide");
-  if (mesg) {
-    console.log(`showSpinner: ${mesg}`);
-  }
-};
-
-let hideSpinner = (mesg) => {
-  let spinner = document.getElementById("loading-spinner");
-  spinner.classList.add("hide");
-  if (mesg) {
-    console.log(`hideSpinner: ${mesg}`);
-  }
-};
-
+let spinner = new Spinner("loading-spinner");
 spinner.hide("startup");
 
 request({ url: "app.json" })
   .then(data => {
     app = JSON.parse(data);
-    hashRendered = "start";
+    app.hashRendered = "start";
+    app.splashRendered = false;
+    app.pageNum = -1;
     router();
   })
   .catch(error => {
@@ -91,7 +24,7 @@ request({ url: "app.json" })
 
 let router = () => {
   let hash = window.location.hash;
-  if (hash != hashRendered) {
+  if (hash != app.hashRendered) {
     let match = hash.match(/#(?<action>menu|run)(\/((?<category>[\w-]+)))?(\/((?<page>[\w-]+)))?/);
     if (match) {
       let actionName = match.groups.action;
@@ -110,6 +43,10 @@ let router = () => {
   }
 };
 
+window.addEventListener('hashchange', event => {
+  router();
+});
+
 let routeToRenderActivityPage = (categoryType, pageName) => {
   let category = false;
   let page = false;
@@ -125,15 +62,11 @@ let routeToRenderActivityPage = (categoryType, pageName) => {
   }
 };
 
-window.addEventListener('hashchange', event => {
-  router();
-});
-
 // Splash page
 
 let showSplashPage = () => {
   let splash = document.getElementById('splash');
-  if (splashRendered == false) {
+  if (app.splashRendered == false) {
     splash.innerHTML = `
       <img src="images/splash.jpg"></img>
       <div id="splash-center" class="d-flex align-items-center justify-content-center">
@@ -148,14 +81,14 @@ let showSplashPage = () => {
         </div>
       </div>
     `;
-    splashRendered = true;
+    app.splashRendered = true;
   }
   splash.style.zIndex = "100";
   splash.style.display = "block";
 
   splash.addEventListener('click', splashListener);
   window.location.hash = '';
-  hashRendered = window.location.hash;
+  app.hashRendered = window.location.hash;
 };
 
 let hideSplash = () => {
@@ -228,7 +161,7 @@ let renderActivityMenuPage = (categoryType) => {
   setupEventHandlers();
   checkBrowserFeatureCapability();
   hideSplash();
-  hashRendered = hash;
+  app.hashRendered = hash;
   window.location.hash = hash;
 };
 
@@ -299,7 +232,7 @@ let renderMenuCategoryPages = (category) => {
       }
     }
   }
-  hasRendered = hash;
+  app.hashRendered = hash;
   window.location.hash = hash;
 };
 
@@ -395,7 +328,7 @@ let renderActivityPage = (category, page) => {
   document.getElementById('btn-back').addEventListener('click', event => {
     window.location.hash = `menu/${category.type}`;
   });
-  hashRendered = window.location.hash;
+  app.hashRendered = window.location.hash;
 };
 
 //
@@ -746,7 +679,7 @@ let renderPageNavigationButtonFullScreen = () => {
 
 let getImages = (page, callback) => {
   for (var s = 0; s < page.image.sources.length; s++) {
-    source = page.image.sources[s];
+    let source = page.image.sources[s];
     switch (source.type) {
     case 'rawdata':
       let mainSelected = page.image.selectedMainLayers[s] == "1" ? true : false;
