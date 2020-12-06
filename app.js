@@ -366,8 +366,12 @@ let checkBrowserFeatureCapability = () => {
 let renderActivityPage = (category, page) => {
   hideSplash();
   window.location.hash = `run/${category.type}/${page.name}`;
-  page.image.selectedSource = 0;
-  page.image.selectedMainLayers = '100';
+  if (page.image.selectedSource == undefined) {
+    page.image.selectedSource = 0;
+  }
+  if (page.image.selectedMainLayers == undefined) {
+    page.image.selectedMainLayers = "100";
+  }
   renderPage(page);
   setupEventHandlers();
   page.image.destinations = {
@@ -383,7 +387,7 @@ let renderActivityPage = (category, page) => {
   initializeCanvas(page.image.destinations.preview);
   if (checkBrowserFeatureCapability()) {
     getImages(page);
-    controllerImageSelectFilterLayerToAdjust(page, 0);
+    controllerImageSelectFilterLayerToAdjust(page);
     controllerImageAdjustFilterLayer(page);
     updateImageAdjustFilterLayer(page);
     controllerImageSelectMainLayer(page);
@@ -434,7 +438,8 @@ let renderPageHeader = page => {
   `;
 };
 
-let controllerImageSelectFilterLayerToAdjust = (page, layerNum) => {
+let controllerImageSelectFilterLayerToAdjust = (page) => {
+  let layerNum = page.image.selectedSource;
   let elem = document.getElementById("image-select-filter-layer-to-adjust");
   elem.addEventListener('change', (e) => {
     let i = Number(event.target.value);
@@ -686,12 +691,9 @@ let renderUnderMainImageLayerSelectors = page => {
   let html = '';
   for (var i = 0; i < sources.length; i++) {
     let source = sources[i];
-    let checkedState = "checked";
+    let checkedState = page.image.selectedMainLayers[i] == "1" ? "checked" : "";
     if (source.type == "rawdata") {
       let name = source.name;
-      if (i > 0) {
-        checkedState = "";
-      }
       html += `
             <div class="select-layer-label">
               <label for='select-layer-${name}'>${name}</label>
@@ -743,16 +745,13 @@ let renderPageNavigationButtonFullScreen = () => {
 //
 
 let getImages = (page, callback) => {
-  // get inital image layer, render offscreen and copy to main canvas
-  let source = page.image.sources[0];
-  addRawDataSourceAttributes(source);
-  fetchRawDataForImage(page, source, renderFuncfetchRawDataForImageFirstSource);
-  // step through rest of image layers and fetch all rawdata images
-  for (var s = 1; s < page.image.sources.length; s++) {
+  for (var s = 0; s < page.image.sources.length; s++) {
     source = page.image.sources[s];
     switch (source.type) {
     case 'rawdata':
-      fetchRawDataForImage(page, source, renderFuncfetchRawDataForImageSubsequentSource);
+      let mainSelected = page.image.selectedMainLayers[s] == "1" ? true : false;
+      let previewSelected = page.image.selectedSource == s ? true : false;
+      fetchRawDataForImage(page, source, mainSelected, previewSelected, renderFuncfetchRawDataForImage);
       break;
     case 'composite':
       spinner.show("initializeOffscreenCanvas");
@@ -763,7 +762,7 @@ let getImages = (page, callback) => {
   }
 };
 
-let fetchRawDataForImage = (page, source, renderFunc) => {
+let fetchRawDataForImage = (page, source, mainSelected, previewSelected, renderFunc) => {
   spinner.show("fetchRawDataForImage");
   fetch(source.path)
     .then(response => {
@@ -777,7 +776,7 @@ let fetchRawDataForImage = (page, source, renderFunc) => {
       source.rawdata = new Float32Array(arrayBuffer);
       addRawDataSourceAttributes(source);
       consoleLogRawDataHistogram(source);
-      renderFunc(page.image, source, page.image.nx, page.image.ny);
+      renderFunc(page.image, source, mainSelected, previewSelected, page.image.nx, page.image.ny);
       spinner.hide("then renderFunc");
     })
     .catch(e => {
@@ -797,16 +796,16 @@ let initializeCanvasDestinations = (image) => {
   initializeCanvasForUseWithOffScreenTransfer(image.destinations.main, image.nx, image.ny);
 };
 
-let renderFuncfetchRawDataForImageFirstSource = (image, source, nx, ny) => {
+let renderFuncfetchRawDataForImage = (image, source, mainSelected, previewSelected, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
   renderOffscreenCanvas(source, nx, ny);
-  copyOffscreenCanvasToPreview(source, image.destinations.preview, nx, ny);
-  copyOffscreenCanvasToMain(source, image.destinations.main);
-};
-
-let renderFuncfetchRawDataForImageSubsequentSource = (image, source, nx, ny) => {
-  initializeOffscreenCanvas(source, nx, ny);
-  renderOffscreenCanvas(source, nx, ny);
+  if (previewSelected) {
+    copyOffscreenCanvasToPreview(source, image.destinations.preview, nx, ny);
+    consoleLogCanvasDataHistogram(source);
+  }
+  if (mainSelected) {
+    copyOffscreenCanvasToMain(source, image.destinations.main);
+  }
 };
 
 let initializeCanvas = function (destination, nx, ny) {
@@ -960,7 +959,7 @@ let renderOffscreenCanvas = function (source, nx, ny) {
   };
 
   let renderLog = () => {
-    scale = source.brightness * 256 / Math.log(11);
+    scale = source.brightness * 256 / Math.log(range + 1);
     switch (source.filter) {
     case 'red':
       pixindex = 0;

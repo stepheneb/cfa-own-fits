@@ -227,7 +227,9 @@
             },
             "nx": 1270,
             "ny": 1270,
-            "maximumBrightness": 2,
+            "maximumBrightness": 1,
+            "selectedSource": 1,
+            "selectedMainLayers": "010",
             "sources": [
               {
                 "type": "rawdata",
@@ -237,7 +239,7 @@
                 "min": 0,
                 "max": 10,
                 "scaling": "log",
-                "brightness": 1,
+                "brightness": 0.5,
                 "contrast": 1
               },
               {
@@ -248,7 +250,7 @@
                 "min": 0,
                 "max": 10,
                 "scaling": "log",
-                "brightness": 1,
+                "brightness": 0.5,
                 "contrast": 1
               },
               {
@@ -258,8 +260,8 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
-                "scaling": "log",
-                "brightness": 1,
+                "scaling": "linear",
+                "brightness": 0.5,
                 "contrast": 1
               },
               {

@@ -27,8 +27,8 @@ html {
   --menu-activity-category-title: 2.2vh;
   --menu-activity-category-page-title: 2vh;
   --menu-activity-category-page-subtitle: 1.8vh;
-  --menu-category-page-name: 1.8vh;
-  --menu-category-page-telescope: 1.6vh;
+  --menu-category-page-name: 1.7vh;
+  --menu-category-page-telescope: 1.5vh;
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
@@ -194,9 +194,9 @@ div {
   &.menu-category-pages {
     display: none;
     position: relative;
-    height: 30%;
+    height: 42vh;
     width: fit-content;
-    padding: 1rem 2rem;
+    padding: 2vh 2rem 0vh 2rem;
     border: 2px solid var(--category-selected-border);
     border-radius: 4px;
 
@@ -245,7 +245,6 @@ div {
 
     .title {
       font-size: var(--menu-activity-category-page-title);
-      line-height: 120%;
       padding-bottom: 0.5rem;
       color: var(--bright-green);
       text-transform: uppercase;
@@ -254,7 +253,7 @@ div {
     .subtitle {
       font-size: var(--menu-activity-category-subtitle);
       line-height: 120%;
-      padding-bottom: 1rem;
+      padding: 0rem 0rem 0.5rem 0rem;
       color: white;
     }
 
@@ -275,10 +274,11 @@ div {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    line-height: 2vh;
 
     img {
       margin: 0rem 0rem;
-      height: 82%;
+      height: 80%;
       border: 1px solid var(--bright-green);
       border-radius: 4px;
     }
@@ -287,7 +287,7 @@ div {
       font-size: var(--menu-category-page-name);
       color: var(--bright-teal);
       text-transform: uppercase;
-      padding-top: 0.5rem;
+      padding-top: 0.25em;
     }
 
     .telescope {
