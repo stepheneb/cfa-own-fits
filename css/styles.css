@@ -402,7 +402,7 @@ div#preview-image-canvas-container {
 canvas#image-layer-preview {
   background-color: black;
   height: 100%;
-  width: auto; }
+  width: 100%; }
 
 div#image-layer-histogram-container {
   height: 20%;
