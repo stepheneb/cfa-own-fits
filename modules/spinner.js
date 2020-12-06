@@ -23,7 +23,7 @@ class Spinner {
   cancel(mesg) {
     this.count = 0;
     this.elem.classList.add("hide");
-    _log("cancel", mesg);
+    this._log("cancel", mesg);
   }
   _log(name, mesg) {
     if (mesg) {
