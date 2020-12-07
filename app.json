@@ -228,8 +228,8 @@
             "nx": 1270,
             "ny": 1270,
             "maximumBrightness": 1,
-            "selectedSource": 1,
-            "selectedMainLayers": "010",
+            "selectedSource": 0,
+            "selectedMainLayers": "100",
             "sources": [
               {
                 "type": "rawdata",
@@ -237,9 +237,9 @@
                 "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
                 "filter": "red",
                 "min": 0,
-                "max": 10,
+                "max": 15,
                 "scaling": "log",
-                "brightness": 0.5,
+                "brightness": 0.75,
                 "contrast": 1
               },
               {

@@ -2,20 +2,26 @@
 
 import request from './modules/request.js';
 
-import Spinner from './modules/spinner.js';
-let spinner = new Spinner("loading-spinner");
-
 import {
   getImages,
+  renderMainLayers,
+  renderOffscreenCanvas,
+  copyOffscreenCanvasToPreview,
   initializeCanvasDestinations,
   initializeCanvas
 } from './modules/images.js';
 
-import { forLoopMinMax, roundNumber, histogram } from './modules/utilities.js';
+import {
+  consoleLogCanvasDataHistogram
+} from './modules/logging.js';
+
+import {
+  forLoopMinMax,
+  roundNumber,
+  histogram
+} from './modules/utilities.js';
 
 let app = {};
-
-spinner.hide("startup");
 
 request({ url: "app.json" })
   .then(data => {
@@ -328,7 +334,7 @@ let renderActivityPage = (category, page) => {
   initializeCanvasDestinations(page.image);
   initializeCanvas(page.image.destinations.preview);
   if (checkBrowserFeatureCapability()) {
-    getImages(page, spinner);
+    getImages(page);
     controllerImageSelectFilterLayerToAdjust(page);
     controllerImageAdjustFilterLayer(page);
     updateImageAdjustFilterLayer(page);

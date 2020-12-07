@@ -4,54 +4,62 @@
 // Image fetching and rendering ...
 //
 
-import { forLoopMinMax, roundNumber } from './utilities.js';
+import Spinner from './spinner.js';
+
+import {
+  forLoopMinMax,
+  roundNumber
+} from './utilities.js';
+
 import {
   consoleLogRawDataHistogram,
   consoleLogCanvasDataHistogram
 } from './logging.js';
 
-let spinner;
+let spinner = new Spinner("loading-spinner");
 
-let getImages = (page, spinnerFunc) => {
-  spinner = spinnerFunc;
-  for (var s = 0; s < page.image.sources.length; s++) {
-    let source = page.image.sources[s];
-    switch (source.type) {
-    case 'rawdata':
-      let mainSelected = page.image.selectedMainLayers[s] == "1" ? true : false;
-      let previewSelected = page.image.selectedSource == s ? true : false;
-      fetchRawDataForImage(page, source, mainSelected, previewSelected, renderFuncfetchRawDataForImage);
-      break;
-    case 'composite':
-      spinner.show("initializeOffscreenCanvas");
-      initializeOffscreenCanvas(source, page.image.nx, page.image.ny);
-      spinner.hide("initializeOffscreenCanvas");
-      break;
-    }
+let getImages = (page) => {
+  spinner.show("getImages");
+  fetchAllRawDataImages(page, page.image.selectedSource, renderFuncfetchRawDataForImage);
+
+  let compositeSource = page.image.sources.find(s => s.type == 'composite');
+  if (compositeSource) {
+    spinner.show("initializeOffscreenCanvas");
+    initializeOffscreenCanvas(compositeSource, page.image.nx, page.image.ny);
+    spinner.hide("initializeOffscreenCanvas");
   }
 };
 
-let fetchRawDataForImage = (page, source, mainSelected, previewSelected, renderFunc) => {
-  spinner.show("fetchRawDataForImage");
-  fetch(source.path)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      } else {
-        return response.arrayBuffer();
-      }
-    })
-    .then(arrayBuffer => {
+let fetchAllRawDataImages = (page, selectedPreviewLayer, renderFunc) => {
+  let rawDataSources = page.image.sources.filter(s => s.type == 'rawdata');
+  Promise.all(
+    rawDataSources.map(source => fetch(source.path))
+  ).then(responses => {
+    return Promise.all(responses.map(response => response.arrayBuffer()));
+  }).then(arrayBuffers => {
+    arrayBuffers.map((arrayBuffer, i) => {
+      let source = page.image.sources[i];
       source.rawdata = new Float32Array(arrayBuffer);
       addRawDataSourceAttributes(source);
       consoleLogRawDataHistogram(source);
-      renderFunc(page.image, source, mainSelected, previewSelected, page.image.nx, page.image.ny);
-      spinner.hide("then renderFunc");
-    })
-    .catch(e => {
-      spinner.cancel("fetchError");
-      console.log('There has been a problem with your fetch operation: ' + e.message);
+      let previewSelected = selectedPreviewLayer == i ? true : false;
+      renderFunc(page.image, source, previewSelected, page.image.nx, page.image.ny);
     });
+    renderMainLayers(page.image);
+    spinner.hide("then imageBufferItems");
+  }).catch(function (e) {
+    spinner.cancel("fetchError");
+    console.log('Error fetchAllRawaDataImages operation: ' + e.message);
+  });
+};
+
+let renderFuncfetchRawDataForImage = (image, source, previewSelected, nx, ny) => {
+  initializeOffscreenCanvas(source, nx, ny);
+  renderOffscreenCanvas(source, nx, ny);
+  if (previewSelected) {
+    copyOffscreenCanvasToPreview(source, image.destinations.preview, nx, ny);
+    consoleLogCanvasDataHistogram(source);
+  }
 };
 
 let addRawDataSourceAttributes = source => {
@@ -63,18 +71,6 @@ let addRawDataSourceAttributes = source => {
 
 let initializeCanvasDestinations = (image) => {
   initializeCanvasForUseWithOffScreenTransfer(image.destinations.main, image.nx, image.ny);
-};
-
-let renderFuncfetchRawDataForImage = (image, source, mainSelected, previewSelected, nx, ny) => {
-  initializeOffscreenCanvas(source, nx, ny);
-  renderOffscreenCanvas(source, nx, ny);
-  if (previewSelected) {
-    copyOffscreenCanvasToPreview(source, image.destinations.preview, nx, ny);
-    consoleLogCanvasDataHistogram(source);
-  }
-  if (mainSelected) {
-    copyOffscreenCanvasToMain(source, image.destinations.main);
-  }
 };
 
 let initializeCanvas = function (destination, nx, ny) {
@@ -371,4 +367,4 @@ let renderMainLayers = image => {
   console.log(`renderMainLayers: ${roundNumber(image.selectedMainLayers, 4)}: render: ${roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
 };
 
-export { getImages, initializeCanvasDestinations, initializeCanvas };
+export { getImages, renderMainLayers, renderOffscreenCanvas, copyOffscreenCanvasToPreview, initializeCanvasDestinations, initializeCanvas };
