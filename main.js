@@ -393,7 +393,7 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
   images.renderOffscreen(source, page.image.nx, page.image.ny);
   images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
   updateImageAdjustFilterLayer(page);
-  logger.rawData(source);
+  logger.imageData(source);
 };
 
 let renderImageSelectFilterLayerToAdjust = page => {
@@ -454,7 +454,7 @@ let controllerImageAdjustFilterLayer = page => {
     images.renderOffscreen(source, page.image.nx, page.image.ny);
     images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     images.renderMain(page.image);
-    logger.rawData(source);
+    logger.imageData(source);
   });
 
   let elemContrast = document.getElementById("contrast");
@@ -467,7 +467,7 @@ let controllerImageAdjustFilterLayer = page => {
     images.renderOffscreen(source, page.image.nx, page.image.ny);
     images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     images.renderMain(page.image);
-    logger.rawData(source);
+    logger.imageData(source);
   });
 
   let elemScaling = document.getElementById("select-scaling");
@@ -477,7 +477,7 @@ let controllerImageAdjustFilterLayer = page => {
     images.renderOffscreen(source, page.image.nx, page.image.ny);
     images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
     images.renderMain(page.image);
-    logger.rawData(source);
+    logger.imageData(source);
   });
 
 };

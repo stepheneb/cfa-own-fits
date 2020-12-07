@@ -59,7 +59,7 @@ let renderFuncfetchRawDataForImage = (image, source, previewSelected, nx, ny) =>
   images.renderOffscreen(source, nx, ny);
   if (previewSelected) {
     images.copyOffscreenToPreview(source, image.destinations.preview, nx, ny);
-    logger.canvasData(source);
+    logger.imageData(source);
   }
 };
 

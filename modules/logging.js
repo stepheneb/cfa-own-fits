@@ -5,7 +5,7 @@ import { utilities } from './utilities.js';
 
 let logger = {};
 
-logger.canvasData = source => {
+logger.imageData = source => {
   let h = utilities.histogram(source.uint8Data, 64, 0, 256);
   let [min, max] = utilities.forLoopMinMax(source.uint8Data);
   let str = `
