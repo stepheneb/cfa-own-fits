@@ -40,7 +40,7 @@ export function compileSass() {
 }
 
 const watch = () => {
-  gulp.watch(["*.html", "./css/*.css", "app.js", "app.json"], reload);
+  gulp.watch(["*.html", "./css/*.css", "app.js", "./images/**/*", "./rawdata/**/*.bin", "app.json"], reload);
   gulp.watch(myGlobs.scssSource, compileSass);
 };
 
