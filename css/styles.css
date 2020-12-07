@@ -400,9 +400,7 @@ div#preview-image-canvas-container {
   border: 2px solid white; }
 
 canvas#image-layer-preview {
-  background-color: black;
-  height: 100%;
-  width: 100%; }
+  background-color: black; }
 
 div#image-layer-histogram-container {
   height: 20%;

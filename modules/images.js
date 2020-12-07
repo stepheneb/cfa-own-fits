@@ -93,16 +93,16 @@ let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny)
   let { width, height } = destination.canvas.parentElement.getBoundingClientRect();
   let sourceAspectRatio = nx / ny;
   let destinationAspectRatio = width / height;
-  let resizeWidth, resizeHeight;
+  let resizeW, resizeH;
   if (destinationAspectRatio >= sourceAspectRatio) {
-    resizeHeight = height;
-    resizeWidth = height * sourceAspectRatio;
+    resizeH = height;
+    resizeW = height * sourceAspectRatio;
   } else {
-    resizeWidth = width;
-    resizeHeight = height * sourceAspectRatio;
+    resizeW = width;
+    resizeH = height * sourceAspectRatio;
   }
-  destination.canvas.width = resizeWidth;
-  destination.canvas.height = resizeHeight;
+  destination.canvas.width = resizeW;
+  destination.canvas.height = resizeH;
 };
 
 let initializeOffscreenCanvas = function (source, nx, ny) {
@@ -139,21 +139,19 @@ images.copyOffscreenToPreview = function (source, preview, nx, ny) {
   let { width, height } = preview.canvas.parentElement.getBoundingClientRect();
   let sourceAspectRatio = nx / ny;
   let destinationAspectRatio = width / height;
-  let resizeWidth, resizeHeight;
+  let resizeW, resizeH;
   if (destinationAspectRatio >= sourceAspectRatio) {
-    resizeHeight = height;
-    resizeWidth = height * sourceAspectRatio;
+    resizeH = height;
+    resizeW = resizeH * sourceAspectRatio;
   } else {
-    resizeWidth = width;
-    resizeHeight = height * sourceAspectRatio;
+    resizeW = width;
+    resizeH = height * sourceAspectRatio;
   }
+  let resizeAspectRatio = resizeW / resizeH;
   let imageData = new ImageData(source.uint8Data, nx, ny);
-  let bitmapP2 = createImageBitmap(imageData, 0, 0, nx, ny, { resizeWidth: resizeWidth, resizeHeight: resizeHeight });
+  let bitmapP2 = createImageBitmap(imageData, 0, 0, nx, ny, { resizeWidth: resizeW, resizeHeight: resizeH });
 
   bitmapP2.then(smallbitmap => {
-    let { width, height } = preview.canvas.getBoundingClientRect();
-    let posx = width / 2 - smallbitmap.width / 2;
-    let posy = height / 2 - smallbitmap.height / 2;
     preview.canvas.width = smallbitmap.width;
     preview.canvas.height = smallbitmap.height;
     preview.ctx.drawImage(smallbitmap, 0, 0);

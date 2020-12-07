@@ -1,7 +1,6 @@
 /*jshint esversion: 6 */
 
 import request from './modules/request.js';
-
 import { images } from './modules/images.js';
 
 import { logger } from './modules/logging.js';
@@ -14,15 +13,33 @@ let app = {};
 
 request({ url: "app.json" })
   .then(data => {
-    app = JSON.parse(data);
-    app.hashRendered = "start";
-    app.splashRendered = false;
-    app.pageNum = -1;
+    app = setupNewApp(JSON.parse(data));
     router();
   })
   .catch(error => {
     console.log(error);
   });
+
+let setupNewApp = newApp => {
+  newApp.hashRendered = "start";
+  newApp.splashRendered = false;
+  newApp.pageNum = -1;
+  newApp.categories.forEach(category => {
+    category.pages.forEach(page => {
+      if (page.image.selectedSource == undefined) {
+        page.image.selectedSource = 0;
+      }
+      if (page.image.selectedMainLayers == undefined) {
+        page.image.selectedMainLayers = "100";
+      }
+    });
+  });
+  return newApp;
+};
+
+let getSelectedSource = page => {
+  return page.image.sources[page.image.selectedSource];
+};
 
 // router
 
@@ -303,12 +320,6 @@ let checkBrowserFeatureCapability = () => {
 let renderActivityPage = (category, page) => {
   hideSplash();
   window.location.hash = `run/${category.type}/${page.name}`;
-  if (page.image.selectedSource == undefined) {
-    page.image.selectedSource = 0;
-  }
-  if (page.image.selectedMainLayers == undefined) {
-    page.image.selectedMainLayers = "100";
-  }
   renderPage(page);
   setupEventHandlers();
   page.image.destinations = {
@@ -354,7 +365,7 @@ let renderPage = page => {
         </div>
         <div class='col-2'>
           ${renderImageAboutTelescope(page)}
-          ${imageLayerHistogram.render()}
+          ${imageLayerHistogram.render(getSelectedSource(page))}
         </div>
       </div>
     </div>
@@ -459,7 +470,7 @@ let controllerImageAdjustFilterLayer = page => {
 
   let elemContrast = document.getElementById("contrast");
   elemContrast.addEventListener('input', (e) => {
-    let source = page.image.sources[page.image.selectedSource];
+    let source = getSelectedSource(page);
     source.contrast = e.target.valueAsNumber;
     let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
     source.max = source.originalMax - contrastShift;
@@ -472,7 +483,7 @@ let controllerImageAdjustFilterLayer = page => {
 
   let elemScaling = document.getElementById("select-scaling");
   elemScaling.addEventListener('change', (e) => {
-    let source = page.image.sources[page.image.selectedSource];
+    let source = getSelectedSource(page);
     source.scaling = event.target.value;
     images.renderOffscreen(source, page.image.nx, page.image.ny);
     images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
@@ -483,7 +494,7 @@ let controllerImageAdjustFilterLayer = page => {
 };
 
 let updateImageAdjustFilterLayer = page => {
-  let source = page.image.sources[page.image.selectedSource];
+  let source = getSelectedSource(page);
   document.getElementById("brightness").value = source.brightness;
   document.getElementById("contrast").value = source.contrast;
   let elemScaling = document.getElementById("select-scaling");
@@ -492,7 +503,7 @@ let updateImageAdjustFilterLayer = page => {
 };
 
 let renderImageAdjustFilterLayer = page => {
-  let source = page.image.sources[page.image.selectedSource];
+  let source = getSelectedSource(page);;
   return `
     <div class='control-collection'>
       <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
