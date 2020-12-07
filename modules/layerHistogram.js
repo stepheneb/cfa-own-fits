@@ -1,6 +1,18 @@
 /*jshint esversion: 6 */
 
-let updateLayerHistogram = (h, scaling) => {
+let imageLayerHistogram = {};
+
+imageLayerHistogram.render = () => {
+  let html = `
+    <div class="mt-2">Image Layer Histogram</div>
+    <div id="image-layer-histogram-container" class="col-12">
+      <canvas id="image-layer-histogram"></canvas>
+    </div>
+  `;
+  return html;
+};
+
+imageLayerHistogram.update = (h, scaling) => {
   let canvas = document.getElementById("image-layer-histogram");
   let { width, height } = canvas.parentElement.getBoundingClientRect();
   canvas.width = width;
@@ -29,4 +41,4 @@ let updateLayerHistogram = (h, scaling) => {
   }
 };
 
-export { updateLayerHistogram };
+export { imageLayerHistogram };

@@ -6,19 +6,20 @@
 
 import Spinner from './spinner.js';
 
-import {
-  forLoopMinMax,
-  roundNumber
-} from './utilities.js';
+import { utilities } from './utilities.js';
 
-import {
-  consoleLogRawDataHistogram,
-  consoleLogCanvasDataHistogram
-} from './logging.js';
+import { logger } from './logging.js';
 
 let spinner = new Spinner("loading-spinner");
 
-let getImages = (page) => {
+let images = {}
+
+images.init = (image, preview) => {
+  initializeCanvasDestinations(image);
+  initializeCanvas(preview);
+};
+
+images.get = (page) => {
   spinner.show("getImages");
   fetchAllRawDataImages(page, page.image.selectedSource, renderFuncfetchRawDataForImage);
 
@@ -41,11 +42,11 @@ let fetchAllRawDataImages = (page, selectedPreviewLayer, renderFunc) => {
       let source = page.image.sources[i];
       source.rawdata = new Float32Array(arrayBuffer);
       addRawDataSourceAttributes(source);
-      consoleLogRawDataHistogram(source);
+      logger.rawData(source);
       let previewSelected = selectedPreviewLayer == i ? true : false;
       renderFunc(page.image, source, previewSelected, page.image.nx, page.image.ny);
     });
-    renderMainLayers(page.image);
+    images.renderMain(page.image);
     spinner.hide("then imageBufferItems");
   }).catch(function (e) {
     spinner.cancel("fetchError");
@@ -55,10 +56,10 @@ let fetchAllRawDataImages = (page, selectedPreviewLayer, renderFunc) => {
 
 let renderFuncfetchRawDataForImage = (image, source, previewSelected, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
-  renderOffscreenCanvas(source, nx, ny);
+  images.renderOffscreen(source, nx, ny);
   if (previewSelected) {
-    copyOffscreenCanvasToPreview(source, image.destinations.preview, nx, ny);
-    consoleLogCanvasDataHistogram(source);
+    images.copyOffscreenToPreview(source, image.destinations.preview, nx, ny);
+    logger.canvasData(source);
   }
 };
 
@@ -66,7 +67,7 @@ let addRawDataSourceAttributes = source => {
   source.originalMax = source.max;
   source.originalMin = source.min;
   source.originalRange = source.originalMax - source.originalMin;
-  [source.rawDataMax, source.rawDataMin] = forLoopMinMax(source);
+  [source.rawDataMax, source.rawDataMin] = utilities.forLoopMinMax(source);
 };
 
 let initializeCanvasDestinations = (image) => {
@@ -133,7 +134,7 @@ let copyOffscreenCanvasToMain = function (source, destination) {
   destination.ctx.transferFromImageBitmap(bitmap);
 };
 
-let copyOffscreenCanvasToPreview = function (source, preview, nx, ny) {
+images.copyOffscreenToPreview = function (source, preview, nx, ny) {
   let aspectRatio = nx / ny;
   let { width, height } = preview.canvas.parentElement.getBoundingClientRect();
   let sourceAspectRatio = nx / ny;
@@ -159,7 +160,7 @@ let copyOffscreenCanvasToPreview = function (source, preview, nx, ny) {
   });
 };
 
-let renderOffscreenCanvas = function (source, nx, ny) {
+images.renderOffscreen = function (source, nx, ny) {
   let startTime = performance.now();
   let rawdata = source.rawdata;
   let pixeldata = source.uint8Data;
@@ -290,10 +291,10 @@ let renderOffscreenCanvas = function (source, nx, ny) {
   let renderTime = performance.now();
   source.ctx.putImageData(source.imageData, 0, 0);
   let putImageDataTime = performance.now();
-  console.log(`renderOffscreenCanvas: name: ${source.name}, filter: ${source.filter}: render: ${roundNumber(renderTime  - startTime, 4)}`);
+  console.log(`images.renderOffscreen: name: ${source.name}, filter: ${source.filter}: render: ${utilities.roundNumber(renderTime  - startTime, 4)}`);
 };
 
-let renderMainLayers = image => {
+images.renderMain = image => {
   let startTime = performance.now();
   let rgbsource = image.sources[3];
   let pixeldata = rgbsource.uint8Data;
@@ -364,7 +365,7 @@ let renderMainLayers = image => {
   let bitmap = rgbsource.offscreenCanvas.transferToImageBitmap();
   image.destinations.main.ctx.transferFromImageBitmap(bitmap);
   let transferToImageBitmapTime = performance.now();
-  console.log(`renderMainLayers: ${roundNumber(image.selectedMainLayers, 4)}: render: ${roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
+  console.log(`renderMain: ${utilities.roundNumber(image.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${utilities.roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
 };
 
-export { getImages, renderMainLayers, renderOffscreenCanvas, copyOffscreenCanvasToPreview, initializeCanvasDestinations, initializeCanvas };
+export { images };

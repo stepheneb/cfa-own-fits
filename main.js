@@ -2,24 +2,13 @@
 
 import request from './modules/request.js';
 
-import {
-  getImages,
-  renderMainLayers,
-  renderOffscreenCanvas,
-  copyOffscreenCanvasToPreview,
-  initializeCanvasDestinations,
-  initializeCanvas
-} from './modules/images.js';
+import { images } from './modules/images.js';
 
-import {
-  consoleLogCanvasDataHistogram
-} from './modules/logging.js';
+import { logger } from './modules/logging.js';
 
-import {
-  forLoopMinMax,
-  roundNumber,
-  histogram
-} from './modules/utilities.js';
+import { utilities } from './modules/utilities.js';
+
+import { imageLayerHistogram } from './modules/layerHistogram.js';
 
 let app = {};
 
@@ -331,10 +320,9 @@ let renderActivityPage = (category, page) => {
       img: document.getElementById('image-layer-preview')
     }
   };
-  initializeCanvasDestinations(page.image);
-  initializeCanvas(page.image.destinations.preview);
+  images.init(page.image, page.image.destinations.preview);
   if (checkBrowserFeatureCapability()) {
-    getImages(page);
+    images.get(page);
     controllerImageSelectFilterLayerToAdjust(page);
     controllerImageAdjustFilterLayer(page);
     updateImageAdjustFilterLayer(page);
@@ -366,7 +354,7 @@ let renderPage = page => {
         </div>
         <div class='col-2'>
           ${renderImageAboutTelescope(page)}
-          ${renderImageLayerHistogram()}
+          ${imageLayerHistogram.render()}
         </div>
       </div>
     </div>
@@ -402,10 +390,10 @@ let controllerImageSelectFilterLayerToAdjust = (page) => {
 let selectImageFilterLayerToAdjust = (page, layerNum) => {
   page.image.selectedSource = layerNum;
   let source = page.image.sources[layerNum];
-  renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-  copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
+  images.renderOffscreen(source, page.image.nx, page.image.ny);
+  images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
   updateImageAdjustFilterLayer(page);
-  consoleLogCanvasDataHistogram(source);
+  logger.rawData(source);
 };
 
 let renderImageSelectFilterLayerToAdjust = page => {
@@ -463,10 +451,10 @@ let controllerImageAdjustFilterLayer = page => {
     let source = page.image.sources[page.image.selectedSource];
     let brightness = e.target.valueAsNumber;
     source.brightness = brightness;
-    renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-    copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    renderMainLayers(page.image);
-    consoleLogCanvasDataHistogram(source);
+    images.renderOffscreen(source, page.image.nx, page.image.ny);
+    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
+    images.renderMain(page.image);
+    logger.rawData(source);
   });
 
   let elemContrast = document.getElementById("contrast");
@@ -476,20 +464,20 @@ let controllerImageAdjustFilterLayer = page => {
     let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
     source.max = source.originalMax - contrastShift;
     source.min = Math.max(0, source.originalMin + contrastShift);
-    renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-    copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    renderMainLayers(page.image);
-    consoleLogCanvasDataHistogram(source);
+    images.renderOffscreen(source, page.image.nx, page.image.ny);
+    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
+    images.renderMain(page.image);
+    logger.rawData(source);
   });
 
   let elemScaling = document.getElementById("select-scaling");
   elemScaling.addEventListener('change', (e) => {
     let source = page.image.sources[page.image.selectedSource];
     source.scaling = event.target.value;
-    renderOffscreenCanvas(source, page.image.nx, page.image.ny);
-    copyOffscreenCanvasToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    renderMainLayers(page.image);
-    consoleLogCanvasDataHistogram(source);
+    images.renderOffscreen(source, page.image.nx, page.image.ny);
+    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
+    images.renderMain(page.image);
+    logger.rawData(source);
   });
 
 };
@@ -559,16 +547,6 @@ let renderImageAdjustFilterLayer = page => {
   `;
 };
 
-let renderImageLayerHistogram = () => {
-  let html = `
-    <div class="mt-2">Image Layer Histogram (uint8Data)</div>
-    <div id="image-layer-histogram-container" class="col-12">
-      <canvas id="image-layer-histogram"></canvas>
-    </div>
-  `;
-  return html;
-};
-
 let renderMainImageContent = page => {
   return `
     <div class='main-image-content'>
@@ -585,7 +563,7 @@ let controllerImageSelectMainLayer = page => {
   elem.addEventListener('change', (e) => {
     let checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"'));
     page.image.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
-    renderMainLayers(page.image);
+    images.renderMain(page.image);
   });
 };
 
