@@ -4,6 +4,8 @@ import gulp from 'gulp';
 import browserSync from 'browser-sync';
 import cp from 'child_process';
 
+import jest from 'gulp-jest';
+
 //SASS
 import sass from "gulp-sass";
 // Post CSS and Plugins
@@ -39,12 +41,30 @@ export function compileSass() {
     .pipe(gulp.dest(myGlobs.cssDest)); // save the compiled files
 }
 
+const runJest = () => {
+  process.env.NODE_ENV = 'test';
+  return gulp
+    .src("tests/**/*test.js")
+    .pipe(jest({
+      "preprocessorIgnorePatterns": [
+        "<rootDir>/dist/", "<rootDir>/node_modules/"
+      ],
+      "automock": false
+    }));
+};
+
 const watch = () => {
   gulp.watch(["*.html", "./css/*.css", "main.js", "./modules/*.js", "./images/**/*", "./rawdata/**/*.bin", "app.json"], reload);
   gulp.watch(myGlobs.scssSource, compileSass);
 };
 
+const test = () => {
+  gulp.watch(["tests/**/*test.js", "main.js", "modules/**/*.js"], runJest);
+};
+
 const dev = gulp.series(serve, watch);
 dev.description = 'Start server and use browsersync to watch files and update pages.';
 
+// export { dev, test };
+exports.test = test;
 exports.default = dev;

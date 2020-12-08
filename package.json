@@ -4,7 +4,14 @@
   "description": "Simple astronomical image manipulation",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test-debug": "node --inspect-brk node_modules/.bin/jest --runInBand --verbose"
+  },
+  "jest": {
+    "verbose": true,
+    "transform": {
+      "^.+\\.[t|j]s?$": "babel-jest"
+    }
   },
   "repository": {
     "type": "git",
@@ -22,10 +29,17 @@
   "homepage": "https://github.com/stepheneb/cfa-own-fits#readme",
   "dependencies": {},
   "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "babel-jest": "^26.6.3",
     "browser-sync": "^2.26.13",
     "esm": "^3.2.25",
     "gulp": "^4.0.2",
+    "gulp-jest": "https://registry.npmjs.org/@jacobq/gulp-jest/-/gulp-jest-4.0.3-PR65.tgz",
     "gulp-sass": "^4.1.0",
+    "jest": "^26.6.3",
+    "jest-cli": "^26.6.3",
     "node-sass": "^5.0.0"
   }
 }
