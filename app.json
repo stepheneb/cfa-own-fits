@@ -28,14 +28,14 @@
               "imagepath": "images/hubble-small.jpg",
               "description": "more info about the Hubble telescope goes here ..."
             },
-            "nx": 2600,
-            "ny": 2500,
+            "nx": 1300,
+            "ny": 1250,
             "maximumBrightness": 2,
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/HST_Lagoon/HST_Lagoon_f658Red.bin",
+                "path": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f658Red.bin",
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -46,7 +46,7 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/HST_Lagoon//HST_Lagoon_f656Green.bin",
+                "path": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f656Green.bin",
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -57,7 +57,7 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/HST_Lagoon/HST_Lagoon_f502Blue.bin",
+                "path": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f502Blue.bin",
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -91,14 +91,14 @@
               "imagepath": "images/hubble-small.jpg",
               "description": "more info about the Hubble telescope goes here ..."
             },
-            "nx": 2384,
-            "ny": 3600,
+            "nx": 1192,
+            "ny": 1800,
             "maximumBrightness": 2,
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/m51/m51_optical_R.bin",
+                "path": "rawdata/m51/1192x1800/m51_optical_R.bin",
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -109,7 +109,7 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/m51/m51_optical_G.bin",
+                "path": "rawdata/m51/1192x1800/m51_optical_G.bin",
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -120,70 +120,7 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/m51/m51_optical_B.bin",
-                "filter": "blue",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "composite",
-                "name": "RGB",
-                "layers": [
-                  "Red",
-                  "Green",
-                  "Blue"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "colliding-galaxies",
-          "title": "Colliding Galaxies?",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
-          "adjustimagetext": "Use these sliders to show more detail in the image",
-          "image": {
-            "name": "Antennae galaxies",
-            "about": {
-              "prologue": "These images were taken with the",
-              "telescope": "Hubble",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
-            },
-            "nx": 1055,
-            "ny": 1075,
-            "maximumBrightness": 2,
-            "sources": [
-              {
-                "type": "rawdata",
-                "name": "Red",
-                "path": "rawdata/heic0615/red.bin",
-                "filter": "red",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Green",
-                "path": "rawdata/heic0615/green-resized-to1055x1075.bin",
-                "filter": "green",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Blue",
-                "path": "rawdata/heic0615/blue.bin",
+                "path": "rawdata/m51/1192x1800/m51_optical_B.bin",
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -234,7 +171,7 @@
               {
                 "type": "rawdata",
                 "name": "Infrared",
-                "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
+                "path": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bin",
                 "filter": "red",
                 "min": 0,
                 "max": 15,
@@ -245,7 +182,7 @@
               {
                 "type": "rawdata",
                 "name": "Optical",
-                "path": "rawdata/M82/M82_Hubble_Optical.bin",
+                "path": "rawdata/M82/1270x1270/M82_Hubble_Optical.bin",
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -256,7 +193,7 @@
               {
                 "type": "rawdata",
                 "name": "X-Ray",
-                "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
+                "path": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bin",
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -305,7 +242,7 @@
               {
                 "type": "rawdata",
                 "name": "Infrared",
-                "path": "rawdata/M82/M82_Spitzer_mid_Infrared.bin",
+                "path": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bin",
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -316,7 +253,7 @@
               {
                 "type": "rawdata",
                 "name": "Optical",
-                "path": "rawdata/M82/M82_Hubble_Optical.bin",
+                "path": "rawdata/M82/1270x1270/M82_Hubble_Optical.bin",
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -327,7 +264,7 @@
               {
                 "type": "rawdata",
                 "name": "X-Ray",
-                "path": "rawdata/M82/M82_Chandra_Xray_mid_energy.bin",
+                "path": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bin",
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
