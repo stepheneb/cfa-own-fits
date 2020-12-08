@@ -6,9 +6,9 @@
 
 import Spinner from './spinner.js';
 
-import { utilities } from './utilities.js';
+import utilities from './utilities.js';
 
-import { logger } from './logging.js';
+import logger from './logger.js';
 
 let spinner = new Spinner("loading-spinner");
 
@@ -366,4 +366,4 @@ images.renderMain = image => {
   console.log(`renderMain: ${utilities.roundNumber(image.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${utilities.roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
 };
 
-export { images };
+export default images;

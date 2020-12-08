@@ -1,7 +1,7 @@
 /*jshint esversion: 6 */
 
-import { imageLayerHistogram } from './layerHistogram.js';
-import { utilities } from './utilities.js';
+import layerHistogram from './layerHistogram.js';
+import utilities from './utilities.js';
 
 let logger = {};
 
@@ -17,7 +17,7 @@ logger.imageData = source => {
   `;
   console.log(str);
   console.table(h);
-  imageLayerHistogram.update(h, source.scaling);
+  layerHistogram.update(h, source.scaling);
 };
 
 logger.rawData = source => {
@@ -27,4 +27,4 @@ logger.rawData = source => {
   console.table(h);
 };
 
-export { logger };
+export default logger;

@@ -53,4 +53,4 @@ utilities.histogram = (array, numbuckets, min, max) => {
   return buckets;
 };
 
-export { utilities };
+export default utilities;
