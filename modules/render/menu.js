@@ -3,6 +3,7 @@
 // Activity Menu page
 
 import events from '../events.js';
+import router from '../router.js';
 import checkBrowser from '../checkBrowser.js';
 import splash from './splash.js';
 import renderActivity from './activity.js';
@@ -68,8 +69,7 @@ renderMenu.page = (category) => {
   events.setupGlobal();
   checkBrowser();
   splash.hide();
-  app.hashRendered = hash;
-  window.location.hash = hash;
+  router.updateHash(hash);
 };
 
 renderMenu.pageHeader = () => {
@@ -139,8 +139,7 @@ renderMenu.categoryPages = (category) => {
       }
     }
   }
-  app.hashRendered = hash;
-  window.location.hash = hash;
+  router.updateHash(hash);
 };
 
 renderMenu.activityCategoryPages = () => {

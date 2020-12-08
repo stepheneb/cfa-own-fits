@@ -4,7 +4,9 @@
 
 import images from '../images.js';
 import events from '../events.js';
+import router from '../router.js';
 import layerHistogram from '../layerHistogram.js';
+import renderMenu from './menu.js';
 import renderDev from './dev.js';
 import renderUtil from './util.js';
 import splash from './splash.js';
@@ -15,7 +17,6 @@ let renderActivity = {};
 
 renderActivity.page = (category, page) => {
   splash.hide();
-  window.location.hash = `run/${category.type}/${page.name}`;
   let html = `
     <div id='page-1' class='activity-page'>
       ${renderPageHeader(page)}
@@ -57,9 +58,9 @@ renderActivity.page = (category, page) => {
     controllerImageSelectMainLayer(page);
   }
   document.getElementById('btn-back').addEventListener('click', event => {
-    window.location.hash = `menu/${category.type}`;
+    renderMenu.page(category);
   });
-  app.hashRendered = window.location.hash;
+  router.updateHash(`run/${category.type}/${page.name}`);
 };
 
 //

@@ -3,6 +3,7 @@
 // Splash page
 
 import router from '../router.js';
+import renderMenu from './menu.js';
 import renderActivity from './activity.js';
 
 let splash = {};
@@ -40,7 +41,7 @@ splash.hide = () => {
 
 let splashListener = e => {
   splash.hide();
-  window.location.hash = 'menu';
+  renderMenu.page();
 };
 
 export default splash;

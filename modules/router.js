@@ -14,7 +14,7 @@ router.route = () => {
     let category = app.categories.find(c => c.type == router.path.category);
     let page = null;
     if (category) {
-      page = category.pages.find(p => p.name == router.path.name);
+      page = category.pages.find(p => p.name == router.path.page);
     }
     switch (router.path.action) {
     case "menu":
@@ -27,7 +27,8 @@ router.route = () => {
     case "run":
       if (category && page) {
         renderActivity.page(category, page);
-      } {
+      }
+      if (category && !page) {
         renderMenu.page();
       }
       break;
@@ -59,11 +60,16 @@ router.pageRendered = mesg => {
 
 };
 
-router.setHash = h => {
-  let search = "?dev=1";
+router.updateHash = h => {
+  if (h.charAt(0) != '#') {
+    h = '#' + h;
+  }
+  let search = "";
   let hash = h + search;
   app.hashRendered = hash;
-  window.location.hash = hash;
+  if (hash != window.location.hash) {
+    window.location.hash = hash;
+  }
   return hash;
 };
 
