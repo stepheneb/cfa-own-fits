@@ -54,12 +54,12 @@ const runJest = () => {
 };
 
 const watch = () => {
-  gulp.watch(["*.html", "./css/*.css", "main.js", "./modules/*.js", "./images/**/*", "./rawdata/**/*.bin", "app.json"], reload);
+  gulp.watch(["*.html", "./css/*.css", "main.js", "./modules/**/*.js", "./images/**/*", "./rawdata/**/*.bin", "app.json"], reload);
   gulp.watch(myGlobs.scssSource, compileSass);
 };
 
 const test = () => {
-  gulp.watch(["tests/**/*test.js", "main.js", "modules/**/*.js"], runJest);
+  gulp.watch(["tests/**/*test.js", "main.js", "./modules/**/*.js"], runJest);
 };
 
 const dev = gulp.series(serve, watch);
