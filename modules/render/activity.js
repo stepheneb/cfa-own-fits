@@ -202,7 +202,7 @@ let renderImageAdjustFilterLayer = page => {
       <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       <div class='row'>
         <div class='col-4'>
-          <label class="pl-2" for='brightness'>Brightness</label>
+          <label for='brightness'>Brightness</label>
         </div>
         <div class='col-8'>
           <input type='range' id='brightness' name='brightness'  min='0' max='${page.image.maximumBrightness}' value='${page.image.maximumBrightness / 2}'
@@ -212,7 +212,7 @@ let renderImageAdjustFilterLayer = page => {
 
       <div class=' row'>
         <div class='col-4'>
-          <label class="pl-2" for='contrast'>Contrast</label>
+          <label for='contrast'>Contrast</label>
         </div>
         <div class='col-8'>
           <input type='range' id='contrast' name='contrast' min='0.04' max='1.96' value='1' step='0.01'>
@@ -221,7 +221,7 @@ let renderImageAdjustFilterLayer = page => {
 
       <div class='row'>
         <div class='col-4'>
-          <label class="pl-2" for='color-shift'>Color Shift</label>
+          <label for='color-shift'>Color Shift</label>
         </div>
         <div class='col-8'>
           <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' disabled>
@@ -230,22 +230,24 @@ let renderImageAdjustFilterLayer = page => {
 
       <div class='row'>
         <div class='col-4'>
-          <label class="pl-2">Scaling</label>
+          <label>Scaling</label>
         </div>
-        <form id="select-scaling" class="d-flex flex-row justify-content-start">
-          <div class="select-scaling-label">
-            <label for="select-scaling-linear">Linear</label>
-          </div>
-          <div class="select-scaling-radio">
-            <input id="select-scaling-linear" type="radio" name="scaling" value="linear">
-          </div>
-          <div class="select-scaling-label">
-            <label for="select-scaling-log">Log</label>
-          </div>
-          <div class="select-scaling-radio">
-            <input id="select-scaling-log" type="radio" name="scaling" value="log">
-          </div>
-        </form>
+        <div class="col-8">
+          <form id="select-scaling" class="d-flex flex-row justify-content-start">
+            <div class="select-scaling-label">
+              <label for="select-scaling-linear">Linear</label>
+            </div>
+            <div class="select-scaling-radio">
+              <input id="select-scaling-linear" type="radio" name="scaling" value="linear">
+            </div>
+            <div class="select-scaling-label">
+              <label for="select-scaling-log">Log</label>
+            </div>
+            <div class="select-scaling-radio">
+              <input id="select-scaling-log" type="radio" name="scaling" value="log">
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   `;
@@ -273,7 +275,7 @@ let controllerImageSelectMainLayer = page => {
 
 let renderUnderMainImageRow = page => {
   return `
-    <div class="d-flex flex-row justify-content-start mt-2">
+    <div id="under-main-image-row" class="d-flex flex-row justify-content-start">
       <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
       <form id="image-select-main-layer">
         <div class="d-flex flex-row justify-content-start">

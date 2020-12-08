@@ -23,7 +23,7 @@ html {
 
   /* font sizes */
   --menu-page-title: 5vh;
-  --menu-page-subtitle: 2.8vh;
+  --menu-page-subtitle: 1vw;
   --menu-activity-category-title: 2.2vh;
   --menu-activity-category-page-title: 2vh;
   --menu-activity-category-page-subtitle: 1.8vh;
@@ -37,7 +37,7 @@ html {
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
   font-size: 16px;
-  font-size: 1.6vh;
+  font-size: 0.9vw;
   color: lightgray;
   background-image: url("../images/background.jpg");
   background-size: cover;
@@ -402,7 +402,7 @@ button {
 }
 
 .page-subtitle {
-  font-size: 2vh;
+  line-height: 120%;
   font-size: var(--page-subtitle);
   padding: 0.5rem 0rem;
   color: var(--bright-teal);
@@ -410,6 +410,10 @@ button {
 
 .main-image-content {
   display: inline-block;
+}
+
+#under-main-image-row {
+  margin-top: 0.75rem;
 }
 
 .about-telescope {
@@ -423,6 +427,9 @@ button {
   background-color: #042842;
   margin-bottom: 1px;
   padding: 0.5rem;
+  div {
+    margin: 0.05vh 0rem;
+  }
 }
 
 .control-collection-text {
