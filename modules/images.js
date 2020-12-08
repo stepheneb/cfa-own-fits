@@ -120,11 +120,10 @@ let initializeOffscreenCanvas = function (source, nx, ny) {
 };
 
 let setAlpha = (source, value) => {
-  let i,
-    pixeldata = source.uint8Data,
+  let pixeldata = source.uint8Data,
     len = pixeldata.length;
 
-  for (i = 3; i < len; i += 4) {
+  for (var i = 3; i < len; i += 4) {
     pixeldata[i] = value;
   }
 };
@@ -213,7 +212,7 @@ images.renderOffscreen = function (source, nx, ny) {
 
       let len = pixeldata.length;
 
-      for (i = 0; i < len; i += 4) {
+      for (var i = 0; i < len; i += 4) {
         pixeldata[i] = pixeldataRed[i];
         pixeldata[i + 1] = pixeldataGreen[i + 1];
         pixeldata[i + 3] = pixeldataBlue[i + 2];
@@ -268,7 +267,7 @@ images.renderOffscreen = function (source, nx, ny) {
 
       let len = pixeldata.length;
 
-      for (i = 0; i < len; i += 4) {
+      for (var i = 0; i < len; i += 4) {
         pixeldata[i] = pixeldataRed[i];
         pixeldata[i + 1] = pixeldataGreen[i + 1];
         pixeldata[i + 3] = pixeldataBlue[i + 2];
@@ -299,8 +298,8 @@ images.renderMain = image => {
   let pixeldataRed = image.sources[0].uint8Data;
   let pixeldataGreen = image.sources[1].uint8Data;
   let pixeldataBlue = image.sources[2].uint8Data;
-  let i = 0;
   let len = pixeldataRed.length;
+  let i = 0;
 
   switch (image.selectedMainLayers) {
   case '000': // No layers
