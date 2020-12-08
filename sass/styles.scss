@@ -519,6 +519,8 @@ div#preview-image-canvas-container {
 
 canvas#image-layer-preview {
   background-color: black;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 div#image-layer-histogram-container {
