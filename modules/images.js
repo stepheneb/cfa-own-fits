@@ -205,6 +205,20 @@ images.renderOffscreen = function (source, nx, ny) {
         }
       }
       break;
+    case 'gray':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = val * scale - min;
+          pixeldata[pixindex] = scaledval;
+          pixeldata[++pixindex] = scaledval;
+          pixeldata[++pixindex] = scaledval;
+          pixindex += 2;
+        }
+      }
+      break;
     case 'RGB':
       let pixeldataRed = image.sources[0].uint8Data;
       let pixeldataGreen = image.sources[1].uint8Data;
@@ -257,6 +271,20 @@ images.renderOffscreen = function (source, nx, ny) {
           scaledval = Math.log(val + 1) * scale;
           pixeldata[pixindex + 2] = scaledval;
           pixindex += 4;
+        }
+      }
+      break;
+    case 'gray':
+      pixindex = 0;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          val = rawdata[i];
+          scaledval = Math.log(val + 1) * scale;
+          pixeldata[pixindex] = scaledval;
+          pixeldata[++pixindex] = scaledval;
+          pixeldata[++pixindex] = scaledval;
+          pixindex += 2;
         }
       }
       break;
@@ -435,6 +463,20 @@ images.renderPalettes = page => {
           i = y * nx + x;
           uint8Data[pixindex] = 0;
           uint8Data[++pixindex] = 0;
+          uint8Data[++pixindex] = color;
+          uint8Data[++pixindex] = alpha;
+          pixindex++;
+          color++;
+        }
+      }
+      break;
+    case 'gray':
+      for (y = 0; y < ny; y++) {
+        color = 0;
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          uint8Data[pixindex] = color;
+          uint8Data[++pixindex] = color;
           uint8Data[++pixindex] = color;
           uint8Data[++pixindex] = alpha;
           pixindex++;
