@@ -56,6 +56,7 @@ renderActivity.page = (category, page) => {
     controllerImageAdjustFilterLayer(page);
     updateImageAdjustFilterLayer(page);
     controllerImageSelectMainLayer(page);
+    images.renderPalettes(page);
   }
   document.getElementById('btn-back').addEventListener('click', event => {
     renderMenu.page(category);
@@ -102,15 +103,15 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
 
 let renderImageSelectFilterLayerToAdjust = page => {
   return `
-    <div class='control-collection'>
-      <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
-      <form id="image-select-filter-layer-to-adjust">
-        ${renderRadioButtons(page)}
-      </form>
+    <div id="image-select-filter-layer-to-adjust"  class='control-collection'>
+      <div class="row">
+        <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
+      </div>
+      ${renderButtonsAndPalletes(page)}
     </div>
   `;
 
-  function renderRadioButtons(page) {
+  function renderButtonsAndPalletes(page) {
     let sources = page.image.sources;
     let html = '';
     for (var i = 0; i < sources.length; i++) {
@@ -118,11 +119,20 @@ let renderImageSelectFilterLayerToAdjust = page => {
       if (source.type == "rawdata") {
         html += `
               <div class='row'>
-                <div class='select-filter-radio'>
-                  <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
+                <div class="col-4">
+                  <div class='row'>
+                    <div class='select-filter-radio'>
+                      <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
+                    </div>
+                    <div class='select-filter-label'>
+                      <label for='select-rgb-${i}'>${source.name}</label>
+                    </div>
+                  </div>
                 </div>
-                <div class='select-filter-label'>
-                  <label for='select-rgb-${i}'>${source.name}</label>
+                <div class="col-8">
+                  <div class='filter-palette'>
+                    ${renderPalette(source)}
+                  </div>
                 </div>
               </div>
             `;
@@ -130,6 +140,12 @@ let renderImageSelectFilterLayerToAdjust = page => {
     }
     return html;
   }
+};
+
+let renderPalette = source => {
+  return `
+    <canvas id="palette-${source.filter}"></canvas>
+  `;
 };
 
 let renderImageLayerPreview = page => {
@@ -196,7 +212,7 @@ let updateImageAdjustFilterLayer = page => {
 };
 
 let renderImageAdjustFilterLayer = page => {
-  let source = renderUtil.getSelectedSource(page);;
+  let source = renderUtil.getSelectedSource(page);
   return `
     <div class='control-collection'>
       <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>

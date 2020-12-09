@@ -437,8 +437,8 @@ button {
 }
 
 .select-filter-radio {
-  padding-left: 1rem;
-  min-width: 3rem;
+  padding-left: 0rem;
+  min-width: 2rem;
 }
 
 .select-filter-label:hover {
@@ -528,6 +528,14 @@ canvas#image-layer-preview {
   background-color: black;
   max-height: 100%;
   max-width: 100%;
+}
+
+div.filter-palette {
+  height: 1.3vh;
+  canvas {
+    height: 100%;
+    width: 80%;
+  }
 }
 
 div#image-layer-histogram-container {
