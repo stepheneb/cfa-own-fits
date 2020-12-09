@@ -6,6 +6,10 @@
 
 let utilities = {};
 
+utilities.isString = (x) => {
+  return Object.prototype.toString.call(x) === "[object String]";
+};
+
 utilities.containsAll = (arr1, arr2) =>
   arr2.every(arr2Item => arr1.includes(arr2Item));
 
