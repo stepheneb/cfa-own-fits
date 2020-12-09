@@ -16,9 +16,12 @@ import checkBrowser from '../checkBrowser.js';
 let renderActivity = {};
 
 renderActivity.page = (category, page) => {
+  let renderedCallbacks = [];
   splash.hide();
   let html = `
-    <div id='page-1' class='activity-page'>
+    <div id='page-1' class='activity-page'
+      data-categorytype="${category.type}"
+      data-pagename="${page.name}">
       ${renderPageHeader(page)}
 
       <div class='row'>
@@ -36,9 +39,10 @@ renderActivity.page = (category, page) => {
         </div>
       </div>
     </div>
-    ${renderPageNavigation()}
+    ${renderPageNavigation(renderedCallbacks)}
   `;
   document.getElementById("content").innerHTML = html;
+  renderedCallbacks.forEach(func => func());
   events.setupGlobal();
   page.image.destinations = {
     main: {
@@ -121,16 +125,16 @@ let renderImageSelectFilterLayerToAdjust = page => {
               <div class='row'>
                 <div class="col-4">
                   <div class='row'>
-                    <div class='select-filter-radio'>
+                    <div class='select-filter-radio align-self-start'>
                       <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
                     </div>
-                    <div class='select-filter-label'>
-                      <label for='select-rgb-${i}'>${source.name}</label>
+                    <div class='select-filter-label align-self-start'>
+                      <label class='align-self-start' for='select-rgb-${i}'>${source.name}</label>
                     </div>
                   </div>
                 </div>
                 <div class="col-8">
-                  <div class='filter-palette'>
+                  <div class='row filter-palette'>
                     ${renderPalette(source)}
                   </div>
                 </div>
@@ -144,7 +148,7 @@ let renderImageSelectFilterLayerToAdjust = page => {
 
 let renderPalette = source => {
   return `
-    <canvas id="palette-${source.filter}"></canvas>
+    <canvas id="palette-${source.filter}" class="align-self-end"></canvas>
   `;
 };
 
@@ -244,7 +248,7 @@ let renderImageAdjustFilterLayer = page => {
         </div>
       </div>
 
-      <div class='row'>
+      <div id="scaling-control" class='row developer'>
         <div class='col-4'>
           <label>Scaling</label>
         </div>
@@ -271,7 +275,7 @@ let renderImageAdjustFilterLayer = page => {
 
 let renderMainImageContent = page => {
   return `
-    <div class='main-image-content'>
+    <div id='main-image-content' class='main-image-content'>
       <div id="main-image-canvas-container" class="row d-flex justify-content-center">
         <canvas id='main-image-canvas'></canvas>
       </div>
@@ -326,11 +330,18 @@ let renderUnderMainImageLayerSelectors = page => {
   return html;
 };
 
-let renderPageNavigation = () => {
+let renderPageNavigation = (renderedCallbacks) => {
+  let id = "page-navigation";
   return `
     <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
       ${renderPageNavigationButtonBack()}
-      ${renderDev.fullScreenButton()}
+      <div class="pl-1 pr-1 ml-auto">
+        <div class="row">
+          ${renderDev.developerToolsButton(id, renderedCallbacks)}
+          ${renderDev.fullScreenButton(id, document, renderedCallbacks)}
+        </div>
+      </div>
+
     </div>
   `;
 };

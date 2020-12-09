@@ -382,6 +382,20 @@ input:checked {
 #select-scaling .select-scaling-label {
   margin-left: 1em; }
 
+div#btn-toggle-fullscreen-page-navigation svg {
+  width: 2em;
+  height: 2em;
+  margin: 0.4em 0.5em 0em 1em;
+  fill: gray;
+  display: none; }
+  div#btn-toggle-fullscreen-page-navigation svg:hover {
+    fill: white; }
+  div#btn-toggle-fullscreen-page-navigation svg .show {
+    display: flex; }
+
+div#btn-toggle-fullscreen-page-navigation svg.show {
+  display: flex; }
+
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
 div#main-image-canvas-container {
   width: 50vw;
@@ -389,7 +403,8 @@ div#main-image-canvas-container {
   margin: 0;
   padding: 0;
   background-color: var(--almost-black);
-  border: 3px solid white; }
+  border: 3px solid white;
+  border-radius: 3px; }
 
 canvas {
   background-color: black;
@@ -402,7 +417,8 @@ div#preview-image-canvas-container {
   width: 100%;
   margin: 0;
   background-color: var(--almost-black);
-  border: 2px solid white; }
+  border: 1px solid white;
+  border-radius: 3px; }
 
 canvas#image-layer-preview {
   background-color: black;
@@ -410,16 +426,28 @@ canvas#image-layer-preview {
   max-width: 100%; }
 
 div.filter-palette {
-  height: 1.3vh; }
+  height: 1.6vh; }
   div.filter-palette canvas {
     height: 100%;
     width: 80%; }
 
+div.layer-histogram {
+  display: none; }
+
+div.layer-histogram.developer.show {
+  display: block; }
+
+#scaling-control {
+  display: none; }
+
+#scaling-control.developer.show {
+  display: flex; }
+
 div#image-layer-histogram-container {
-  height: 20%;
+  height: 20vh;
   width: 100%;
   margin: 0.5em 0em;
-  padding: 2px;
+  padding: 0px;
   background-color: var(--almost-black);
   border: 1px solid var(--bright-teal); }
 

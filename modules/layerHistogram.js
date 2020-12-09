@@ -4,9 +4,11 @@ let layerHistogram = {};
 
 layerHistogram.render = () => {
   let html = `
-    <div class="mt-2">Image Layer Histogram</div>
-    <div id="image-layer-histogram-container" class="col-12">
-      <canvas id="image-layer-histogram"></canvas>
+    <div id="layer-histogram" class="layer-histogram developer">
+      <div class="mt-2">Image Layer Histogram</div>
+      <div id="image-layer-histogram-container" class="col-12">
+        <canvas id="image-layer-histogram"></canvas>
+      </div>
     </div>
   `;
   return html;
