@@ -16,7 +16,7 @@ let images = {}
 
 images.init = (image, preview) => {
   initializeCanvasDestinations(image);
-  initializeCanvas(preview);
+  images.initializeCanvas(preview);
 };
 
 images.get = (page) => {
@@ -74,7 +74,7 @@ let initializeCanvasDestinations = (image) => {
   initializeCanvasForUseWithOffScreenTransfer(image.destinations.main, image.nx, image.ny);
 };
 
-let initializeCanvas = function (destination, nx, ny) {
+images.initializeCanvas = function (destination, nx, ny) {
   let canvas = destination.canvas;
   destination.ctx = canvas.getContext('2d');
   destination.ctx.fillStyle = "rgb(0,0,0)";
@@ -88,9 +88,12 @@ let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny)
   destination.ctx.fillStyle = "rgb(0,0,0)";
   destination.ctx.imageSmoothingEnabled = true;
   destination.ctx.globalCompositeOperation = "source-over";
+  images.resizeCanvas(destination.canvas, nx, ny);
+};
 
+images.resizeCanvas = (canvas, nx, ny) => {
   let aspectRatio = nx / ny;
-  let { width, height } = destination.canvas.parentElement.getBoundingClientRect();
+  let { width, height } = canvas.parentElement.getBoundingClientRect();
   let sourceAspectRatio = nx / ny;
   let destinationAspectRatio = width / height;
   let resizeW, resizeH;
@@ -101,8 +104,8 @@ let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny)
     resizeW = width;
     resizeH = height * sourceAspectRatio;
   }
-  destination.canvas.width = resizeW;
-  destination.canvas.height = resizeH;
+  canvas.width = resizeW;
+  canvas.height = resizeH;
 };
 
 let initializeOffscreenCanvas = function (source, nx, ny) {

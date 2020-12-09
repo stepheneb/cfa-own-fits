@@ -12,6 +12,8 @@ html {
 
 :root {
   /* colors */
+  --toggle-fullscreen: rgba(64, 64, 64, 128);
+  --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
   --almost-black: #080808;
   --bright-green: #bff5aa;
   --bright-teal: #3ddaf6;
@@ -408,14 +410,6 @@ button {
   color: var(--bright-teal);
 }
 
-.main-image-content {
-  display: inline-block;
-}
-
-#under-main-image-row {
-  margin-top: 0.75rem;
-}
-
 .about-telescope {
   padding: 0.75rem 0rem;
   font-size: var(--page-subtitle);
@@ -498,27 +492,58 @@ input:checked {
   }
 }
 
-div#btn-toggle-fullscreen-page-navigation svg {
-  width: 2em;
-  height: 2em;
-  margin: 0.4em 0.5em 0em 1em;
-  fill: gray;
+div.btn-toggle-fullscreen svg {
+  width: 2.2vh;
+  height: 2.2vh;
+  margin: 0vh 0.5vh 0.5vh 1vh;
+  fill: var(--toggle-fullscreen);
   &:hover {
-    fill: white;
+    fill: var(--toggle-fullscreen-hover);
   }
   display: none;
-  .show {
+  &.show {
     display: flex;
   }
 }
 
-div#btn-toggle-fullscreen-page-navigation svg.show {
-  display: flex;
+div#btn-toggle-fullscreen-main-image-canvas-container:fullscreen {
+  display: none;
+}
+
+div#btn-toggle-fullscreen-main-image-canvas-container {
+  position: absolute;
+  bottom: 0.3vh;
+  right: 1.2vw;
+  height: 3vh;
+  width: 3vh;
+}
+
+div#btn-toggle-developer-tools-page-navigation {
+    margin-right: 4vh;
+}
+
+div#btn-toggle-fullscreen-page-navigation {
+  position: relative;
+}
+
+div#btn-toggle-fullscreen-page-navigation svg {
+  position: absolute;
+  bottom: 0.2vh;
+  right: 0vw;
 }
 
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
 
+div.main-image-content {
+  display: inline-block;
+}
+
+#under-main-image-row {
+  margin-top: 0.75rem;
+}
+
 div#main-image-canvas-container {
+  position: relative;
   width: 50vw;
   height: 72vh;
   margin: 0;
@@ -526,13 +551,28 @@ div#main-image-canvas-container {
   background-color: var(--almost-black);
   border: 3px solid white;
   border-radius: 3px;
+  &:fullscreen {
+    width: 90vw;
+    height: 80vh;
+  }
+}
+
+div.main-image-content:not(:root):fullscreen {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  #main-image-canvas-container {
+    width: 100%;
+    height: 94vh;
+    max-height: none;
+  }
 }
 
 canvas {
   background-color: black;
   height: 100%;
   width: auto;
-  max-height: 76vh;
+  margin: auto;
 }
 
 div#preview-image-canvas-container {

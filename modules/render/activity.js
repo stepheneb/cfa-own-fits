@@ -31,7 +31,7 @@ renderActivity.page = (category, page) => {
           ${renderImageAdjustFilterLayer(page)}
         </div>
         <div class='col-7'>
-          ${renderMainImageContent(page)}
+          ${renderMainImageContent(page, renderedCallbacks)}
         </div>
         <div class='col-2'>
           ${renderImageAboutTelescope(page)}
@@ -42,7 +42,6 @@ renderActivity.page = (category, page) => {
     ${renderPageNavigation(renderedCallbacks)}
   `;
   document.getElementById("content").innerHTML = html;
-  renderedCallbacks.forEach(func => func());
   events.setupGlobal();
   page.image.destinations = {
     main: {
@@ -62,6 +61,7 @@ renderActivity.page = (category, page) => {
     controllerImageSelectMainLayer(page);
     images.renderPalettes(page);
   }
+  renderedCallbacks.forEach(func => func());
   document.getElementById('btn-back').addEventListener('click', event => {
     renderMenu.page(category);
   });
@@ -273,13 +273,18 @@ let renderImageAdjustFilterLayer = page => {
   `;
 };
 
-let renderMainImageContent = page => {
+let renderMainImageContent = (page, renderedCallbacks) => {
+  let id2 = 'main-image-canvas-container';
+  let optionalFunc = () => {
+    images.resizeCanvas(page.image.destinations.main.canvas, page.image.nx, page.image.ny);
+  };
   return `
     <div id='main-image-content' class='main-image-content'>
-      <div id="main-image-canvas-container" class="row d-flex justify-content-center">
+      <div id='${id2}' class="row d-flex justify-content-center">
         <canvas id='main-image-canvas'></canvas>
+        ${renderDev.fullScreenButton(id2, '#main-image-content', renderedCallbacks, optionalFunc)}
       </div>
-      ${renderUnderMainImageRow(page)}
+      ${renderUnderMainImageRow(page, renderedCallbacks)}
     </div>
   `;
 };
@@ -293,9 +298,11 @@ let controllerImageSelectMainLayer = page => {
   });
 };
 
-let renderUnderMainImageRow = page => {
+let renderUnderMainImageRow = (page, renderedCallbacks) => {
+  let id = 'under-main-image-row';
+  let source = renderUtil.getSelectedSource(page);
   return `
-    <div id="under-main-image-row" class="d-flex flex-row justify-content-start">
+    <div id="${id}" class="d-flex flex-row justify-content-start">
       <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
       <form id="image-select-main-layer">
         <div class="d-flex flex-row justify-content-start">
@@ -336,7 +343,7 @@ let renderPageNavigation = (renderedCallbacks) => {
     <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
       ${renderPageNavigationButtonBack()}
       <div class="pl-1 pr-1 ml-auto">
-        <div class="row">
+        <div class="d-flex flex-row">
           ${renderDev.developerToolsButton(id, renderedCallbacks)}
           ${renderDev.fullScreenButton(id, document, renderedCallbacks)}
         </div>
