@@ -9,7 +9,7 @@ html {
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
 :root {
   /* colors */
-  --toggle-fullscreen: rgba(64, 64, 64, 128);
+  --toggle-fullscreen: rgba(80, 80, 80, 128);
   --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
   --almost-black: #080808;
   --bright-green: #bff5aa;
@@ -378,34 +378,36 @@ input:checked {
 #select-scaling .select-scaling-label {
   margin-left: 1em; }
 
-div.btn-toggle-fullscreen svg {
-  width: 2.2vh;
-  height: 2.2vh;
-  margin: 0vh 0.5vh 0.5vh 1vh;
+div.btn-tf > svg {
+  width: 2.4vh;
+  height: 2.4vh;
+  margin: 0vh 0.25vh 0.25vh 1vh;
   fill: var(--toggle-fullscreen);
   display: none; }
-  div.btn-toggle-fullscreen svg:hover {
+  div.btn-tf > svg path {
+    stroke-width: 6px; }
+  div.btn-tf > svg:hover {
     fill: var(--toggle-fullscreen-hover); }
-  div.btn-toggle-fullscreen svg.show {
+  div.btn-tf > svg.show {
     display: flex; }
 
-div#btn-toggle-fullscreen-main-image-canvas-container:fullscreen {
-  display: none; }
-
-div#btn-toggle-fullscreen-main-image-canvas-container {
+div#btn-tf-micc {
   position: absolute;
   bottom: 0.3vh;
   right: 1.2vw;
   height: 3vh;
   width: 3vh; }
 
+div#btn-tf-micc > svg.show:fullscreen {
+  display: none; }
+
 div#btn-toggle-developer-tools-page-navigation {
   margin-right: 4vh; }
 
-div#btn-toggle-fullscreen-page-navigation {
+div#btn-tf-pn {
   position: relative; }
 
-div#btn-toggle-fullscreen-page-navigation svg {
+div#btn-tf-pn svg {
   position: absolute;
   bottom: 0.2vh;
   right: 0vw; }

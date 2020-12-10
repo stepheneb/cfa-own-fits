@@ -10,6 +10,10 @@ utilities.isString = (x) => {
   return Object.prototype.toString.call(x) === "[object String]";
 };
 
+utilities.shortenStr = s => {
+  return s.split('-').map(w => w.substr(0, 1)).reduce((a, c) => a + c);
+};
+
 utilities.containsAll = (arr1, arr2) =>
   arr2.every(arr2Item => arr1.includes(arr2Item));
 

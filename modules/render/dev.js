@@ -5,8 +5,9 @@ import u from '../utilities.js';
 let renderDev = {};
 
 renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, optionalFunc) => {
-  let classStr ='btn-toggle-fullscreen';
-  let id = `${classStr}-${containerId}`;
+  let classStr ='btn-tf';
+  let shortcid = u.shortenStr(containerId);
+  let id = `${classStr}-${shortcid}`;
 
   let fsOpenCloseSVG = `
   <div id="${id}" class="${classStr} pl-1 pr-1 flex">
@@ -33,8 +34,8 @@ renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, opt
       }
     }
     if (fsButton && elementToExpand) {
-      let fsOpen = fsButton.querySelector('svg.fsOpen');
-      let fsClose = fsButton.querySelector('svg.fsClose');
+      let fsOpenList = document.querySelectorAll('svg.fsOpen');
+      let fsCloseList = document.querySelectorAll('svg.fsClose');
       fsButton.addEventListener('click', event => {
         if (document.documentElement.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement) {
           if (document.exitFullscreen) {
@@ -44,8 +45,8 @@ renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, opt
               document.webkitCancelFullScreen();
             }
           }
-          fsOpen.classList.add('show');
-          fsClose.classList.remove('show');
+          fsOpenList.forEach(fso => fso.classList.add('show'));
+          fsCloseList.forEach(fsc => fsc.classList.remove('show'));
         } else {
           if (elementToExpand.requestFullscreen) {
             elementToExpand.requestFullscreen();
@@ -54,8 +55,8 @@ renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, opt
               elementToExpand.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
             }
           }
-          fsClose.classList.add('show');
-          fsOpen.classList.remove('show');
+          fsCloseList.forEach(fsc => fsc.classList.add('show'));
+          fsOpenList.forEach(fso => fso.classList.remove('show'));
         }
         if (optionalFunc) {
           optionalFunc();
