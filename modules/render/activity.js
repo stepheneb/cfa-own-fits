@@ -325,13 +325,13 @@ let renderUnderMainImageLayerSelectors = page => {
     if (source.type == "rawdata") {
       let name = source.name;
       html += `
-            <div class="select-layer-label">
-              <label for='select-layer-${name}'>${name}</label>
-            </div>
-            <div class="select-layer-checkbox">
-              <input type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>
-            </div>
-          `;
+        <div class="select-layer-label">
+          <label for='select-layer-${name}'>${name}</label>
+        </div>
+        <div class="select-layer-checkbox">
+          <input type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>
+        </div>
+      `;
     }
   }
   return html;
