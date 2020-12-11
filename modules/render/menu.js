@@ -4,6 +4,7 @@
 
 import events from '../events.js';
 import router from '../router.js';
+import navigation from './navigation.js';
 import checkBrowser from '../checkBrowser.js';
 import splash from './splash.js';
 import renderActivity from './activity.js';
@@ -13,6 +14,8 @@ import renderUtil from './util.js';
 let renderMenu = {};
 
 renderMenu.page = (category) => {
+  let renderedCallbacks = [];
+
   let hash = "menu";
   if (category) {
     hash = `menu/${category.type}`;
@@ -26,7 +29,7 @@ renderMenu.page = (category) => {
 
       ${renderMenu.activityCategoryPages()}
 
-      ${renderMenu.buttons()}
+      ${navigation.menu(renderedCallbacks)}
     `;
   document.getElementById("content").innerHTML = html;
   events.setupGlobal();
@@ -69,6 +72,7 @@ renderMenu.page = (category) => {
   events.setupGlobal();
   checkBrowser();
   splash.hide();
+  renderedCallbacks.forEach(func => func());
   router.updateHash(hash);
 };
 
@@ -189,12 +193,5 @@ renderMenu.categoryPageCollection = category => {
   return html;
 };
 
-renderMenu.buttons = () => {
-  return `
-    <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
-      ${renderDev.fullScreenButton()}
-    </div>
-  `;
-};
 
 export default renderMenu;

@@ -14,6 +14,8 @@ events.setupGlobal = () => {
   // Select the node that will be observed for mutations
   const targetNode = document.getElementById('layer-histogram');
 
+  if (!targetNode) return;
+
   // Options for the observer (which mutations to observe)
   const config = { attributes: true, attributeOldValue: true };
 

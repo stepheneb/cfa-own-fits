@@ -5,6 +5,7 @@
 import images from '../images.js';
 import events from '../events.js';
 import router from '../router.js';
+import navigation from './navigation.js';
 import layerHistogram from '../layerHistogram.js';
 import renderMenu from './menu.js';
 import renderDev from './dev.js';
@@ -39,7 +40,7 @@ renderActivity.page = (category, page) => {
         </div>
       </div>
     </div>
-    ${renderPageNavigation(renderedCallbacks)}
+    ${navigation.page(renderedCallbacks)}
   `;
   document.getElementById("content").innerHTML = html;
   events.setupGlobal();
@@ -337,28 +338,6 @@ let renderUnderMainImageLayerSelectors = page => {
   return html;
 };
 
-let renderPageNavigation = (renderedCallbacks) => {
-  let id = "page-navigation";
-  return `
-    <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
-      ${renderPageNavigationButtonBack()}
-      <div class="pl-1 pr-1 ml-auto">
-        <div class="d-flex flex-row">
-          ${renderDev.developerToolsButton(id, renderedCallbacks)}
-          ${renderDev.fullScreenButton(id, document, renderedCallbacks)}
-        </div>
-      </div>
 
-    </div>
-  `;
-};
-
-let renderPageNavigationButtonBack = () => {
-  return `
-    <div class="pl-1 pr-1">
-      <button type="button" id="btn-back" class="btn btn-outline-primary btn-small page-navigation-button">&#9664 Back</button>
-    </div>
-  `;
-};
 
 export default renderActivity;
