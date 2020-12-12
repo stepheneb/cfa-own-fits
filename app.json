@@ -139,13 +139,139 @@
               }
             ]
           }
+        },
+        {
+          "name": "heic2007a",
+          "title": "NGC 2014, NGC 2020",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "heic2007a",
+            "about": {
+              "prologue": "These images were taken with the",
+              "telescope": "Hubble",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 1065,
+            "ny": 732,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": "rawdata/heic2007a/1065x732/heic2007a-R.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/heic2007a/1065x732/heic2007a-G.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/heic2007a/1065x732/heic2007a-B.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "potw1345a",
+          "title": "Antennae Galaxies, NGC 4038, NGC 4039",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "NGC 4038, NGC 4039",
+            "about": {
+              "prologue": "These images were taken with the",
+              "telescope": "Hubble",
+              "imagepath": "images/hubble-small.jpg",
+              "description": "more info about the Hubble telescope goes here ..."
+            },
+            "nx": 1060,
+            "ny": 1052,
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": "rawdata/potw1345a/1060x1052/potw1345a-R.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/potw1345a/1060x1052/potw1345a-G.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/potw1345a/1060x1052/potw1345a-B.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
         }
       ]
     },
     {
       "type": "multi-wave",
       "title": "Reveal an Image using 'Invisible Light",
-      "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
+      "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
       "menuimage": "images/menu-invisible-light.jpg",
       "pages": [
         {
@@ -217,59 +343,61 @@
     },
     {
       "type": "masterpiece",
-      "title": "Make a Masterpiece",
-      "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
+      "title": "Create Your Own Masterpiece",
+      "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
       "menuimage": "images/menu-masterpiece.jpg",
       "pages": [
         {
-          "name": "m82",
-          "title": "Make a Masterpiece using 'Invisible Light",
-          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "name": "opo9914d",
+          "title": "Make a Masterpiece with the Moon",
+          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Messier 82",
+            "name": "opo9914d",
             "about": {
-              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
-              "telescope": "Hubble, Spitzer, and Chandra",
+              "prologue": "This image was taken with the Hubble telescope.",
+              "telescope": "Hubble",
               "imagepath": "images/hubble-small.jpg",
               "description": "more info about the Hubble telescope goes here ..."
             },
-            "nx": 1270,
-            "ny": 1270,
-            "maximumBrightness": 1,
+            "nx": 1200,
+            "ny": 1200,
+            "maximumBrightness": 2,
+            "selectedSource": 0,
+            "selectedMainLayers": "100",
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Infrared",
-                "path": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bin",
-                "filter": "red",
-                "min": 0,
-                "max": 10,
-                "scaling": "log",
-                "brightness": 0.5,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Optical",
-                "path": "rawdata/M82/1270x1270/M82_Hubble_Optical.bin",
-                "filter": "green",
-                "min": 0,
-                "max": 10,
-                "scaling": "log",
-                "brightness": 0.5,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "X-Ray",
-                "path": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bin",
-                "filter": "blue",
+                "name": "Red",
+                "path": "rawdata/opo9914d/1200x1200/opo9914d-R.bin",
+                "filter": "gray",
                 "min": 0,
                 "max": 10,
                 "scaling": "linear",
-                "brightness": 0.5,
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": "rawdata/opo9914d/1200x1200/opo9914d-G.bin",
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": "rawdata/opo9914d/1200x1200/opo9914d-B.bin",
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
                 "contrast": 1
               },
               {
