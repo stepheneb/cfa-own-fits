@@ -109,9 +109,7 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
 let renderImageSelectFilterLayerToAdjust = page => {
   return `
     <div id="image-select-filter-layer-to-adjust"  class='control-collection'>
-      <div class="row">
-        <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
-      </div>
+      <div class='title'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
       ${renderButtonsAndPalletes(page)}
     </div>
   `;
@@ -125,7 +123,7 @@ let renderImageSelectFilterLayerToAdjust = page => {
         html += `
               <div class='row'>
                 <div class="col-4">
-                  <div class='row'>
+                  <div class='row pl-1'>
                     <div class='select-filter-radio align-self-start'>
                       <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
                     </div>
@@ -220,7 +218,7 @@ let renderImageAdjustFilterLayer = page => {
   let source = renderUtil.getSelectedSource(page);
   return `
     <div class='control-collection'>
-      <div class='control-collection-text'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
+      <div class='title'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       <div class='row'>
         <div class='col-4'>
           <label for='brightness'>Brightness</label>

@@ -22,6 +22,8 @@ html {
   --bright-pink: #f33c85;
   --category-selected-border: #f43c86;
   --category-not-selected-border: #202e31;
+  --canvas-container-border-color: lightgray;
+  --canvas-container-border-color-fullscreen: #222;
 
   /* font sizes */
   --menu-page-title: 5vh;
@@ -425,15 +427,18 @@ button {
 .control-collection {
   background-color: var(--dark-teal);
   background-color: #042842;
-  margin-bottom: 1px;
-  padding: 0.5rem;
+  margin: 0.5rem 0rem;
+  padding: 0rem 0.5rem;
   div {
-    margin: 0.05vh 0rem;
+    padding-left: 0.5rem;
+  }
+  div.title {
+    padding: 0.5rem 0.5rem;
   }
 }
 
 .control-collection-text {
-  padding: 0rem 0rem 0.5rem 0rem;
+  padding: 0rem 0rem 0.5rem 1rem;
 }
 
 .select-filter-radio {
@@ -555,11 +560,12 @@ div#main-image-canvas-container {
   margin: 0;
   padding: 0;
   background-color: var(--almost-black);
-  border: 3px solid white;
+  border: 3px solid var(--canvas-container-border-color);
   border-radius: 3px;
   &:fullscreen {
     width: 90vw;
     height: 80vh;
+    border: 3px solid var(--canvas-container-border-color-fullscreen);
   }
 }
 
@@ -570,6 +576,7 @@ div.main-image-content:not(:root):fullscreen {
   #main-image-canvas-container {
     width: 100%;
     height: 94vh;
+    border: 3px solid var(--canvas-container-border-color-fullscreen);
     max-height: none;
   }
 }
@@ -579,7 +586,7 @@ div#preview-image-canvas-container {
   width: 100%;
   margin: 0;
   background-color: var(--almost-black);
-  border: 1px solid white;
+  border: 2px solid var(--canvas-container-border-color);
   border-radius: 3px;
 }
 
@@ -594,7 +601,7 @@ canvas#image-layer-preview {
 div.filter-palette {
   height: 1.6vh;
   canvas {
-    height: 100%;
+    height: auto;
     width: 80%;
   }
 }
