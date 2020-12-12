@@ -136,7 +136,7 @@ let renderImageSelectFilterLayerToAdjust = page => {
                 </div>
                 <div class="col-8">
                   <div class='row filter-palette'>
-                    ${renderPalette(source)}
+                    ${renderPalette(source, i)}
                   </div>
                 </div>
               </div>
@@ -147,9 +147,9 @@ let renderImageSelectFilterLayerToAdjust = page => {
   }
 };
 
-let renderPalette = source => {
+let renderPalette = (source, i) => {
   return `
-    <canvas id="palette-${source.filter}" class="align-self-end"></canvas>
+    <canvas id="palette-${source.filter}-${i}" class="align-self-end"></canvas>
   `;
 };
 

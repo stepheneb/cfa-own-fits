@@ -12,7 +12,7 @@ import logger from './logger.js';
 
 let spinner = new Spinner("loading-spinner");
 
-let images = {}
+let images = {};
 
 images.init = (image, preview) => {
   initializeCanvasDestinations(image);
@@ -91,9 +91,13 @@ let initializeCanvasForUseWithOffScreenTransfer = function (destination, nx, ny)
   images.resizeCanvas(destination.canvas, nx, ny);
 };
 
+let getWidthHeight = elem => {
+  return { width: elem.clientWidth, height: elem.clientHeight };
+};
+
 images.resizeCanvas = (canvas, nx, ny) => {
   let aspectRatio = nx / ny;
-  let { width, height } = canvas.parentElement.getBoundingClientRect();
+  let { width, height } = getWidthHeight(canvas.parentElement);
   let sourceAspectRatio = nx / ny;
   let destinationAspectRatio = width / height;
   let resizeW, resizeH;
@@ -102,7 +106,7 @@ images.resizeCanvas = (canvas, nx, ny) => {
     resizeW = height * sourceAspectRatio;
   } else {
     resizeW = width;
-    resizeH = height * sourceAspectRatio;
+    resizeH = width / sourceAspectRatio;
   }
   canvas.width = resizeW;
   canvas.height = resizeH;
@@ -138,7 +142,7 @@ let copyOffscreenCanvasToMain = function (source, destination) {
 
 images.copyOffscreenToPreview = function (source, preview, nx, ny) {
   let aspectRatio = nx / ny;
-  let { width, height } = preview.canvas.parentElement.getBoundingClientRect();
+  let { width, height } = getWidthHeight(preview.canvas.parentElement);
   let sourceAspectRatio = nx / ny;
   let destinationAspectRatio = width / height;
   let resizeW, resizeH;
@@ -147,7 +151,7 @@ images.copyOffscreenToPreview = function (source, preview, nx, ny) {
     resizeW = resizeH * sourceAspectRatio;
   } else {
     resizeW = width;
-    resizeH = height * sourceAspectRatio;
+    resizeH = width / sourceAspectRatio;
   }
   let resizeAspectRatio = resizeW / resizeH;
   let imageData = new ImageData(source.uint8Data, nx, ny);
@@ -402,7 +406,7 @@ images.renderPalettes = page => {
   let rawdataSources = page.image.sources.filter(s => s.type == 'rawdata');
   let palettes = rawdataSources.map((source, i) => {
     name = source.filter;
-    id = `palette-${name}`;
+    id = `palette-${name}-${i}`;
     canvas = document.getElementById(id);
     return [name, canvas];
   });

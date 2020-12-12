@@ -206,16 +206,22 @@ div.menu-category-pages {
 div.menu-category-page {
   width: 14vw;
   min-width: 14em;
+  max-width: 14em;
   margin-right: 1rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   line-height: 2vh; }
-  div.menu-category-page img {
-    margin: 0rem 0rem;
+  div.menu-category-page .image-wrapper {
     height: 80%;
+    width: 100%;
     border: 1px solid var(--bright-green);
     border-radius: 4px; }
+    div.menu-category-page .image-wrapper img {
+      padding: 2px;
+      height: 100%;
+      width: 100%;
+      object-fit: cover; }
   div.menu-category-page .name {
     font-size: var(--menu-category-page-name);
     color: var(--bright-teal);
@@ -411,6 +417,12 @@ div.main-image-content {
 #under-main-image-row {
   margin-top: 0.75rem; }
 
+canvas {
+  background-color: black;
+  height: 100%;
+  width: 100%;
+  object-fit: contain; }
+
 div#main-image-canvas-container {
   position: relative;
   width: 50vw;
@@ -433,12 +445,6 @@ div.main-image-content:not(:root):fullscreen {
     height: 94vh;
     max-height: none; }
 
-canvas {
-  background-color: black;
-  height: 100%;
-  width: auto;
-  margin: auto; }
-
 div#preview-image-canvas-container {
   height: 30vh;
   width: 100%;
@@ -449,6 +455,8 @@ div#preview-image-canvas-container {
 
 canvas#image-layer-preview {
   background-color: black;
+  height: auto;
+  width: auto;
   max-height: 100%;
   max-width: 100%; }
 
