@@ -16,13 +16,24 @@ let images = {};
 
 images.init = (image, preview) => {
   initializeCanvasDestinations(image);
-  images.initializeCanvas(preview);
+  if (preview) {
+    images.initializeCanvas(preview);
+  }
 };
 
-images.get = (page) => {
+images.get = (page, categoryType) => {
   spinner.show("getImages");
-  fetchAllRawDataImages(page, page.image.selectedSource, renderFuncfetchRawDataForImage);
-
+  let renderFunc;
+  switch (categoryType) {
+  case 'rgb':
+  case 'multi-wave':
+    renderFunc = renderFuncfetchRawDataForRGBImage;
+    break;
+  case 'masterpiece':
+    renderFunc = renderFuncfetchRawDataForMasterpieceImage;
+    break;
+  }
+  fetchAllRawDataImages(page, page.image.selectedSource, renderFunc);
   let compositeSource = page.image.sources.find(s => s.type == 'composite');
   if (compositeSource) {
     spinner.show("initializeOffscreenCanvas");
@@ -54,13 +65,18 @@ let fetchAllRawDataImages = (page, selectedPreviewLayer, renderFunc) => {
   });
 };
 
-let renderFuncfetchRawDataForImage = (image, source, previewSelected, nx, ny) => {
+let renderFuncfetchRawDataForRGBImage = (image, source, previewSelected, nx, ny) => {
   initializeOffscreenCanvas(source, nx, ny);
   images.renderOffscreen(source, nx, ny);
   if (previewSelected) {
     images.copyOffscreenToPreview(source, image.destinations.preview, nx, ny);
     logger.imageData(source);
   }
+};
+
+let renderFuncfetchRawDataForMasterpieceImage = (image, source, previewSelected, nx, ny) => {
+  initializeOffscreenCanvas(source, nx, ny);
+  images.renderOffscreen(source, nx, ny);
 };
 
 let addRawDataSourceAttributes = source => {

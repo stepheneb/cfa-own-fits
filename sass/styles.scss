@@ -36,6 +36,7 @@ html {
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
+  --control-subtitle: 1.8vh;
 }
 
 body {
@@ -416,21 +417,32 @@ button {
 div.control-collection {
   background-color: var(--dark-teal);
   background-color: #042842;
-  padding: 0.5rem 0.5rem;
-  &.select-layer {
-    margin-bottom: 0.5rem;
+  padding: 1vh 1vh;
+  &.select-layer,
+  .color-maps {
+    margin-bottom: 1vh;
+  }
+  &.special-effects {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
   }
   &.adjust-layer {
-    margin-top: 0.5rem;
+    margin-top: 1vh;
   }
-  >.title {
-    padding: 0rem 0rem 0.25rem 0.5rem;
+  > .title {
+    color: var(--bright-green);
+    font-size: var(--control-subtitle);
+    padding: 0vh 0vh 1vh 0.5vh;
   }
-  >.row {
+  > .subtitle {
+    padding: 0vh 0vh 0.5vh 0.5vh;
+  }
+  > .row {
     margin: 0.5em 0em;
-    &.select-filter {
+    &.select-filter,
+    &.special-effects {
       input {
-        margin: 0rem 0.5rem 0rem 0rem;
+        margin: 0vh 0.5vh 0vh 0vh;
       }
       label {
       }
@@ -439,14 +451,12 @@ div.control-collection {
       label {
       }
       input {
-        padding: 0rem 1rem 0rem 0rem;
+        padding: 0vh 1vh 0vh 0vh;
         width: 100%;
       }
     }
   }
 }
-
-
 
 .select-filter-label:hover {
   color: white;
@@ -464,7 +474,6 @@ div.filter-palette {
     width: 90%;
   }
 }
-
 
 .image-name {
   font-size: var(--page-subtitle);
@@ -512,7 +521,7 @@ input:checked {
   }
 }
 
-div.btn-tf>svg {
+div.btn-tf > svg {
   width: 2.4vh;
   height: 2.4vh;
   margin: 0vh 0.25vh 0.25vh 1vh;
@@ -537,12 +546,12 @@ div#btn-tf-micc {
   width: 3vh;
 }
 
-div#btn-tf-micc>svg.show:fullscreen {
+div#btn-tf-micc > svg.show:fullscreen {
   display: none;
 }
 
 div#btn-toggle-developer-tools-page-navigation {
-    margin-right: 4vh;
+  margin-right: 4vh;
 }
 
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */
@@ -616,7 +625,6 @@ div.telescope-container {
     }
   }
 }
-
 
 canvas {
   background-color: black;

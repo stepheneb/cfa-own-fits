@@ -31,7 +31,8 @@ html {
   --menu-category-page-telescope: 1.5vh;
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
-  --page-subtitle: 2vh; }
+  --page-subtitle: 2vh;
+  --control-subtitle: 1.8vh; }
 
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
@@ -323,19 +324,27 @@ button {
 div.control-collection {
   background-color: var(--dark-teal);
   background-color: #042842;
-  padding: 0.5rem 0.5rem; }
-  div.control-collection.select-layer {
-    margin-bottom: 0.5rem; }
+  padding: 1vh 1vh; }
+  div.control-collection.select-layer,
+  div.control-collection .color-maps {
+    margin-bottom: 1vh; }
+  div.control-collection.special-effects {
+    margin-top: 1vh;
+    margin-bottom: 1vh; }
   div.control-collection.adjust-layer {
-    margin-top: 0.5rem; }
+    margin-top: 1vh; }
   div.control-collection > .title {
-    padding: 0rem 0rem 0.25rem 0.5rem; }
+    color: var(--bright-green);
+    font-size: var(--control-subtitle);
+    padding: 0vh 0vh 1vh 0.5vh; }
+  div.control-collection > .subtitle {
+    padding: 0vh 0vh 0.5vh 0.5vh; }
   div.control-collection > .row {
     margin: 0.5em 0em; }
-    div.control-collection > .row.select-filter input {
-      margin: 0rem 0.5rem 0rem 0rem; }
+    div.control-collection > .row.select-filter input, div.control-collection > .row.special-effects input {
+      margin: 0vh 0.5vh 0vh 0vh; }
     div.control-collection > .row.adjust-filter input {
-      padding: 0rem 1rem 0rem 0rem;
+      padding: 0vh 1vh 0vh 0vh;
       width: 100%; }
 
 .select-filter-label:hover {

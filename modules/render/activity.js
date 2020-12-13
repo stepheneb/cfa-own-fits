@@ -5,6 +5,7 @@
 import images from '../images.js';
 import events from '../events.js';
 import router from '../router.js';
+import telescopes from './telescopes.js';
 import navigation from './navigation.js';
 import layerHistogram from '../layerHistogram.js';
 import renderMenu from './menu.js';
@@ -17,31 +18,63 @@ import checkBrowser from '../checkBrowser.js';
 let renderActivity = {};
 
 renderActivity.page = (category, page) => {
-  let renderedCallbacks = [];
   splash.hide();
-  let [telescopeHtmls, telescopeHtmlModals] = renderImageAboutTelescope(page, renderedCallbacks);
-  let html = `
-    <div id='page-1' class='activity-page'
-      data-categorytype="${category.type}"
-      data-pagename="${page.name}">
-      ${renderPageHeader(page)}
-
-      <div class='row'>
+  let registeredCallbacks = [];
+  let id = `page-${category.type}-${page.name}`;
+  let [telescopeHtmls, telescopeHtmlModals] = telescopes.render(page, registeredCallbacks);
+  let leftColumnHtml = '';
+  let mainImageHtml = '';
+  let rightColumnHtml = `
+    <div class='col-2'>
+      ${telescopeHtmls}
+      ${layerHistogram.render(renderUtil.getSelectedSource(page))}
+    </div>
+  `;
+  switch (category.type) {
+  case 'rgb':
+  case 'multi-wave':
+    leftColumnHtml = `
         <div class='col-3'>
           ${renderImageSelectFilterLayerToAdjust(page)}
           ${renderImageLayerPreview(page)}
           ${renderImageAdjustFilterLayer(page)}
         </div>
+      `;
+    mainImageHtml = `
         <div class='col-7'>
-          ${renderMainImageContent(page, renderedCallbacks)}
+          ${renderMainImageContent(page, category.type, registeredCallbacks)}
         </div>
-        <div class='col-2'>
-          ${telescopeHtmls}
-          ${layerHistogram.render(renderUtil.getSelectedSource(page))}
+      `;
+    break;
+  case 'masterpiece':
+    leftColumnHtml = `
+      <div class='col-3'>
+        ${renderColorMaps(page, registeredCallbacks)}
+        ${renderSpecialEffects(page, registeredCallbacks)}
+        ${renderImageAdjustFilterLayer(page)}
+      </div>
+    `;
+    mainImageHtml = `
+        <div class='col-7'>
+          ${renderMainImageContent(page, category.type, registeredCallbacks)}
         </div>
+      `;
+    break;
+  }
+
+  let html = `
+    <div id='${id}' class='activity-page'
+      data-categorytype="${category.type}"
+      data-pagename="${page.name}">
+      ${renderPageHeader(page)}
+
+      <div class='row'>
+          ${leftColumnHtml}
+          ${mainImageHtml}
+          ${rightColumnHtml}
       </div>
     </div>
-    ${navigation.page(renderedCallbacks)}
+    ${navigation.page(registeredCallbacks)}
     ${telescopeHtmlModals}
   `;
   document.getElementById("content").innerHTML = html;
@@ -55,16 +88,29 @@ renderActivity.page = (category, page) => {
       img: document.getElementById('image-layer-preview')
     }
   };
-  images.init(page.image, page.image.destinations.preview);
-  if (checkBrowser()) {
-    images.get(page);
-    controllerImageSelectFilterLayerToAdjust(page);
-    controllerImageAdjustFilterLayer(page);
-    updateImageAdjustFilterLayer(page);
-    controllerImageSelectMainLayer(page);
-    images.renderPalettes(page);
+
+  switch (category.type) {
+  case 'rgb':
+  case 'multi-wave':
+    images.init(page.image, page.image.destinations.preview);
+    if (checkBrowser()) {
+      images.get(page, category.type);
+      controllerImageSelectFilterLayerToAdjust(page);
+      controllerImageAdjustFilterLayer(page);
+      updateImageAdjustFilterLayer(page);
+      controllerImageSelectMainLayer(page);
+      images.renderPalettes(page);
+    }
+    break;
+  case 'masterpiece':
+    images.init(page.image);
+    if (checkBrowser()) {
+      images.get(page, category.type);
+    }
+    break;
   }
-  renderedCallbacks.forEach(func => func());
+
+  registeredCallbacks.forEach(func => func());
   document.getElementById('btn-back').addEventListener('click', event => {
     renderMenu.page(category);
   });
@@ -111,7 +157,7 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
 let renderImageSelectFilterLayerToAdjust = page => {
   return `
     <div id="image-select-filter-layer-to-adjust"  class='control-collection select-layer'>
-      <div class='title'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
+      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
       ${renderButtonsAndPalletes(page)}
     </div>
   `;
@@ -123,16 +169,16 @@ let renderImageSelectFilterLayerToAdjust = page => {
       let source = sources[i];
       if (source.type == "rawdata") {
         html += `
-              <div class='row select-filter'>
-                <div class="col-4 d-flex align-items-center">
-                  <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
-                  <label for='select-rgb-${i}'>${source.name}</label>
-                </div>
-                <div class="col-8 filter-palette d-flex align-items-center">
-                  ${renderPalette(source, i)}
-                </div>
-              </div>
-            `;
+          <div class='row select-filter'>
+            <div class="col-4 d-flex align-items-center">
+              <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
+              <label for='select-rgb-${i}'>${source.name}</label>
+            </div>
+            <div class="col-8 filter-palette d-flex align-items-center">
+              ${renderPalette(source, i)}
+            </div>
+          </div>
+        `;
       }
     }
     return html;
@@ -151,51 +197,6 @@ let renderImageLayerPreview = page => {
       <canvas id='image-layer-preview'></canvas>
     </div>
   `;
-};
-
-let renderImageAboutTelescope = (page, registerCallback) => {
-  let telescopes = renderUtil.getTelescopes(page);
-  let prologue = app.telescopeData.prologue;
-  let html = `<div>${prologue}</div>`;
-  let modalHtml = '';
-  let id, modalId;
-  telescopes.forEach(telescope => {
-    id = telescope.key;
-    modalId = `${id}-modal`;
-    html += `
-      <div id="${id}" class="telescope-container" data-bs-toggle="modal" data-bs-target="#${modalId}">
-        <div class="about-telescope">${telescope.name} Telescope</div>
-        <div id="${telescope.key}-container" class="telescope-image-container">
-          <img src="${telescope.image}"></img>
-        </div>
-      </div>
-    `;
-
-    modalHtml += `
-      <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="${modalId}-title">About the ${telescope.name} Telescope</h5>
-              <div class="image-container">
-                <img src="${telescope.image}"></img>
-              </div>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              ${telescope.description}
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-small btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  return [html, modalHtml];
 };
 
 let controllerImageAdjustFilterLayer = page => {
@@ -244,11 +245,107 @@ let updateImageAdjustFilterLayer = page => {
   radios.value = source.scaling;
 };
 
+let renderColorMaps = (page, registeredCallbacks) => {
+  let id, elem;
+  let cmaps = [
+    ['grey', 'plasma'],
+    ['rainbow', 'firesky'],
+    ['inferno', 'watermelon'],
+    ['bluegreen', 'red'],
+    ['cool', 'green'],
+    ['magma', 'blue'],
+  ];
+  let getId = cmap => `select-cmap-${cmap}`;
+  let cmapsHtml = '';
+  cmaps.forEach(row => {
+    cmapsHtml += '<div class="row select-cmap">';
+    row.forEach(cmap => {
+      id = getId(cmap);
+      cmapsHtml += `
+        <div id="${id}" class="col-6 d-flex align-items-center" data-cmap="${id}">
+          <div>${cmap}</div>
+        </div>
+      `;
+    });
+    cmapsHtml += '</div>';
+  });
+  let html = `
+    <div class='control-collection color-maps'>
+      <div class='title'>Color Maps</div>
+      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>Select a color range to add color to your image</div>
+      ${cmapsHtml}
+    </div>
+  `;
+  registeredCallbacks.push(callback);
+  return html;
+
+  function callback() {
+    cmaps.forEach(row => {
+      row.forEach(cmap => {
+        id = getId(cmap);
+        elem = document.getElementById(id);
+        elem.addEventListener('click', event => {
+          event.stopPropagation();
+          let id = event.currentTarget.dataset.cmap;
+          console.log(`${id} clicked`);
+        });
+      });
+    });
+  }
+};
+
+let renderSpecialEffects = (page, registeredCallbacks) => {
+  let id, elem;
+  let effects = [
+    ['lighten', 'reduce noise'],
+    ['blur', 'emboss'],
+    ['sharpen', 'invert']
+  ];
+  let effectsHtml = '';
+  let getId = effect => `select-effect-${effect}`;
+  effects.forEach(row => {
+    effectsHtml += '<div class="row special-effects">';
+    row.forEach(effect => {
+      id = getId(effect);
+      effectsHtml += `
+        <div id='${id}' class="col-6 d-flex align-items-center" data-effect="${id}">
+          <input type='checkbox' name='select-effect' value='${id}'>
+          <label for='${id}'>${effect}</label>
+        </div>
+      `;
+    });
+    effectsHtml += '</div>';
+  });
+  let html = `
+    <div class='control-collection special-effects'>
+      <div class='title'>Special Effects</div>
+      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>Try an effect to enhance your image</div>
+      ${effectsHtml}
+      </div>
+  `;
+  registeredCallbacks.push(callback);
+  return html;
+
+  function callback() {
+    effects.forEach(row => {
+      row.forEach(effect => {
+        id = getId(effect);
+        elem = document.getElementById(id);
+        elem.addEventListener('change', event => {
+          event.stopPropagation();
+          let id = event.currentTarget.dataset.effect;
+          console.log(`${id} clicked`);
+        });
+      });
+    });
+  }
+};
+
 let renderImageAdjustFilterLayer = page => {
   let source = renderUtil.getSelectedSource(page);
   return `
     <div class='control-collection adjust-layer'>
-      <div class='title'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
+      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       <div class='row adjust-filter'>
         <div class='col-4'>
           <label for='brightness'>Brightness</label>
@@ -302,7 +399,7 @@ let renderImageAdjustFilterLayer = page => {
   `;
 };
 
-let renderMainImageContent = (page, renderedCallbacks) => {
+let renderMainImageContent = (page, categoryType, registeredCallbacks) => {
   let id2 = 'main-image-canvas-container';
   let optionalFunc = () => {
     images.resizeCanvas(page.image.destinations.main.canvas, page.image.nx, page.image.ny);
@@ -311,9 +408,9 @@ let renderMainImageContent = (page, renderedCallbacks) => {
     <div id='main-image-content' class='main-image-content'>
       <div id='${id2}' class="row d-flex justify-content-center">
         <canvas id='main-image-canvas'></canvas>
-        ${renderDev.fullScreenButton(id2, '#main-image-content', renderedCallbacks, optionalFunc)}
+        ${renderDev.fullScreenButton(id2, '#main-image-content', registeredCallbacks, optionalFunc)}
       </div>
-      ${renderUnderMainImageRow(page, renderedCallbacks)}
+      ${renderUnderMainImageRow(page, categoryType, registeredCallbacks)}
     </div>
   `;
 };
@@ -327,27 +424,34 @@ let controllerImageSelectMainLayer = page => {
   });
 };
 
-let renderUnderMainImageRow = (page, renderedCallbacks) => {
+let renderUnderMainImageRow = (page, categoryType, registeredCallbacks) => {
   let id = 'under-main-image-row';
   let source = renderUtil.getSelectedSource(page);
+  let underImageRow = '';
+  switch (categoryType) {
+  case 'rgb':
+  case 'multi-wave':
+    underImageRow = renderUnderMainImageRGBLayerSelectors(page);
+    break;
+  case 'masterpiece':
+    underImageRow = renderUnderMainImageMasterpiece(page);
+    break;
+  }
+
   return `
     <div id="${id}" class="d-flex flex-row justify-content-start">
-      <div class="pe-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
-      <form id="image-select-main-layer">
-        <div class="d-flex flex-row justify-content-start align-items-center">
-          ${renderUnderMainImageLayerSelectors(page)}
-        </div>
-      </form>
-      <div class="image-name ps-2 pe-2 ms-auto">
-        ${page.image.name}
-      </div>
+      ${underImageRow}
     </div>
   `;
 };
 
-let renderUnderMainImageLayerSelectors = page => {
+let renderUnderMainImageRGBLayerSelectors = page => {
   let sources = page.image.sources;
-  let html = '';
+  let html = `
+    <div class="pe-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
+    <form id="image-select-main-layer">
+      <div class="d-flex flex-row justify-content-start align-items-center">
+  `;
   for (var i = 0; i < sources.length; i++) {
     let source = sources[i];
     let checkedState = page.image.selectedMainLayers[i] == "1" ? "checked" : "";
@@ -363,9 +467,29 @@ let renderUnderMainImageLayerSelectors = page => {
       `;
     }
   }
+  html += `
+      </div>
+    </form>
+    <div class="image-name ps-2 pe-2 ms-auto">
+      ${page.image.name}
+    </div>
+  `;
   return html;
 };
 
-
+let renderUnderMainImageMasterpiece = page => {
+  let sources = page.image.sources;
+  let html = '';
+  html += `
+    <div class="pe-4"><span class="solid-right-arrow">&#11157</span> Pinch to zoom or pan or use the buttons</div>
+    <form id="image-select-main-layer">
+      <div class="d-flex flex-row justify-content-start align-items-center"></div>
+    </form>
+    <div class="image-name ps-2 pe-2 ms-auto">
+      ${page.image.name}
+    </div>
+  `;
+  return html;
+};
 
 export default renderActivity;
