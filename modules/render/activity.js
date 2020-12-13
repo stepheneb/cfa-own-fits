@@ -5,6 +5,9 @@
 import images from '../images.js';
 import events from '../events.js';
 import router from '../router.js';
+import colorMaps from './colorMaps.js';
+import specialEffects from './specialEffects.js';
+import adjustImage from './adjustImage.js';
 import telescopes from './telescopes.js';
 import navigation from './navigation.js';
 import layerHistogram from '../layerHistogram.js';
@@ -37,7 +40,7 @@ renderActivity.page = (category, page) => {
         <div class='col-3'>
           ${renderImageSelectFilterLayerToAdjust(page)}
           ${renderImageLayerPreview(page)}
-          ${renderImageAdjustFilterLayer(page)}
+          ${adjustImage.render(page)}
         </div>
       `;
     mainImageHtml = `
@@ -49,9 +52,9 @@ renderActivity.page = (category, page) => {
   case 'masterpiece':
     leftColumnHtml = `
       <div class='col-3'>
-        ${renderColorMaps(page, registeredCallbacks)}
-        ${renderSpecialEffects(page, registeredCallbacks)}
-        ${renderImageAdjustFilterLayer(page)}
+        ${colorMaps.render(page, registeredCallbacks)}
+        ${specialEffects.render(page, registeredCallbacks)}
+        ${adjustImage.render(page)}
       </div>
     `;
     mainImageHtml = `
@@ -96,8 +99,8 @@ renderActivity.page = (category, page) => {
     if (checkBrowser()) {
       images.get(page, category.type);
       controllerImageSelectFilterLayerToAdjust(page);
-      controllerImageAdjustFilterLayer(page);
-      updateImageAdjustFilterLayer(page);
+      adjustImage.controller(page);
+      adjustImage.update(page);
       controllerImageSelectMainLayer(page);
       images.renderPalettes(page);
     }
@@ -150,7 +153,7 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
   let source = page.image.sources[layerNum];
   images.renderOffscreen(source, page.image.nx, page.image.ny);
   images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-  updateImageAdjustFilterLayer(page);
+  adjustImage.update(page);
   logger.imageData(source);
 };
 
@@ -195,206 +198,6 @@ let renderImageLayerPreview = page => {
   return `
     <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
       <canvas id='image-layer-preview'></canvas>
-    </div>
-  `;
-};
-
-let controllerImageAdjustFilterLayer = page => {
-  let elemBrightness = document.getElementById("brightness");
-  elemBrightness.addEventListener('input', (e) => {
-    let source = page.image.sources[page.image.selectedSource];
-    let brightness = e.target.valueAsNumber;
-    source.brightness = brightness;
-    images.renderOffscreen(source, page.image.nx, page.image.ny);
-    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    images.renderMain(page.image);
-    logger.imageData(source);
-  });
-
-  let elemContrast = document.getElementById("contrast");
-  elemContrast.addEventListener('input', (e) => {
-    let source = renderUtil.getSelectedSource(page);
-    source.contrast = e.target.valueAsNumber;
-    let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
-    source.max = source.originalMax - contrastShift;
-    source.min = Math.max(0, source.originalMin + contrastShift);
-    images.renderOffscreen(source, page.image.nx, page.image.ny);
-    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    images.renderMain(page.image);
-    logger.imageData(source);
-  });
-
-  let elemScaling = document.getElementById("select-scaling");
-  elemScaling.addEventListener('change', (e) => {
-    let source = renderUtil.getSelectedSource(page);
-    source.scaling = event.target.value;
-    images.renderOffscreen(source, page.image.nx, page.image.ny);
-    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    images.renderMain(page.image);
-    logger.imageData(source);
-  });
-
-};
-
-let updateImageAdjustFilterLayer = page => {
-  let source = renderUtil.getSelectedSource(page);
-  document.getElementById("brightness").value = source.brightness;
-  document.getElementById("contrast").value = source.contrast;
-  let elemScaling = document.getElementById("select-scaling");
-  let radios = elemScaling.elements.scaling;
-  radios.value = source.scaling;
-};
-
-let renderColorMaps = (page, registeredCallbacks) => {
-  let id, elem;
-  let cmaps = [
-    ['grey', 'plasma'],
-    ['rainbow', 'firesky'],
-    ['inferno', 'watermelon'],
-    ['bluegreen', 'red'],
-    ['cool', 'green'],
-    ['magma', 'blue'],
-  ];
-  let getId = cmap => `select-cmap-${cmap}`;
-  let cmapsHtml = '';
-  cmaps.forEach(row => {
-    cmapsHtml += '<div class="row select-cmap">';
-    row.forEach(cmap => {
-      id = getId(cmap);
-      cmapsHtml += `
-        <div id="${id}" class="col-6 d-flex align-items-center" data-cmap="${id}">
-          <div>${cmap}</div>
-        </div>
-      `;
-    });
-    cmapsHtml += '</div>';
-  });
-  let html = `
-    <div class='control-collection color-maps'>
-      <div class='title'>Color Maps</div>
-      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>Select a color range to add color to your image</div>
-      ${cmapsHtml}
-    </div>
-  `;
-  registeredCallbacks.push(callback);
-  return html;
-
-  function callback() {
-    cmaps.forEach(row => {
-      row.forEach(cmap => {
-        id = getId(cmap);
-        elem = document.getElementById(id);
-        elem.addEventListener('click', event => {
-          event.stopPropagation();
-          let id = event.currentTarget.dataset.cmap;
-          console.log(`${id} clicked`);
-        });
-      });
-    });
-  }
-};
-
-let renderSpecialEffects = (page, registeredCallbacks) => {
-  let id, elem;
-  let effects = [
-    ['lighten', 'reduce noise'],
-    ['blur', 'emboss'],
-    ['sharpen', 'invert']
-  ];
-  let effectsHtml = '';
-  let getId = effect => `select-effect-${effect}`;
-  effects.forEach(row => {
-    effectsHtml += '<div class="row special-effects">';
-    row.forEach(effect => {
-      id = getId(effect);
-      effectsHtml += `
-        <div id='${id}' class="col-6 d-flex align-items-center" data-effect="${id}">
-          <input type='checkbox' name='select-effect' value='${id}'>
-          <label for='${id}'>${effect}</label>
-        </div>
-      `;
-    });
-    effectsHtml += '</div>';
-  });
-  let html = `
-    <div class='control-collection special-effects'>
-      <div class='title'>Special Effects</div>
-      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>Try an effect to enhance your image</div>
-      ${effectsHtml}
-      </div>
-  `;
-  registeredCallbacks.push(callback);
-  return html;
-
-  function callback() {
-    effects.forEach(row => {
-      row.forEach(effect => {
-        id = getId(effect);
-        elem = document.getElementById(id);
-        elem.addEventListener('change', event => {
-          event.stopPropagation();
-          let id = event.currentTarget.dataset.effect;
-          console.log(`${id} clicked`);
-        });
-      });
-    });
-  }
-};
-
-let renderImageAdjustFilterLayer = page => {
-  let source = renderUtil.getSelectedSource(page);
-  return `
-    <div class='control-collection adjust-layer'>
-      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
-      <div class='row adjust-filter'>
-        <div class='col-4'>
-          <label for='brightness'>Brightness</label>
-        </div>
-        <div class='col-8 adjust-layer'>
-          <input type='range' id='brightness' name='brightness'  min='0' max='${page.image.maximumBrightness}' value='${page.image.maximumBrightness / 2}'
-            step='0.05'>
-        </div>
-      </div>
-
-      <div class=' row adjust-filter'>
-        <div class='col-4'>
-          <label for='contrast'>Contrast</label>
-        </div>
-        <div class='col-8'>
-          <input type='range' id='contrast' name='contrast' min='0.04' max='1.96' value='1' step='0.01'>
-        </div>
-      </div>
-
-      <div class='row adjust-filter'>
-        <div class='col-4'>
-          <label for='color-shift'>Color Shift</label>
-        </div>
-        <div class='col-8'>
-          <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' disabled>
-        </div>
-      </div>
-
-      <div id="scaling-control" class='row developer'>
-        <div class='col-4'>
-          <label>Scaling</label>
-        </div>
-        <div class="col-8">
-          <form id="select-scaling" class="d-flex flex-row justify-content-start">
-            <div class="select-scaling-label">
-              <label for="select-scaling-linear">Linear</label>
-            </div>
-            <div class="select-scaling-radio">
-              <input id="select-scaling-linear" type="radio" name="scaling" value="linear">
-            </div>
-            <div class="select-scaling-label">
-              <label for="select-scaling-log">Log</label>
-            </div>
-            <div class="select-scaling-radio">
-              <input id="select-scaling-log" type="radio" name="scaling" value="log">
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
   `;
 };
