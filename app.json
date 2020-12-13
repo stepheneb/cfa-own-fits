@@ -7,6 +7,43 @@
     "begin": "Touch to Begin"
   },
   "action": "Choose an Image",
+  "telescopeData": {
+    "prologue": "This image was taken with the",
+    "telescopes": [
+      {
+        "key": "hubble",
+        "name": "Hubble",
+        "image": "images/telescopes/hst-sm4.jpg",
+        "image-credits": "NASA",
+        "image-source": "https://www.nasa.gov/sites/default/files/styles/full_width/public/thumbnails/image/hst-sm4.jpg",
+        "description": "Launched in 1990, Hubble has been visited by astronauts four times in order to make repairs and add new instruments. Each instrument that flies on Hubble has special features that let astronomers study the heavens in different ways. Hubble’s unique capabilities can also be partnered with other space observatories and those on the ground to enable scientists to explore the universe in ways that no single mission could ever accomplish alone."
+      },
+      {
+        "key": "chandra",
+        "name": "Chandra",
+        "image": "images/telescopes/deploy2-72l.jpg",
+        "image-credits": "NASA",
+        "image-source": "https://www.chandra.harvard.edu/graphics/resources/illustrations/deploy/deploy2-72l.jpg",
+        "description": "NASA's Chandra X-ray Observatory is a telescope specially designed to detect X-ray emission from very hot regions of the Universe such as exploded stars, clusters of galaxies, and matter around black holes. Because X-rays are absorbed by Earth's atmosphere, Chandra must orbit above it, up to an altitude of 139,000 km (86,500 mi) in space. The Smithsonian's Astrophysical Observatory in Cambridge, MA, hosts the Chandra X-ray Center which operates the satellite, processes the data, and distributes it to scientists around the world for analysis. The Center maintains an extensive public web site about the science results and an education program."
+      },
+      {
+        "key": "spitzer",
+        "name": "Spitzer",
+        "image": "images/telescopes/hd_spitzer_side_visible_small.jpg",
+        "image-credits": "NASA",
+        "image-source": "https://www.nasa.gov/sites/default/files/thumbnails/image/hd_spitzer_side_visible.jpg",
+        "description": "The Spitzer Space Telescope is a technological marvel, featuring many innovations never before used on a space mission. It stands about 4 meters (13 feet) tall, and weighs approximately 865 kilograms (1,906 pounds).<br><br>Since Spitzer is designed to detect infrared radiation, or heat - its detectors and telescope must be cooled to only about 5 degrees above absolute zero (-450 degrees Fahrenheit, or -268 degrees Celsius). This will ensure that the observatory's 'body heat' does not interfere with its observations of relatively cold cosmic objects.<br><br>While parts of Spitzer must be kept cold to function properly, other electronics onboard the spacecraft need to operate near room temperature. To achieve this balance of warm and cold, the telescope is compartmentalized into two components: <br><br>The Cryogenic Telescope Assembly - houses Spitzer's cold components, including the 0.85-meter telescope and three scientific instruments.<br><br>The Spacecraft - contains the relatively warm components, including solar panels, telescope controls and tools to communicate scientific information with Earth.<br><br>Innovations - other creative ways scientists and engineers achieved this temperature balance."
+      },
+      {
+        "key": "lro",
+        "name": "LRO",
+        "image": "images/telescopes/314490main_LROstill_1_small.jpg",
+        "image-credits": "NASA",
+        "image-source": "https://www.nasa.gov/sites/default/files/images/314490main_LROstill_1_full.jpg",
+        "description": "The Lunar Reconnaissance Orbiter (LRO) was launched with the Lunar Crater Observation and Sensing Satellite (LCROSS) on the first U.S. mission to the Moon in over 10 years. Both were part of NASA’s now-canceled Lunar Precursor Robotic Program.<br>LRO’s primary goal was to make a 3D map of the Moon’s surface from lunar polar orbit as part of a high-resolution mapping program to identify landing sites and potential resources, to investigate the radiation environment, and to prove new technologies in anticipation of future automated and human missions to the surface of the Moon.<br>The Centaur upper stage boosted both LRO and LCROSS into high apogee orbits soon after launch. At 11:27 UT June 23, 2009, LRO successfully entered orbit around the Moon, having fired its rocket motor on the far side of the Moon. Initial orbital parameters were roughly 19 x 134 miles (30 × 216 kilometers).<br>A series of four engine firings over the next four days left LRO in its optimal orbit—roughly circular at 31 miles (50 kilometers)—allowing the satellite to begin its primary mission Sept. 25, 2009. The primary mission was expected to last one year and was overseen by NASA’s Exploration Systems Mission Directorate (ESMD).<br>LRO gathered information on day-night temperature maps, contributed data for a global geodetic grid, and conducted high-resolution imaging. The spacecraft paid particular emphasis to the Moon’s polar regions where scientists suspected there might be water in the permanently shadowed areas."
+      }
+    ]
+  },
   "categories": [
     {
       "type": "rgb",
@@ -23,10 +60,9 @@
           "image": {
             "name": "Lagoon Nebula",
             "about": {
-              "prologue": "These images were taken with the",
-              "telescope": "Hubble",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
+              "telescopes": [
+                "hubble"
+              ]
             },
             "nx": 1300,
             "ny": 1250,
@@ -86,10 +122,9 @@
           "image": {
             "name": "Messier 51",
             "about": {
-              "prologue": "These images were taken with the",
-              "telescope": "Hubble",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
+              "telescopes": [
+                "hubble"
+              ]
             },
             "nx": 1192,
             "ny": 1800,
@@ -142,6 +177,7 @@
         },
         {
           "name": "heic2007a",
+          "source": "https://www.spacetelescope.org/images/heic2007a/",
           "title": "NGC 2014, NGC 2020",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
@@ -149,10 +185,9 @@
           "image": {
             "name": "heic2007a",
             "about": {
-              "prologue": "These images were taken with the",
-              "telescope": "Hubble",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
+              "telescopes": [
+                "hubble"
+              ]
             },
             "nx": 1065,
             "ny": 732,
@@ -205,6 +240,7 @@
         },
         {
           "name": "potw1345a",
+          "source": "https://www.spacetelescope.org/images/potw1345a/",
           "title": "Antennae Galaxies, NGC 4038, NGC 4039",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emmitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
@@ -212,10 +248,9 @@
           "image": {
             "name": "NGC 4038, NGC 4039",
             "about": {
-              "prologue": "These images were taken with the",
-              "telescope": "Hubble",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
+              "telescopes": [
+                "hubble"
+              ]
             },
             "nx": 1060,
             "ny": 1052,
@@ -276,6 +311,7 @@
       "pages": [
         {
           "name": "m82",
+          "source": "",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
@@ -283,10 +319,11 @@
           "image": {
             "name": "Messier 82",
             "about": {
-              "prologue": "These images were taken with the Hubble, Spitzer, and Chandra telescopes.",
-              "telescope": "Hubble, Spitzer, and Chandra",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
+              "telescopes": [
+                "hubble",
+                "spitzer",
+                "chandra"
+              ]
             },
             "nx": 1270,
             "ny": 1270,
@@ -349,6 +386,7 @@
       "pages": [
         {
           "name": "opo9914d",
+          "source": "https://www.spacetelescope.org/images/opo9914d/",
           "title": "Make a Masterpiece with the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
@@ -356,10 +394,9 @@
           "image": {
             "name": "opo9914d",
             "about": {
-              "prologue": "This image was taken with the Hubble telescope.",
-              "telescope": "Hubble",
-              "imagepath": "images/hubble-small.jpg",
-              "description": "more info about the Hubble telescope goes here ..."
+              "telescopes": [
+                "hubble"
+              ]
             },
             "nx": 1200,
             "ny": 1200,

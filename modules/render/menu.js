@@ -179,16 +179,18 @@ renderMenu.activityCategoryPages = () => {
 
 renderMenu.categoryPageCollection = category => {
   let html = '';
+  let telescopes = '';
   let type = category.type;
   category.pages.forEach((page) => {
     var id = `open-page-${category.type}-${page.name}`;
+    telescopes = renderUtil.getTelescopes(page).map(telescope => telescope.name).join(", ");
     html += `
       <div id="${id}" class="menu-category-page">
         <div class="image-wrapper">
           <img src="images/page-images/${type}-${page.name}.jpg"></img>
         </div>
         <div class="name">${page.image.name}</div>
-        <div class="telescope">${page.image.about.telescope}</div>
+        <div class="telescope">${telescopes}</div>
       </div>
     `;
   });

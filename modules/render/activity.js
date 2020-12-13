@@ -19,6 +19,7 @@ let renderActivity = {};
 renderActivity.page = (category, page) => {
   let renderedCallbacks = [];
   splash.hide();
+  let [telescopeHtmls, telescopeHtmlModals] = renderImageAboutTelescope(page, renderedCallbacks);
   let html = `
     <div id='page-1' class='activity-page'
       data-categorytype="${category.type}"
@@ -35,12 +36,13 @@ renderActivity.page = (category, page) => {
           ${renderMainImageContent(page, renderedCallbacks)}
         </div>
         <div class='col-2'>
-          ${renderImageAboutTelescope(page)}
+          ${telescopeHtmls}
           ${layerHistogram.render(renderUtil.getSelectedSource(page))}
         </div>
       </div>
     </div>
     ${navigation.page(renderedCallbacks)}
+    ${telescopeHtmlModals}
   `;
   document.getElementById("content").innerHTML = html;
   events.setupGlobal();
@@ -108,7 +110,7 @@ let selectImageFilterLayerToAdjust = (page, layerNum) => {
 
 let renderImageSelectFilterLayerToAdjust = page => {
   return `
-    <div id="image-select-filter-layer-to-adjust"  class='control-collection'>
+    <div id="image-select-filter-layer-to-adjust"  class='control-collection select-layer'>
       <div class='title'><span class="solid-right-arrow">&#11157</span>${page.selectfiltertext}</div>
       ${renderButtonsAndPalletes(page)}
     </div>
@@ -121,21 +123,13 @@ let renderImageSelectFilterLayerToAdjust = page => {
       let source = sources[i];
       if (source.type == "rawdata") {
         html += `
-              <div class='row'>
-                <div class="col-4">
-                  <div class='row pl-1'>
-                    <div class='select-filter-radio align-self-start'>
-                      <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
-                    </div>
-                    <div class='select-filter-label align-self-start'>
-                      <label class='align-self-start' for='select-rgb-${i}'>${source.name}</label>
-                    </div>
-                  </div>
+              <div class='row select-filter'>
+                <div class="col-4 d-flex align-items-center">
+                  <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
+                  <label for='select-rgb-${i}'>${source.name}</label>
                 </div>
-                <div class="col-8">
-                  <div class='row filter-palette'>
-                    ${renderPalette(source, i)}
-                  </div>
+                <div class="col-8 filter-palette d-flex align-items-center">
+                  ${renderPalette(source, i)}
                 </div>
               </div>
             `;
@@ -147,7 +141,7 @@ let renderImageSelectFilterLayerToAdjust = page => {
 
 let renderPalette = (source, i) => {
   return `
-    <canvas id="palette-${source.filter}-${i}" class="align-self-end"></canvas>
+    <canvas id="palette-${source.filter}-${i}"></canvas>
   `;
 };
 
@@ -159,16 +153,52 @@ let renderImageLayerPreview = page => {
   `;
 };
 
-let renderImageAboutTelescope = page => {
-  return `
-    <div>${page.image.about.prologue}</div>
-    <div class="about-telescope">${page.image.about.telescope} Telescope</div>
-    <canvas class='image-about-telescope'></canvas>
-  `;
+let renderImageAboutTelescope = (page, registerCallback) => {
+  let telescopes = renderUtil.getTelescopes(page);
+  let prologue = app.telescopeData.prologue;
+  let html = `<div>${prologue}</div>`;
+  let modalHtml = '';
+  let id, modalId;
+  telescopes.forEach(telescope => {
+    id = telescope.key;
+    modalId = `${id}-modal`;
+    html += `
+      <div id="${id}" class="telescope-container" data-bs-toggle="modal" data-bs-target="#${modalId}">
+        <div class="about-telescope">${telescope.name} Telescope</div>
+        <div id="${telescope.key}-container" class="telescope-image-container">
+          <img src="${telescope.image}"></img>
+        </div>
+      </div>
+    `;
+
+    modalHtml += `
+      <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="${modalId}-title">About the ${telescope.name} Telescope</h5>
+              <div class="image-container">
+                <img src="${telescope.image}"></img>
+              </div>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ${telescope.description}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-small btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  return [html, modalHtml];
 };
 
 let controllerImageAdjustFilterLayer = page => {
-
   let elemBrightness = document.getElementById("brightness");
   elemBrightness.addEventListener('input', (e) => {
     let source = page.image.sources[page.image.selectedSource];
@@ -217,19 +247,19 @@ let updateImageAdjustFilterLayer = page => {
 let renderImageAdjustFilterLayer = page => {
   let source = renderUtil.getSelectedSource(page);
   return `
-    <div class='control-collection'>
+    <div class='control-collection adjust-layer'>
       <div class='title'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
-      <div class='row'>
+      <div class='row adjust-filter'>
         <div class='col-4'>
           <label for='brightness'>Brightness</label>
         </div>
-        <div class='col-8'>
+        <div class='col-8 adjust-layer'>
           <input type='range' id='brightness' name='brightness'  min='0' max='${page.image.maximumBrightness}' value='${page.image.maximumBrightness / 2}'
             step='0.05'>
         </div>
       </div>
 
-      <div class=' row'>
+      <div class=' row adjust-filter'>
         <div class='col-4'>
           <label for='contrast'>Contrast</label>
         </div>
@@ -238,7 +268,7 @@ let renderImageAdjustFilterLayer = page => {
         </div>
       </div>
 
-      <div class='row'>
+      <div class='row adjust-filter'>
         <div class='col-4'>
           <label for='color-shift'>Color Shift</label>
         </div>
@@ -302,13 +332,13 @@ let renderUnderMainImageRow = (page, renderedCallbacks) => {
   let source = renderUtil.getSelectedSource(page);
   return `
     <div id="${id}" class="d-flex flex-row justify-content-start">
-      <div class="pr-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
+      <div class="pe-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
       <form id="image-select-main-layer">
-        <div class="d-flex flex-row justify-content-start">
+        <div class="d-flex flex-row justify-content-start align-items-center">
           ${renderUnderMainImageLayerSelectors(page)}
         </div>
       </form>
-      <div class="image-name pl-2 pr-2 ml-auto">
+      <div class="image-name ps-2 pe-2 ms-auto">
         ${page.image.name}
       </div>
     </div>

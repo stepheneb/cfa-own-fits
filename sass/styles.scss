@@ -27,7 +27,7 @@ html {
 
   /* font sizes */
   --menu-page-title: 5vh;
-  --menu-page-subtitle: 1vw;
+  --menu-page-subtitle: 1vh;
   --menu-activity-category-title: 2.2vh;
   --menu-activity-category-page-title: 2vh;
   --menu-activity-category-page-subtitle: 1.8vh;
@@ -386,11 +386,6 @@ h4 {
   font-size: 1.4vw;
 }
 
-button,
-input {
-  width: 100%;
-}
-
 label,
 button {
   text-transform: uppercase;
@@ -418,33 +413,40 @@ button {
   color: var(--bright-teal);
 }
 
-.about-telescope {
-  padding: 0.75rem 0rem;
-  font-size: var(--page-subtitle);
-  text-transform: uppercase;
-}
-
-.control-collection {
+div.control-collection {
   background-color: var(--dark-teal);
   background-color: #042842;
-  margin: 0.5rem 0rem;
-  padding: 0rem 0.5rem;
-  div {
-    padding-left: 0.5rem;
+  padding: 0.5rem 0.5rem;
+  &.select-layer {
+    margin-bottom: 0.5rem;
   }
-  div.title {
-    padding: 0.5rem 0.5rem;
+  &.adjust-layer {
+    margin-top: 0.5rem;
+  }
+  >.title {
+    padding: 0rem 0rem 0.25rem 0.5rem;
+  }
+  >.row {
+    margin: 0.5em 0em;
+    &.select-filter {
+      input {
+        margin: 0rem 0.5rem 0rem 0rem;
+      }
+      label {
+      }
+    }
+    &.adjust-filter {
+      label {
+      }
+      input {
+        padding: 0rem 1rem 0rem 0rem;
+        width: 100%;
+      }
+    }
   }
 }
 
-.control-collection-text {
-  padding: 0rem 0rem 0.5rem 1rem;
-}
 
-.select-filter-radio {
-  padding-left: 0rem;
-  min-width: 2rem;
-}
 
 .select-filter-label:hover {
   color: white;
@@ -455,6 +457,14 @@ button {
   color: red;
   padding-right: 0.2rem;
 }
+
+div.filter-palette {
+  canvas {
+    height: auto;
+    width: 90%;
+  }
+}
+
 
 .image-name {
   font-size: var(--page-subtitle);
@@ -484,9 +494,8 @@ button {
 }
 
 .select-layer-checkbox {
-  padding-right: 1.5rem;
+  padding-left: 0.5rem;
   width: 3rem;
-  font-size: 120%;
 }
 
 input:checked {
@@ -546,6 +555,69 @@ div.main-image-content {
   margin-top: 0.75rem;
 }
 
+div.telescope-container {
+  div.about-telescope {
+    padding: 0.75rem 0rem;
+    font-size: var(--page-subtitle);
+    text-transform: uppercase;
+  }
+  div.telescope-image-container {
+    height: 16vh;
+    width: 100%;
+    background-color: black;
+    border: 2px solid var(--dark-teal);
+    img {
+      background-color: black;
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+    }
+  }
+}
+
+.modal-dialog {
+  max-width: unset;
+  width: 40vw;
+  .modal-content {
+    background-color: var(--almost-black);
+    border: 3px solid var(--canvas-container-border-color);
+    border-radius: 3px;
+    button {
+      width: fit-content;
+    }
+    .modal-header {
+      h5 {
+        font-size: var(--page-title);
+        color: var(--bright-green);
+      }
+      padding: 0.5vh 2vh;
+      div.image-container {
+        margin-left: 2vh;
+        height: 10vh;
+        width: 30%;
+        background-color: black;
+        img {
+          background-color: black;
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+      button.btn-close {
+        min-width: 3vw;
+        font-size: 6vh;
+        color: white;
+      }
+    }
+    .modal-body {
+      font-size: var(--page-subtitle);
+      color: var(--bright-teal);
+      line-height: 120%;
+    }
+  }
+}
+
+
 canvas {
   background-color: black;
   height: 100%;
@@ -598,14 +670,6 @@ canvas#image-layer-preview {
   max-width: 100%;
 }
 
-div.filter-palette {
-  height: 1.6vh;
-  canvas {
-    height: auto;
-    width: 80%;
-  }
-}
-
 div.layer-histogram {
   display: none;
 }
@@ -623,7 +687,7 @@ div.layer-histogram.developer.show {
 }
 
 div#image-layer-histogram-container {
-  height: 20vh;
+  height: 10vh;
   width: 100%;
   margin: 0.5em 0em;
   padding: 0px;
@@ -636,13 +700,6 @@ canvas {
     background-color: black;
     height: 100%;
     width: 100%;
-  }
-
-  &.image-about-telescope {
-    height: 20vh;
-    width: 100%;
-    background-color: black;
-    border: 2px solid var(--dark-teal);
   }
 }
 

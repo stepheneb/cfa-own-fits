@@ -20,7 +20,7 @@ splash.show = () => {
         </div>
       </div>
       <div id="splash-footer" class="fixed-bottom d-flex flex-row justify-content-center">
-        <div class="pl-1 pr-1">
+        <div class="ps-1 pe-1">
           <div class="start text align-self-center p-2">${app.splash.begin}</div>
         </div>
       </div>
