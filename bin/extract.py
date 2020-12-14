@@ -83,25 +83,31 @@ def write_img_to_file(image, base_filename, outdir, scale=1):
     [ny, nx] = image.shape[:2]
     outpath = f"{outdir}/{nx}x{ny}"
 
-    if not os.path.exists(outpath):
-        print("creating output directory for rawdata: " + outpath)
-        os.makedirs(outpath)
-
-    outfile = f"{outpath}/{base_filename}.bin"
-
-    output_file = open(outfile, 'wb')
-    image.tofile(output_file)
-    output_file.close()
-
-    actual_size = image_file_size(image)
-    if scale == 1:
-        print("writing rawdata image: " + outfile)
-
+    if (nx + ny < 800):
+        print(f"Skipping {outpath}, too small")
     else:
-        print(f"writing {scale}x rawdata image: " + outpath)
+        if not os.path.exists(outpath):
+            print("creating output directory for rawdata: " + outpath)
+            os.makedirs(outpath)
 
-    print(f"file size: {actual_size},  ({human_size(actual_size)}")
-    print()
+        print("flip image 180 degrees")
+        image = np.flipud(image);
+
+        outfile = f"{outpath}/{base_filename}.bin"
+
+        output_file = open(outfile, 'wb')
+        image.tofile(output_file)
+        output_file.close()
+
+        actual_size = image_file_size(image)
+        if scale == 1:
+            print("writing rawdata image: " + outfile)
+
+        else:
+            print(f"writing {scale}x rawdata image: " + outpath)
+
+        print(f"file size: {actual_size},  ({human_size(actual_size)}")
+        print()
 
 
 def extract_raw_image_data(infile, outdir):
