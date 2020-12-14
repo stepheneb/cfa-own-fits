@@ -4,8 +4,8 @@ import u from '../utilities.js';
 
 let renderDev = {};
 
-renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, optionalFunc) => {
-  let classStr ='btn-tf';
+renderDev.fullScreenButton = (containerId, epandedElement, registeredCallbacks, optionalFunc) => {
+  let classStr = 'btn-tf';
   let shortcid = u.shortenStr(containerId);
   let id = `${classStr}-${shortcid}`;
 
@@ -20,10 +20,10 @@ renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, opt
   </div>
   `;
 
-  registerCallback.push(renderedCallback);
+  registeredCallbacks.push(callback);
   return fsOpenCloseSVG;
 
-  function renderedCallback() {
+  function callback() {
     let fsButton = document.getElementById(id);
     let elementToExpand = false;
     if (epandedElement.documentElement) {
@@ -61,7 +61,6 @@ renderDev.fullScreenButton = (containerId, epandedElement, registerCallback, opt
         if (optionalFunc) {
           optionalFunc();
         }
-        // images.resizeCanvas
       });
     } else {
       console.log(`fsButton #${id} not found`);

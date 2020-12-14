@@ -34,13 +34,14 @@ renderActivity.page = (category, page) => {
     </div>
   `;
   switch (category.type) {
+
   case 'rgb':
   case 'multi-wave':
     leftColumnHtml = `
         <div class='col-3'>
           ${renderImageSelectFilterLayerToAdjust(page)}
           ${renderImageLayerPreview(page)}
-          ${adjustImage.render(page)}
+          ${adjustImage.render(page, registeredCallbacks)}
         </div>
       `;
     mainImageHtml = `
@@ -49,12 +50,13 @@ renderActivity.page = (category, page) => {
         </div>
       `;
     break;
+
   case 'masterpiece':
     leftColumnHtml = `
       <div class='col-3'>
         ${colorMaps.render(page, registeredCallbacks)}
         ${specialEffects.render(page, registeredCallbacks)}
-        ${adjustImage.render(page)}
+        ${adjustImage.render(page, registeredCallbacks)}
       </div>
     `;
     mainImageHtml = `
@@ -99,7 +101,6 @@ renderActivity.page = (category, page) => {
     if (checkBrowser()) {
       images.get(page, category.type);
       controllerImageSelectFilterLayerToAdjust(page);
-      adjustImage.controller(page);
       adjustImage.update(page);
       controllerImageSelectMainLayer(page);
       images.renderPalettes(page);

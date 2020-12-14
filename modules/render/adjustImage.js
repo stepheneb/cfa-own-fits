@@ -6,52 +6,6 @@ import logger from '../logger.js';
 
 let adjustImage = {};
 
-adjustImage.controller = page => {
-  let elemBrightness = document.getElementById("brightness");
-  elemBrightness.addEventListener('input', (e) => {
-    let source = page.image.sources[page.image.selectedSource];
-    let brightness = e.target.valueAsNumber;
-    source.brightness = brightness;
-    images.renderOffscreen(source, page.image.nx, page.image.ny);
-    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    images.renderMain(page.image);
-    logger.imageData(source);
-  });
-
-  let elemContrast = document.getElementById("contrast");
-  elemContrast.addEventListener('input', (e) => {
-    let source = renderUtil.getSelectedSource(page);
-    source.contrast = e.target.valueAsNumber;
-    let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
-    source.max = source.originalMax - contrastShift;
-    source.min = Math.max(0, source.originalMin + contrastShift);
-    images.renderOffscreen(source, page.image.nx, page.image.ny);
-    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    images.renderMain(page.image);
-    logger.imageData(source);
-  });
-
-  let elemScaling = document.getElementById("select-scaling");
-  elemScaling.addEventListener('change', (e) => {
-    let source = renderUtil.getSelectedSource(page);
-    source.scaling = event.target.value;
-    images.renderOffscreen(source, page.image.nx, page.image.ny);
-    images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-    images.renderMain(page.image);
-    logger.imageData(source);
-  });
-
-};
-
-adjustImage.update = page => {
-  let source = renderUtil.getSelectedSource(page);
-  document.getElementById("brightness").value = source.brightness;
-  document.getElementById("contrast").value = source.contrast;
-  let elemScaling = document.getElementById("select-scaling");
-  let radios = elemScaling.elements.scaling;
-  radios.value = source.scaling;
-};
-
 adjustImage.render = (page, registeredCallbacks) => {
   let source = renderUtil.getSelectedSource(page);
   let getId = effect => `adjust-layer-${effect}`;
@@ -126,6 +80,7 @@ adjustImage.render = (page, registeredCallbacks) => {
     return html;
   };
 
+  registeredCallbacks.push(callback);
   return `
     <div class='control-collection adjust-layer'>
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
@@ -135,6 +90,53 @@ adjustImage.render = (page, registeredCallbacks) => {
       ${scaling(page)}
     </div>
   `;
+
+  function callback() {
+    let elem;
+
+    elem = document.getElementById("brightness");
+    elem.addEventListener('input', (e) => {
+      let source = renderUtil.getSelectedSource(page);
+      let brightness = e.target.valueAsNumber;
+      source.brightness = brightness;
+      render(source);
+    });
+
+    elem = document.getElementById("contrast");
+    elem.addEventListener('input', (e) => {
+      let source = renderUtil.getSelectedSource(page);
+      source.contrast = e.target.valueAsNumber;
+      let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
+      source.max = source.originalMax - contrastShift;
+      source.min = Math.max(0, source.originalMin + contrastShift);
+      render(source);
+    });
+
+    elem = document.getElementById("color-shift");
+    elem.addEventListener('input', (e) => {});
+
+    elem = document.getElementById("select-scaling");
+    elem.addEventListener('change', (e) => {
+      let source = renderUtil.getSelectedSource(page);
+      source.scaling = event.target.value;
+      render(source);
+    });
+
+    function render(source) {
+      images.renderOffscreen(source, page.image.nx, page.image.ny);
+      images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
+      images.renderMain(page.image);
+      logger.imageData(source);
+    }
+  }
+};
+
+adjustImage.update = page => {
+  let source = renderUtil.getSelectedSource(page);
+  document.getElementById("brightness").value = source.brightness;
+  document.getElementById("contrast").value = source.contrast;
+  let radios = document.getElementById("select-scaling").elements.scaling;
+  radios.value = source.scaling;
 };
 
 export default adjustImage;
