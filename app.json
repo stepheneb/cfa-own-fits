@@ -375,6 +375,73 @@
               }
             ]
           }
+        },
+        {
+          "name": "m51",
+          "source": "",
+          "title": "Reveal an Image using 'Invisible Light",
+          "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Messier 51",
+            "about": {
+              "telescopes": [
+                "hubble",
+                "spitzer",
+                "chandra"
+              ]
+            },
+            "nx": 775,
+            "ny": 1168,
+            "maximumBrightness": 2,
+            "selectedSource": 0,
+            "selectedMainLayers": "100",
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Infrared",
+                "path": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bin",
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Optical",
+                "path": "rawdata/m51-multi/775x1168/Hubble_M51_Green_lowerRes.bin",
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "X-Ray",
+                "path": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bin",
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
         }
       ]
     },
