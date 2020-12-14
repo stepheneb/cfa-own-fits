@@ -4,10 +4,10 @@
 // Image fetching and rendering ...
 //
 
+import cmap from './render/cmap.js';
+import renderUtil from './render/util.js';
 import Spinner from './spinner.js';
-
 import utilities from './utilities.js';
-
 import logger from './logger.js';
 
 let spinner = new Spinner("loading-spinner");
@@ -416,107 +416,186 @@ images.renderMain = image => {
   console.log(`renderMain: ${utilities.roundNumber(image.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${utilities.roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
 };
 
-images.renderPalettes = page => {
-  let id, canvas, name;
-  let [nx, ny] = [256, 16];
-  let rawdataSources = page.image.sources.filter(s => s.type == 'rawdata');
-  let palettes = rawdataSources.map((source, i) => {
-    name = source.filter;
-    id = `palette-${name}-${i}`;
-    canvas = document.getElementById(id);
-    return [name, canvas];
-  });
+images.renderMainMasterpiece = image => {
+  let startTime = performance.now();
+  let rgbsource = image.sources[3];
+  let pixeldata = rgbsource.uint8Data;
+  let pixeldataRed = image.sources[0].uint8Data;
+  let pixeldataGreen = image.sources[1].uint8Data;
+  let pixeldataBlue = image.sources[2].uint8Data;
+  let colormap = cmap.data[image.cmap];
+  let len = pixeldataRed.length;
+  let i = 0;
+  let indexR, indexG, indexB;
+  let colorR, colorG, colorB;
 
-  palettes.forEach(([name, canvas], i) => {
-    init(canvas, nx, ny);
-    render(canvas, name, nx, ny);
-    // resize(canvas);
-  });
+  for (i = 0; i < len; i += 4) {
+    indexR = pixeldataRed[i];
+    colorR = colormap[indexR][0];
 
-  function init(canvas, nx, ny) {
-    canvas.ctx = canvas.getContext('2d');
-    canvas.ctx.fillStyle = "rgb(0,0,0)";
-    canvas.ctx.imageSmoothingEnabled = true;
-    canvas.ctx.globalCompositeOperation = "source-over";
-    canvas.width = nx;
-    canvas.height = ny;
+    indexG = pixeldataGreen[i + 1];
+    colorG = colormap[indexG][1];
+
+    indexB = pixeldataBlue[i + 2];
+    colorB = colormap[indexB][2];
+
+    pixeldata[i] = colorR;
+    pixeldata[i + 1] = colorG;
+    pixeldata[i + 2] = colorB;
   }
 
-  function render(canvas, name, nx, ny) {
-    let imageData = canvas.ctx.createImageData(nx, ny);
-    let uint8Data = imageData.data;
-    let i = 0;
-    let pixindex = 0;
-    let color = 0;
-    const alpha = 255;
-    var x, y;
-    switch (name) {
-    case 'red':
-      for (y = 0; y < ny; y++) {
-        color = 0;
-        for (x = 0; x < nx; x++) {
-          i = y * nx + x;
-          uint8Data[pixindex] = color;
-          uint8Data[++pixindex] = 0;
-          uint8Data[++pixindex] = 0;
-          uint8Data[++pixindex] = alpha;
-          pixindex++;
-          color++;
-        }
-      }
-      break;
-    case 'green':
-      for (y = 0; y < ny; y++) {
-        color = 0;
-        for (x = 0; x < nx; x++) {
-          i = y * nx + x;
-          uint8Data[pixindex] = 0;
-          uint8Data[++pixindex] = color;
-          uint8Data[++pixindex] = 0;
-          uint8Data[++pixindex] = alpha;
-          pixindex++;
-          color++;
-        }
-      }
-      break;
-    case 'blue':
-      for (y = 0; y < ny; y++) {
-        color = 0;
-        for (x = 0; x < nx; x++) {
-          i = y * nx + x;
-          uint8Data[pixindex] = 0;
-          uint8Data[++pixindex] = 0;
-          uint8Data[++pixindex] = color;
-          uint8Data[++pixindex] = alpha;
-          pixindex++;
-          color++;
-        }
-      }
-      break;
-    case 'gray':
-      for (y = 0; y < ny; y++) {
-        color = 0;
-        for (x = 0; x < nx; x++) {
-          i = y * nx + x;
-          uint8Data[pixindex] = color;
-          uint8Data[++pixindex] = color;
-          uint8Data[++pixindex] = color;
-          uint8Data[++pixindex] = alpha;
-          pixindex++;
-          color++;
-        }
-      }
-      break;
-    }
-    canvas.ctx.putImageData(imageData, 0, 0);
-  }
+  let renderTime = performance.now();
+  rgbsource.ctx.putImageData(rgbsource.imageData, 0, 0);
 
-  // function resize(canvas) {
-  //   let { width, height } = canvas.parentElement.getBoundingClientRect();
-  //   canvas.width = width;
-  //   canvas.height = height;
-  // }
-
+  let putImageDataTime = performance.now();
+  let bitmap = rgbsource.offscreenCanvas.transferToImageBitmap();
+  image.destinations.main.ctx.transferFromImageBitmap(bitmap);
+  let transferToImageBitmapTime = performance.now();
+  console.log(`renderMain: ${utilities.roundNumber(image.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}, transferToImageBitmap: ${utilities.roundNumber(transferToImageBitmapTime - putImageDataTime, 4)}`);
 };
 
-export default images;
+images.renderColorMaps = page => {
+    let id, canvas, name;
+    let [nx, ny] = [256, 16];
+    let names = cmap.names;
+    let colormaps = cmap.names().map(name => {
+      id = `select-cmap-${name}-canvas`;
+      canvas = document.getElementById(id);
+      return [name, canvas];
+    });
+
+    colormaps.forEach(([name, canvas], i) => {
+      init(canvas, nx, ny);
+      render(canvas, name, nx, ny);
+    });
+
+    function init(canvas, nx, ny) {
+      canvas.ctx = canvas.getContext('2d');
+      canvas.ctx.fillStyle = "rgb(0,0,0)";
+      canvas.ctx.imageSmoothingEnabled = true;
+      canvas.ctx.globalCompositeOperation = "source-over";
+      canvas.width = nx;
+      canvas.height = ny;
+    }
+
+    function render(canvas, name, nx, ny) {
+      let imageData = canvas.ctx.createImageData(nx, ny);
+      let uint8Data = imageData.data;
+      let colormap = cmap.data[name];
+      let i = 0;
+      let pixindex = 0;
+      let ci = 0;
+      const alpha = 255;
+      var x, y;
+      for (y = 0; y < ny; y++) {
+        for (x = 0; x < nx; x++) {
+          i = y * nx + x;
+          uint8Data[pixindex] = colormap[x][0];
+          uint8Data[++pixindex] = colormap[x][1];
+          uint8Data[++pixindex] = colormap[x][2];
+          uint8Data[++pixindex] = alpha;
+          pixindex++;
+        }
+      }
+      canvas.ctx.putImageData(imageData, 0, 0);
+    }
+  };
+
+
+  images.renderPalettes = page => {
+    let id, canvas, name;
+    let [nx, ny] = [256, 16];
+    let sources = renderUtil.getAllRawdataSources(page);
+    let palettes = sources.map((source, i) => {
+      name = source.filter;
+      id = `palette-${name}-${i}`;
+      canvas = document.getElementById(id);
+      return [name, canvas];
+    });
+
+    palettes.forEach(([name, canvas], i) => {
+      init(canvas, nx, ny);
+      render(canvas, name, nx, ny);
+      // resize(canvas);
+    });
+
+    function init(canvas, nx, ny) {
+      canvas.ctx = canvas.getContext('2d');
+      canvas.ctx.fillStyle = "rgb(0,0,0)";
+      canvas.ctx.imageSmoothingEnabled = true;
+      canvas.ctx.globalCompositeOperation = "source-over";
+      canvas.width = nx;
+      canvas.height = ny;
+    }
+
+    function render(canvas, name, nx, ny) {
+      let imageData = canvas.ctx.createImageData(nx, ny);
+      let uint8Data = imageData.data;
+      let i = 0;
+      let pixindex = 0;
+      let color = 0;
+      const alpha = 255;
+      var x, y;
+      switch (name) {
+      case 'red':
+        for (y = 0; y < ny; y++) {
+          color = 0;
+          for (x = 0; x < nx; x++) {
+            i = y * nx + x;
+            uint8Data[pixindex] = color;
+            uint8Data[++pixindex] = 0;
+            uint8Data[++pixindex] = 0;
+            uint8Data[++pixindex] = alpha;
+            pixindex++;
+            color++;
+          }
+        }
+        break;
+      case 'green':
+        for (y = 0; y < ny; y++) {
+          color = 0;
+          for (x = 0; x < nx; x++) {
+            i = y * nx + x;
+            uint8Data[pixindex] = 0;
+            uint8Data[++pixindex] = color;
+            uint8Data[++pixindex] = 0;
+            uint8Data[++pixindex] = alpha;
+            pixindex++;
+            color++;
+          }
+        }
+        break;
+      case 'blue':
+        for (y = 0; y < ny; y++) {
+          color = 0;
+          for (x = 0; x < nx; x++) {
+            i = y * nx + x;
+            uint8Data[pixindex] = 0;
+            uint8Data[++pixindex] = 0;
+            uint8Data[++pixindex] = color;
+            uint8Data[++pixindex] = alpha;
+            pixindex++;
+            color++;
+          }
+        }
+        break;
+      case 'gray':
+        for (y = 0; y < ny; y++) {
+          color = 0;
+          for (x = 0; x < nx; x++) {
+            i = y * nx + x;
+            uint8Data[pixindex] = color;
+            uint8Data[++pixindex] = color;
+            uint8Data[++pixindex] = color;
+            uint8Data[++pixindex] = alpha;
+            pixindex++;
+            color++;
+          }
+        }
+        break;
+      }
+      canvas.ctx.putImageData(imageData, 0, 0);
+    }
+  };
+
+  export default images;

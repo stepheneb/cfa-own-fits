@@ -110,6 +110,7 @@ renderActivity.page = (category, page) => {
     images.init(page.image);
     if (checkBrowser()) {
       images.get(page, category.type);
+      images.renderColorMaps(page);
     }
     break;
   }

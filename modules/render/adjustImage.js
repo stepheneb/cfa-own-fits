@@ -190,7 +190,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
       renderUtil.getAllRawdataSources(page).forEach(source => {
         images.renderOffscreen(source, page.image.nx, page.image.ny);
       });
-      images.renderMain(page.image);
+      images.renderMainMasterpiece(page.image);
     }
   }
 };

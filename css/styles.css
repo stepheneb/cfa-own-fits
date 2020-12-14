@@ -347,6 +347,22 @@ div.control-collection {
       padding: 0vh 1vh 0vh 0vh;
       width: 100%; }
 
+div.color-maps > row {
+  margin: 0.5em 0em;
+  padding: 0; }
+  div.color-maps > row div.col-6 {
+    padding: 0, 0, 0, 1em; }
+
+div.select-cmap {
+  padding: 0;
+  height: 2.5vh; }
+  div.select-cmap div.label {
+    text-transform: uppercase; }
+  div.select-cmap div.canvas {
+    padding: 0.25rem 0.25rem 0.25rem 1rem; }
+    div.select-cmap div.canvas canvas {
+      object-fit: fill; }
+
 .select-filter-label:hover {
   color: white;
   font-weight: bold; }

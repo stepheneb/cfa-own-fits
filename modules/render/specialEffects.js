@@ -19,7 +19,7 @@ specialEffects.render = (page, registeredCallbacks) => {
       id = getId(effect);
       effectsHtml += `
         <div id='${id}' class="col-6 d-flex align-items-center" data-effect="${id}">
-          <input type='checkbox' name='select-effect' value='${id}'>
+          <input type='checkbox' name='select-effect' value='${id}' disabled>
           <label for='${id}'>${effect}</label>
         </div>
       `;
