@@ -41,7 +41,7 @@ renderActivity.page = (category, page) => {
         <div class='col-3'>
           ${renderImageSelectFilterLayerToAdjust(page)}
           ${renderImageLayerPreview(page)}
-          ${adjustImage.render(page, registeredCallbacks)}
+          ${adjustImage.renderRGB(page, registeredCallbacks)}
         </div>
       `;
     mainImageHtml = `
@@ -56,7 +56,7 @@ renderActivity.page = (category, page) => {
       <div class='col-3'>
         ${colorMaps.render(page, registeredCallbacks)}
         ${specialEffects.render(page, registeredCallbacks)}
-        ${adjustImage.render(page, registeredCallbacks)}
+        ${adjustImage.renderMasterpiece(page, registeredCallbacks)}
       </div>
     `;
     mainImageHtml = `

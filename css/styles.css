@@ -386,10 +386,10 @@ div.filter-palette canvas {
 input:checked {
   border: 6px solid red; }
 
-#select-scaling input {
+#scaling input {
   width: 2em; }
 
-#select-scaling .select-scaling-label {
+#scaling .scaling-label {
   margin-left: 1em; }
 
 div.btn-tf > svg {

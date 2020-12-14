@@ -6,6 +6,10 @@
 
 let renderUtil = {};
 
+renderUtil.getAllRawdataSources = page => {
+  return page.image.sources.filter(s => s.type == 'rawdata');
+};
+
 renderUtil.getSelectedSource = page => {
   return page.image.sources[page.image.selectedSource];
 };
