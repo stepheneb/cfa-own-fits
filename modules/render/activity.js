@@ -175,8 +175,10 @@ let renderImageSelectFilterLayerToAdjust = page => {
       if (source.type == "rawdata") {
         html += `
           <div class='row select-filter'>
-            <div class="col-4 d-flex align-items-center">
+            <div class="col-1 d-flex align-items-center p-0">
               <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
+            </div>
+            <div class="col-3 d-flex justify-content-start align-items-center">
               <label for='select-rgb-${i}'>${source.name}</label>
             </div>
             <div class="col-8 filter-palette d-flex align-items-center">
@@ -253,7 +255,10 @@ let renderUnderMainImageRow = (page, categoryType, registeredCallbacks) => {
 let renderUnderMainImageRGBLayerSelectors = page => {
   let sources = page.image.sources;
   let html = `
-    <div class="pe-4"><span class="solid-right-arrow">&#11157</span> Combine to reveal a full-color image</div>
+    <div class="subtitle pe-4">
+      <span class="solid-right-arrow">&#11157</span>
+      Combine to reveal a full-color image
+    </div>
     <form id="image-select-main-layer">
       <div class="d-flex flex-row justify-content-start align-items-center">
   `;
@@ -263,10 +268,8 @@ let renderUnderMainImageRGBLayerSelectors = page => {
     if (source.type == "rawdata") {
       let name = source.name;
       html += `
-        <div class="select-layer-label">
-          <label for='select-layer-${name}'>${name}</label>
-        </div>
-        <div class="select-layer-checkbox">
+        <div class="select-layer">
+          <label class="pe-2" for='select-layer-${name}'>${name}</label>
           <input type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>
         </div>
       `;

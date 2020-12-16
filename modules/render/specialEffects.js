@@ -1,26 +1,34 @@
 /*jshint esversion: 6 */
 
+import images from '../images.js';
+import Filter from '../filter.js';
 import renderUtil from './util.js';
 
 let specialEffects = {};
 
 specialEffects.render = (page, registeredCallbacks) => {
-  let id, elem;
-  let effects = [
-    ['lighten', 'reduce noise'],
-    ['blur', 'emboss'],
-    ['sharpen', 'invert']
-  ];
+  let id, elem, name, filter;
+  let formId = 'special-effects';
   let effectsHtml = '';
   let getId = effect => `select-effect-${effect}`;
-  effects.forEach(row => {
+  let filters = Filter.filters;
+  let keys = Object.keys(filters);
+  let rowCount = 2;
+  let filterRows = keys.reduce((all, one, i) => {
+    const ch = Math.floor(i / rowCount);
+    all[ch] = [].concat((all[ch] || []), one);
+    return all;
+  }, []);
+  filterRows.forEach(row => {
     effectsHtml += '<div class="row special-effects">';
-    row.forEach(effect => {
-      id = getId(effect);
+    row.forEach(key => {
+      filter = filters[key];
+      name = filter.name;
+      id = getId(key);
       effectsHtml += `
-        <div id='${id}' class="col-6 d-flex align-items-center" data-effect="${id}">
-          <input type='checkbox' name='select-effect' value='${id}' disabled>
-          <label for='${id}'>${effect}</label>
+        <div id='${id}' class="effect col-6 d-flex align-items-center" data-effect="${key}">
+          <input type='checkbox' name='select-effect' value='${id}'>
+          <label for='${id}'>${key}</label>
         </div>
       `;
     });
@@ -30,25 +38,34 @@ specialEffects.render = (page, registeredCallbacks) => {
     <div class='control-collection special-effects'>
       <div class='title'>Special Effects</div>
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>Try an effect to enhance your image</div>
-      ${effectsHtml}
-      </div>
+      <form id="${formId}">
+        ${effectsHtml}
+      </form>
+    </div>
   `;
   registeredCallbacks.push(callback);
   return html;
 
   function callback() {
-    effects.forEach(row => {
-      row.forEach(effect => {
-        id = getId(effect);
-        elem = document.getElementById(id);
-        elem.addEventListener('change', event => {
-          event.stopPropagation();
-          let id = event.currentTarget.dataset.effect;
-          console.log(`${id} clicked`);
-        });
-      });
+    elem = document.getElementById(formId);
+    elem.addEventListener('change', (e) => {
+      let isChecked = e.target.checked;
+      unCheckAll();
+      if (isChecked) {
+        e.target.checked = true;
+      }
+      let checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"]'));
+      let filters = checkboxes.filter(c => c.checked)
+        .map(c => c.parentElement.dataset.effect);
+      images.runFilters(page.image, filters);
     });
   }
+
+  function unCheckAll() {
+    let container = document.getElementById('special-effects');
+    container.querySelectorAll('input[type=checkbox]').forEach(c => c.checked = false);
+  }
+
 };
 
 export default specialEffects;

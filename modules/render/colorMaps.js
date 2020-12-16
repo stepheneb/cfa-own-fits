@@ -32,10 +32,10 @@ colorMaps.render = (page, registeredCallbacks) => {
       cmapsHtml += `
         <div class="col-6">
           <div id="${id}" class="row select-cmap" data-cmap="${cmap}">
-            <div class="label col-4 d-flex align-items-center">${cmap}</div>
             <div class="canvas col-8 d-flex align-items-center" >
               <canvas id="${id}-canvas"></canvas>
             </div>
+            <div class="label col-4 d-flex align-items-center">${cmap}</div>
           </div>
         </div>
       `;
@@ -43,7 +43,7 @@ colorMaps.render = (page, registeredCallbacks) => {
     cmapsHtml += '</div>';
   });
   let html = `
-    <div class='control-collection color-maps'>
+    <div id="select-colormaps" class='control-collection color-maps'>
       <div class='title'>Color Maps</div>
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>Select a color range to add color to your image</div>
       ${cmapsHtml}
@@ -53,12 +53,15 @@ colorMaps.render = (page, registeredCallbacks) => {
   return html;
 
   function callback() {
+
     cmaps.forEach(row => {
       row.forEach(cmap => {
         id = getId(cmap);
         elem = document.getElementById(id);
         elem.addEventListener('click', event => {
           event.stopPropagation();
+          unselectAll();
+          event.currentTarget.classList.add('selected');
           let id = event.currentTarget.dataset.cmap;
           image.cmap = cmap;
           images.renderMainMasterpiece(image);
@@ -66,6 +69,11 @@ colorMaps.render = (page, registeredCallbacks) => {
         });
       });
     });
+  }
+
+  function unselectAll() {
+    let container = document.getElementById('select-colormaps');
+    container.querySelectorAll('.row.select-cmap').forEach(c => c.classList.remove('selected'));
   }
 };
 

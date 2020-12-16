@@ -32,7 +32,8 @@ html {
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
-  --control-subtitle: 1.8vh; }
+  --control-title: 1.6vh;
+  --control-subtitle: 1.4vh; }
 
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
@@ -327,7 +328,9 @@ div.control-collection {
   padding: 1vh 1vh; }
   div.control-collection.select-layer,
   div.control-collection .color-maps {
-    margin-bottom: 1vh; }
+    margin-bottom: 1vh;
+    padding-bottom: 0.2vh;
+    padding-top: 0.2vh; }
   div.control-collection.special-effects {
     margin-top: 1vh;
     margin-bottom: 1vh; }
@@ -335,17 +338,50 @@ div.control-collection {
     margin-top: 1vh; }
   div.control-collection > .title {
     color: var(--bright-green);
-    font-size: var(--control-subtitle);
-    padding: 0vh 0vh 1vh 0.5vh; }
-  div.control-collection > .subtitle {
+    font-size: var(--control-title);
     padding: 0vh 0vh 0.5vh 0.5vh; }
-  div.control-collection > .row {
-    margin: 0.5em 0em; }
-    div.control-collection > .row.select-filter input, div.control-collection > .row.special-effects input {
-      margin: 0vh 0.5vh 0vh 0vh; }
-    div.control-collection > .row.adjust-filter input {
+  div.control-collection > .subtitle {
+    font-size: var(--control-subtitle);
+    padding: 0vh 0vh 0.25vh 0.5vh; }
+  div.control-collection > .row,
+  div.control-collection form > .row {
+    margin: 0.75em 0em; }
+    div.control-collection > .row .effect:hover,
+    div.control-collection > .row .select-filter:hover,
+    div.control-collection form > .row .effect:hover,
+    div.control-collection form > .row .select-filter:hover {
+      color: white;
+      font-weight: bold; }
+    div.control-collection > .row.select-filter input,
+    div.control-collection form > .row.select-filter input {
+      margin: 0vh 0vh 0vh 0vh;
+      padding: 0; }
+    div.control-collection > .row.select-filter label,
+    div.control-collection form > .row.select-filter label {
+      font-size: var(--control-subtitle); }
+    div.control-collection > .row.special-effects input,
+    div.control-collection form > .row.special-effects input {
+      margin: 0vh 0vh 0vh 0vh;
+      padding: 0; }
+    div.control-collection > .row.special-effects label,
+    div.control-collection form > .row.special-effects label {
+      font-size: var(--control-subtitle); }
+    div.control-collection > .row.adjust-filter input,
+    div.control-collection form > .row.adjust-filter input {
       padding: 0vh 1vh 0vh 0vh;
       width: 100%; }
+
+div.row.select-filter:hover {
+  color: white;
+  font-weight: bold; }
+
+div.select-layer {
+  padding: 0em 1em; }
+  div.select-layer label {
+    font-size: var(--control-subtitle); }
+  div.select-layer input {
+    padding: 0vh 0vh 0vh 1vh;
+    width: 100%; }
 
 div.color-maps > row {
   margin: 0.5em 0em;
@@ -356,10 +392,22 @@ div.color-maps > row {
 div.select-cmap {
   padding: 0;
   height: 2.5vh; }
+  div.select-cmap.selected {
+    color: white;
+    font-weight: unset;
+    border: 1px solid var(--dark-teal);
+    border-radius: 2px;
+    background-color: var(--dark-teal); }
+  div.select-cmap:hover {
+    color: white;
+    font-weight: 600;
+    border: 1px solid white;
+    border-radius: 2px; }
   div.select-cmap div.label {
+    padding-left: 0rem;
     text-transform: uppercase; }
   div.select-cmap div.canvas {
-    padding: 0.25rem 0.25rem 0.25rem 1rem; }
+    padding: 0.25rem 0.25rem 0.25rem 0rem; }
     div.select-cmap div.canvas canvas {
       object-fit: fill; }
 
@@ -371,9 +419,11 @@ div.select-cmap {
   color: red;
   padding-right: 0.2rem; }
 
-div.filter-palette canvas {
-  height: auto;
-  width: 90%; }
+div.filter-palette {
+  padding: 0.25rem 0.25rem 0.25rem 0rem; }
+  div.filter-palette canvas {
+    height: fit-content;
+    object-fit: fill; }
 
 .image-name {
   font-size: var(--page-subtitle);
@@ -389,24 +439,18 @@ div.filter-palette canvas {
 .display-layer-checkbox {
   width: 1.5em; }
 
-.select-layer-label {
-  padding-right: 0rem; }
-  .select-layer-label:hover {
-    color: white;
-    font-weight: bold; }
-
 .select-layer-checkbox {
   padding-left: 0.5rem;
   width: 3rem; }
-
-input:checked {
-  border: 6px solid red; }
 
 #scaling input {
   width: 2em; }
 
 #scaling .scaling-label {
-  margin-left: 1em; }
+  margin: 0vh 0.5vh 0vh 0.5vh; }
+
+#scaling .scaling-radio {
+  margin: 0vh 1vh 0vh 0.5vh; }
 
 div.btn-tf > svg {
   width: 2.4vh;
@@ -416,7 +460,7 @@ div.btn-tf > svg {
   display: none; }
   div.btn-tf > svg path {
     stroke-width: 6px; }
-  div.btn-tf > svg:hover {
+  div.btn-tf > svg:not {
     fill: var(--toggle-fullscreen-hover); }
   div.btn-tf > svg.show {
     display: flex; }
@@ -440,6 +484,8 @@ div.main-image-content {
 
 #under-main-image-row {
   margin-top: 0.75rem; }
+  #under-main-image-row .subtitle {
+    font-size: var(--control-subtitle); }
 
 div.telescope-container div.about-telescope {
   padding: 0.75rem 0rem;
@@ -581,3 +627,117 @@ canvas#image-layer-histogram {
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%); } }
+
+@supports (-webkit-appearance: none) or (-moz-appearance: none) {
+  input[type="checkbox"],
+  input[type="radio"] {
+    --active: #275efe;
+    --active-inner: #fff;
+    --focus: 2px rgba(39, 94, 254, 0.3);
+    --border: #bbc1e1;
+    --border-hover: #275efe;
+    --background: #fff;
+    --disabled: #f6f8ff;
+    --disabled-inner: #e1e6f9;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    height: 21px;
+    outline: none;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+    border: 1px solid var(--bc, var(--border));
+    background: var(--b, var(--background));
+    rowselect-filter: background 0.2s, border-color 0.2s, box-shadow 0.1s; }
+    input[type="checkbox"]:after,
+    input[type="radio"]:after {
+      content: "";
+      display: block;
+      left: 0;
+      top: 0;
+      position: absolute;
+      transition: transform var(--d-t, 0.2s) var(--d-t-e, ease), opacity var(--d-o, 0.2s); }
+    input[type="checkbox"]:checked,
+    input[type="radio"]:checked {
+      --b: var(--active);
+      --bc: var(--active);
+      --d-o: 0.3s;
+      --d-t: 0.6s;
+      --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2); }
+    input[type="checkbox"]:disabled,
+    input[type="radio"]:disabled {
+      --b: var(--disabled);
+      cursor: not-allowed;
+      opacity: 0.9; }
+      input[type="checkbox"]:disabled:checked,
+      input[type="radio"]:disabled:checked {
+        --b: var(--disabled-inner);
+        --bc: var(--border); }
+      input[type="checkbox"]:disabled + label,
+      input[type="radio"]:disabled + label {
+        cursor: not-allowed; }
+    input[type="checkbox"]:hover:not(:checked):not(:disabled),
+    input[type="radio"]:hover:not(:checked):not(:disabled) {
+      --bc: var(--border-hover); }
+    input[type="checkbox"]:focus,
+    input[type="radio"]:focus {
+      box-shadow: 0 0 0 var(--focus); }
+    input[type="checkbox"]:not(.switch),
+    input[type="radio"]:not(.switch) {
+      width: 21px; }
+      input[type="checkbox"]:not(.switch):after,
+      input[type="radio"]:not(.switch):after {
+        opacity: var(--o, 0); }
+      input[type="checkbox"]:not(.switch):checked,
+      input[type="radio"]:not(.switch):checked {
+        --o: 1; }
+    input[type="checkbox"] + label,
+    input[type="radio"] + label {
+      font-size: 14px;
+      line-height: 21px;
+      display: inline-block;
+      vertical-align: top;
+      cursor: pointer;
+      margin-left: 4px; }
+  input[type="checkbox"]:not(.switch) {
+    border-radius: 7px; }
+    input[type="checkbox"]:not(.switch):after {
+      width: 5px;
+      height: 9px;
+      border: 2px solid var(--active-inner);
+      border-top: 0;
+      border-left: 0;
+      left: 7px;
+      top: 4px;
+      transform: rotate(var(--r, 20deg)); }
+    input[type="checkbox"]:not(.switch):checked {
+      --r: 43deg; }
+  input[type="checkbox"].switch {
+    width: 38px;
+    border-radius: 11px; }
+    input[type="checkbox"].switch:after {
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+      background: var(--ab, var(--border));
+      transform: translateX(var(--x, 0)); }
+    input[type="checkbox"].switch:checked {
+      --ab: var(--active-inner);
+      --x: 17px; }
+    input[type="checkbox"].switch:disabled:not(:checked):after {
+      opacity: 0.6; }
+  input[type="radio"] {
+    border-radius: 50%; }
+    input[type="radio"]:after {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: var(--active-inner);
+      opacity: 0;
+      transform: scale(var(--s, 0.7)); }
+    input[type="radio"]:checked {
+      --s: 0.5; } }

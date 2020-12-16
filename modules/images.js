@@ -4,6 +4,7 @@
 // Image fetching and rendering ...
 //
 
+import Filter from './filter.js';
 import cmap from './render/cmap.js';
 import renderUtil from './render/util.js';
 import Spinner from './spinner.js';
@@ -23,17 +24,19 @@ images.init = (image, preview) => {
 
 images.get = (page, categoryType) => {
   spinner.show("getImages");
-  let renderFunc;
+  let layerRenderFunc, mainRenderFunc;
   switch (categoryType) {
   case 'rgb':
   case 'multi-wave':
-    renderFunc = renderFuncfetchRawDataForRGBImage;
+    layerRenderFunc = renderFuncfetchRawDataForRGBImage;
+    mainRenderFunc = images.renderMain;
     break;
   case 'masterpiece':
-    renderFunc = renderFuncfetchRawDataForMasterpieceImage;
+    layerRenderFunc = renderFuncfetchRawDataForMasterpieceImage;
+    mainRenderFunc = images.renderMainMasterpiece;
     break;
   }
-  fetchAllRawDataImages(page, page.image.selectedSource, renderFunc);
+  fetchAllRawDataImages(page, page.image.selectedSource, layerRenderFunc, mainRenderFunc);
   let compositeSource = page.image.sources.find(s => s.type == 'composite');
   if (compositeSource) {
     spinner.show("initializeOffscreenCanvas");
@@ -42,7 +45,7 @@ images.get = (page, categoryType) => {
   }
 };
 
-let fetchAllRawDataImages = (page, selectedPreviewLayer, renderFunc) => {
+let fetchAllRawDataImages = (page, selectedPreviewLayer, layerRenderFunc, mainRenderFunc) => {
   let rawDataSources = page.image.sources.filter(s => s.type == 'rawdata');
   Promise.all(
     rawDataSources.map(source => fetch(source.path))
@@ -55,9 +58,9 @@ let fetchAllRawDataImages = (page, selectedPreviewLayer, renderFunc) => {
       addRawDataSourceAttributes(source);
       logger.rawData(source);
       let previewSelected = selectedPreviewLayer == i ? true : false;
-      renderFunc(page.image, source, previewSelected, page.image.nx, page.image.ny);
+      layerRenderFunc(page.image, source, previewSelected, page.image.nx, page.image.ny);
     });
-    images.renderMain(page.image);
+    mainRenderFunc(page.image);
     spinner.hide("then imageBufferItems");
   }).catch(function (e) {
     spinner.cancel("fetchError");
@@ -423,6 +426,7 @@ images.renderMainMasterpiece = image => {
   let pixeldataRed = image.sources[0].uint8Data;
   let pixeldataGreen = image.sources[1].uint8Data;
   let pixeldataBlue = image.sources[2].uint8Data;
+  if (!image.cmap) image.cmap = 'gray';
   let colormap = cmap.data[image.cmap];
   let len = pixeldataRed.length;
   let i = 0;
@@ -499,6 +503,40 @@ images.renderColorMaps = page => {
     }
     canvas.ctx.putImageData(imageData, 0, 0);
   }
+};
+
+let renderLayersFromRawData = (image) => {
+  image.sources.filter(s => s.type == 'rawdata')
+    .forEach(source => {
+      images.renderOffscreen(source, image.nx, image.ny);
+    });
+};
+
+images.runFilters = (image, filters) => {
+  // let canvas = image.destinations.main.canvas;
+  let rgbsource = image.sources[3];
+
+  renderLayersFromRawData(image);
+  images.renderMainMasterpiece(image);
+  rgbsource.ctx.putImageData(rgbsource.imageData, 0, 0);
+  let bitmap = rgbsource.offscreenCanvas.transferToImageBitmap();
+  image.destinations.main.ctx.transferFromImageBitmap(bitmap);
+
+  let pixeldata = {
+    data: rgbsource.uint8Data,
+    width: image.nx,
+    height: image.ny
+  };
+
+  if (filters.length > 0) {
+    filters.forEach(filter => {
+      Filter.filters[filters[0]].filter(pixeldata);
+      rgbsource.ctx.putImageData(rgbsource.imageData, 0, 0);
+      let bitmap = rgbsource.offscreenCanvas.transferToImageBitmap();
+      image.destinations.main.ctx.transferFromImageBitmap(bitmap);
+    });
+  }
+
 };
 
 images.renderPalettes = page => {
