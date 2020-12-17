@@ -364,6 +364,16 @@ header.menu-activity-page-title {
   font-size: 1.2vh;
 }
 
+button.scale {
+  width: 4vh;
+  background-color: black;
+  font-size: 2vh;
+  font-weight: 600;
+  color: white;
+  padding: 0;
+  margin: 0 1vh;
+}
+
 .h1,
 h1 {
   font-size: 1.8rem;
@@ -444,6 +454,7 @@ div.control-collection {
   > .row,
   form > .row {
     margin: 0.75em 0em;
+    max-height: 4vh;
     .effect,
     .select-filter {
       &:hover {
@@ -467,6 +478,7 @@ div.control-collection {
       }
       label {
         font-size: var(--control-subtitle);
+        padding-left: 0.5vh;
       }
     }
     &.adjust-filter {
@@ -547,8 +559,9 @@ div.select-cmap {
 
 div.filter-palette {
   padding: 0.25rem 0.25rem 0.25rem 0rem;
+  max-height: 4vh;
   canvas {
-    height: fit-content;
+    // height: fit-content;
     object-fit: fill;
   }
 }
@@ -578,7 +591,8 @@ div.filter-palette {
 
 #scaling {
   input {
-    width: 2em;
+    width: 2.5vh;
+    height: 2.5vh;
   }
 
   .scaling-label {
@@ -608,6 +622,7 @@ div.btn-tf > svg {
 
 div#btn-tf-micc {
   position: absolute;
+  z-index: 10;
   bottom: 0.3vh;
   right: 1.2vw;
   height: 3vh;
@@ -629,7 +644,7 @@ div.main-image-content {
 }
 
 #under-main-image-row {
-  margin-top: 0.75rem;
+  margin-top: 1vh;
   .subtitle {
     font-size: var(--control-subtitle);
   }
@@ -698,7 +713,6 @@ div.telescope-container {
 }
 
 canvas {
-  background-color: black;
   height: 100%;
   width: 100%;
   object-fit: contain;
@@ -718,6 +732,49 @@ div#main-image-canvas-container {
     height: 80vh;
     border: 3px solid var(--canvas-container-border-color-fullscreen);
   }
+  canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+    object-fit: contain;
+    &.red {
+      background-color: red;
+    }
+    &.green {
+      background-color: green;
+    }
+    &.blue {
+      background-color: blue;
+    }
+    &.layer {
+      cursor: all-scroll;
+      background-color: var(--almost-black);
+    }
+    &:last-child {
+      display: block;
+      background-color: var(--almost-black);
+    }
+  }
+}
+
+canvas#main-image-canvas-red {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+span.touchinfo {
+  background: transparent;
+  &.hidden {
+    display: none;
+  }
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  // width: calc(90% - 40px);
 }
 
 div.main-image-content:not(:root):fullscreen {
@@ -733,20 +790,19 @@ div.main-image-content:not(:root):fullscreen {
 }
 
 div#preview-image-canvas-container {
+  position: relative;
   height: 30vh;
   width: 100%;
   margin: 0;
   background-color: var(--almost-black);
   border: 2px solid var(--canvas-container-border-color);
   border-radius: 3px;
-}
-
-canvas#image-layer-preview {
-  background-color: black;
-  height: auto;
-  width: auto;
-  max-height: 100%;
-  max-width: 100%;
+  canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    object-fit: contain;
+  }
 }
 
 div.layer-histogram {
@@ -774,12 +830,10 @@ div#image-layer-histogram-container {
   border: 1px solid var(--bright-teal);
 }
 
-canvas {
-  &#image-layer-histogram {
-    background-color: black;
-    height: 100%;
-    width: 100%;
-  }
+#image-layer-histogram.canvas {
+  background-color: black;
+  height: 100%;
+  width: 100%;
 }
 
 @media print {
@@ -790,7 +844,7 @@ canvas {
     height: 100vh;
   }
 
-  #main-image-canvas {
+  .main-image-canvas {
     visibility: visible;
     display: block;
     background-color: white;

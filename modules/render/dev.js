@@ -36,7 +36,7 @@ renderDev.fullScreenButton = (containerId, epandedElement, registeredCallbacks, 
     if (fsButton && elementToExpand) {
       let fsOpenList = document.querySelectorAll('svg.fsOpen');
       let fsCloseList = document.querySelectorAll('svg.fsClose');
-      fsButton.addEventListener('click', event => {
+      fsButton.addEventListener('click', () => {
         if (document.documentElement.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement) {
           if (document.exitFullscreen) {
             document.exitFullscreen();
@@ -81,7 +81,7 @@ renderDev.developerToolsButton = (containerId, registerCallback) => {
   function renderedCallback() {
     let btn = document.getElementById(id);
     if (btn) {
-      btn.addEventListener('click', event => {
+      btn.addEventListener('click', () => {
         document.querySelectorAll('.developer').forEach(fsButton => fsButton.classList.toggle('show'));
       });
     } else {

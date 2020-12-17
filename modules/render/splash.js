@@ -2,9 +2,8 @@
 
 // Splash page
 
-import router from '../router.js';
+import router from '../../router.js';
 import renderMenu from './menu.js';
-import renderActivity from './activity.js';
 
 let splash = {};
 

@@ -1,13 +1,11 @@
 /*jshint esversion: 6 */
-
-import renderUtil from './util.js';
+/*global app  */
 
 let telescopes = {};
 
-telescopes.render = (page, registerCallback) => {
-  let telescopes = renderUtil.getTelescopes(page);
-  let prologue = app.telescopeData.prologue;
-  let html = `<div>${prologue}</div>`;
+telescopes.render = page => {
+  let telescopes = page.telescopes;
+  let html = `<div>${app.telescopeData.prologue}</div>`;
   let modalHtml = '';
   let id, modalId;
   telescopes.forEach(telescope => {

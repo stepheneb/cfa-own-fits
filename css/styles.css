@@ -279,6 +279,15 @@ header.menu-activity-page-title {
   background-color: black;
   font-size: 1.2vh; }
 
+button.scale {
+  width: 4vh;
+  background-color: black;
+  font-size: 2vh;
+  font-weight: 600;
+  color: white;
+  padding: 0;
+  margin: 0 1vh; }
+
 .h1,
 h1 {
   font-size: 1.8rem;
@@ -345,7 +354,8 @@ div.control-collection {
     padding: 0vh 0vh 0.25vh 0.5vh; }
   div.control-collection > .row,
   div.control-collection form > .row {
-    margin: 0.75em 0em; }
+    margin: 0.75em 0em;
+    max-height: 4vh; }
     div.control-collection > .row .effect:hover,
     div.control-collection > .row .select-filter:hover,
     div.control-collection form > .row .effect:hover,
@@ -365,7 +375,8 @@ div.control-collection {
       padding: 0; }
     div.control-collection > .row.special-effects label,
     div.control-collection form > .row.special-effects label {
-      font-size: var(--control-subtitle); }
+      font-size: var(--control-subtitle);
+      padding-left: 0.5vh; }
     div.control-collection > .row.adjust-filter input,
     div.control-collection form > .row.adjust-filter input {
       padding: 0vh 1vh 0vh 0vh;
@@ -420,9 +431,9 @@ div.select-cmap {
   padding-right: 0.2rem; }
 
 div.filter-palette {
-  padding: 0.25rem 0.25rem 0.25rem 0rem; }
+  padding: 0.25rem 0.25rem 0.25rem 0rem;
+  max-height: 4vh; }
   div.filter-palette canvas {
-    height: fit-content;
     object-fit: fill; }
 
 .image-name {
@@ -444,7 +455,8 @@ div.filter-palette {
   width: 3rem; }
 
 #scaling input {
-  width: 2em; }
+  width: 2.5vh;
+  height: 2.5vh; }
 
 #scaling .scaling-label {
   margin: 0vh 0.5vh 0vh 0.5vh; }
@@ -467,6 +479,7 @@ div.btn-tf > svg {
 
 div#btn-tf-micc {
   position: absolute;
+  z-index: 10;
   bottom: 0.3vh;
   right: 1.2vw;
   height: 3vh;
@@ -483,7 +496,7 @@ div.main-image-content {
   display: inline-block; }
 
 #under-main-image-row {
-  margin-top: 0.75rem; }
+  margin-top: 1vh; }
   #under-main-image-row .subtitle {
     font-size: var(--control-subtitle); }
 
@@ -537,7 +550,6 @@ div.telescope-container div.telescope-image-container {
       line-height: 120%; }
 
 canvas {
-  background-color: black;
   height: 100%;
   width: 100%;
   object-fit: contain; }
@@ -555,6 +567,39 @@ div#main-image-canvas-container {
     width: 90vw;
     height: 80vh;
     border: 3px solid var(--canvas-container-border-color-fullscreen); }
+  div#main-image-canvas-container canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+    object-fit: contain; }
+    div#main-image-canvas-container canvas.red {
+      background-color: red; }
+    div#main-image-canvas-container canvas.green {
+      background-color: green; }
+    div#main-image-canvas-container canvas.blue {
+      background-color: blue; }
+    div#main-image-canvas-container canvas.layer {
+      cursor: all-scroll;
+      background-color: var(--almost-black); }
+    div#main-image-canvas-container canvas:last-child {
+      display: block;
+      background-color: var(--almost-black); }
+
+canvas#main-image-canvas-red {
+  height: 100%;
+  width: 100%;
+  object-fit: contain; }
+
+span.touchinfo {
+  background: transparent;
+  left: 50%;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%); }
+  span.touchinfo.hidden {
+    display: none; }
 
 div.main-image-content:not(:root):fullscreen {
   width: 100%;
@@ -567,19 +612,18 @@ div.main-image-content:not(:root):fullscreen {
     max-height: none; }
 
 div#preview-image-canvas-container {
+  position: relative;
   height: 30vh;
   width: 100%;
   margin: 0;
   background-color: var(--almost-black);
   border: 2px solid var(--canvas-container-border-color);
   border-radius: 3px; }
-
-canvas#image-layer-preview {
-  background-color: black;
-  height: auto;
-  width: auto;
-  max-height: 100%;
-  max-width: 100%; }
+  div#preview-image-canvas-container canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    object-fit: contain; }
 
 div.layer-histogram {
   display: none; }
@@ -601,7 +645,7 @@ div#image-layer-histogram-container {
   background-color: var(--almost-black);
   border: 1px solid var(--bright-teal); }
 
-canvas#image-layer-histogram {
+#image-layer-histogram.canvas {
   background-color: black;
   height: 100%;
   width: 100%; }
@@ -612,7 +656,7 @@ canvas#image-layer-histogram {
     visibility: hidden;
     overflow: hidden;
     height: 100vh; }
-  #main-image-canvas {
+  .main-image-canvas {
     visibility: visible;
     display: block;
     background-color: white;

@@ -1,24 +1,23 @@
 /*jshint esversion: 6 */
+/*global app  */
 
 // Activity Menu page
 
 import events from '../events.js';
-import router from '../router.js';
+import router from '../../router.js';
 import navigation from './navigation.js';
 import checkBrowser from '../checkBrowser.js';
+import Page from '../page.js';
 import splash from './splash.js';
-import renderActivity from './activity.js';
-import renderDev from './dev.js';
-import renderUtil from './util.js';
 
 let renderMenu = {};
 
-renderMenu.page = (category) => {
+renderMenu.page = (ctype) => {
   let renderedCallbacks = [];
 
   let hash = "menu";
-  if (category) {
-    hash = `menu/${category.type}`;
+  if (ctype) {
+    hash = `menu/${ctype}`;
   }
 
   let html = renderMenu.pageHeader();
@@ -34,38 +33,42 @@ renderMenu.page = (category) => {
   document.getElementById("content").innerHTML = html;
   events.setupGlobal();
 
-  if (category) {
-    renderMenu.categoryPages(category);
+  if (ctype) {
+    renderMenu.categoryPages(ctype);
   }
 
-  let addMenuCategoryListener = (category) => {
-    let id = `menu-category-${category.type}`;
-    document.getElementById(id).addEventListener('click', event => {
-      renderMenu.categoryPages(category);
+  let addMenuCategoryListener = (ctype) => {
+    let id = `menu-category-${ctype}`;
+    document.getElementById(id).addEventListener('click', () => {
+      renderMenu.categoryPages(ctype);
     });
   };
 
-  app.categories.forEach(addMenuCategoryListener);
+  app.categories.forEach(c => {
+    addMenuCategoryListener(c.type);
+  });
 
-  let addSVGCloseMenuCategoryPagesListener = (category) => {
-    let id = `svg-close-menu-${category.type}-pages`;
-    document.getElementById(id).addEventListener('click', event => {
-      renderMenu.categoryPages(category);
+  let addSVGCloseMenuCategoryPagesListener = (ctype) => {
+    let id = `svg-close-menu-${ctype}-pages`;
+    document.getElementById(id).addEventListener('click', () => {
+      renderMenu.categoryPages(ctype);
     });
   };
 
-  app.categories.forEach(addSVGCloseMenuCategoryPagesListener);
+  app.categories.forEach(c => {
+    addSVGCloseMenuCategoryPagesListener(c.type);
+  });
 
-  let addStartPageListener = (category, page) => {
-    let id = `open-page-${category.type}-${page.name}`;
-    document.getElementById(id).addEventListener('click', event => {
-      renderActivity.page(category, page);
+  let addStartPageListener = (ctype, page) => {
+    let id = `open-page-${ctype}-${page.name}`;
+    document.getElementById(id).addEventListener('click', () => {
+      app.page = new Page(ctype, page);
     });
   };
 
   app.categories.forEach((category) => {
     category.pages.forEach((page) => {
-      addStartPageListener(category, page);
+      addStartPageListener(category.type, page);
     });
   });
 
@@ -111,14 +114,11 @@ renderMenu.activityCategory = () => {
   return html;
 };
 
-renderMenu.categoryPages = (category) => {
-  var elem, categoryPagesElement;
+renderMenu.categoryPages = (ctype) => {
+  var elem, category, categoryPagesElement;
   let hash = "";
   let categories = app.categories;
-  let selectedCategory = category;
-  let type = selectedCategory.type;
-  let categoryElements = document.getElementsByClassName('category');
-  let selectedCategoryElement = document.getElementById(`menu-category-${type}`);
+  let selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
   if (selectedCategoryElement.classList.contains("selected")) {
     for (category of categories) {
       elem = document.getElementById(`menu-category-${category.type}`);
@@ -148,13 +148,12 @@ renderMenu.categoryPages = (category) => {
 
 renderMenu.activityCategoryPages = () => {
   let html = '';
-  app.categories.forEach((category, i) => {
+  app.categories.forEach((category) => {
     let type = category.type;
     let id = `menu-category-${type}-pages`;
     let svgCloseId = `svg-close-menu-${type}-pages`;
     let title = category.title;
     let subtitle = category.subtitle;
-    let pages = category.pages;
     html += `
       <div id="${id}" class="menu-category-pages">
         <svg id="${svgCloseId}">
@@ -183,7 +182,7 @@ renderMenu.categoryPageCollection = category => {
   let type = category.type;
   category.pages.forEach((page) => {
     var id = `open-page-${category.type}-${page.name}`;
-    telescopes = renderUtil.getTelescopes(page).map(telescope => telescope.name).join(", ");
+    telescopes = getTelescopes(page).map(telescope => telescope.name).join(", ");
     html += `
       <div id="${id}" class="menu-category-page">
         <div class="image-wrapper">
@@ -197,5 +196,12 @@ renderMenu.categoryPageCollection = category => {
   return html;
 };
 
+function getTelescopes(page) {
+  let telescopes = [];
+  page.image.about.telescopes.forEach(tkey => {
+    telescopes.push(app.telescopeData.telescopes.find(t => t.key == tkey));
+  });
+  return telescopes;
+}
 
 export default renderMenu;

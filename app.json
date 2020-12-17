@@ -64,14 +64,30 @@
                 "hubble"
               ]
             },
-            "nx": 1300,
-            "ny": 1250,
+            "dimensions": {
+              "small": {
+                "nx": 650,
+                "ny": 625
+              },
+              "medium": {
+                "nx": 1300,
+                "ny": 1250
+              },
+              "large": {
+                "nx": 2600,
+                "ny": 2500
+              }
+            },
             "maximumBrightness": 2,
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f658Red.bin",
+                "path": {
+                  "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f658Red.bin",
+                  "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f658Red.bin",
+                  "large": "rawdata/HST_Lagoon/2600x2500/HST_Lagoon_f658Red.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -82,7 +98,11 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f656Green.bin",
+                "path": {
+                  "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f656Green.bin",
+                  "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f656Green.bin",
+                  "large": "rawdata/HST_Lagoon/2600x2500/HST_Lagoon_f656Green.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -93,7 +113,11 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f502Blue.bin",
+                "path": {
+                  "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f502Blue.bin",
+                  "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f502Blue.bin",
+                  "large": "rawdata/HST_Lagoon/2600x2500/HST_Lagoon_f502Blue.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -126,14 +150,30 @@
                 "hubble"
               ]
             },
-            "nx": 1192,
-            "ny": 1800,
+            "dimensions": {
+              "small": {
+                "nx": 596,
+                "ny": 900
+              },
+              "medium": {
+                "nx": 1192,
+                "ny": 1800
+              },
+              "large": {
+                "nx": 2384,
+                "ny": 3600
+              }
+            },
             "maximumBrightness": 2,
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/m51/1192x1800/m51_optical_R.bin",
+                "path": {
+                  "small": "rawdata/m51/596x900/m51_optical_R.bin",
+                  "medium": "rawdata/m51/1192x1800/m51_optical_R.bin",
+                  "large": "rawdata/m51/2384x3600/m51_optical_R.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -144,7 +184,11 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/m51/1192x1800/m51_optical_G.bin",
+                "path": {
+                  "small": "rawdata/m51/596x900/m51_optical_G.bin",
+                  "medium": "rawdata/m51/1192x1800/m51_optical_G.bin",
+                  "large": "rawdata/m51/2384x3600/m51_optical_G.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -155,7 +199,11 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/m51/1192x1800/m51_optical_B.bin",
+                "path": {
+                  "small": "rawdata/m51/596x900/m51_optical_B.bin",
+                  "medium": "rawdata/m51/1192x1800/m51_optical_B.bin",
+                  "large": "rawdata/m51/2384x3600/m51_optical_B.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -189,14 +237,30 @@
                 "hubble"
               ]
             },
-            "nx": 1065,
-            "ny": 732,
+            "dimensions": {
+              "small": {
+                "nx": 532,
+                "ny": 366
+              },
+              "medium": {
+                "nx": 1065,
+                "ny": 732
+              },
+              "large": {
+                "nx": 2130,
+                "ny": 1464
+              }
+            },
             "maximumBrightness": 2,
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/heic2007a/1065x732/heic2007a-R.bin",
+                "path": {
+                  "small": "rawdata/heic2007a/532x366/heic2007a-R.bin",
+                  "medium": "rawdata/heic2007a/1065x732/heic2007a-R.bin",
+                  "large": "rawdata/heic2007a/2130x1464/heic2007a-R.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -207,7 +271,11 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/heic2007a/1065x732/heic2007a-G.bin",
+                "path": {
+                  "small": "rawdata/heic2007a/532x366/heic2007a-G.bin",
+                  "medium": "rawdata/heic2007a/1065x732/heic2007a-G.bin",
+                  "large": "rawdata/heic2007a/2130x1464/heic2007a-G.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -218,7 +286,11 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/heic2007a/1065x732/heic2007a-B.bin",
+                "path": {
+                  "small": "rawdata/heic2007a/532x366/heic2007a-B.bin",
+                  "medium": "rawdata/heic2007a/1065x732/heic2007a-B.bin",
+                  "large": "rawdata/heic2007a/2130x1464/heic2007a-B.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -252,14 +324,30 @@
                 "hubble"
               ]
             },
-            "nx": 1060,
-            "ny": 1052,
+            "dimensions": {
+              "small": {
+                "nx": 530,
+                "ny": 526
+              },
+              "medium": {
+                "nx": 1060,
+                "ny": 1052
+              },
+              "large": {
+                "nx": 2120,
+                "ny": 2105
+              }
+            },
             "maximumBrightness": 2,
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/potw1345a/1060x1052/potw1345a-R.bin",
+                "path": {
+                  "small": "rawdata/potw1345a/530x526/potw1345a-R.bin",
+                  "medium": "rawdata/potw1345a/1060x1052/potw1345a-R.bin",
+                  "large": "rawdata/potw1345a/2120x2105/potw1345a-R.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -270,7 +358,11 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/potw1345a/1060x1052/potw1345a-G.bin",
+                "path": {
+                  "small": "rawdata/potw1345a/530x526/potw1345a-G.bin",
+                  "medium": "rawdata/potw1345a/1060x1052/potw1345a-G.bin",
+                  "large": "rawdata/potw1345a/2120x2105/potw1345a-G.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -281,7 +373,11 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/potw1345a/1060x1052/potw1345a-B.bin",
+                "path": {
+                  "small": "rawdata/potw1345a/530x526/potw1345a-B.bin",
+                  "medium": "rawdata/potw1345a/1060x1052/potw1345a-B.bin",
+                  "large": "rawdata/potw1345a/2120x2105/potw1345a-B.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -325,16 +421,32 @@
                 "chandra"
               ]
             },
-            "nx": 1270,
-            "ny": 1270,
+            "dimensions": {
+              "small": {
+                "nx": 635,
+                "ny": 635
+              },
+              "medium": {
+                "nx": 1270,
+                "ny": 1270
+              },
+              "large": {
+                "nx": 1200,
+                "ny": 1200
+              }
+            },
             "maximumBrightness": 1,
-            "selectedSource": 0,
+            "selectedSourceNumber": 0,
             "selectedMainLayers": "100",
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Infrared",
-                "path": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bin",
+                "path": {
+                  "small": "rawdata/M82/635x635/M82_Spitzer_mid_Infrared.bin",
+                  "medium": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bin",
+                  "large": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 15,
@@ -345,7 +457,11 @@
               {
                 "type": "rawdata",
                 "name": "Optical",
-                "path": "rawdata/M82/1270x1270/M82_Hubble_Optical.bin",
+                "path": {
+                  "small": "rawdata/M82/635x635/M82_Hubble_Optical.bin",
+                  "medium": "rawdata/M82/1270x1270/M82_Hubble_Optical.bin",
+                  "large": "rawdata/M82/1270x1270/M82_Hubble_Optical.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -356,7 +472,11 @@
               {
                 "type": "rawdata",
                 "name": "X-Ray",
-                "path": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bin",
+                "path": {
+                  "small": "rawdata/M82/635x635/M82_Chandra_Xray_mid_energy.bin",
+                  "medium": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bin",
+                  "large": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -392,16 +512,32 @@
                 "chandra"
               ]
             },
-            "nx": 775,
-            "ny": 1168,
+            "dimensions": {
+              "small": {
+                "nx": 387,
+                "ny": 554
+              },
+              "medium": {
+                "nx": 775,
+                "ny": 1168
+              },
+              "large": {
+                "nx": 775,
+                "ny": 1168
+              }
+            },
             "maximumBrightness": 2,
-            "selectedSource": 0,
+            "selectedSourceNumber": 0,
             "selectedMainLayers": "100",
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Infrared",
-                "path": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bin",
+                "path": {
+                  "small": "rawdata/m51-multi/387x584/Spitzer_M51_Infrared_lowerRes.bin",
+                  "medium": "rawdata/m51-multi/775x1168/Spitzer_M51_Infrared_lowerRes.bin",
+                  "large": "rawdata/m51-multi/775x1168/Spitzer_M51_Infrared_lowerRes.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -412,7 +548,11 @@
               {
                 "type": "rawdata",
                 "name": "Optical",
-                "path": "rawdata/m51-multi/775x1168/Hubble_M51_Green_lowerRes.bin",
+                "path": {
+                  "small": "rawdata/m51-multi/387x584/Hubble_M51_Green_lowerRes.bin",
+                  "medium": "rawdata/m51-multi/775x1168/Hubble_M51_Green_lowerRes.bin",
+                  "large": "rawdata/m51-multi/775x1168/Hubble_M51_Green_lowerRes.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -423,7 +563,11 @@
               {
                 "type": "rawdata",
                 "name": "X-Ray",
-                "path": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bin",
+                "path": {
+                  "small": "rawdata/m51-multi/387x584/Chandra_M51_Xray_lowerRes.bin",
+                  "medium": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bin",
+                  "large": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
@@ -465,16 +609,32 @@
                 "hubble"
               ]
             },
-            "nx": 1200,
-            "ny": 1200,
+            "dimensions": {
+              "small": {
+                "nx": 600,
+                "ny": 600
+              },
+              "medium": {
+                "nx": 1200,
+                "ny": 1200
+              },
+              "large": {
+                "nx": 1200,
+                "ny": 1200
+              }
+            },
             "maximumBrightness": 2,
-            "selectedSource": 0,
+            "selectedSourceNumber": 0,
             "selectedMainLayers": "111",
             "sources": [
               {
                 "type": "rawdata",
                 "name": "Red",
-                "path": "rawdata/opo9914d/1200x1200/opo9914d-R.bin",
+                "path": {
+                  "small": "rawdata/opo9914d/600x600/opo9914d-R.bin",
+                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-R.bin",
+                  "large": "rawdata/opo9914d/1200x1200/opo9914d-R.bin"
+                },
                 "filter": "red",
                 "min": 0,
                 "max": 10,
@@ -485,7 +645,11 @@
               {
                 "type": "rawdata",
                 "name": "Green",
-                "path": "rawdata/opo9914d/1200x1200/opo9914d-G.bin",
+                "path": {
+                  "small": "rawdata/opo9914d/600x600/opo9914d-R.bin",
+                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-G.bin",
+                  "large": "rawdata/opo9914d/1200x1200/opo9914d-G.bin"
+                },
                 "filter": "green",
                 "min": 0,
                 "max": 10,
@@ -496,7 +660,11 @@
               {
                 "type": "rawdata",
                 "name": "Blue",
-                "path": "rawdata/opo9914d/1200x1200/opo9914d-B.bin",
+                "path": {
+                  "small": "rawdata/opo9914d/600x600/opo9914d-R.bin",
+                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-B.bin",
+                  "large": "rawdata/opo9914d/1200x1200/opo9914d-B.bin"
+                },
                 "filter": "blue",
                 "min": 0,
                 "max": 10,

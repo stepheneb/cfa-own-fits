@@ -2,13 +2,14 @@
 
 // router
 
-import renderMenu from './render/menu.js';
-import renderActivity from './render/activity.js';
-import splash from './render/splash.js';
+import renderMenu from './modules/render/menu.js';
+import Page from './modules/page.js';
+import splash from './modules/render/splash.js';
 
 let router = {};
 
 router.route = () => {
+  let page;
   [router.path, router.props] = router.getHash(window.location.hash);
   if (router.path.action) {
     let category = app.categories.find(c => c.type == router.path.category);
@@ -19,14 +20,14 @@ router.route = () => {
     switch (router.path.action) {
     case "menu":
       if (category) {
-        renderMenu.page(category);
+        renderMenu.page(category.type);
       } else {
         renderMenu.page();
       }
       break;
     case "run":
       if (category && page) {
-        renderActivity.page(category, page);
+        app.page = new Page(category.type, page);
       }
       if (category && !page) {
         renderMenu.page();

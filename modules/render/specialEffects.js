@@ -1,13 +1,11 @@
 /*jshint esversion: 6 */
 
-import images from '../images.js';
 import Filter from '../filter.js';
-import renderUtil from './util.js';
 
 let specialEffects = {};
 
 specialEffects.render = (page, registeredCallbacks) => {
-  let id, elem, name, filter;
+  let id, elem;
   let formId = 'special-effects';
   let effectsHtml = '';
   let getId = effect => `select-effect-${effect}`;
@@ -22,8 +20,8 @@ specialEffects.render = (page, registeredCallbacks) => {
   filterRows.forEach(row => {
     effectsHtml += '<div class="row special-effects">';
     row.forEach(key => {
-      filter = filters[key];
-      name = filter.name;
+      // filter = filters[key];
+      // name = filter.name;
       id = getId(key);
       effectsHtml += `
         <div id='${id}' class="effect col-6 d-flex align-items-center" data-effect="${key}">
@@ -57,7 +55,14 @@ specialEffects.render = (page, registeredCallbacks) => {
       let checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"]'));
       let filters = checkboxes.filter(c => c.checked)
         .map(c => c.parentElement.dataset.effect);
-      images.runFilters(page.image, filters);
+
+      page.canvasImages.scheduleFilters(filters);
+      if (filters.length > 0) {
+        page.canvasImages.renderMasterpiece();
+      } else {
+        page.canvasImages.renderCanvasRGB();
+        page.canvasImages.renderMasterpiece();
+      }
     });
   }
 

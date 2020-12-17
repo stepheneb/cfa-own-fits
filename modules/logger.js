@@ -1,13 +1,28 @@
 /*jshint esversion: 6 */
+/*global app  */
 
 import layerHistogram from './layerHistogram.js';
 import utilities from './utilities.js';
 
 let logger = {};
 
-logger.imageData = source => {
-  let h = utilities.histogram(source.uint8Data, 64, 0, 256);
-  let [min, max] = utilities.forLoopMinMax(source.uint8Data);
+let print = msg => {
+  if (app.logger) {
+    console.log(msg);
+  }
+};
+
+let printTable = msg => {
+  if (app.logger) {
+    console.table(msg);
+  }
+};
+
+logger.imageData = canvasImage => {
+  let source = canvasImage.selectedSource;
+  let data = canvasImage.selectedSourcePixelData;
+  let h = utilities.histogram(data, 64, 0, 256);
+  let [min, max] = utilities.forLoopMinMax(data);
   let str = `
     Histogram (canvas uint8Data): name: ${source.name}, min: ${min}, max: ${max}
     hmin: ${utilities.roundNumber(source.min, 4)}, hmax: ${utilities.roundNumber(source.max, 4)}
@@ -15,16 +30,19 @@ logger.imageData = source => {
     contrast: ${utilities.roundNumber(source.contrast, 4)}
     scaling: ${source.scaling}
   `;
-  console.log(str);
-  console.table(h);
+  print(str);
+  printTable(h);
   layerHistogram.update(h, source.scaling);
 };
 
-logger.rawData = source => {
-  let h = utilities.histogram(source.rawdata, 30, source.min, source.max);
+logger.rawData = canvasImage => {
+  let source = canvasImage.selectedSource;
+  let rawdata = canvasImage.selectedSourceRawData;
+
+  let h = utilities.histogram(rawdata, 30, source.min, source.max);
   let [min, max] = utilities.forLoopMinMax(source.rawdata);
-  console.log(`Histogram (raw data): name: ${source.name}, min: ${utilities.roundNumber(min, 3)}, max: ${utilities.roundNumber(max, 3)}, hmin: ${utilities.roundNumber(source.min, 4)}, hmax: ${utilities.roundNumber(source.max, 4)}, contrast: ${utilities.roundNumber(source.contrast, 4)}`);
-  console.table(h);
+  print(`Histogram (raw data): name: ${source.name}, min: ${utilities.roundNumber(min, 3)}, max: ${utilities.roundNumber(max, 3)}, hmin: ${utilities.roundNumber(source.min, 4)}, hmax: ${utilities.roundNumber(source.max, 4)}, contrast: ${utilities.roundNumber(source.contrast, 4)}`);
+  printTable(h);
 };
 
 export default logger;

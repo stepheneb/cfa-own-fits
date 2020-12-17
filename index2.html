@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>CfA: Observing With NASA</title>
+  <title>Test</title>
 
   <!-- https://fonts.google.com/specimen/Rajdhani -->
   <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -13,7 +13,7 @@
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-  <link href="./css/styles.css" rel="stylesheet" type="text/css">
+  <link href="./css/test-styles.css" rel="stylesheet" type="text/css">
 
   <!-- favicon -->
   <!-- https://www.favicon-generator.org/ -->
@@ -38,23 +38,32 @@
 </head>
 
 <body>
-  <div id="splash">
-    <img src="images/splash.jpg"></img>
-  </div>
-  <div id="loading-spinner" class="hide d-flex justify-content-center align-items-center">
-    <div class="spinner-border text-secondary" role="status">
-      <span class="sr-only"></span>
-    </div>
-  </div>
   <div id="content" class="container-fluid content">
-  </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-  <!-- Custom JavaScript -->
-  <script src="detect.js"></script>
-  <script type="module" src="main.js"></script>
+    <div id="content" class="container-fluid content">
+      <div class="row">
+        <div id="container1" class="container main col-6 flex">
+          <canvas id="main-image"></canvas>
+        </div>
+        <div id="container2" class="container layer col-6 flex">
+          <canvas id="layer-image"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="page-navigation fixed-bottom d-flex flex-row">
+      <div class='col-6'></div>
+      <div class='col-6'>
+        <div class="row scale button-group d-flex flex-row justify-content-center">
+          <button type="button" class="scale btn btn-outline-primary btn-small ps-1 pe-1" data-scale="up">+</button>
+          <button type="button" class="scale btn btn-outline-primary btn-small ps-1 pe-1" data-scale="down" disabled="">-</button>
+        </div>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <!-- Custom JavaScript -->
+    <script type="module" src="test.js"></script>
 </body>
 
 </html>

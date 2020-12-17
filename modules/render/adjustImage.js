@@ -1,7 +1,5 @@
 /*jshint esversion: 6 */
 
-import images from '../images.js';
-import renderUtil from './util.js';
 import logger from '../logger.js';
 
 let adjustImage = {};
@@ -21,7 +19,7 @@ let brightness = page => {
   return html;
 };
 
-let contrast = page => {
+let contrast = () => {
   let html = `
     <div class=' row adjust-filter'>
       <div class='col-4'>
@@ -35,7 +33,7 @@ let contrast = page => {
   return html;
 };
 
-let colorShift = page => {
+let colorShift = () => {
   let html = `
     <div class='row adjust-filter'>
       <div class='col-4'>
@@ -50,6 +48,13 @@ let colorShift = page => {
 };
 
 let scaling = page => {
+  let scale = page.selectedSource.scaling;
+
+  function input(type) {
+    var selected = scale == type ? 'checked' : '';
+    return `<input id="scaling-${type}" type="radio" name="scaling" value="${type}" ${selected}>`;
+  }
+
   let html = `
     <div id="scaling-control" class='row developer'>
       <div class='col-4'>
@@ -61,19 +66,20 @@ let scaling = page => {
             <label for="scaling-linear">Linear</label>
           </div>
           <div class="scaling-radio">
-            <input id="scaling-linear" type="radio" name="scaling" value="linear">
+            ${input('linear')}
           </div>
           <div class="scaling-label">
             <label for="scaling-log">Log</label>
           </div>
           <div class="scaling-radio">
-            <input id="scaling-log" type="radio" name="scaling" value="log">
+            ${input('log')}
           </div>
         </form>
       </div>
     </div>
   `;
   return html;
+
 };
 
 let html = page => {
@@ -89,8 +95,7 @@ let html = page => {
 };
 
 adjustImage.renderRGB = (page, registeredCallbacks) => {
-  let source = renderUtil.getSelectedSource(page);
-  let getId = effect => `adjust-layer-${effect}`;
+  let source = page.selectedSource;
 
   registeredCallbacks.push(callback);
   return `
@@ -108,7 +113,7 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
 
     elem = document.getElementById("brightness");
     elem.addEventListener('input', (e) => {
-      let source = renderUtil.getSelectedSource(page);
+      source = page.selectedSource;
       let brightness = e.target.valueAsNumber;
       source.brightness = brightness;
       render(source);
@@ -116,7 +121,7 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
 
     elem = document.getElementById("contrast");
     elem.addEventListener('input', (e) => {
-      let source = renderUtil.getSelectedSource(page);
+      source = page.selectedSource;
       source.contrast = e.target.valueAsNumber;
       let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
       source.max = source.originalMax - contrastShift;
@@ -125,28 +130,26 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
     });
 
     elem = document.getElementById("color-shift");
-    elem.addEventListener('input', (e) => {});
+    elem.addEventListener('input', () => {});
 
     elem = document.getElementById("scaling");
-    elem.addEventListener('change', (e) => {
-      let source = renderUtil.getSelectedSource(page);
+    elem.addEventListener('change', () => {
+      source = page.selectedSource;
       source.scaling = event.target.value;
       render(source);
     });
 
     function render(source) {
-      images.renderOffscreen(source, page.image.nx, page.image.ny);
-      images.copyOffscreenToPreview(source, page.image.destinations.preview, page.image.nx, page.image.ny);
-      images.renderMain(page.image);
-      logger.imageData(source);
+      let canvas = page.canvasImages.mainCanvasNamed(source.filter);
+      page.canvasImages.renderCanvasLayer(source, canvas);
+      page.canvasImages.renderCanvasRGB();
+      page.canvasImages.renderPreview(source);
+      logger.imageData(page.canvasImages);
     }
   }
 };
 
 adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
-  let source = renderUtil.getSelectedSource(page);
-  let getId = effect => `adjust-layer-${effect}`;
-
   registeredCallbacks.push(callback);
   return html(page);
 
@@ -156,7 +159,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
     elem = document.getElementById("brightness");
     elem.addEventListener('input', (e) => {
       let brightness = e.target.valueAsNumber;
-      renderUtil.getAllRawdataSources(page).forEach(source => {
+      page.canvasImages.rawdataSources.forEach(source => {
         source.brightness = brightness;
       });
       update();
@@ -165,7 +168,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
     elem = document.getElementById("contrast");
     elem.addEventListener('input', (e) => {
       let contrast = e.target.valueAsNumber;
-      renderUtil.getAllRawdataSources(page).forEach(source => {
+      page.canvasImages.rawdataSources.forEach(source => {
         source.contrast = contrast;
         let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
         source.max = source.originalMax - contrastShift;
@@ -175,28 +178,33 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
     });
 
     elem = document.getElementById("color-shift");
-    elem.addEventListener('input', (e) => {});
+    elem.addEventListener('input', () => {});
 
     elem = document.getElementById("scaling");
-    elem.addEventListener('change', (e) => {
+    elem.addEventListener('change', (event) => {
       let scaling = event.target.value;
-      renderUtil.getAllRawdataSources(page).forEach(source => {
+      page.canvasImages.rawdataSources.forEach(source => {
         source.scaling = scaling;
       });
       update();
     });
 
-    function update(source) {
-      renderUtil.getAllRawdataSources(page).forEach(source => {
-        images.renderOffscreen(source, page.image.nx, page.image.ny);
+    function update() {
+      let canvas;
+      page.canvasImages.rawdataSources.forEach(source => {
+        canvas = page.canvasImages.mainCanvasNamed(source.filter);
+        page.canvasImages.renderCanvasLayer(source, canvas);
       });
-      images.renderMainMasterpiece(page.image);
+      page.canvasImages.renderCanvasRGB();
+      if (page.type == 'masterpiece') {
+        page.canvasImages.renderMasterpiece();
+      }
     }
   }
 };
 
 adjustImage.update = page => {
-  let source = renderUtil.getSelectedSource(page);
+  let source = page.selectedSource;
   document.getElementById("brightness").value = source.brightness;
   document.getElementById("contrast").value = source.contrast;
   let radios = document.getElementById("scaling").elements.scaling;

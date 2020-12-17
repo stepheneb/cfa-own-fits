@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-y: hidden;
+}
+
+body {
+  font-family: Rajdhani, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-size: 0.9vw;
+  color: black;
+  line-height: 1.2rem;
+  height: 100vh;
+  width: 98vw;
+  margin: 0;
+  padding: 0;
+}
+
+div.row {
+  min-height: 6vh;
+  margin: 0.5em 0em;
+}
+
+#container1,
+#container2 {
+  flex: 0 1 50%;
+  overflow: auto;
+  box-sizing: border-box;
+  border: 0.5px solid red;
+  display: flex;
+  height: 80vh;
+  padding: 0;
+  margin: 0;
+  // position: relative;
+  // flex: 1 1 0;
+  // display: flex;
+  // min-width: 0;
+  // flex-direction: column;
+  // width: 60vw;
+  // height: 80vh;
+  // padding: 0;
+  // margin: 0;
+  // background-color: #eee;
+  // border: 3px solid green;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas#main-image {
+  padding: 0;
+  margin: 0;
+  background-color: gray;
+  object-fit: contain;
+  height: 100%;
+}
+
+canvas#layer-image {
+  padding: 0;
+  margin: 0;
+  background-color: #ccc;
+  cursor: all-scroll;
+  min-width: 0;
+  height: 100%;
+  max-width: -moz-available;
+  max-width: -webkit-fill-available;
+  object-fit: contain;
+}
+
+button.scale {
+  width: 4vh;
+  background-color: black;
+  font-size: 2vh;
+  font-weight: 600;
+  color: white;
+  padding: 0;
+  margin: 0 1vh;
+}

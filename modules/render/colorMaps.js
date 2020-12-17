@@ -1,18 +1,15 @@
 /*jshint esversion: 6 */
 
-import images from '../images.js';
 import cmap from './cmap.js';
-import renderUtil from './util.js';
 
 let colorMaps = {};
 
 colorMaps.render = (page, registeredCallbacks) => {
   let id, elem;
-  let image = page.image;
   let names = cmap.names();
-  let cmaps = [];
+  let cmapNameGroups = [];
   for (var i = 0; i < names.length; i += 2) {
-    cmaps.push([names[i], names[i + 1]]);
+    cmapNameGroups.push([names[i], names[i + 1]]);
   }
 
   // let cmaps = [
@@ -25,17 +22,17 @@ colorMaps.render = (page, registeredCallbacks) => {
   // ];
   let getId = cmap => `select-cmap-${cmap}`;
   let cmapsHtml = '';
-  cmaps.forEach(row => {
+  cmapNameGroups.forEach(row => {
     cmapsHtml += '<div class="row">';
-    row.forEach(cmap => {
-      id = getId(cmap);
+    row.forEach(cmapName => {
+      id = getId(cmapName);
       cmapsHtml += `
         <div class="col-6">
-          <div id="${id}" class="row select-cmap" data-cmap="${cmap}">
+          <div id="${id}" class="row select-cmap" data-cmap="${cmapName}">
             <div class="canvas col-8 d-flex align-items-center" >
               <canvas id="${id}-canvas"></canvas>
             </div>
-            <div class="label col-4 d-flex align-items-center">${cmap}</div>
+            <div class="label col-4 d-flex align-items-center">${cmapName}</div>
           </div>
         </div>
       `;
@@ -54,17 +51,19 @@ colorMaps.render = (page, registeredCallbacks) => {
 
   function callback() {
 
-    cmaps.forEach(row => {
-      row.forEach(cmap => {
-        id = getId(cmap);
+    cmapNameGroups.forEach(row => {
+      row.forEach(cmapName => {
+        id = getId(cmapName);
         elem = document.getElementById(id);
         elem.addEventListener('click', event => {
           event.stopPropagation();
           unselectAll();
           event.currentTarget.classList.add('selected');
           let id = event.currentTarget.dataset.cmap;
-          image.cmap = cmap;
-          images.renderMainMasterpiece(image);
+          page.image.cmapName = cmapName;
+          // page.canvasImages.renderCanvasRGB();
+          page.canvasImages.scheduleCmap(cmapName);
+          page.canvasImages.renderMasterpiece();
           console.log(`${id} clicked`);
         });
       });
