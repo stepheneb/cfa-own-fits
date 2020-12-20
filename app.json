@@ -226,13 +226,13 @@
         },
         {
           "name": "heic2007a",
-          "source": "https://www.spacetelescope.org/images/heic2007a/",
           "title": "NGC 2014, NGC 2020",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "heic2007a",
+            "source": "https://www.spacetelescope.org/images/heic2007a/",
             "about": {
               "telescopes": [
                 "hubble"
@@ -314,13 +314,13 @@
         },
         {
           "name": "potw1345a",
-          "source": "https://www.spacetelescope.org/images/potw1345a/",
           "title": "Antennae Galaxies, NGC 4038, NGC 4039",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "NGC 4038, NGC 4039",
+            "source": "https://www.spacetelescope.org/images/potw1345a/",
             "about": {
               "telescopes": [
                 "hubble"
@@ -410,13 +410,13 @@
       "pages": [
         {
           "name": "m82",
-          "source": "",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "Messier 82",
+            "source": "",
             "about": {
               "telescopes": [
                 "hubble",
@@ -502,13 +502,13 @@
         },
         {
           "name": "m51",
-          "source": "",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "Messier 51",
+            "source": "",
             "about": {
               "telescopes": [
                 "hubble",
@@ -602,13 +602,13 @@
       "pages": [
         {
           "name": "opo9914d",
-          "source": "https://www.spacetelescope.org/images/opo9914d/",
           "title": "Make a Masterpiece with the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "opo9914d",
+            "source": "https://www.spacetelescope.org/images/opo9914d/",
             "about": {
               "telescopes": [
                 "hubble"
@@ -692,13 +692,13 @@
         },
         {
           "name": "wacgl180",
-          "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
           "title": "The Far Side of the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "wacgl180",
+            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
             "about": {
               "telescopes": [
                 "lro"
