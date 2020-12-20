@@ -638,7 +638,7 @@
                 "name": "Red",
                 "path": {
                   "small": "rawdata/opo9914d/600x600/opo9914d-R.bin",
-                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-R.raw",
+                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-R.bmp",
                   "large": "rawdata/opo9914d/1200x1200/opo9914d-R.bin"
                 },
                 "filter": "red",
