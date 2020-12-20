@@ -198,6 +198,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
       page.canvasImages.renderCanvasRGB();
       if (page.type == 'masterpiece') {
         page.canvasImages.renderMasterpiece();
+        logger.imageData(page.canvasImages);
       }
     }
   }

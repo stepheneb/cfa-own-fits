@@ -178,7 +178,6 @@ class Page {
     if (typeof layerNum == 'number') {
       elem.querySelector(`[value='${layerNum}']`).checked = true;
       this.image.selectedSourceNumber = layerNum;
-      this.canvasImages.selectedSourceNumber = layerNum;
     }
   }
 
@@ -249,7 +248,7 @@ class Page {
     let elem = document.getElementById("image-select-main-layer");
     elem.addEventListener('change', (e) => {
       checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"'));
-      this.canvasImages.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
+      this.image.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
       this.canvasImages.renderCanvasRGB();
     });
   }

@@ -13,12 +13,17 @@ import utilities from './utilities.js';
 let spinner = new Spinner("loading-spinner");
 class CanvasImages {
   constructor(image, ctype) {
+    this.image = image;
     this.type = ctype;
-    Object.assign(this, image);
+    this.name = image.name;
+    this.about = image.about;
+    this.dimensions = image.dimensions;
+    this.sources = image.sources;
+    // Object.assign(this, image);
     this.sizes = ['small', 'medium', 'large'];
     this.size = this.sizes[1];
-    this.nx = image.dimensions[this.size].nx;
-    this.ny = image.dimensions[this.size].ny;
+    this.nx = this.dimensions[this.size].nx;
+    this.ny = this.dimensions[this.size].ny;
     this.rawdata = [];
     this.mainCanvases = [];
     this.previewCanvas = null;
@@ -26,6 +31,20 @@ class CanvasImages {
     this.mainContainer = document.getElementById('main-image-canvas-container');
     this.previewContainer = document.getElementById('preview-image-canvas-container');
     this.load();
+  }
+
+  // getters for data in image object managed by the Page instance
+
+  get selectedSourceNumber() {
+    return this.image.selectedSourceNumber;
+  }
+
+  get maximumBrightness() {
+    return this.image.maximumBrightness;
+  }
+
+  get selectedMainLayers() {
+    return this.image.selectedMainLayers;
   }
 
   // raw float32 data
