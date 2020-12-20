@@ -70,6 +70,7 @@ class Page {
       <div class='col-2'>
         ${this.telescopeHtmls}
         ${layerHistogram.render(this.selectedSource)}
+        ${this.renderimageSize(this, this.registeredCallbacks)}
       </div>
     `;
 
@@ -155,6 +156,22 @@ class Page {
   // Component rendering ...
   //
 
+  renderimageSize(page, registeredCallbacks) {
+    let { nx, ny } = page.image.dimensions[page.image.size];
+    let id = 'image-stats';
+    registeredCallbacks.push(callback);
+    return `
+      <div id = "${id}" class='developer'>
+      </div>
+    `;
+
+    function callback() {
+      let elem = document.getElementById(id);
+      let size = document.createTextNode(`Image size: ${nx} x ${ny}`);
+      elem.append(size);
+    }
+  }
+
   renderPageHeader() {
     return `
       <div class='row page-header'>
@@ -236,11 +253,23 @@ class Page {
       <div id='main-image-content' class='main-image-content'>
         <div id='${id2}' class="row d-flex justify-content-center align-items-center">
           ${renderDev.fullScreenButton(id2, '#main-image-content', this.registeredCallbacks, optionalFunc)}
+          ${this.renderSpinner()}
         </div>
         ${this.renderUnderMainImageRow(this.type, this.registeredCallbacks)}
         <span class="touchinfo hidden">Use your fingers to zoom and move the image<br>(touch to hide this tooltip)</span>
       </div>
     `;
+  }
+
+  renderSpinner() {
+    let html = `
+      <div id="loading-spinner" class="hide d-flex justify-content-center align-items-center">
+        <div class="spinner-border text-secondary" role="status">
+          <span class="sr-only"></span>
+        </div>
+      </div>
+    `;
+    return html;
   }
 
   controllerImageSelectMainLayer() {

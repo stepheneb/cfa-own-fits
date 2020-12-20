@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 8 */
 
 //
 // Image fetching and rendering ...
@@ -10,26 +10,26 @@ import Spinner from './spinner.js';
 import cmap from './render/cmap.js';
 import utilities from './utilities.js';
 
-let spinner = new Spinner("loading-spinner");
 class CanvasImages {
   constructor(image, ctype) {
     this.image = image;
     this.type = ctype;
     this.name = image.name;
+    this.size = image.size;
     this.about = image.about;
     this.dimensions = image.dimensions;
     this.sources = image.sources;
     // Object.assign(this, image);
-    this.sizes = ['small', 'medium', 'large'];
-    this.size = this.sizes[1];
     this.nx = this.dimensions[this.size].nx;
     this.ny = this.dimensions[this.size].ny;
     this.rawdata = [];
-    this.mainCanvases = [];
+    this.layerCanvases = [];
+    this.rgbCanvas = null;
     this.previewCanvas = null;
     this.filters = [];
     this.mainContainer = document.getElementById('main-image-canvas-container');
     this.previewContainer = document.getElementById('preview-image-canvas-container');
+    this.spinner = new Spinner('loading-spinner');
     this.load();
   }
 
@@ -73,12 +73,12 @@ class CanvasImages {
 
   // return canvas elements
 
-  mainCanvasNamed(filter) {
-    return this.mainCanvases.find(c => c.classList.contains(filter));
+  layerCanvasNamed(filter) {
+    return this.layerCanvases.find(c => c.classList.contains(filter));
   }
 
   get canvasRGB() {
-    return this.mainCanvases.find(c => c.classList.contains('rgb'));
+    return this.rgbCanvas;
   }
 
   // return uint8 data
@@ -87,24 +87,28 @@ class CanvasImages {
     return c.getContext('2d').getImageData(0, 0, this.nx, this.ny).data;
   }
 
+  uint8FromSource(s) {
+    return this.layerCanvasNamed(s.filter).getContext('2d').getImageData(0, 0, this.nx, this.ny).data;
+  }
+
   get selectedSourcePixelData() {
-    return this.uint8FromCanvas(this.mainCanvases[this.selectedSourceNumber]);
+    return this.uint8FromCanvas(this.layerCanvases[this.selectedSourceNumber]);
   }
 
   get pixelDataRed() {
-    return this.uint8FromCanvas(this.mainCanvases[0]);
+    return this.uint8FromCanvas(this.layerCanvases[0]);
   }
 
   get pixelDataGreen() {
-    return this.uint8FromCanvas(this.mainCanvases[1]);
+    return this.uint8FromCanvas(this.layerCanvases[1]);
   }
 
   get pixelDataBlue() {
-    return this.uint8FromCanvas(this.mainCanvases[2]);
+    return this.uint8FromCanvas(this.layerCanvases[2]);
   }
 
   get pixelDataRGB() {
-    return this.uint8FromCanvas(this.mainCanvases[3]);
+    return this.uint8FromCanvas(this.rgbCanvas);
   }
 
   // get element inside dimensions
@@ -118,7 +122,7 @@ class CanvasImages {
   }
 
   load() {
-    spinner.show("load images");
+    this.spinner.show("load images");
     this.fetch();
   }
 
@@ -146,9 +150,9 @@ class CanvasImages {
         this.addScalingLayer();
         break;
       }
-      spinner.hide("then imageBufferItems");
+      this.spinner.hide("then imageBufferItems");
     }).catch(function (e) {
-      spinner.cancel("fetchError");
+      this.spinner.cancel("fetchError");
       console.log('Error fetchAllRawDataImages operation: ' + e.message);
     });
   }
@@ -190,11 +194,10 @@ class CanvasImages {
     let canvas;
     this.rawdataSources.forEach((s) => {
       canvas = this.appendMainCanvas(this.mainContainer, s.filter);
-      this.mainCanvases.push(canvas);
+      this.layerCanvases.push(canvas);
       this.renderCanvasLayer(s);
     });
-    canvas = this.appendMainCanvas(this.mainContainer, 'rgb');
-    this.mainCanvases.push(canvas);
+    this.rgbCanvas = this.appendMainCanvas(this.mainContainer, 'rgb');
     this.renderCanvasRGB();
   }
 
@@ -267,7 +270,7 @@ class CanvasImages {
   }
 
   renderCanvasLayer(source) {
-    let canvas = this.mainCanvasNamed(source.filter);
+    let canvas = this.layerCanvasNamed(source.filter);
     let startTime = performance.now();
     let rawdata;
     let min = source.min;
@@ -415,6 +418,40 @@ class CanvasImages {
   }
 
   renderCanvasRGB() {
+    var len = this.layerCanvases.length;
+    if (len == 1) {
+      this.renderCanvasRGB1(this.sources[0]);
+    }
+    if (len == 3) {
+      this.renderCanvasRGB3();
+    }
+  }
+
+  renderCanvasRGB1(source) {
+    let canvas = this.canvasRGB;
+    let startTime = performance.now();
+
+    let ctx = canvas.getContext('2d');
+    let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
+    let pixeldata = imageData.data;
+
+    let pixelDataSource = this.uint8FromSource(source);
+
+    let len = pixelDataSource.length;
+    let i;
+
+    for (i = 0; i < len; i += 4) {
+      pixeldata[i] = pixelDataSource[i];
+      pixeldata[i + 1] = pixelDataSource[i + 1];
+      pixeldata[i + 2] = pixelDataSource[i + 2];
+      pixeldata[i + 3] = 255;
+    }
+    let renderTime = performance.now();
+    ctx.putImageData(imageData, 0, 0);
+    console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
+  }
+
+  renderCanvasRGB3() {
     let canvas = this.canvasRGB;
     let startTime = performance.now();
 
@@ -486,6 +523,56 @@ class CanvasImages {
   }
 
   renderMasterpiece() {
+    var len = this.layerCanvases.length;
+    if (len == 1) {
+      this.renderMasterpiece1(this.sources[0]);
+    }
+    if (len == 3) {
+      this.renderMasterpiece3();
+    }
+  }
+
+  renderMasterpiece1(source) {
+    if (!this.cmapName) {
+      this.cmapName = 'gray';
+    }
+    let colormap = cmap.data[this.cmapName];
+    let index;
+    let colorR, colorG, colorB;
+
+    // let startTime = performance.now();
+    let canvas = this.canvasRGB;
+    let ctx = canvas.getContext('2d');
+    let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
+    let pixeldata = imageData.data;
+
+    let pixelDataSource = this.uint8FromSource(source);
+
+    let len = pixelDataSource.length;
+    for (var i = 0; i < len; i += 4) {
+      index = pixelDataSource[i];
+      colorR = colormap[index][0];
+      colorG = colormap[index][1];
+      colorB = colormap[index][2];
+
+      pixeldata[i] = colorR;
+      pixeldata[i + 1] = colorG;
+      pixeldata[i + 2] = colorB;
+    }
+    ctx.putImageData(imageData, 0, 0);
+    this.spinner.show("running filter");
+    this.redraw = requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.runFilters().then(() => {
+          this.updateScalingLayer();
+          this.spinner.hide();
+        });
+      });
+    });
+    // let renderTime = performance.now();
+  }
+
+  renderMasterpiece3() {
     if (!this.cmapName) {
       this.cmapName = 'gray';
     }
@@ -521,9 +608,15 @@ class CanvasImages {
 
     ctx.putImageData(imageData, 0, 0);
 
-    this.runFilters();
-    this.updateScalingLayer();
-
+    this.spinner.show("running filter");
+    this.redraw = requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.runFilters().then(() => {
+          this.updateScalingLayer();
+          this.spinner.hide();
+        });
+      });
+    });
     // let renderTime = performance.now();
   }
 
@@ -535,7 +628,7 @@ class CanvasImages {
     this.filters = filters;
   }
 
-  runFilters() {
+  async runFilters() {
     let rgbsource = this.canvasRGB;
     let ctx = rgbsource.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
@@ -592,7 +685,7 @@ class CanvasImages {
   }
 
   renderPreview(source) {
-    let sourceCanvas = this.mainCanvasNamed(source.filter);
+    let sourceCanvas = this.layerCanvasNamed(source.filter);
     let sourceCtx = sourceCanvas.getContext('2d');
     let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
     let ctx = this.previewCanvas.getContext('2d');

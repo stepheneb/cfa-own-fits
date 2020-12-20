@@ -140,7 +140,7 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
     });
 
     function render(source) {
-      let canvas = page.canvasImages.mainCanvasNamed(source.filter);
+      let canvas = page.canvasImages.layerCanvasNamed(source.filter);
       page.canvasImages.renderCanvasLayer(source, canvas);
       page.canvasImages.renderCanvasRGB();
       page.canvasImages.renderPreview(source);
@@ -192,7 +192,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
     function update() {
       let canvas;
       page.canvasImages.rawdataSources.forEach(source => {
-        canvas = page.canvasImages.mainCanvasNamed(source.filter);
+        canvas = page.canvasImages.layerCanvasNamed(source.filter);
         page.canvasImages.renderCanvasLayer(source, canvas);
       });
       page.canvasImages.renderCanvasRGB();

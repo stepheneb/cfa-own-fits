@@ -109,7 +109,9 @@ div#splash {
   z-index: 300;
   width: 100%;
   height: 100%;
-
+  div.spinner-border.text-secondary {
+    color: var(--bright-teal) !important;
+  }
   &.hide {
     display: none !important;
   }
@@ -810,6 +812,14 @@ div.layer-histogram {
 }
 
 div.layer-histogram.developer.show {
+  display: block;
+}
+
+div#image-stats {
+  display: none;
+}
+
+div#image-stats.developer.show {
   display: block;
 }
 

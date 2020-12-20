@@ -150,6 +150,7 @@
                 "hubble"
               ]
             },
+            "size": "medium",
             "dimensions": {
               "small": {
                 "nx": 596,
@@ -237,6 +238,7 @@
                 "hubble"
               ]
             },
+            "size": "medium",
             "dimensions": {
               "small": {
                 "nx": 532,
@@ -324,6 +326,7 @@
                 "hubble"
               ]
             },
+            "size": "medium",
             "dimensions": {
               "small": {
                 "nx": 530,
@@ -410,7 +413,7 @@
           "source": "",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
-          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "Messier 82",
@@ -421,6 +424,7 @@
                 "chandra"
               ]
             },
+            "size": "medium",
             "dimensions": {
               "small": {
                 "nx": 635,
@@ -501,7 +505,7 @@
           "source": "",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
-          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "Messier 51",
@@ -512,6 +516,7 @@
                 "chandra"
               ]
             },
+            "size": "medium",
             "dimensions": {
               "small": {
                 "nx": 387,
@@ -600,7 +605,7 @@
           "source": "https://www.spacetelescope.org/images/opo9914d/",
           "title": "Make a Masterpiece with the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
-          "selectfiltertext": "Find out more about what each wavelength of loght can tell us about objects in space.",
+          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
             "name": "opo9914d",
@@ -609,6 +614,7 @@
                 "hubble"
               ]
             },
+            "size": "medium",
             "dimensions": {
               "small": {
                 "nx": 600,
@@ -679,6 +685,69 @@
                   "Red",
                   "Green",
                   "Blue"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "wacgl180",
+          "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
+          "title": "The Far Side of the Moon",
+          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
+          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "wacgl180",
+            "about": {
+              "telescopes": [
+                "lro"
+              ]
+            },
+            "size": "largex2",
+            "dimensions": {
+              "small": {
+                "nx": 543,
+                "ny": 543
+              },
+              "medium": {
+                "nx": 1086,
+                "ny": 1086
+              },
+              "large": {
+                "nx": 2172,
+                "ny": 2172
+              },
+              "largex2": {
+                "nx": 4344,
+                "ny": 4344
+              }
+            },
+            "maximumBrightness": 2,
+            "selectedSourceNumber": 0,
+            "selectedMainLayers": "111",
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Gray",
+                "path": {
+                  "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bin",
+                  "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bin",
+                  "large": "rawdata/WAC_GL180/2172x2172/wac_gl180_0.125-R.bin",
+                  "largex2": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bin"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Gray"
                 ]
               }
             ]
