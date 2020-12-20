@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*global app  */
 
 // router
 
@@ -9,7 +10,6 @@ import splash from './modules/render/splash.js';
 let router = {};
 
 router.route = () => {
-  let page;
   [router.path, router.props] = router.getHash(window.location.hash);
   if (router.path.action) {
     let category = app.categories.find(c => c.type == router.path.category);
@@ -27,6 +27,7 @@ router.route = () => {
       break;
     case "run":
       if (category && page) {
+        if (app.page) page.close();
         app.page = new Page(category.type, page);
       }
       if (category && !page) {
@@ -56,11 +57,6 @@ router.getHash = (hashStr) => {
   return [path, props];
 };
 
-router.pageRendered = mesg => {
-  // setHash('');
-
-};
-
 router.updateHash = h => {
   if (h.charAt(0) != '#') {
     h = '#' + h;
@@ -75,7 +71,7 @@ router.updateHash = h => {
 };
 
 router.addHashChangeListener = () => {
-  window.addEventListener('hashchange', event => {
+  window.addEventListener('hashchange', () => {
     if (window.location.hash != app.hashRendered) {
       router.route();
     }

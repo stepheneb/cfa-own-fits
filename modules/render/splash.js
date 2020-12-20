@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*global app  */
 
 // Splash page
 
@@ -30,7 +31,7 @@ splash.show = () => {
   elem.style.display = "block";
 
   elem.addEventListener('click', splashListener);
-  router.pageRendered('splash');
+  // router.pageRendered('splash');
 };
 
 splash.hide = () => {
@@ -38,7 +39,7 @@ splash.hide = () => {
   elem.style.display = "none";
 };
 
-let splashListener = e => {
+let splashListener = () => {
   splash.hide();
   renderMenu.page();
 };
