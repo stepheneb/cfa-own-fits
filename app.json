@@ -638,7 +638,7 @@
                 "name": "Red",
                 "path": {
                   "small": "rawdata/opo9914d/600x600/opo9914d-R.bin",
-                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-R.bin",
+                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-R.raw",
                   "large": "rawdata/opo9914d/1200x1200/opo9914d-R.bin"
                 },
                 "filter": "red",
@@ -704,7 +704,7 @@
                 "lro"
               ]
             },
-            "size": "largex2",
+            "size": "x2large",
             "dimensions": {
               "small": {
                 "nx": 543,
@@ -718,7 +718,7 @@
                 "nx": 2172,
                 "ny": 2172
               },
-              "largex2": {
+              "x2large": {
                 "nx": 4344,
                 "ny": 4344
               }
@@ -734,7 +734,7 @@
                   "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bin",
                   "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bin",
                   "large": "rawdata/WAC_GL180/2172x2172/wac_gl180_0.125-R.bin",
-                  "largex2": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bin"
+                  "x2large": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bin"
                 },
                 "filter": "gray",
                 "min": 0,
