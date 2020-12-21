@@ -664,21 +664,21 @@
           }
         },
         {
-          "name": "wacgl180-2172x2172",
-          "poster": "wacgl180",
-          "title": "The Far Side of the Moon",
+          "name": "wacgl000",
+          "poster": "wacgl000",
+          "title": "The Near Side of the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "wacgl180-2172x2172",
-            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
+            "name": "wacgl000",
+            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
                 "lro"
               ]
             },
-            "size": "large",
+            "size": "x2large",
             "dimensions": {
               "small": {
                 "nx": 543,
@@ -705,10 +705,10 @@
                 "type": "rawdata",
                 "name": "Gray",
                 "path": {
-                  "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bmp",
-                  "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bmp",
-                  "large": "rawdata/WAC_GL180/2172x2172/wac_gl180_0.125-R.bmp",
-                  "x2large": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bmp"
+                  "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
+                  "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
+                  "large": "rawdata/WAC_GL000/2172x2172/wac_gl000-R.bmp",
+                  "x2large": "rawdata/WAC_GL000/4344x4344/wac_gl000-R.bmp"
                 },
                 "filter": "gray",
                 "min": 0,
@@ -728,15 +728,15 @@
           }
         },
         {
-          "name": "wacgl180-4344x4344",
+          "name": "wacgl180",
           "poster": "wacgl180",
           "title": "The Far Side of the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "wacgl180-4344x4344",
-            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
+            "name": "wacgl180",
+            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
                 "lro"
