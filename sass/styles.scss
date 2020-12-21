@@ -613,6 +613,11 @@ div.btn-tf > svg {
   path {
     stroke-width: 6px;
   }
+  &:hover {
+    path {
+      fill: lightgray;
+    }
+  }
   &:not {
     fill: var(--toggle-fullscreen-hover);
   }

@@ -474,6 +474,8 @@ div.btn-tf > svg {
   display: none; }
   div.btn-tf > svg path {
     stroke-width: 6px; }
+  div.btn-tf > svg:hover path {
+    fill: lightgray; }
   div.btn-tf > svg:not {
     fill: var(--toggle-fullscreen-hover); }
   div.btn-tf > svg.show {
