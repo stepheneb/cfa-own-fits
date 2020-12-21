@@ -93,7 +93,7 @@ def write_img_to_file(image, base_filename, outdir, scale=1):
         print("flip image 180 degrees")
         image = np.flipud(image);
 
-        outfile = f"{outpath}/{base_filename}.bin"
+        outfile = f"{outpath}/{base_filename}.bmp"
 
         output_file = open(outfile, 'wb')
         image.tofile(output_file)
