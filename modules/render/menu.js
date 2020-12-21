@@ -6,7 +6,7 @@
 import events from '../events.js';
 import router from '../../router.js';
 import navigation from './navigation.js';
-import checkBrowser from '../checkBrowser.js';
+import checkBrowser from '../check-browser.js';
 import Page from '../page.js';
 import splash from './splash.js';
 
