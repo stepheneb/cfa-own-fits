@@ -33,7 +33,7 @@ html {
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
   --control-title: 1.6vh;
-  --control-subtitle: 1.4vh; }
+  --control-subtitle: 1.2vh; }
 
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
@@ -46,7 +46,7 @@ body {
   background-position: center center;
   line-height: 1.2rem;
   height: 100vh;
-  width: 98vw;
+  width: 100vw;
   margin: 0;
   padding: 0; }
 
@@ -99,7 +99,7 @@ div#splash {
     display: none !important; }
 
 .menu-page-header {
-  margin: 2rem 0rem 1rem 3rem; }
+  margin: 1vh 0rem 1vh 2vh; }
   .menu-page-header .title {
     font-size: var(--menu-page-title);
     line-height: 120%;
@@ -260,7 +260,7 @@ header.menu-activity-page-title {
     margin-bottom: 2em; }
 
 .activity-page {
-  margin: 1.5vh 1vw 0vh 2vw;
+  margin: 1.5vh 1vw 0vh 1vw;
   height: 94vh; }
 
 .activity-page-menu > .row {
@@ -315,7 +315,7 @@ button {
   text-transform: uppercase; }
 
 .page-header {
-  margin: 0.5rem 0rem 1rem 0rem; }
+  margin: 0vh 0vh 1.5vh 0vh; }
 
 .page-title {
   font-size: 3.4vh;
@@ -500,25 +500,39 @@ div.main-image-content {
   display: inline-block; }
 
 #under-main-image-row {
-  margin-top: 1vh; }
+  margin-top: 1vh;
+  margin-left: 1vh;
+  align-items: center; }
   #under-main-image-row .subtitle {
     font-size: var(--control-subtitle); }
 
-div.telescope-container div.about-telescope {
-  padding: 0.75rem 0rem;
-  font-size: var(--page-subtitle);
-  text-transform: uppercase; }
+form#image-select-main-layer {
+  margin-right: 10vh; }
 
-div.telescope-container div.telescope-image-container {
-  height: 16vh;
-  width: 100%;
-  background-color: black;
-  border: 2px solid var(--dark-teal); }
-  div.telescope-container div.telescope-image-container img {
-    background-color: black;
-    height: 100%;
+div.shrinking-spacer {
+  height: 12%;
+  flex: 0 4 auto; }
+
+div.telescope-container {
+  flex: 0 1 auto; }
+  div.telescope-container div.about-telescope {
+    padding: 0.75rem 0rem;
+    font-size: var(--page-subtitle);
+    text-transform: uppercase; }
+  div.telescope-container div.telescope-image-container {
+    height: 16vh;
     width: 100%;
-    object-fit: contain; }
+    background-color: black;
+    border: 2px solid var(--dark-teal); }
+    div.telescope-container div.telescope-image-container img {
+      background-color: black;
+      height: 100%;
+      width: 100%;
+      object-fit: contain; }
+
+#dev-right {
+  flex: 0 1 auto;
+  margin-bottom: 6vh; }
 
 .modal-dialog {
   max-width: unset;
@@ -560,9 +574,9 @@ canvas {
 
 div#main-image-canvas-container {
   position: relative;
-  width: 50vw;
-  height: 72vh;
-  margin: 0;
+  width: auto;
+  height: 76vh;
+  margin: 0vh 1vh;
   padding: 0;
   background-color: var(--almost-black);
   border: 3px solid var(--canvas-container-border-color);

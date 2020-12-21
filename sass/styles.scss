@@ -37,7 +37,7 @@ html {
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
   --control-title: 1.6vh;
-  --control-subtitle: 1.4vh;
+  --control-subtitle: 1.2vh;
 }
 
 body {
@@ -51,7 +51,7 @@ body {
   background-position: center center;
   line-height: 1.2rem;
   height: 100vh;
-  width: 98vw;
+  width: 100vw;
   margin: 0;
   padding: 0;
 }
@@ -118,7 +118,7 @@ div#splash {
 }
 
 .menu-page-header {
-  margin: 2rem 0rem 1rem 3rem;
+  margin: 1vh 0rem 1vh 2vh;
 
   .title {
     font-size: var(--menu-page-title);
@@ -340,7 +340,7 @@ header.menu-activity-page-title {
 }
 
 .activity-page {
-  margin: 1.5vh 1vw 0vh 2vw;
+  margin: 1.5vh 1vw 0vh 1vw;
   height: 94vh;
 }
 
@@ -406,7 +406,7 @@ button {
 }
 
 .page-header {
-  margin: 0.5rem 0rem 1rem 0rem;
+  margin: 0vh 0vh 1.5vh 0vh;
 }
 
 .page-title {
@@ -652,12 +652,24 @@ div.main-image-content {
 
 #under-main-image-row {
   margin-top: 1vh;
+  margin-left: 1vh;
+  align-items: center;
   .subtitle {
     font-size: var(--control-subtitle);
   }
 }
 
+form#image-select-main-layer {
+  margin-right: 10vh;
+}
+
+div.shrinking-spacer {
+  height: 12%;
+  flex: 0 4 auto;
+}
+
 div.telescope-container {
+  flex: 0 1 auto;
   div.about-telescope {
     padding: 0.75rem 0rem;
     font-size: var(--page-subtitle);
@@ -675,6 +687,11 @@ div.telescope-container {
       object-fit: contain;
     }
   }
+}
+
+#dev-right {
+  flex: 0 1 auto;
+  margin-bottom: 6vh;
 }
 
 .modal-dialog {
@@ -727,9 +744,9 @@ canvas {
 
 div#main-image-canvas-container {
   position: relative;
-  width: 50vw;
-  height: 72vh;
-  margin: 0;
+  width: auto;
+  height: 76vh;
+  margin: 0vh 1vh;
   padding: 0;
   background-color: var(--almost-black);
   border: 3px solid var(--canvas-container-border-color);

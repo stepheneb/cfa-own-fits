@@ -67,11 +67,11 @@ class Page {
     this.leftColumnHtml = '';
     this.mainImageHtml = '';
     this.rightColumnHtml = `
-      <div class='col-2'>
         ${this.telescopeHtmls}
-        ${layerHistogram.render(this.selectedSource)}
-        ${this.renderimageSize(this, this.registeredCallbacks)}
-      </div>
+        <div id="dev-right">
+          ${layerHistogram.render(this.selectedSource)}
+          ${this.renderimageSize(this, this.registeredCallbacks)}
+        </div>
     `;
 
     switch (this.type) {
@@ -79,45 +79,44 @@ class Page {
     case 'rgb':
     case 'multi-wave':
       this.leftColumnHtml = `
-          <div class='col-3'>
+          <div class='col-3 pr-1 m-0'>
             ${this.renderImageSelectFilterLayerToAdjust()}
             ${this.renderImageLayerPreview()}
             ${adjustImage.renderRGB(this, this.registeredCallbacks)}
           </div>
         `;
       this.mainImageHtml = `
-          <div class='col-7'>
-            ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
-          </div>
+          ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
         `;
       break;
 
     case 'masterpiece':
       this.leftColumnHtml = `
-        <div class='col-3'>
+        <div class='col-3 pr-1 m-0'>
           ${colorMaps.render(this, this.registeredCallbacks)}
           ${specialEffects.render(this, this.registeredCallbacks)}
           ${adjustImage.renderMasterpiece(this, this.registeredCallbacks)}
         </div>
       `;
       this.mainImageHtml = `
-          <div class='col-7'>
-            ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
-          </div>
+          ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
         `;
       break;
     }
 
     let html = `
-      <div id='${this.id}' class='activity-page'
-        data-categorytype="${this.type}"
-        data-pagename="${this.name}">
-        ${this.renderPageHeader(this)}
+      <div id='${this.id}' class='activity-page row' data-categorytype="${this.type}" data-pagename="${this.name}">
+        <div class="col-10">
 
-        <div class='row'>
+          ${this.renderPageHeader(this)}
+          <div class="row">
             ${this.leftColumnHtml}
             ${this.mainImageHtml}
-            ${this.rightColumnHtml}
+          </div>
+        </div>
+        <div class="col-2 d-flex flex-column justify-content-start">
+          <div class="shrinking-spacer"></div>
+          ${this.rightColumnHtml}
         </div>
       </div>
       ${navigation.page(this.registeredCallbacks)}
@@ -175,7 +174,7 @@ class Page {
   renderPageHeader() {
     return `
       <div class='row page-header'>
-        <div class='col-6'>
+        <div class='col-7 p-0'>
           <div class='page-title'>${this.title}</div>
           <div class='page-subtitle'>${this.subtitle}</div>
         </div>
@@ -250,7 +249,7 @@ class Page {
       // images.resizeCanvas(this.image.destinations.main.canvas, this.image.nx, this.image.ny);
     };
     return `
-      <div id='main-image-content' class='main-image-content'>
+      <div id='main-image-content' class='main-image-content col-9 justify-content-center'>
         <div id='${id2}' class="row d-flex justify-content-center align-items-center">
           ${renderDev.fullScreenButton(id2, '#main-image-content', this.registeredCallbacks, optionalFunc)}
           ${this.renderSpinner()}
@@ -296,7 +295,7 @@ class Page {
     }
 
     return `
-      <div id="${id}" class="d-flex flex-row justify-content-start">
+      <div id="${id}" class="d-flex flex-row justify-content-between">
         ${underImageRow}
       </div>
     `;
@@ -329,7 +328,7 @@ class Page {
     html += `
         </div>
       </form>
-      <div class="image-name ps-2 pe-2 ms-auto">
+      <div class="image-name pe-2">
         ${this.image.name}
       </div>
     `;
@@ -345,7 +344,7 @@ class Page {
           ${this.renderScalingButtons()}
         </div>
       </form>
-      <div class="image-name ps-2 pe-2 ms-auto">
+      <div class="image-name pe-2">
         ${this.image.name}
       </div>
     `;

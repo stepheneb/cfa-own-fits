@@ -29,10 +29,10 @@ colorMaps.render = (page, registeredCallbacks) => {
       cmapsHtml += `
         <div class="col-6">
           <div id="${id}" class="row select-cmap" data-cmap="${cmapName}">
-            <div class="canvas col-8 d-flex align-items-center" >
+            <div class="canvas col-7 d-flex align-items-center" >
               <canvas id="${id}-canvas"></canvas>
             </div>
-            <div class="label col-4 d-flex align-items-center">${cmapName}</div>
+            <div class="label col-5 d-flex align-items-center">${cmapName}</div>
           </div>
         </div>
       `;
