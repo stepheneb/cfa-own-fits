@@ -8,7 +8,7 @@ class Spinner {
   show(mesg) {
     this.elem.classList.remove("hide");
     this.count++;
-    this._log("show", `count: ${this.count}, $this.{mesg}`);
+    this._log("show", `count: ${this.count}, ${mesg}`);
   }
   hide(mesg) {
     if (this.count > 1) {
