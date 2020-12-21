@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 8 */
 
 import logger from '../logger.js';
 
@@ -162,7 +162,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
       page.canvasImages.rawdataSources.forEach(source => {
         source.brightness = brightness;
       });
-      update();
+      render(page);
     });
 
     elem = document.getElementById("contrast");
@@ -174,7 +174,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
         source.max = source.originalMax - contrastShift;
         source.min = Math.max(0, source.originalMin + contrastShift);
       });
-      update();
+      render(page);
     });
 
     elem = document.getElementById("color-shift");
@@ -186,10 +186,22 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
       page.canvasImages.rawdataSources.forEach(source => {
         source.scaling = scaling;
       });
-      update();
+      render(page);
     });
 
-    function update() {
+    function render(page) {
+      page.canvasImages.spinner.show("running filter");
+      page.redraw = requestAnimationFrame(() => {
+        setTimeout(() => {
+          render2().then(() => {
+            page.canvasImages.spinner.hide();
+          });
+        });
+      });
+
+    }
+
+    async function render2() {
       let canvas;
       page.canvasImages.rawdataSources.forEach(source => {
         canvas = page.canvasImages.layerCanvasNamed(source.filter);
