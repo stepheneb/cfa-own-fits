@@ -276,13 +276,14 @@ class CanvasImages {
     let min = source.min;
     let max = source.max;
     let range = max - min;
-    let scale = source.brightness * 256 / range;
+    let scale;
     let i, pixindex, x, y, val, scaledval;
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
     let pixeldata = imageData.data;
 
     let renderLinearLayer = () => {
+      scale = source.brightness * 256 / range;
       switch (source.filter) {
       case 'red':
         pixindex = 0;
@@ -357,6 +358,7 @@ class CanvasImages {
             val = rawdata[i];
             scaledval = Math.log(val + 1) * scale;
             pixeldata[pixindex] = scaledval;
+            pixeldata[pixindex + 3] = 255;
             pixindex += 4;
           }
         }
@@ -370,6 +372,7 @@ class CanvasImages {
             val = rawdata[i];
             scaledval = Math.log(val + 1) * scale;
             pixeldata[pixindex + 1] = scaledval;
+            pixeldata[pixindex + 3] = 255;
             pixindex += 4;
           }
         }
@@ -383,6 +386,7 @@ class CanvasImages {
             val = rawdata[i];
             scaledval = Math.log(val + 1) * scale;
             pixeldata[pixindex + 2] = scaledval;
+            pixeldata[pixindex + 3] = 255;
             pixindex += 4;
           }
         }
@@ -398,7 +402,8 @@ class CanvasImages {
             pixeldata[pixindex] = scaledval;
             pixeldata[++pixindex] = scaledval;
             pixeldata[++pixindex] = scaledval;
-            pixindex += 2;
+            pixeldata[++pixindex] = 255;
+            ++pixindex;
           }
         }
         break;
