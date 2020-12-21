@@ -608,142 +608,43 @@
       "menuimage": "images/menu-masterpiece.jpg",
       "pages": [
         {
-          "name": "opo9914d",
-          "poster": "opo9914d",
-          "title": "Make a Masterpiece with the Moon",
+          "name": "m51-whirlpool",
+          "poster": "m51",
+          "title": "Messier 51 (The Whirlpool Galaxy)",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
-          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "opo9914d",
-            "source": "https://www.spacetelescope.org/images/opo9914d/",
+            "name": "Messier 51",
             "about": {
               "telescopes": [
                 "hubble"
               ]
             },
-            "size": "medium",
+            "size": "large",
             "dimensions": {
               "small": {
-                "nx": 600,
-                "ny": 600
+                "nx": 596,
+                "ny": 900
               },
               "medium": {
-                "nx": 1200,
-                "ny": 1200
+                "nx": 1192,
+                "ny": 1800
               },
               "large": {
-                "nx": 1200,
-                "ny": 1200
+                "nx": 2384,
+                "ny": 3600
               }
             },
             "maximumBrightness": 2,
-            "selectedSourceNumber": 0,
-            "selectedMainLayers": "111",
             "sources": [
-              {
-                "type": "rawdata",
-                "name": "Red",
-                "path": {
-                  "small": "rawdata/opo9914d/600x600/opo9914d-R.bmp",
-                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-R.bmp",
-                  "large": "rawdata/opo9914d/1200x1200/opo9914d-R.bmp"
-                },
-                "filter": "red",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
               {
                 "type": "rawdata",
                 "name": "Green",
                 "path": {
-                  "small": "rawdata/opo9914d/600x600/opo9914d-R.bmp",
-                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-G.bmp",
-                  "large": "rawdata/opo9914d/1200x1200/opo9914d-G.bmp"
-                },
-                "filter": "green",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Blue",
-                "path": {
-                  "small": "rawdata/opo9914d/600x600/opo9914d-R.bmp",
-                  "medium": "rawdata/opo9914d/1200x1200/opo9914d-B.bmp",
-                  "large": "rawdata/opo9914d/1200x1200/opo9914d-B.bmp"
-                },
-                "filter": "blue",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "composite",
-                "name": "RGB",
-                "layers": [
-                  "Red",
-                  "Green",
-                  "Blue"
-                ]
-              }
-            ]
-          }
-        },
-        {
-          "name": "wacgl180-1086x1086",
-          "poster": "wacgl180",
-          "title": "The Far Side of the Moon",
-          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
-          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
-          "adjustimagetext": "Use these sliders to show more detail in the image",
-          "image": {
-            "name": "wacgl180-1086x1086",
-            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
-            "about": {
-              "telescopes": [
-                "lro"
-              ]
-            },
-            "size": "medium",
-            "dimensions": {
-              "small": {
-                "nx": 543,
-                "ny": 543
-              },
-              "medium": {
-                "nx": 1086,
-                "ny": 1086
-              },
-              "large": {
-                "nx": 2172,
-                "ny": 2172
-              },
-              "x2large": {
-                "nx": 4344,
-                "ny": 4344
-              }
-            },
-            "maximumBrightness": 2,
-            "selectedSourceNumber": 0,
-            "selectedMainLayers": "111",
-            "sources": [
-              {
-                "type": "rawdata",
-                "name": "Gray",
-                "path": {
-                  "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bmp",
-                  "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bmp",
-                  "large": "rawdata/WAC_GL180/2172x2172/wac_gl180_0.125-R.bmp",
-                  "x2large": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bmp"
+                  "small": "rawdata/m51/596x900/m51_optical_G.bmp",
+                  "medium": "rawdata/m51/1192x1800/m51_optical_G.bmp",
+                  "large": "rawdata/m51/2384x3600/m51_optical_G.bmp"
                 },
                 "filter": "gray",
                 "min": 0,
@@ -756,7 +657,7 @@
                 "type": "composite",
                 "name": "RGB",
                 "layers": [
-                  "Gray"
+                  "Green"
                 ]
               }
             ]

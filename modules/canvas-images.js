@@ -53,6 +53,12 @@ class CanvasImages {
     return this.rawdata[this.selectedSourceNumber];
   }
 
+  rawDataFromSource(s) {
+    let filter = s.filter;
+    let index = this.sources.findIndex(source => source.filter == filter);
+    return this.rawdata[index];
+  }
+
   // return source objects
 
   get rawdataSources() {
@@ -127,6 +133,7 @@ class CanvasImages {
   }
 
   fetch() {
+    let spinner = this.spinner;
     let rawdata;
     let rawDataSources = this.sources.filter(s => s.type == 'rawdata');
     Promise.all(
@@ -152,7 +159,7 @@ class CanvasImages {
       }
       this.spinner.hide("then imageBufferItems");
     }).catch(function (e) {
-      this.spinner.cancel("fetchError");
+      spinner.cancel("fetchError");
       console.log('Error fetchAllRawDataImages operation: ' + e.message);
     });
   }
@@ -272,7 +279,7 @@ class CanvasImages {
   renderCanvasLayer(source) {
     let canvas = this.layerCanvasNamed(source.filter);
     let startTime = performance.now();
-    let rawdata;
+    let rawdata = this.rawDataFromSource(source);
     let min = source.min;
     let max = source.max;
     let range = max - min;
@@ -287,7 +294,6 @@ class CanvasImages {
       switch (source.filter) {
       case 'red':
         pixindex = 0;
-        rawdata = this.rawdata[0];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -301,7 +307,6 @@ class CanvasImages {
         break;
       case 'green':
         pixindex = 0;
-        rawdata = this.rawdata[1];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -315,7 +320,6 @@ class CanvasImages {
         break;
       case 'blue':
         pixindex = 0;
-        rawdata = this.rawdata[2];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -329,7 +333,6 @@ class CanvasImages {
         break;
       case 'gray':
         pixindex = 0;
-        rawdata = this.rawdata[0];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -351,7 +354,6 @@ class CanvasImages {
       switch (source.filter) {
       case 'red':
         pixindex = 0;
-        rawdata = this.rawdata[0];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -365,7 +367,6 @@ class CanvasImages {
         break;
       case 'green':
         pixindex = 0;
-        rawdata = this.rawdata[1];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -379,7 +380,6 @@ class CanvasImages {
         break;
       case 'blue':
         pixindex = 0;
-        rawdata = this.rawdata[2];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
@@ -393,7 +393,6 @@ class CanvasImages {
         break;
       case 'gray':
         pixindex = 0;
-        rawdata = this.rawdata[0];
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
