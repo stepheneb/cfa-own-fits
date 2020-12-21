@@ -64,6 +64,12 @@ The browser will automatically reload the page when changes are saved to the htm
 
 The css styles are written in the scss variant of Sass and when changes are saved the css files are generated from the scss files and the browser will reload the page.
 
+
+## testing
+
+https://jestjs.io/docs/en/getting-started.html
+
+
 **Processing FITS images**
 
 The python program `./bin/extract.py` processes folders of fits files in directories in the `./fits` directory and generates corresponding directories in the `./rawdata` directory containing binary arrays of `float32` values extracted from image ddata in the original `fits` files.
@@ -76,7 +82,7 @@ python packages.
 $ python3 -V
 Python 3.8.3
 
-$ pip3 install numpy matplotlib fitsio
+$ pip3 install numpy matplotlib fitsio scipy wand
 ```
 
 Generate the raw data image files for infrared, xray, and optical M82 fits files.
