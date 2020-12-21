@@ -89,7 +89,7 @@ def write_img_to_file(image, base_filename, outdir, scale=1):
         print("creating output directory for rawdata: " + outpath)
         os.makedirs(outpath)
 
-    outfile = f"{outpath}/{base_filename}.bin"
+    outfile = f"{outpath}/{base_filename}.bmp"
 
     output_file = open(outfile, 'wb')
     image.tofile(output_file)
@@ -314,7 +314,7 @@ def extract_raw_image_data(infile, outdir):
                     binimage = arr.reshape((scaled_width, scaled_height))
                     binimage = process_image(binimage)
 
-                    outpath = f"{outbase}-{channel}.bin"
+                    outpath = f"{outbase}-{channel}.bmp"
                     print(f"Writing channel: {channel} binary file: {outpath}")
                     output_file = open(outpath, 'wb')
                     binimage.tofile(output_file)
