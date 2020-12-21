@@ -53,6 +53,7 @@
       "pages": [
         {
           "name": "whats-red-green-blue",
+          "poster": "whats-red-green-blue",
           "title": "What's Red + Green + Blue?",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
@@ -140,6 +141,7 @@
         },
         {
           "name": "m51-whirlpool",
+          "poster": "m51-whirlpool",
           "title": "Messier 51 (The Whirlpool Galaxy)",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
@@ -227,6 +229,7 @@
         },
         {
           "name": "heic2007a",
+          "poster": "heic2007a",
           "title": "NGC 2014, NGC 2020",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
@@ -315,6 +318,7 @@
         },
         {
           "name": "potw1345a",
+          "poster": "potw1345a",
           "title": "Antennae Galaxies, NGC 4038, NGC 4039",
           "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
           "selectfiltertext": "Select and adjust each of the light wave images",
@@ -411,6 +415,7 @@
       "pages": [
         {
           "name": "m82",
+          "poster": "m82",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
@@ -503,6 +508,7 @@
         },
         {
           "name": "m51",
+          "poster": "m51",
           "title": "Reveal an Image using 'Invisible Light",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
@@ -603,6 +609,7 @@
       "pages": [
         {
           "name": "opo9914d",
+          "poster": "opo9914d",
           "title": "Make a Masterpiece with the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
@@ -692,13 +699,142 @@
           }
         },
         {
-          "name": "wacgl180",
+          "name": "wacgl180-1086x1086",
+          "poster": "wacgl180",
           "title": "The Far Side of the Moon",
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "wacgl180",
+            "name": "wacgl180-1086x1086",
+            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
+            "about": {
+              "telescopes": [
+                "lro"
+              ]
+            },
+            "size": "medium",
+            "dimensions": {
+              "small": {
+                "nx": 543,
+                "ny": 543
+              },
+              "medium": {
+                "nx": 1086,
+                "ny": 1086
+              },
+              "large": {
+                "nx": 2172,
+                "ny": 2172
+              },
+              "x2large": {
+                "nx": 4344,
+                "ny": 4344
+              }
+            },
+            "maximumBrightness": 2,
+            "selectedSourceNumber": 0,
+            "selectedMainLayers": "111",
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Gray",
+                "path": {
+                  "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bmp",
+                  "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bmp",
+                  "large": "rawdata/WAC_GL180/2172x2172/wac_gl180_0.125-R.bmp",
+                  "x2large": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Gray"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "wacgl180-2172x2172",
+          "poster": "wacgl180",
+          "title": "The Far Side of the Moon",
+          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
+          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "wacgl180-2172x2172",
+            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
+            "about": {
+              "telescopes": [
+                "lro"
+              ]
+            },
+            "size": "large",
+            "dimensions": {
+              "small": {
+                "nx": 543,
+                "ny": 543
+              },
+              "medium": {
+                "nx": 1086,
+                "ny": 1086
+              },
+              "large": {
+                "nx": 2172,
+                "ny": 2172
+              },
+              "x2large": {
+                "nx": 4344,
+                "ny": 4344
+              }
+            },
+            "maximumBrightness": 2,
+            "selectedSourceNumber": 0,
+            "selectedMainLayers": "111",
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Gray",
+                "path": {
+                  "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bmp",
+                  "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bmp",
+                  "large": "rawdata/WAC_GL180/2172x2172/wac_gl180_0.125-R.bmp",
+                  "x2large": "rawdata/WAC_GL180/4344x4344/wac_gl180_0.125-R.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Gray"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "wacgl180-4344x4344",
+          "poster": "wacgl180",
+          "title": "The Far Side of the Moon",
+          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
+          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "wacgl180-4344x4344",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL180.tif",
             "about": {
               "telescopes": [

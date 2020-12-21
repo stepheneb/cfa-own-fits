@@ -186,7 +186,7 @@ renderMenu.categoryPageCollection = category => {
     html += `
       <div id="${id}" class="menu-category-page">
         <div class="image-wrapper">
-          <img src="images/page-images/${type}-${page.name}.jpg"></img>
+          <img src="images/page-images/${type}-${page.poster}.jpg"></img>
         </div>
         <div class="name">${page.image.name}</div>
         <div class="telescope">${telescopes}</div>
