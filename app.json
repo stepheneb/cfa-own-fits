@@ -41,6 +41,14 @@
         "image-credits": "NASA",
         "image-source": "https://www.nasa.gov/sites/default/files/images/314490main_LROstill_1_full.jpg",
         "description": "The Lunar Reconnaissance Orbiter (LRO) was launched with the Lunar Crater Observation and Sensing Satellite (LCROSS) on the first U.S. mission to the Moon in over 10 years. Both were part of NASA’s now-canceled Lunar Precursor Robotic Program.<br>LRO’s primary goal was to make a 3D map of the Moon’s surface from lunar polar orbit as part of a high-resolution mapping program to identify landing sites and potential resources, to investigate the radiation environment, and to prove new technologies in anticipation of future automated and human missions to the surface of the Moon.<br>The Centaur upper stage boosted both LRO and LCROSS into high apogee orbits soon after launch. At 11:27 UT June 23, 2009, LRO successfully entered orbit around the Moon, having fired its rocket motor on the far side of the Moon. Initial orbital parameters were roughly 19 x 134 miles (30 × 216 kilometers).<br>A series of four engine firings over the next four days left LRO in its optimal orbit—roughly circular at 31 miles (50 kilometers)—allowing the satellite to begin its primary mission Sept. 25, 2009. The primary mission was expected to last one year and was overseen by NASA’s Exploration Systems Mission Directorate (ESMD).<br>LRO gathered information on day-night temperature maps, contributed data for a global geodetic grid, and conducted high-resolution imaging. The spacecraft paid particular emphasis to the Moon’s polar regions where scientists suspected there might be water in the permanently shadowed areas."
+      },
+      {
+        "key": "juno",
+        "name": "Juno",
+        "image": "images/telescopes/juno.png",
+        "image-credits": "NASA",
+        "image-source": "https://www.jpl.nasa.gov/news/press_kits/juno/pdf/juno-lores.pdf",
+        "description": "The Juno spacecraft launched aboard an Atlas V-551 rocket from Cape Canaveral, Fla., on Aug. 5, 2011, and will reach Jupiter in July 2016. The spacecraft will orbit Jupiter 32 times, skimming to within 3,100 miles (5,000 kilometers) above the planet's cloud tops, for approximately one year.<br>Juno uses a spinning solar-powered spacecraft in a highly elliptical polar orbit that avoids most of Jupiter's high radiation regions. The designs of the individual instruments are straightforward and the mission does not require the development of any new technologies.<br>Juno's scientific payload includes:<ul><li>A gravity/radio science system (Gravity Science)</li><li>A six-wavelength microwave radiometer for atmospheric sounding and composition (MWR)</li><li>A vector magnetometer (MAG)</li><li>Plasma and energetic particle detectors (JADE and JEDI)</li><li>A radio/plasma wave experiment (Waves)</li><li>An ultraviolet imager/spectrometer (UVS)</li><li>An infrared imager/spectrometer (JIRAM)</li><li>The spacecraft will also carry a color camera, called JunoCam, to provide the public with the first detailed glimpse of Jupiter's poles</li></ul>"
       }
     ]
   },
@@ -385,6 +393,184 @@
                   "small": "rawdata/potw1345a/530x526/potw1345a-B.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-B.bmp",
                   "large": "rawdata/potw1345a/2120x2105/potw1345a-B.bmp"
+                },
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "juno-jupiter-set7",
+          "poster": "juno-jupiter-set7",
+          "title": "Jupiter",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Juno Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Juno Jupiter Set7",
+            "source": "",
+            "about": {
+              "telescopes": [
+                "juno"
+              ]
+            },
+            "size": "medium",
+            "dimensions": {
+              "small": {
+                "nx": 400,
+                "ny": 400
+              },
+              "medium": {
+                "nx": 800,
+                "ny": 800
+              },
+              "large": {
+                "nx": 1600,
+                "ny": 1600
+              }
+            },
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": {
+                  "small": "rawdata/Juno_Jupiter_Set7/400x400/JNCE_2017244_08C00121_V01-red.bmp",
+                  "medium": "rawdata/Juno_Jupiter_Set7/800x800/JNCE_2017244_08C00121_V01-red.bmp",
+                  "large": "rawdata/Juno_Jupiter_Set7/1600x1600/JNCE_2017244_08C00121_V01-red.bmp"
+                },
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": {
+                  "small": "rawdata/Juno_Jupiter_Set7/400x400/JNCE_2017244_08C00121_V01-green.bmp",
+                  "medium": "rawdata/Juno_Jupiter_Set7/800x800/JNCE_2017244_08C00121_V01-green.bmp",
+                  "large": "rawdata/Juno_Jupiter_Set7/1600x1600/JNCE_2017244_08C00121_V01-green.bmp"
+                },
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": {
+                  "small": "rawdata/Juno_Jupiter_Set7/400x400/JNCE_2017244_08C00121_V01-blue.bmp",
+                  "medium": "rawdata/Juno_Jupiter_Set7/800x800/JNCE_2017244_08C00121_V01-blue.bmp",
+                  "large": "rawdata/Juno_Jupiter_Set7/1600x1600/JNCE_2017244_08C00121_V01-blue.bmp"
+                },
+                "filter": "blue",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Red",
+                  "Green",
+                  "Blue"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "juno-jupiter-set6",
+          "poster": "juno-jupiter-set6",
+          "title": "Jupiter",
+          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Juno Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "selectfiltertext": "Select and adjust each of the light wave images",
+          "adjustimagetext": "Use these sliders to show more detail in the image",
+          "image": {
+            "name": "Juno Jupiter Set6",
+            "source": "",
+            "about": {
+              "telescopes": [
+                "juno"
+              ]
+            },
+            "size": "medium",
+            "dimensions": {
+              "small": {
+                "nx": 400,
+                "ny": 400
+              },
+              "medium": {
+                "nx": 800,
+                "ny": 800
+              },
+              "large": {
+                "nx": 1600,
+                "ny": 1600
+              }
+            },
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Red",
+                "path": {
+                  "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-red.bmp",
+                  "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-red.bmp",
+                  "large": "rawdata/Juno_Jupiter_Set6/1600x1600/JNCE_2016346_03C00118_V02-red.bmp"
+                },
+                "filter": "red",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": {
+                  "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-green.bmp",
+                  "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-green.bmp",
+                  "large": "rawdata/Juno_Jupiter_Set6/1600x1600/JNCE_2016346_03C00118_V02-green.bmp"
+                },
+                "filter": "green",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "Blue",
+                "path": {
+                  "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-blue.bmp",
+                  "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-blue.bmp",
+                  "large": "rawdata/Juno_Jupiter_Set6/1600x1600/JNCE_2016346_03C00118_V02-blue.bmp"
                 },
                 "filter": "blue",
                 "min": 0,
