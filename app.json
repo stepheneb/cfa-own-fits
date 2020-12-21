@@ -769,7 +769,7 @@
                 "filter": "blue",
                 "min": 0,
                 "max": 10,
-                "scaling": "linear",
+                "scaling": "log",
                 "brightness": 1,
                 "contrast": 1
               },

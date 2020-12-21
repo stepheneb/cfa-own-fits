@@ -244,6 +244,10 @@ def extract_raw_image_data(infile, outdir):
     else:
         bottom = next_min
 
+    # special case for M51 X-ray clip: 90..99 percentile
+    # bottom = percentile_90
+    # top = percentile_99
+
     print(f"Clipping to: {str(round(bottom, 3))}, {str(round(top, 3))}")
     img = np.clip(img, bottom, top)
 
