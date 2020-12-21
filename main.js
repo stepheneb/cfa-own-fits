@@ -9,8 +9,9 @@ window.defaultApp = {};
 
 request({ url: "app.json" })
   .then(data => {
-    defaultApp = setupNewApp(JSON.parse(data));
-    app = setupNewApp(JSON.parse(data));
+    Object.assign(defaultApp, setupNewApp(JSON.parse(data)));
+    Object.assign(app, setupNewApp(JSON.parse(data)));
+    app.logger = true;
     router.addHashChangeListener();
     router.route();
   })
@@ -19,7 +20,6 @@ request({ url: "app.json" })
   });
 
 let setupNewApp = newApp => {
-  newApp.logger = false;
   newApp.hashRendered = "start";
   newApp.splashRendered = false;
   newApp.pageNum = -1;

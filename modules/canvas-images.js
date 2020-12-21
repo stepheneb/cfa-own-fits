@@ -9,6 +9,7 @@ import Scaling from './scaling.js';
 import Spinner from './spinner.js';
 import cmap from './render/cmap.js';
 import utilities from './utilities.js';
+import logger from './logger.js';
 
 class CanvasImages {
   constructor(image, ctype) {
@@ -53,7 +54,7 @@ class CanvasImages {
     return this.rawdata[this.selectedSourceNumber];
   }
 
-  rawDataFromSource(s) {
+  rawDataForSource(s) {
     let filter = s.filter;
     let index = this.sources.findIndex(source => source.filter == filter);
     return this.rawdata[index];
@@ -145,6 +146,7 @@ class CanvasImages {
         rawdata = new Float32Array(arrayBuffer);
         this.rawdata.push(rawdata);
       });
+      this.rawdataSources.forEach(source => logger.rawData(this, source));
       switch (this.type) {
       case 'rgb':
       case 'multi-wave':
@@ -279,7 +281,7 @@ class CanvasImages {
   renderCanvasLayer(source) {
     let canvas = this.layerCanvasNamed(source.filter);
     let startTime = performance.now();
-    let rawdata = this.rawDataFromSource(source);
+    let rawdata = this.rawDataForSource(source);
     let min = source.min;
     let max = source.max;
     let range = max - min;

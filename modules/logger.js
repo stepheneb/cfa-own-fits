@@ -35,12 +35,10 @@ logger.imageData = canvasImage => {
   layerHistogram.update(h, source.scaling);
 };
 
-logger.rawData = canvasImage => {
-  let source = canvasImage.selectedSource;
-  let rawdata = canvasImage.selectedSourceRawData;
-
+logger.rawData = (canvasImage, source) => {
+  let rawdata = canvasImage.rawDataForSource(source);
   let h = utilities.histogram(rawdata, 30, source.min, source.max);
-  let [min, max] = utilities.forLoopMinMax(source.rawdata);
+  let [min, max] = utilities.forLoopMinMax(rawdata);
   print(`Histogram (raw data): name: ${source.name}, min: ${utilities.roundNumber(min, 3)}, max: ${utilities.roundNumber(max, 3)}, hmin: ${utilities.roundNumber(source.min, 4)}, hmax: ${utilities.roundNumber(source.max, 4)}, contrast: ${utilities.roundNumber(source.contrast, 4)}`);
   printTable(h);
 };
