@@ -27,7 +27,7 @@ events.setupGlobal = (page) => {
         console.log('The ' + mutation.attributeName + ' attribute was modified.');
         if (mutation.attributeName === 'class') {
           if (mutation.target.classList.contains('show')) {
-            logger.imageData(page.canvasImages);
+            logger.imageData(page.canvasImages, page.canvasImages.selectedSource);
           }
         }
       }

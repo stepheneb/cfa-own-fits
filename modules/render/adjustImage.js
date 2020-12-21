@@ -144,7 +144,7 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
       page.canvasImages.renderCanvasLayer(source, canvas);
       page.canvasImages.renderCanvasRGB();
       page.canvasImages.renderPreview(source);
-      logger.imageData(page.canvasImages);
+      logger.imageData(page.canvasImages, source);
     }
   }
 };
@@ -210,7 +210,7 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
       page.canvasImages.renderCanvasRGB();
       if (page.type == 'masterpiece') {
         page.canvasImages.renderMasterpiece();
-        logger.imageData(page.canvasImages);
+        logger.imageData(page.canvasImages, page.canvasImages.selectedSource);
       }
     }
   }

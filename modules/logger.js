@@ -18,8 +18,7 @@ let printTable = msg => {
   }
 };
 
-logger.imageData = canvasImage => {
-  let source = canvasImage.selectedSource;
+logger.imageData = (canvasImage, source) => {
   let data = canvasImage.selectedSourcePixelData;
   let h = utilities.histogram(data, 64, 0, 256);
   let [min, max] = utilities.forLoopMinMax(data);

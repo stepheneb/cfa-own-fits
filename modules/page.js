@@ -16,6 +16,7 @@ import renderMenu from './render/menu.js';
 import renderDev from './render/dev.js';
 import splash from './render/splash.js';
 import checkBrowser from './check-browser.js';
+import logger from './logger.js';
 
 class Page {
   constructor(ctype, page) {
@@ -190,6 +191,7 @@ class Page {
       this.image.selectedSourceNumber = layerNum;
       adjustImage.update(this);
       this.canvasImages.renderPreview(this.selectedSource);
+      logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
     });
     if (typeof layerNum == 'number') {
       elem.querySelector(`[value='${layerNum}']`).checked = true;
