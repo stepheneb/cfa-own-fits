@@ -21,6 +21,7 @@ import logger from './logger.js';
 class Page {
   constructor(ctype, page) {
     this.type = ctype;
+    this.category = app.categories.find(c => c.type == ctype);
     Object.assign(this, page);
     this.image.selectedSourceNumber = this.image.selectedSourceNumber || 0;
     this.id = `page-${this.type}-${this.name}`;
@@ -176,7 +177,7 @@ class Page {
     return `
       <div class='row page-header'>
         <div class='col-8 p-0'>
-          <div class='page-title'>${this.title}</div>
+          <div class='page-title'>${this.category.title}</div>
           <div class='page-subtitle'>${this.subtitle}</div>
         </div>
       </div>

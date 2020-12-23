@@ -62,8 +62,8 @@
         {
           "name": "whats-red-green-blue",
           "poster": "whats-red-green-blue",
-          "title": "What's Red + Green + Blue?",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "title": "Lagoon Nebula",
+          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
@@ -151,11 +151,11 @@
           "name": "m51-whirlpool",
           "poster": "m51-whirlpool",
           "title": "Messier 51 (The Whirlpool Galaxy)",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Messier 51",
+            "name": "Whirlpool Galaxy",
             "about": {
               "telescopes": [
                 "hubble"
@@ -239,11 +239,11 @@
           "name": "heic2007a",
           "poster": "heic2007a",
           "title": "NGC 2014, NGC 2020",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "heic2007a",
+            "name": "Cosmic Reef Nebulae",
             "source": "https://www.spacetelescope.org/images/heic2007a/",
             "about": {
               "telescopes": [
@@ -328,11 +328,11 @@
           "name": "potw1345a",
           "poster": "potw1345a",
           "title": "Antennae Galaxies, NGC 4038, NGC 4039",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Hubble Space Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "NGC 4038, NGC 4039",
+            "name": "Antennae Galaxies",
             "source": "https://www.spacetelescope.org/images/potw1345a/",
             "about": {
               "telescopes": [
@@ -414,103 +414,14 @@
           }
         },
         {
-          "name": "juno-jupiter-set7",
-          "poster": "juno-jupiter-set7",
-          "title": "Jupiter",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Juno Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
-          "adjustimagetext": "Use these sliders to show more detail in the image",
-          "image": {
-            "name": "Juno Jupiter Set7",
-            "source": "",
-            "about": {
-              "telescopes": [
-                "juno"
-              ]
-            },
-            "size": "medium",
-            "dimensions": {
-              "small": {
-                "nx": 400,
-                "ny": 400
-              },
-              "medium": {
-                "nx": 800,
-                "ny": 800
-              },
-              "large": {
-                "nx": 1600,
-                "ny": 1600
-              }
-            },
-            "maximumBrightness": 2,
-            "sources": [
-              {
-                "type": "rawdata",
-                "name": "Red",
-                "path": {
-                  "small": "rawdata/Juno_Jupiter_Set7/400x400/JNCE_2017244_08C00121_V01-red.bmp",
-                  "medium": "rawdata/Juno_Jupiter_Set7/800x800/JNCE_2017244_08C00121_V01-red.bmp",
-                  "large": "rawdata/Juno_Jupiter_Set7/1600x1600/JNCE_2017244_08C00121_V01-red.bmp"
-                },
-                "filter": "red",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Green",
-                "path": {
-                  "small": "rawdata/Juno_Jupiter_Set7/400x400/JNCE_2017244_08C00121_V01-green.bmp",
-                  "medium": "rawdata/Juno_Jupiter_Set7/800x800/JNCE_2017244_08C00121_V01-green.bmp",
-                  "large": "rawdata/Juno_Jupiter_Set7/1600x1600/JNCE_2017244_08C00121_V01-green.bmp"
-                },
-                "filter": "green",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "rawdata",
-                "name": "Blue",
-                "path": {
-                  "small": "rawdata/Juno_Jupiter_Set7/400x400/JNCE_2017244_08C00121_V01-blue.bmp",
-                  "medium": "rawdata/Juno_Jupiter_Set7/800x800/JNCE_2017244_08C00121_V01-blue.bmp",
-                  "large": "rawdata/Juno_Jupiter_Set7/1600x1600/JNCE_2017244_08C00121_V01-blue.bmp"
-                },
-                "filter": "blue",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "composite",
-                "name": "RGB",
-                "layers": [
-                  "Red",
-                  "Green",
-                  "Blue"
-                ]
-              }
-            ]
-          }
-        },
-        {
           "name": "juno-jupiter-set6",
           "poster": "juno-jupiter-set6",
           "title": "Jupiter",
-          "subtitle": "Use this image software to combine 3 color-filtered images from NASA's Juno Telescope. The result represents the range of colors emitted by this stellar nursery of gas and dust.",
+          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Juno Jupiter Set6",
+            "name": "Jupiter",
             "source": "",
             "about": {
               "telescopes": [
@@ -595,7 +506,7 @@
     },
     {
       "type": "multi-wave",
-      "title": "Reveal an Image using 'Invisible Light",
+      "title": "Reveal an Image using “Invisible Light”",
       "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
       "menuimage": "images/menu-invisible-light.jpg",
       "pages": [
@@ -607,12 +518,12 @@
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Messier 82",
+            "name": "Cigar Galaxy",
             "source": "",
             "about": {
               "telescopes": [
-                "hubble",
                 "spitzer",
+                "hubble",
                 "chandra"
               ]
             },
@@ -700,12 +611,12 @@
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Messier 51",
+            "name": "Whirlpool Galaxy",
             "source": "",
             "about": {
               "telescopes": [
-                "hubble",
                 "spitzer",
+                "hubble",
                 "chandra"
               ]
             },
@@ -801,7 +712,7 @@
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "Messier 51",
+            "name": "Whirlpool Galaxy",
             "about": {
               "telescopes": [
                 "hubble"
@@ -857,7 +768,7 @@
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "wacgl000",
+            "name": "Moon - Near Side",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
@@ -921,7 +832,7 @@
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "image": {
-            "name": "wacgl180",
+            "name": "Moon - Far Side",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
