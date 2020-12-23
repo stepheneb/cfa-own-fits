@@ -56,7 +56,7 @@
     {
       "type": "rgb",
       "title": "What's Red + Green + Blue?",
-      "subtitle": "Telecopes only see in black and white, but astronomers can use red, green, and blue filters and image software to represent what an image would look like to the human eye.",
+      "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
       "menuimage": "images/menu-whats-red-green-blue.jpg",
       "pages": [
         {
