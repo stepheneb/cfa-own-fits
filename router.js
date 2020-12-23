@@ -29,8 +29,8 @@ router.route = () => {
       if (category && page) {
         if (app.page) page.close();
         app.page = new Page(category.type, page);
-      }
-      if (category && !page) {
+      } else {
+        router.updateHash('menu');
         renderMenu.page();
       }
       break;
