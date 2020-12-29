@@ -88,7 +88,6 @@ let html = page => {
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       ${brightness(page)}
       ${contrast(page)}
-      ${colorShift(page)}
       ${scaling(page)}
     </div>
   `;
@@ -103,7 +102,6 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       ${brightness(page)}
       ${contrast(page)}
-      ${colorShift(page)}
       ${scaling(page)}
     </div>
   `;
@@ -129,8 +127,8 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
       render(source);
     });
 
-    elem = document.getElementById("color-shift");
-    elem.addEventListener('input', () => {});
+    // elem = document.getElementById("color-shift");
+    // elem.addEventListener('input', () => {});
 
     elem = document.getElementById("scaling");
     elem.addEventListener('change', () => {
@@ -177,8 +175,8 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
       render(page);
     });
 
-    elem = document.getElementById("color-shift");
-    elem.addEventListener('input', () => {});
+    // elem = document.getElementById("color-shift");
+    // elem.addEventListener('input', () => {});
 
     elem = document.getElementById("scaling");
     elem.addEventListener('change', (event) => {
