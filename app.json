@@ -92,7 +92,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Red",
+                "name": "red",
                 "path": {
                   "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f658Red.bmp",
                   "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f658Red.bmp",
@@ -107,7 +107,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "green",
                 "path": {
                   "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f656Green.bmp",
                   "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f656Green.bmp",
@@ -122,7 +122,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Blue",
+                "name": "blue",
                 "path": {
                   "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f502Blue.bmp",
                   "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f502Blue.bmp",
@@ -180,7 +180,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Red",
+                "name": "red",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_R.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_R.bmp",
@@ -195,7 +195,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "green",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_G.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_G.bmp",
@@ -210,7 +210,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Blue",
+                "name": "blue",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_B.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_B.bmp",
@@ -269,7 +269,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Red",
+                "name": "red",
                 "path": {
                   "small": "rawdata/heic2007a/532x366/heic2007a-R.bmp",
                   "medium": "rawdata/heic2007a/1065x732/heic2007a-R.bmp",
@@ -284,7 +284,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "green",
                 "path": {
                   "small": "rawdata/heic2007a/532x366/heic2007a-G.bmp",
                   "medium": "rawdata/heic2007a/1065x732/heic2007a-G.bmp",
@@ -299,7 +299,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Blue",
+                "name": "blue",
                 "path": {
                   "small": "rawdata/heic2007a/532x366/heic2007a-B.bmp",
                   "medium": "rawdata/heic2007a/1065x732/heic2007a-B.bmp",
@@ -358,7 +358,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Red",
+                "name": "red",
                 "path": {
                   "small": "rawdata/potw1345a/530x526/potw1345a-R.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-R.bmp",
@@ -373,7 +373,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "green",
                 "path": {
                   "small": "rawdata/potw1345a/530x526/potw1345a-G.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-G.bmp",
@@ -388,7 +388,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Blue",
+                "name": "blue",
                 "path": {
                   "small": "rawdata/potw1345a/530x526/potw1345a-B.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-B.bmp",
@@ -447,7 +447,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Red",
+                "name": "red",
                 "path": {
                   "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-red.bmp",
                   "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-red.bmp",
@@ -462,7 +462,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "green",
                 "path": {
                   "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-green.bmp",
                   "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-green.bmp",
@@ -477,7 +477,7 @@
               },
               {
                 "type": "rawdata",
-                "name": "Blue",
+                "name": "blue",
                 "path": {
                   "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-blue.bmp",
                   "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-blue.bmp",
@@ -737,7 +737,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "green",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_G.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_G.bmp",
@@ -800,7 +800,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Gray",
+                "name": "gray",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -864,7 +864,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Gray",
+                "name": "gray",
                 "path": {
                   "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bmp",
                   "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bmp",
@@ -929,7 +929,7 @@
             "sources": [
               {
                 "type": "rawdata",
-                "name": "Green",
+                "name": "jupiter1",
                 "path": {
                   "small": "rawdata/h_jupiter_01/400x400/01_h_jupiter_343_070301x_drz_sci.bmp",
                   "medium": "rawdata/h_jupiter_01/800x800/01_h_jupiter_343_070301x_drz_sci.bmp",
@@ -943,10 +943,55 @@
                 "contrast": 1
               },
               {
+                "type": "rawdata",
+                "name": "jupiter2",
+                "path": {
+                  "small": "rawdata/h_jupiter_02/400x400/02_h_jupiter_410_070301x2_drz_sci.bmp",
+                  "medium": "rawdata/h_jupiter_02/800x800/02_h_jupiter_410_070301x2_drz_sci.bmp",
+                  "large": "rawdata/h_jupiter_02/800x800/02_h_jupiter_410_070301x2_drz_sci.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "jupiter3",
+                "path": {
+                  "small": "rawdata/h_jupiter_03/400x400/03_h_jupiter_410_070301y_drz_sci.bmp",
+                  "medium": "rawdata/h_jupiter_03/800x800/03_h_jupiter_410_070301y_drz_sci.bmp",
+                  "large": "rawdata/h_jupiter_03/800x800/03_h_jupiter_410_070301y_drz_sci.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "jupiter4",
+                "path": {
+                  "small": "rawdata/h_jupiter_04/400x400/04_h_jupiter_410_070302z_drz_sci.bmp",
+                  "medium": "rawdata/h_jupiter_04/800x800/04_h_jupiter_410_070302z_drz_sci.bmp",
+                  "large": "rawdata/h_jupiter_04/800x800/04_h_jupiter_410_070302z_drz_sci.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
                 "type": "composite",
                 "name": "RGB",
                 "layers": [
-                  "Green"
+                  "Jupiter1"
                 ]
               }
             ]

@@ -55,8 +55,8 @@ class CanvasImages {
   }
 
   rawDataForSource(s) {
-    let filter = s.filter;
-    let index = this.sources.findIndex(source => source.filter == filter);
+    let name = s.name;
+    let index = this.sources.findIndex(source => source.name == name);
     return this.rawdata[index];
   }
 
@@ -80,8 +80,8 @@ class CanvasImages {
 
   // return canvas elements
 
-  layerCanvasNamed(filter) {
-    return this.layerCanvases.find(c => c.classList.contains(filter));
+  layerCanvasNamed(name) {
+    return this.layerCanvases.find(c => c.classList.contains(name));
   }
 
   get canvasRGB() {
@@ -95,7 +95,7 @@ class CanvasImages {
   }
 
   uint8FromSource(s) {
-    return this.layerCanvasNamed(s.filter).getContext('2d').getImageData(0, 0, this.nx, this.ny).data;
+    return this.layerCanvasNamed(s.name).getContext('2d').getImageData(0, 0, this.nx, this.ny).data;
   }
 
   get selectedSourcePixelData() {
@@ -151,12 +151,12 @@ class CanvasImages {
       case 'rgb':
       case 'animate':
       case 'multi-wave':
-        this.initializeMainCanvases();
+        this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
 
         break;
       case 'masterpiece':
-        this.initializeMainCanvases();
+        this.initializeMainCanvases(this.type);
         this.addScalingLayer();
         break;
       }
@@ -199,16 +199,16 @@ class CanvasImages {
     ctx.drawImage(bitmap, 0, 0);
   }
 
-  initializeMainCanvases() {
+  initializeMainCanvases(type) {
     // let rawdata;
     let canvas;
     this.rawdataSources.forEach((s) => {
-      canvas = this.appendMainCanvas(this.mainContainer, s.filter);
+      canvas = this.appendMainCanvas(this.mainContainer, s.filter, s.name);
       this.layerCanvases.push(canvas);
       this.renderCanvasLayer(s);
     });
-    this.rgbCanvas = this.appendMainCanvas(this.mainContainer, 'rgb');
-    this.renderCanvasRGB();
+    this.rgbCanvas = this.appendMainCanvas(this.mainContainer, 'rgb', 'rgb');
+    this.renderCanvasRGB(type);
   }
 
   initializePreviewCanvas(source) {
@@ -224,10 +224,15 @@ class CanvasImages {
     return c;
   }
 
-  appendMainCanvas(container, filter) {
+  appendMainCanvas(container, filter, name) {
     let c = document.createElement("canvas");
-    c.id = `main-image-canvas-${filter}`;
-    c.classList = `main-image-canvas ${filter}`;
+    if (filter == name) {
+      c.id = `main-image-canvas-${filter}`;
+      c.classList = `main-image-canvas ${filter}`;
+    } else {
+      c.id = `main-image-canvas-${name}-${filter}`;
+      c.classList = `main-image-canvas ${name} ${filter}`;
+    }
     this.initializeCanvas(c);
     c.width = this.nx;
     c.height = this.ny;
@@ -235,10 +240,16 @@ class CanvasImages {
     return c;
   }
 
-  appendLayerCanvas(container, prefix, filter) {
+  appendLayerCanvas(container, prefix, filter, name) {
     let c = document.createElement("canvas");
-    c.id = `${prefix}-image-canvas-${filter}`;
-    c.classList = `${prefix}-image-canvas ${filter}`;
+    if (filter == name) {
+      c.id = `${prefix}-image-canvas-${filter}`;
+      c.classList = `${prefix}-image-canvas ${filter}`;
+    } else {
+      c.id = `${prefix}-image-canvas-${filter}-${name}`;
+      c.classList = `${prefix}-image-canvas ${filter} ${name}`;
+    }
+
     this.initializeCanvas(c);
     container.append(c);
     this.resizeCanvas(c);
@@ -280,7 +291,7 @@ class CanvasImages {
   }
 
   renderCanvasLayer(source) {
-    let canvas = this.layerCanvasNamed(source.filter);
+    let canvas = this.layerCanvasNamed(source.name);
     let startTime = performance.now();
     let rawdata = this.rawDataForSource(source);
     let min = source.min;
@@ -424,13 +435,17 @@ class CanvasImages {
     console.log(`images.renderCanvas: name: ${source.name}, filter: ${source.filter}: render: ${utilities.roundNumber(renderTime  - startTime, 4)}`);
   }
 
-  renderCanvasRGB() {
+  renderCanvasRGB(type) {
     var len = this.layerCanvases.length;
-    if (len == 1) {
+    if (type == 'animate') {
       this.renderCanvasRGB1(this.sources[0]);
-    }
-    if (len == 3) {
-      this.renderCanvasRGB3();
+    } else {
+      if (len == 1) {
+        this.renderCanvasRGB1(this.sources[0]);
+      }
+      if (len == 3) {
+        this.renderCanvasRGB3();
+      }
     }
   }
 
@@ -692,7 +707,7 @@ class CanvasImages {
   }
 
   renderPreview(source) {
-    let sourceCanvas = this.layerCanvasNamed(source.filter);
+    let sourceCanvas = this.layerCanvasNamed(source.name);
     let sourceCtx = sourceCanvas.getContext('2d');
     let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
     let ctx = this.previewCanvas.getContext('2d');

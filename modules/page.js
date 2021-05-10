@@ -122,6 +122,10 @@ class Page {
               <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
               <div class='morecontext'>${this.morecontext}</div>
               ${this.renderImageLayerPreview()}
+              <button id="previous-image-layer">Previous</button>
+              <button id="next-image-layer">Next</button>
+              <button id="start-animation">Play</button>
+              <button id="stop-animation">Stop</button>
             </div>
           `;
       this.mainImageHtml = `
@@ -171,6 +175,10 @@ class Page {
 
     case 'animate':
       this.canvasImages = new CanvasImages(this.image, this.type);
+      this.controllerNextAnimationStep();
+      this.controllerPreviousAnimationStep();
+      this.controllerStartAnimation();
+      this.controllerStopAnimation();
       break;
 
     }
@@ -211,6 +219,63 @@ class Page {
         </div>
       </div>
     `;
+  }
+
+  //
+  // Animate Images Over Time
+  //
+
+  controllerStartAnimation() {
+    let elem = document.getElementById("start-animation");
+    elem.addEventListener('click', () => {
+      this.nextAnimationStep();
+      this.animate = setInterval(() => { this.nextAnimationStep(); }, 250);
+    });
+  }
+
+  controllerStopAnimation() {
+    let elem = document.getElementById("stop-animation");
+    elem.addEventListener('click', () => {
+      clearInterval(this.animate);
+    });
+  }
+
+  controllerNextAnimationStep() {
+    let elem = document.getElementById("next-image-layer");
+    elem.addEventListener('click', () => {
+      this.nextAnimationStep();
+    });
+  }
+
+  controllerPreviousAnimationStep() {
+    let elem = document.getElementById("previous-image-layer");
+    elem.addEventListener('click', () => {
+      this.previousAnimationStep();
+    });
+  }
+
+  nextAnimationStep() {
+    this.animationStep(1);
+  }
+
+  previousAnimationStep() {
+    this.animationStep(-1);
+  }
+
+  animationStep(step) {
+    let sources = this.canvasImages.rawdataSources;
+    let len = sources.length;
+    let layerNum = this.selectedSourceNumber;
+    layerNum += step;
+    if (layerNum >= len) {
+      layerNum = 0;
+    } else if (layerNum < 0) {
+      layerNum = len - 1;
+    }
+    this.image.selectedSourceNumber = layerNum;
+    this.canvasImages.renderPreview(this.selectedSource);
+    this.canvasImages.renderCanvasRGB1(this.selectedSource);
+    logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
   }
 
   controllerImageSelectFilterLayerToAdjust() {
