@@ -543,6 +543,9 @@ div.telescope-container {
       width: 100%;
       object-fit: contain; }
 
+#column-middle-spacer {
+  flex-grow: 1; }
+
 #dev-right {
   flex: 0 1 auto;
   margin-bottom: 6vh; }
