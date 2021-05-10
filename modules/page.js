@@ -10,6 +10,7 @@ import colorMaps from './render/colorMaps.js';
 import specialEffects from './render/specialEffects.js';
 import adjustImage from './render/adjustImage.js';
 import telescopes from './render/telescopes.js';
+import saveAndSend from './render/saveAndSend.js';
 import navigation from './render/navigation.js';
 import layerHistogram from './layerHistogram.js';
 import renderMenu from './render/menu.js';
@@ -64,12 +65,22 @@ class Page {
     return telescopes;
   }
 
+  get saveandsend() {
+    let saveandsend;
+
+    return saveandsend;
+  }
+
   generateHtml() {
     [this.telescopeHtmls, this.telescopeHtmlModals] = telescopes.render(this, this.registeredCallbacks);
+    // this.saveAndSend = saveAndSend.render(this, this.registeredCallbacks);
+    [this.saveAndSend, this.saveAndSendModals] = saveAndSend.render(this, this.registeredCallbacks);
     this.leftColumnHtml = '';
     this.mainImageHtml = '';
     this.rightColumnHtml = `
         ${this.telescopeHtmls}
+        <div id="column-middle-spacer"></div>
+        ${this.saveAndSend}
         <div id="dev-right">
           ${layerHistogram.render(this.selectedSource)}
           ${this.renderimageSize(this, this.registeredCallbacks)}
