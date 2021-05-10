@@ -149,6 +149,7 @@ class CanvasImages {
       this.rawdataSources.forEach(source => logger.rawData(this, source));
       switch (this.type) {
       case 'rgb':
+      case 'animate':
       case 'multi-wave':
         this.initializeMainCanvases();
         this.initializePreviewCanvas(this.selectedSource);

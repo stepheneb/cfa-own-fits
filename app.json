@@ -889,6 +889,70 @@
           }
         }
       ]
+    },
+    {
+      "type": "animate",
+      "title": "Animate Images Over Time",
+      "subtitle": "Lorem Ipsum ...",
+      "menuimage": "images/menu-animate.jpg",
+      "pages": [
+        {
+          "name": "jupiter",
+          "poster": "jupiter",
+          "title": "Jupiter",
+          "subtitle": "Lorem Ipsum ...",
+          "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
+          "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "image": {
+            "name": "Jupiter",
+            "about": {
+              "telescopes": [
+                "lro"
+              ]
+            },
+            "size": "large",
+            "dimensions": {
+              "small": {
+                "nx": 400,
+                "ny": 400
+              },
+              "medium": {
+                "nx": 800,
+                "ny": 800
+              },
+              "large": {
+                "nx": 800,
+                "ny": 800
+              }
+            },
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "Green",
+                "path": {
+                  "small": "rawdata/h_jupiter_01/400x400/01_h_jupiter_343_070301x_drz_sci.bmp",
+                  "medium": "rawdata/h_jupiter_01/800x800/01_h_jupiter_343_070301x_drz_sci.bmp",
+                  "large": "rawdata/h_jupiter_01/800x800/01_h_jupiter_343_070301x_drz_sci.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Green"
+                ]
+              }
+            ]
+          }
+        }
+      ]
     }
   ]
 }

@@ -115,6 +115,19 @@ class Page {
           ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
         `;
       break;
+
+    case 'animate':
+      this.leftColumnHtml = `
+            <div class='left-column col-3 pr-1 m-0'>
+              <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
+              <div class='morecontext'>${this.morecontext}</div>
+              ${this.renderImageLayerPreview()}
+            </div>
+          `;
+      this.mainImageHtml = `
+            ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
+          `;
+      break;
     }
 
     let html = `
@@ -155,6 +168,11 @@ class Page {
       this.canvasImages = new CanvasImages(this.image, this.type);
       this.canvasImages.renderColorMaps();
       break;
+
+    case 'animate':
+      this.canvasImages = new CanvasImages(this.image, this.type);
+      break;
+
     }
 
     this.registeredCallbacks.forEach(func => func());
@@ -306,6 +324,9 @@ class Page {
     case 'masterpiece':
       underImageRow = this.renderUnderMainImageMasterpiece();
       break;
+    case 'animate':
+      underImageRow = this.renderUnderMainImageAnimate();
+      break;
     }
 
     return `
@@ -358,6 +379,17 @@ class Page {
           ${this.renderScalingButtons()}
         </div>
       </form>
+      <div class="image-name pe-2">
+        ${this.image.name}
+      </div>
+    `;
+    return html;
+  }
+
+  renderUnderMainImageAnimate() {
+    let html = '';
+    html += `
+      <div class="pe-4"></div>
       <div class="image-name pe-2">
         ${this.image.name}
       </div>

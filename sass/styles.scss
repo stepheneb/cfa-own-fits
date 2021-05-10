@@ -376,6 +376,13 @@ header.menu-activity-page-title {
   font-size: 1.2vh;
 }
 
+.left-column {
+  .subtitle,
+  .morecontext {
+    margin-bottom: 1em;
+  }
+}
+
 button.scale {
   width: 4vh;
   background-color: black;
