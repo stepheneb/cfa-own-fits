@@ -7,6 +7,7 @@ import CanvasImages from './canvas-images.js';
 import events from './events.js';
 import router from '../router.js';
 import colorMaps from './render/colorMaps.js';
+import animate from './render/animate.js';
 import specialEffects from './render/specialEffects.js';
 import adjustImage from './render/adjustImage.js';
 import telescopes from './render/telescopes.js';
@@ -122,10 +123,7 @@ class Page {
               <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
               <div class='morecontext'>${this.morecontext}</div>
               ${this.renderImageLayerPreview()}
-              <button id="previous-image-layer">Previous</button>
-              <button id="next-image-layer">Next</button>
-              <button id="start-animation">Play</button>
-              <button id="stop-animation">Stop</button>
+              ${animate.render(this, this.registeredCallbacks)}
             </div>
           `;
       this.mainImageHtml = `
@@ -175,15 +173,12 @@ class Page {
 
     case 'animate':
       this.canvasImages = new CanvasImages(this.image, this.type);
-      this.controllerNextAnimationStep();
-      this.controllerPreviousAnimationStep();
-      this.controllerStartAnimation();
-      this.controllerStopAnimation();
       break;
-
     }
 
+    // run callbacks registered when interactive components were rendered
     this.registeredCallbacks.forEach(func => func());
+
     document.getElementById('btn-back').addEventListener('click', () => {
       renderMenu.page(this.type);
     });
@@ -219,47 +214,6 @@ class Page {
         </div>
       </div>
     `;
-  }
-
-  //
-  // Animate Images Over Time
-  //
-
-  controllerStartAnimation() {
-    let elem = document.getElementById("start-animation");
-    elem.addEventListener('click', () => {
-      this.nextAnimationStep();
-      this.animate = setInterval(() => { this.nextAnimationStep(); }, 250);
-    });
-  }
-
-  controllerStopAnimation() {
-    let elem = document.getElementById("stop-animation");
-    elem.addEventListener('click', () => {
-      clearInterval(this.animate);
-    });
-  }
-
-  controllerNextAnimationStep() {
-    let elem = document.getElementById("next-image-layer");
-    elem.addEventListener('click', () => {
-      this.nextAnimationStep();
-    });
-  }
-
-  controllerPreviousAnimationStep() {
-    let elem = document.getElementById("previous-image-layer");
-    elem.addEventListener('click', () => {
-      this.previousAnimationStep();
-    });
-  }
-
-  nextAnimationStep() {
-    this.animationStep(1);
-  }
-
-  previousAnimationStep() {
-    this.animationStep(-1);
   }
 
   animationStep(step) {

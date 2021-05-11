@@ -36,6 +36,8 @@ html {
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
+  --animate-buttons: 1.8vh;
+  --animate-icons: 3.4vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.2vh;
 }
@@ -703,6 +705,44 @@ div.telescope-container {
       width: 100%;
       object-fit: contain;
     }
+  }
+}
+
+#animate-controls {
+  margin: 2vh 0.5vh;
+  font-size: var(--animate-icons);
+  .animate-control {
+    color: var(--bright-green);
+    padding: 0em 0em;
+    label {
+      font-size: 70%;
+      text-transform: uppercase;
+    }
+    i {
+    }
+    &:focus-visible {
+      outline: 4px dashed black;
+    }
+    &:focus:not(:focus-visible) {
+      outline: none;
+      box-shadow: 1px 1px 5px rgba(1, 1, 0, 0.7);
+    }
+  }
+
+  div#animate-play {
+    display: block;
+  }
+  div#animate-pause {
+    display: none;
+  }
+}
+
+#animate-controls.playing {
+  div#animate-play {
+    display: none;
+  }
+  div#animate-pause {
+    display: block;
   }
 }
 
