@@ -587,6 +587,10 @@ div.telescope-container {
 #animate-controls.playing div#animate-pause {
   display: block; }
 
+#preview-image-name {
+  color: var(--bright-teal);
+  text-transform: uppercase; }
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;

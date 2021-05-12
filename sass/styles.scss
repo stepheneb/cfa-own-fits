@@ -768,6 +768,11 @@ div.telescope-container {
   }
 }
 
+#preview-image-name {
+  color: var(--bright-teal);
+  text-transform: uppercase;
+}
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;

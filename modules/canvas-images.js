@@ -149,15 +149,17 @@ class CanvasImages {
       this.rawdataSources.forEach(source => logger.rawData(this, source));
       switch (this.type) {
       case 'rgb':
-      case 'animate':
       case 'multi-wave':
         this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
-
         break;
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
         this.addScalingLayer();
+        break;
+      case 'animate':
+        this.initializeMainCanvases(this.type);
+        this.initializeAnimateCanvas(this.selectedSource);
         break;
       }
       this.spinner.hide("then imageBufferItems");
@@ -212,6 +214,19 @@ class CanvasImages {
   }
 
   initializePreviewCanvas(source) {
+    let c = document.createElement("canvas");
+    c.id = 'preview-image-canvas';
+    c.classList = 'preview-image-canvas';
+    this.initializeCanvas(c);
+    this.previewContainer.append(c);
+    this.previewCanvas = c;
+    c.width = this.nx;
+    c.height = this.ny;
+    this.renderPreview(source);
+    return c;
+  }
+
+  initializeAnimateCanvas(source) {
     let c = document.createElement("canvas");
     c.id = 'preview-image-canvas';
     c.classList = 'preview-image-canvas';

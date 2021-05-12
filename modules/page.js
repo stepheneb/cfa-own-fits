@@ -123,7 +123,6 @@ class Page {
             <div class='left-column col-3 pr-1 m-0'>
               <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
               <div class='morecontext'>${this.morecontext}</div>
-              ${this.renderImageLayerPreview()}
               ${animate.render(this, this.registeredCallbacks)}
             </div>
           `;

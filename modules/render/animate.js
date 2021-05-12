@@ -12,8 +12,14 @@ animate.render = (page, registeredCallbacks) => {
   let playId = "animate-play";
   let pauseId = "animate-pause";
   let stepForwardId = "animate-step-forward";
+  let previewImageNameId = "preview-image-name";
 
   let html = `
+    <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+    </div>
+    <div class="d-flex justify-content-end mt-1">
+      <div id="${previewImageNameId}" class="me-1">name</div>
+    </div>
     <div id="${id}" class="d-flex flex-row justify-content-evenly align-items-center">
 
       <div type="button" id="${stepBackId}" class="animate-control step back unselectable d-flex flex-row align-items-center">
@@ -40,18 +46,26 @@ animate.render = (page, registeredCallbacks) => {
 
   return html;
 
+  function name() {
+    let previewImageName = document.getElementById(previewImageNameId);
+
+  }
+
   function callback() {
     let container = document.getElementById(id);
     let stepBack = document.getElementById(stepBackId);
     let play = document.getElementById(playId);
     let pause = document.getElementById(pauseId);
     let stepForward = document.getElementById(stepForwardId);
+    let previewImageName = document.getElementById(previewImageNameId);
 
     let stepDuration = (page.stepDuration || 250);
 
     let sources = page.canvasImages.rawdataSources;
     let len = sources.length;
     let layerNum = page.selectedSourceNumber;
+
+    updateName();
 
     stepBack.addEventListener('click', () => {
       animationStop();
@@ -92,7 +106,12 @@ animate.render = (page, registeredCallbacks) => {
       page.image.selectedSourceNumber = layerNum;
       page.canvasImages.renderPreview(page.selectedSource);
       page.canvasImages.renderCanvasRGB1(page.selectedSource);
+      updateName();
       // logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+    }
+
+    function updateName() {
+      previewImageName.innerText = `${page.title} ${layerNum+1}`;
     }
   }
 };
