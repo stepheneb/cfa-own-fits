@@ -34,7 +34,7 @@ html {
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
-  --animate-icons: 3.6vh;
+  --animate-icons: 3.2vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.2vh; }
 
@@ -557,7 +557,7 @@ div.telescope-container {
       color: var(--bright-green);
       border: 2px solid var(--bright-green); }
   #animate-controls .playpause {
-    font-size: 140%; }
+    font-size: 180%; }
     #animate-controls .playpause:hover {
       color: var(--bright-green); }
   #animate-controls .animate-control {
