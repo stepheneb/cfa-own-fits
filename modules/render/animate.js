@@ -24,7 +24,7 @@ animate.render = (page, registeredCallbacks) => {
 
       <div type="button" id="${stepBackId}" class="animate-control step back unselectable d-flex flex-row align-items-center">
         <div class="label">back</div>
-        <div class="bi bi-skip-start"></div>
+        <div class="bi bi-skip-start-fill"></div>
       </div>
 
       <div id="${playId}" class="animate-control playpause unselectable">
@@ -36,7 +36,7 @@ animate.render = (page, registeredCallbacks) => {
       </div>
 
       <div id="${stepForwardId}"  type="button" class="animate-control animate-control step next unselectable d-flex flex-row align-items-center">
-        <div class="bi bi-skip-end"></div>
+        <div class="bi bi-skip-end-fill"></div>
         <div class="label">next</div>
       </div>
     </div>
