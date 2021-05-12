@@ -47,7 +47,7 @@ animate.render = (page, registeredCallbacks) => {
     let pause = document.getElementById(pauseId);
     let stepForward = document.getElementById(stepForwardId);
 
-    let stepDuration = 250;
+    let stepDuration = (page.stepDuration || 250);
 
     let sources = page.canvasImages.rawdataSources;
     let len = sources.length;

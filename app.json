@@ -903,6 +903,7 @@
           "subtitle": "Lorem Ipsum ...",
           "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
           "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "stepDuration": 250,
           "image": {
             "name": "Jupiter",
             "about": {

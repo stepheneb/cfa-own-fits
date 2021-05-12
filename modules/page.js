@@ -40,6 +40,7 @@ class Page {
 
   close() {
     this.canvasImages.close();
+    this.animate = null;
   }
 
   get selectedSource() {

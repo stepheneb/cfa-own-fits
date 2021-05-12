@@ -581,17 +581,17 @@ div.telescope-container {
   #animate-controls div#animate-pause {
     display: none; }
 
-.unselectable {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none; }
-
 #animate-controls.playing div#animate-play {
   display: none; }
 
 #animate-controls.playing div#animate-pause {
   display: block; }
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 #column-middle-spacer {
   flex-grow: 1; }
