@@ -16,20 +16,22 @@ animate.render = (page, registeredCallbacks) => {
   let html = `
     <div id="${id}" class="d-flex flex-row justify-content-evenly align-items-center">
 
-      <div id="${stepBackId}" class="animate-control">
-        <i class="bi bi-skip-start"></i>
+      <div type="button" id="${stepBackId}" class="animate-control step back unselectable d-flex flex-row align-items-center">
+        <div class="label">back</div>
+        <div class="bi bi-skip-start"></div>
       </div>
 
-      <div id="${playId}" class="animate-control">
+      <div id="${playId}" class="animate-control playpause unselectable">
         <i class="bi bi-play-circle"></i>
       </div>
 
-      <div id="${pauseId}" class="animate-control">
+      <div id="${pauseId}" class="animate-control playpause unselectable">
         <i class="bi bi-pause-circle"></i>
       </div>
 
-      <div id="${stepForwardId}" class="animate-control">
-        <i class="bi bi-skip-end"></i>
+      <div id="${stepForwardId}"  type="button" class="animate-control animate-control step next unselectable d-flex flex-row align-items-center">
+        <div class="bi bi-skip-end"></div>
+        <div class="label">next</div>
       </div>
     </div>
   `;

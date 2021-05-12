@@ -12,7 +12,9 @@ html {
   --toggle-fullscreen: rgba(80, 80, 80, 128);
   --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
   --almost-black: #080808;
+  --green: #a4d292;
   --bright-green: #bff5aa;
+  --brighter-green: #cfffbb;
   --bright-teal: #3ddaf6;
   --dark-teal: #2b88ac;
   --bright-blue: #032741;
@@ -32,8 +34,7 @@ html {
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
-  --animate-buttons: 1.8vh;
-  --animate-icons: 3.4vh;
+  --animate-icons: 3.6vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.2vh; }
 
@@ -548,21 +549,43 @@ div.telescope-container {
 #animate-controls {
   margin: 2vh 0.5vh;
   font-size: var(--animate-icons); }
+  #animate-controls .step {
+    margin-top: 4vh;
+    border: 2px solid var(--green);
+    border-radius: 0.5vh; }
+    #animate-controls .step:hover {
+      color: var(--bright-green);
+      border: 2px solid var(--bright-green); }
+  #animate-controls .playpause {
+    font-size: 140%; }
+    #animate-controls .playpause:hover {
+      color: var(--bright-green); }
   #animate-controls .animate-control {
-    color: var(--bright-green);
-    padding: 0em 0em; }
-    #animate-controls .animate-control label {
-      font-size: 70%;
+    color: var(--green);
+    padding: 0.1rem 0.5rem; }
+    #animate-controls .animate-control .label {
+      font-size: 55%;
       text-transform: uppercase; }
     #animate-controls .animate-control:focus-visible {
-      outline: 4px dashed black; }
+      outline: 4px dashed black;
+      cursor: none; }
     #animate-controls .animate-control:focus:not(:focus-visible) {
       outline: none;
       box-shadow: 1px 1px 5px rgba(1, 1, 0, 0.7); }
+  #animate-controls .back {
+    padding-right: 0.2rem; }
+  #animate-controls .next {
+    padding-left: 0.2rem; }
   #animate-controls div#animate-play {
     display: block; }
   #animate-controls div#animate-pause {
     display: none; }
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
 
 #animate-controls.playing div#animate-play {
   display: none; }

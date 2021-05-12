@@ -15,7 +15,9 @@ html {
   --toggle-fullscreen: rgba(80, 80, 80, 128);
   --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
   --almost-black: #080808;
+  --green: #a4d292;
   --bright-green: #bff5aa;
+  --brighter-green: #cfffbb;
   --bright-teal: #3ddaf6;
   --dark-teal: #2b88ac;
   --bright-blue: #032741;
@@ -36,8 +38,7 @@ html {
   --menu-activity-page-title: 2.2vh;
   --page-title: 3.4vh;
   --page-subtitle: 2vh;
-  --animate-buttons: 1.8vh;
-  --animate-icons: 3.4vh;
+  --animate-icons: 3.6vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.2vh;
 }
@@ -711,22 +712,43 @@ div.telescope-container {
 #animate-controls {
   margin: 2vh 0.5vh;
   font-size: var(--animate-icons);
-  .animate-control {
-    color: var(--bright-green);
-    padding: 0em 0em;
-    label {
-      font-size: 70%;
-      text-transform: uppercase;
+  .step {
+    margin-top: 4vh;
+    border: 2px solid var(--green);
+    border-radius: 0.5vh;
+    &:hover {
+      color: var(--bright-green);
+      border: 2px solid var(--bright-green);
     }
-    i {
+  }
+  .playpause {
+    font-size: 140%;
+    &:hover {
+      color: var(--bright-green);
+    }
+  }
+  .animate-control {
+    color: var(--green);
+    padding: 0.1rem 0.5rem;
+    // cursor: none;
+    .label {
+      font-size: 55%;
+      text-transform: uppercase;
     }
     &:focus-visible {
       outline: 4px dashed black;
+      cursor: none;
     }
     &:focus:not(:focus-visible) {
       outline: none;
       box-shadow: 1px 1px 5px rgba(1, 1, 0, 0.7);
     }
+  }
+  .back {
+    padding-right: 0.2rem;
+  }
+  .next {
+    padding-left: 0.2rem;
   }
 
   div#animate-play {
@@ -735,6 +757,13 @@ div.telescope-container {
   div#animate-pause {
     display: none;
   }
+}
+
+.unselectable {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 #animate-controls.playing {
