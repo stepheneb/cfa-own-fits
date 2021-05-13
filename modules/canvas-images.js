@@ -26,10 +26,20 @@ class CanvasImages {
     this.rawdata = [];
     this.layerCanvases = [];
     this.rgbCanvas = null;
-    this.previewCanvas = null;
     this.filters = [];
-    this.mainContainer = document.getElementById('main-image-canvas-container');
-    this.previewContainer = document.getElementById('preview-image-canvas-container');
+
+    this.mainContainer = null;
+
+    this.previewContainer = null;
+    this.previewCanvas = null;
+
+    this.animatePreviewBackContainer = null;
+    this.animatePreviewCenterContainer = null;
+    this.animatePreviewNextContainer = null;
+    this.animatePreviewBackCanvas = null;
+    this.animatePreviewCenterCanvas = null;
+    this.animatePreviewNextCanvas = null;
+
     this.spinner = new Spinner('loading-spinner');
     this.load();
   }
@@ -68,6 +78,26 @@ class CanvasImages {
 
   get selectedSource() {
     return this.sources[this.selectedSourceNumber];
+  }
+
+  get nextRawDataSource() {
+    let len = this.rawdataSources.length;
+    let index = this.selectedSourceNumber;
+    index += 1;
+    if (index >= len) {
+      index = 0;
+    }
+    return this.sources[index];
+  }
+
+  get previousRawDataSource() {
+    let len = this.rawdataSources.length;
+    let index = this.selectedSourceNumber;
+    index -= 1;
+    if (index < 0) {
+      index = len - 1;
+    }
+    return this.sources[index];
   }
 
   sourceNamed(filter) {
@@ -202,8 +232,8 @@ class CanvasImages {
   }
 
   initializeMainCanvases(type) {
-    // let rawdata;
     let canvas;
+    this.mainContainer = document.getElementById('main-image-canvas-container');
     this.rawdataSources.forEach((s) => {
       canvas = this.appendMainCanvas(this.mainContainer, s.filter, s.name);
       this.layerCanvases.push(canvas);
@@ -214,6 +244,7 @@ class CanvasImages {
   }
 
   initializePreviewCanvas(source) {
+    this.previewContainer = document.getElementById('preview-image-canvas-container');
     let c = document.createElement("canvas");
     c.id = 'preview-image-canvas';
     c.classList = 'preview-image-canvas';
@@ -227,15 +258,38 @@ class CanvasImages {
   }
 
   initializeAnimateCanvas(source) {
+    this.animatePreviewBackContainer = document.getElementById('preview-image-back-canvas-container');
+    this.animatePreviewCenterContainer = document.getElementById('preview-image-center-canvas-container');
+    this.animatePreviewNextContainer = document.getElementById('preview-image-next-canvas-container');
+
     let c = document.createElement("canvas");
-    c.id = 'preview-image-canvas';
+    c.id = 'preview-animate-image-back-canvas';
     c.classList = 'preview-image-canvas';
     this.initializeCanvas(c);
-    this.previewContainer.prepend(c);
-    this.previewCanvas = c;
+    this.animatePreviewBackContainer.prepend(c);
+    this.animatePreviewBackCanvas = c;
     c.width = this.nx;
     c.height = this.ny;
-    this.renderPreview(source);
+
+    c = document.createElement("canvas");
+    c.id = 'preview-animate-image-center-canvas';
+    c.classList = 'preview-image-canvas';
+    this.initializeCanvas(c);
+    this.animatePreviewCenterContainer.prepend(c);
+    this.animatePreviewCenterCanvas = c;
+    c.width = this.nx;
+    c.height = this.ny;
+
+    c = document.createElement("canvas");
+    c.id = 'preview-animate-image-next-canvas';
+    c.classList = 'preview-image-canvas';
+    this.initializeCanvas(c);
+    this.animatePreviewNextContainer.prepend(c);
+    this.animatePreviewNextCanvas = c;
+    c.width = this.nx;
+    c.height = this.ny;
+
+    this.renderAnimatePreviews(source);
     return c;
   }
 
@@ -729,6 +783,35 @@ class CanvasImages {
     createImageBitmap(imageData, 0, 0, this.nx, this.ny)
       .then(imageBitmap => {
         ctx.drawImage(imageBitmap, 0, 0);
+      });
+  }
+
+  renderAnimatePreviews(source) {
+    let sourceCanvas = this.layerCanvasNamed(source.name);
+    let sourceCtx = sourceCanvas.getContext('2d');
+    let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
+    let ctx = this.animatePreviewCenterCanvas.getContext('2d');
+    createImageBitmap(imageData, 0, 0, this.nx, this.ny)
+      .then(imageBitmap => {
+        ctx.drawImage(imageBitmap, 0, 0);
+      });
+
+    let sourceCanvas1 = this.layerCanvasNamed(this.previousRawDataSource.name);
+    let sourceCtx1 = sourceCanvas1.getContext('2d');
+    let imageData1 = sourceCtx1.getImageData(0, 0, this.nx, this.ny);
+    let ctx1 = this.animatePreviewBackCanvas.getContext('2d');
+    createImageBitmap(imageData1, 0, 0, this.nx, this.ny)
+      .then(imageBitmap => {
+        ctx1.drawImage(imageBitmap, 0, 0);
+      });
+
+    let sourceCanvas2 = this.layerCanvasNamed(this.nextRawDataSource.name);
+    let sourceCtx2 = sourceCanvas2.getContext('2d');
+    let imageData2 = sourceCtx2.getImageData(0, 0, this.nx, this.ny);
+    let ctx2 = this.animatePreviewNextCanvas.getContext('2d');
+    createImageBitmap(imageData2, 0, 0, this.nx, this.ny)
+      .then(imageBitmap => {
+        ctx2.drawImage(imageBitmap, 0, 0);
       });
   }
 

@@ -773,11 +773,91 @@ div.telescope-container {
   text-transform: uppercase;
 }
 
+div#preview-image-center-name {
+  color: var(--almost-black);
+  text-transform: uppercase;
+  font-size: 120%;
+  font-weight: 600;
+}
+
+div#preview-image-back-name,
+div#preview-image-next-name {
+  color: var(--bright-teal);
+  background-color: transparent;
+  text-transform: uppercase;
+  font-size: 120%;
+  font-weight: 600;
+}
+
 .unselectable {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+div#preview-image-canvas-container {
+  position: relative;
+  height: 30vh;
+  width: 100%;
+  margin: 0;
+  background-color: var(--almost-black);
+  border: 2px solid var(--canvas-container-border-color);
+  border-radius: 3px;
+  canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    object-fit: contain;
+  }
+}
+
+div#preview-image-center-canvas-container {
+  position: relative;
+  height: 10vh;
+  width: 100%;
+  margin: 0;
+  background-color: var(--almost-black);
+  border: none;
+  canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    object-fit: contain;
+  }
+}
+
+div#preview-image-back-canvas-container,
+div#preview-image-next-canvas-container {
+  position: relative;
+  height: 10vh;
+  width: 100%;
+  margin: 0;
+  background-color: var(--almost-black);
+  border: none;
+  canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    object-fit: contain;
+  }
+}
+
+div#preview-image-canvas-container.animate {
+  height: 10vh;
+  width: 100%;
+  border: none;
+}
+
+div.animate-center {
+  background-color: var(--brighter-green);
+  border-radius: 1px;
+}
+
+.animate-left,
+.animate-right {
+  background-color: var(--dark-teal);
+  border-radius: 1px;
 }
 
 #column-middle-spacer {
@@ -906,39 +986,6 @@ div.main-image-content:not(:root):fullscreen {
     border: 3px solid var(--canvas-container-border-color-fullscreen);
     max-height: none;
   }
-}
-
-div#preview-image-canvas-container {
-  position: relative;
-  height: 30vh;
-  width: 100%;
-  margin: 0;
-  background-color: var(--almost-black);
-  border: 2px solid var(--canvas-container-border-color);
-  border-radius: 3px;
-  canvas {
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    object-fit: contain;
-  }
-}
-
-div#preview-image-canvas-container.animate {
-  height: 10vh;
-  width: 100%;
-  border: none;
-}
-
-div.animate-center {
-  background-color: var(--brighter-green);
-  border-radius: 2px;
-}
-
-div#preview-image-name {
-  color: var(--almost-black);
-  font-size: 120%;
-  font-weight: 600;
 }
 
 div.layer-histogram {

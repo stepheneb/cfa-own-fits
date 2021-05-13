@@ -12,20 +12,35 @@ animate.render = (page, registeredCallbacks) => {
   let playId = "animate-play";
   let pauseId = "animate-pause";
   let stepForwardId = "animate-step-forward";
-  let previewImageNameId = "preview-image-name";
+  let previewImageBackNameId = "preview-image-back-name";
+  let previewImageCenterNameId = "preview-image-center-name";
+  let previewImageNextNameId = "preview-image-next-name";
 
   let html = `
-  <div class="row">
-    <div class="col-4">
-    </div>
-    <div class="col-4 animate-center px-1 pt-3 pb-2">
-      <div id="preview-image-canvas-container" class="animate"></div>
-      <div class="d-flex justify-content-center">
-        <div id="${previewImageNameId}" class="px-2 pt-3 pb-1">name</div>
+    <div class="row">
+      <div class="col-4 m-0 p-0">
+        <div class="animate-left px-2 mt-2 mb-2 pt-2 pb-2">
+          <div id="preview-image-back-canvas-container" class="animate"></div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div id="${previewImageBackNameId}" class="px-2 pt- pb-1">name</div>
+        </div>
+      </div>
+      <div class="col-4 animate-center px-2 pt-3 pb-2">
+        <div id="preview-image-center-canvas-container" class="animate"></div>
+        <div class="d-flex justify-content-center">
+          <div id="${previewImageCenterNameId}" class="px-2 pt-3 pb-1">name</div>
+        </div>
+      </div>
+      <div class="col-4 m-0 p-0">
+        <div class="animate-right px-2 mt-2 mb-2 pt-2 pb-2">
+          <div id="preview-image-next-canvas-container" class="animate"></div>
+        </div>
+        <div class="d-flex justify-content-center">
+          <div id="${previewImageNextNameId}" class="px-2 pt- pb-1">name</div>
+        </div>
       </div>
     </div>
-    <div class="col-4"></div>
-  </div>
 
     <div id="${id}" class="d-flex flex-row justify-content-evenly align-items-center">
 
@@ -59,7 +74,9 @@ animate.render = (page, registeredCallbacks) => {
     let play = document.getElementById(playId);
     let pause = document.getElementById(pauseId);
     let stepForward = document.getElementById(stepForwardId);
-    let previewImageName = document.getElementById(previewImageNameId);
+    let previewImageBackName = document.getElementById(previewImageBackNameId);
+    let previewImageCenterName = document.getElementById(previewImageCenterNameId);
+    let previewImageNextName = document.getElementById(previewImageNextNameId);
 
     let stepDuration = (page.stepDuration || 250);
 
@@ -67,7 +84,7 @@ animate.render = (page, registeredCallbacks) => {
     let len = sources.length;
     let layerNum = page.selectedSourceNumber;
 
-    updateName();
+    updateNames();
 
     stepBack.addEventListener('click', () => {
       animationStop();
@@ -99,21 +116,28 @@ animate.render = (page, registeredCallbacks) => {
     }
 
     function animationStep(step) {
-      layerNum += step;
-      if (layerNum >= len) {
-        layerNum = 0;
-      } else if (layerNum < 0) {
-        layerNum = len - 1;
-      }
+      layerNum = newLayerNum(layerNum, step);
       page.image.selectedSourceNumber = layerNum;
-      page.canvasImages.renderPreview(page.selectedSource);
+      page.canvasImages.renderAnimatePreviews(page.selectedSource);
       page.canvasImages.renderCanvasRGB1(page.selectedSource);
-      updateName();
+      updateNames();
       // logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
     }
 
-    function updateName() {
-      previewImageName.innerText = `${page.title} ${layerNum+1}`;
+    function newLayerNum(num, step) {
+      num += step;
+      if (num >= len) {
+        num = 0;
+      } else if (num < 0) {
+        num = len - 1;
+      }
+      return num;
+    }
+
+    function updateNames() {
+      previewImageBackName.innerText = `${page.title} ${newLayerNum(layerNum, -1)+1}`;
+      previewImageCenterName.innerText = `${page.title} ${layerNum+1}`;
+      previewImageNextName.innerText = `${page.title} ${newLayerNum(layerNum, 1)+1}`;
     }
   }
 };
