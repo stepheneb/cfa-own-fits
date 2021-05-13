@@ -218,7 +218,7 @@ class CanvasImages {
     c.id = 'preview-image-canvas';
     c.classList = 'preview-image-canvas';
     this.initializeCanvas(c);
-    this.previewContainer.append(c);
+    this.previewContainer.prepend(c);
     this.previewCanvas = c;
     c.width = this.nx;
     c.height = this.ny;
@@ -231,7 +231,7 @@ class CanvasImages {
     c.id = 'preview-image-canvas';
     c.classList = 'preview-image-canvas';
     this.initializeCanvas(c);
-    this.previewContainer.append(c);
+    this.previewContainer.prepend(c);
     this.previewCanvas = c;
     c.width = this.nx;
     c.height = this.ny;

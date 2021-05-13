@@ -15,11 +15,18 @@ animate.render = (page, registeredCallbacks) => {
   let previewImageNameId = "preview-image-name";
 
   let html = `
-    <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+  <div class="row">
+    <div class="col-4">
     </div>
-    <div class="d-flex justify-content-end mt-1">
-      <div id="${previewImageNameId}" class="me-1">name</div>
+    <div class="col-4 animate-center px-1 pt-3 pb-2">
+      <div id="preview-image-canvas-container" class="animate"></div>
+      <div class="d-flex justify-content-center">
+        <div id="${previewImageNameId}" class="px-2 pt-3 pb-1">name</div>
+      </div>
     </div>
+    <div class="col-4"></div>
+  </div>
+
     <div id="${id}" class="d-flex flex-row justify-content-evenly align-items-center">
 
       <div type="button" id="${stepBackId}" class="animate-control step back unselectable d-flex flex-row align-items-center">
@@ -45,11 +52,6 @@ animate.render = (page, registeredCallbacks) => {
   registeredCallbacks.push(callback);
 
   return html;
-
-  function name() {
-    let previewImageName = document.getElementById(previewImageNameId);
-
-  }
 
   function callback() {
     let container = document.getElementById(id);

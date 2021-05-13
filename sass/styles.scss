@@ -924,6 +924,23 @@ div#preview-image-canvas-container {
   }
 }
 
+div#preview-image-canvas-container.animate {
+  height: 10vh;
+  width: 100%;
+  border: none;
+}
+
+div.animate-center {
+  background-color: var(--brighter-green);
+  border-radius: 2px;
+}
+
+div#preview-image-name {
+  color: var(--almost-black);
+  font-size: 120%;
+  font-weight: 600;
+}
+
 div.layer-histogram {
   display: none;
 }
