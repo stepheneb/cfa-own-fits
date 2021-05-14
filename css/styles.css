@@ -166,6 +166,33 @@ header.menu-activity-category-title {
   color: var(--bright-teal);
   text-transform: uppercase; }
 
+#menu-category-multi-wave-pages {
+  margin-left: 10vw;
+  margin-right: 90vw; }
+
+#menu-category-masterpiece-pages {
+  margin-left: 20vw;
+  margin-right: 40vw; }
+
+#menu-category-animate-pages {
+  margin-left: 50vw;
+  margin-right: 50vw; }
+
+#menu-connnect-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none; }
+
+#menu-connnect-line {
+  display: none;
+  stroke: var(--category-selected-border);
+  stroke-width: 2px; }
+  #menu-connnect-line.show {
+    display: inline; }
+
 div.menu-category-pages {
   display: none;
   position: relative;

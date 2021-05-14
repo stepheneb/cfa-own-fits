@@ -11,6 +11,7 @@ import Page from '../page.js';
 import splash from './splash.js';
 
 let renderMenu = {};
+let line = null;
 
 renderMenu.page = (ctype) => {
   let renderedCallbacks = [];
@@ -32,6 +33,7 @@ renderMenu.page = (ctype) => {
     `;
   document.getElementById("content").innerHTML = html;
   events.setupGlobal();
+  line = document.getElementById('menu-connnect-line');
 
   if (ctype) {
     renderMenu.categoryPages(ctype);
@@ -119,6 +121,7 @@ renderMenu.categoryPages = (ctype) => {
   let hash = "";
   let categories = app.categories;
   let selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
+  let selectedCategoryPagesElement = null;
   if (selectedCategoryElement.classList.contains("selected")) {
     for (category of categories) {
       elem = document.getElementById(`menu-category-${category.type}`);
@@ -126,6 +129,7 @@ renderMenu.categoryPages = (ctype) => {
       elem.classList.remove("selected", "not-selected");
       categoryPagesElement.classList.remove("selected");
       hash = `menu`;
+      line.classList.remove('show');
     }
   } else {
     for (category of categories) {
@@ -136,14 +140,32 @@ renderMenu.categoryPages = (ctype) => {
         elem.classList.remove("not-selected");
         categoryPagesElement.classList.add("selected");
         hash = `menu/${category.type}`;
+        selectedCategoryPagesElement = categoryPagesElement;
       } else {
         elem.classList.add("not-selected");
         elem.classList.remove("selected");
         categoryPagesElement.classList.remove("selected");
       }
     }
+    if (selectedCategoryElement.classList.contains("selected")) {
+      renderMenu.drawCategoryLine(selectedCategoryElement, selectedCategoryPagesElement);
+    }
   }
   router.updateHash(hash);
+};
+
+renderMenu.drawCategoryLine = (fromElem, toElem) => {
+  let boundingRect1 = fromElem.getBoundingClientRect();
+  let boundingRect2 = toElem.getBoundingClientRect();
+  let x1 = boundingRect1.left + boundingRect1.width / 2;
+  let x2 = x1;
+  let y1 = boundingRect1.bottom;
+  let y2 = boundingRect2.top;
+  line.setAttribute('x1', x1);
+  line.setAttribute('y1', y1);
+  line.setAttribute('x2', x2);
+  line.setAttribute('y2', y2);
+  line.classList.add('show');
 };
 
 renderMenu.activityCategoryPages = () => {
