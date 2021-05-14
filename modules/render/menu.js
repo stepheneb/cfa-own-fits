@@ -12,6 +12,9 @@ import splash from './splash.js';
 
 let renderMenu = {};
 let line = null;
+let selectedCategoryElement = null;
+let selectedCategoryPagesElement = null;
+let categoryPagesVisible = false;
 
 renderMenu.page = (ctype) => {
   let renderedCallbacks = [];
@@ -36,12 +39,16 @@ renderMenu.page = (ctype) => {
   line = document.getElementById('menu-connnect-line');
 
   if (ctype) {
-    renderMenu.categoryPages(ctype);
+    selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
+    setTimeout(() => {
+      renderMenu.categoryPages(ctype);
+    }, 50);
   }
 
   let addMenuCategoryListener = (ctype) => {
     let id = `menu-category-${ctype}`;
     document.getElementById(id).addEventListener('click', () => {
+      selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
       renderMenu.categoryPages(ctype);
     });
   };
@@ -53,6 +60,7 @@ renderMenu.page = (ctype) => {
   let addSVGCloseMenuCategoryPagesListener = (ctype) => {
     let id = `svg-close-menu-${ctype}-pages`;
     document.getElementById(id).addEventListener('click', () => {
+      selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
       renderMenu.categoryPages(ctype);
     });
   };
@@ -64,6 +72,8 @@ renderMenu.page = (ctype) => {
   let addStartPageListener = (ctype, page) => {
     let id = `open-page-${ctype}-${page.name}`;
     document.getElementById(id).addEventListener('click', () => {
+      line.classList.remove('show');
+      categoryPagesVisible = false;
       app.page = new Page(ctype, page);
     });
   };
@@ -120,52 +130,63 @@ renderMenu.categoryPages = (ctype) => {
   var elem, category, categoryPagesElement;
   let hash = "";
   let categories = app.categories;
-  let selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
-  let selectedCategoryPagesElement = null;
   if (selectedCategoryElement.classList.contains("selected")) {
     for (category of categories) {
       elem = document.getElementById(`menu-category-${category.type}`);
-      categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
       elem.classList.remove("selected", "not-selected");
+      elem.removeEventListener("transitionend", renderMenu.transitionListener);
+      categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
       categoryPagesElement.classList.remove("selected");
-      hash = `menu`;
       line.classList.remove('show');
+      categoryPagesVisible = false;
+      hash = `menu`;
     }
   } else {
     for (category of categories) {
       elem = document.getElementById(`menu-category-${category.type}`);
       categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
       if (elem == selectedCategoryElement) {
+        selectedCategoryPagesElement = categoryPagesElement;
         elem.classList.add("selected");
         elem.classList.remove("not-selected");
         categoryPagesElement.classList.add("selected");
+        if (categoryPagesVisible) {
+          renderMenu.drawCategoryLine(selectedCategoryElement, selectedCategoryPagesElement);
+        } else {
+          selectedCategoryElement.addEventListener("transitionend", renderMenu.transitionListener);
+          categoryPagesVisible = true;
+        }
         hash = `menu/${category.type}`;
-        selectedCategoryPagesElement = categoryPagesElement;
       } else {
         elem.classList.add("not-selected");
         elem.classList.remove("selected");
         categoryPagesElement.classList.remove("selected");
       }
     }
-    if (selectedCategoryElement.classList.contains("selected")) {
-      renderMenu.drawCategoryLine(selectedCategoryElement, selectedCategoryPagesElement);
-    }
   }
   router.updateHash(hash);
 };
 
+renderMenu.transitionListener = () => {
+  renderMenu.drawCategoryLine(selectedCategoryElement, selectedCategoryPagesElement);
+};
+
 renderMenu.drawCategoryLine = (fromElem, toElem) => {
-  let boundingRect1 = fromElem.getBoundingClientRect();
-  let boundingRect2 = toElem.getBoundingClientRect();
-  let x1 = boundingRect1.left + boundingRect1.width / 2;
-  let x2 = x1;
-  let y1 = boundingRect1.bottom;
-  let y2 = boundingRect2.top;
-  line.setAttribute('x1', x1);
-  line.setAttribute('y1', y1);
-  line.setAttribute('x2', x2);
-  line.setAttribute('y2', y2);
-  line.classList.add('show');
+  if (fromElem.classList.contains("selected")) {
+    let boundingRect1 = fromElem.getBoundingClientRect();
+    let boundingRect2 = toElem.getBoundingClientRect();
+    let x1 = boundingRect1.left + boundingRect1.width / 2;
+    let x2 = x1;
+    let y1 = boundingRect1.bottom;
+    let y2 = boundingRect2.top;
+    line.setAttribute('x1', x1);
+    line.setAttribute('y1', y1);
+    line.setAttribute('x2', x2);
+    line.setAttribute('y2', y2);
+    line.classList.add('show');
+  } else {
+    line.classList.remove('show');
+  }
 };
 
 renderMenu.activityCategoryPages = () => {

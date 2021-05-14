@@ -137,14 +137,16 @@ img.menu-activity-category-title {
 
 div.category {
   margin: 0rem 1rem;
-  padding: 0; }
+  padding: 0;
+  max-height: 40vh;
+  transition: max-height 0.4s; }
   div.category.selected {
-    height: 20vh;
+    max-height: 20vh;
     overflow: hidden;
     border: 2px solid var(--category-selected-border);
     border-radius: 4px; }
   div.category.not-selected {
-    height: 20vh;
+    max-height: 20vh;
     overflow: hidden;
     border: 2px solid var(--category-not-selected-border);
     filter: brightness(50%); }
@@ -153,8 +155,7 @@ div.category {
     border: 2px solid var(--bright-green);
     border-radius: 4px; }
   div.category.selected > img {
-    border: none;
-    /* border: 1px solid var(--category-selected-border); */ }
+    border: none; }
   div.category.not-selected > img {
     border: none; }
 
