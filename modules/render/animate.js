@@ -95,7 +95,7 @@ animate.render = (page, registeredCallbacks) => {
       container.classList.add('playing');
       animationStep(1);
       page.animate = setInterval(() => {
-        animationStep(-1);
+        animationStep(1);
       }, stepDuration);
     });
 
