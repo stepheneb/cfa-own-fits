@@ -49,6 +49,14 @@
         "image-credits": "NASA",
         "image-source": "https://www.jpl.nasa.gov/news/press_kits/juno/pdf/juno-lores.pdf",
         "description": "The Juno spacecraft launched aboard an Atlas V-551 rocket from Cape Canaveral, Fla., on Aug. 5, 2011, and will reach Jupiter in July 2016. The spacecraft will orbit Jupiter 32 times, skimming to within 3,100 miles (5,000 kilometers) above the planet's cloud tops, for approximately one year.<br>Juno uses a spinning solar-powered spacecraft in a highly elliptical polar orbit that avoids most of Jupiter's high radiation regions. The designs of the individual instruments are straightforward and the mission does not require the development of any new technologies.<br>Juno's scientific payload includes:<ul><li>A gravity/radio science system (Gravity Science)</li><li>A six-wavelength microwave radiometer for atmospheric sounding and composition (MWR)</li><li>A vector magnetometer (MAG)</li><li>Plasma and energetic particle detectors (JADE and JEDI)</li><li>A radio/plasma wave experiment (Waves)</li><li>An ultraviolet imager/spectrometer (UVS)</li><li>An infrared imager/spectrometer (JIRAM)</li><li>The spacecraft will also carry a color camera, called JunoCam, to provide the public with the first detailed glimpse of Jupiter's poles</li></ul>"
+      },
+      {
+        "key": "sdo",
+        "name": "Solar Dynamics Observatory",
+        "image": "images/telescopes/sdo.jpg",
+        "image-credits": "NASA",
+        "image-source": "http://www.nasa.gov/centers/goddard/news/topstory/2008/sdo_propulsion.html",
+        "description": "The Solar Dynamics Observatory (SDO) helps scientists zoom in on solar activity such as sunspots, solar flares and coronal mass ejections, to better understand the causes thus improving forecasts of solar storms. Bad \"space weather\" can pose a threat to astronauts in orbit, as well as to aircraft crews flying over the poles of Earth - and that's just the tip of the iceberg. Electrical power to our homes, satellite communications and navigation systems can all be disrupted by magnetic storms triggered by solar activity. SDO will provide a close-up look at these events."
       }
     ]
   },
@@ -903,7 +911,7 @@
           "subtitle": "Lorem Ipsum ...",
           "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
           "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-          "stepDuration": 250,
+          "stepDuration": 1000,
           "image": {
             "name": "Jupiter",
             "about": {
@@ -980,6 +988,212 @@
                   "small": "rawdata/h_jupiter_04/400x400/04_h_jupiter_410_070302z_drz_sci.bmp",
                   "medium": "rawdata/h_jupiter_04/800x800/04_h_jupiter_410_070302z_drz_sci.bmp",
                   "large": "rawdata/h_jupiter_04/800x800/04_h_jupiter_410_070302z_drz_sci.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "composite",
+                "name": "RGB",
+                "layers": [
+                  "Jupiter1"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "sun-uv",
+          "poster": "sun-uv",
+          "title": "Sun-UV",
+          "subtitle": "Lorem Ipsum ...",
+          "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
+          "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "stepDuration": 1000,
+          "image": {
+            "name": "Sun UV",
+            "about": {
+              "telescopes": [
+                "sdo"
+              ]
+            },
+            "size": "large",
+            "dimensions": {
+              "small": {
+                "nx": 512,
+                "ny": 512
+              },
+              "medium": {
+                "nx": 1024,
+                "ny": 1024
+              },
+              "large": {
+                "nx": 2048,
+                "ny": 2048
+              },
+              "x2large": {
+                "nx": 4096,
+                "ny": 4096
+              }
+            },
+            "maximumBrightness": 2,
+            "sources": [
+              {
+                "type": "rawdata",
+                "name": "sun-uv-1",
+                "path": {
+                  "small": "rawdata/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/2048x2048/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/4096x4096/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-2",
+                "path": {
+                  "small": "rawdata/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/512x512/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/1024x1024/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/2048x2048/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/4096x4096/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-3",
+                "path": {
+                  "small": "rawdata/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/2048x2048/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/4096x4096/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-4",
+                "path": {
+                  "small": "rawdata/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/2048x2048/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/4096x4096/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-5",
+                "path": {
+                  "small": "rawdata/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/2048x2048/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/4096x4096/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-6",
+                "path": {
+                  "small": "rawdata/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/512x512/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/1024x1024/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/2048x2048/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/4096x4096/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-7",
+                "path": {
+                  "small": "rawdata/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/512x512/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/1024x1024/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/2048x2048/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/4096x4096/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-8",
+                "path": {
+                  "small": "rawdata/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/512x512/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/1024x1024/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/2048x2048/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/4096x4096/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-9",
+                "path": {
+                  "small": "rawdata/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/2048x2048/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/4096x4096/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.bmp"
+                },
+                "filter": "gray",
+                "min": 0,
+                "max": 10,
+                "scaling": "linear",
+                "brightness": 1,
+                "contrast": 1
+              },
+              {
+                "type": "rawdata",
+                "name": "sun-uv-10",
+                "path": {
+                  "small": "rawdata/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/512x512/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.bmp",
+                  "medium": "rawdata/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/1024x1024/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.bmp",
+                  "large": "rawdata/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/2048x2048/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.bmp",
+                  "x2large": "rawdata/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/4096x4096/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.bmp"
                 },
                 "filter": "gray",
                 "min": 0,
