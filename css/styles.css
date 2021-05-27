@@ -36,7 +36,8 @@ html {
   --page-subtitle: 2vh;
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
-  --control-subtitle: 1.2vh; }
+  --control-subtitle: 1.2vh;
+  --save-and-send-context: 2vh; }
 
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
@@ -735,10 +736,103 @@ div.animate-center {
       color: var(--bright-teal);
       line-height: 120%; }
 
+#save-and-send-modal.fade {
+  transition: opacity 0.15s linear; }
+
+body.fadeout .modal-backdrop.show {
+  opacity: 1; }
+
+#save-and-send-modal .modal-dialog {
+  max-width: none;
+  width: 100vw;
+  height: 80vh; }
+  #save-and-send-modal .modal-dialog .modal-content {
+    border: none; }
+    #save-and-send-modal .modal-dialog .modal-content button {
+      width: fit-content; }
+    #save-and-send-modal .modal-dialog .modal-content .modal-header {
+      border: none;
+      padding: 0.5vh 2vh; }
+      #save-and-send-modal .modal-dialog .modal-content .modal-header h5 {
+        font-size: var(--page-title);
+        color: var(--bright-green);
+        text-transform: uppercase; }
+      #save-and-send-modal .modal-dialog .modal-content .modal-header div.image-container {
+        margin-left: 2vh;
+        height: 10vh;
+        width: 30%;
+        background-color: black; }
+        #save-and-send-modal .modal-dialog .modal-content .modal-header div.image-container img {
+          background-color: black;
+          height: 100%;
+          width: 100%;
+          object-fit: contain; }
+      #save-and-send-modal .modal-dialog .modal-content .modal-header button.btn-close {
+        min-width: 3vw;
+        font-size: 6vh;
+        color: white; }
+    #save-and-send-modal .modal-dialog .modal-content .modal-footer {
+      border: none; }
+    #save-and-send-modal .modal-dialog .modal-content .modal-body {
+      height: 60vh;
+      width: 100%;
+      font-size: var(--page-title);
+      color: var(--bright-teal);
+      line-height: 120%; }
+      #save-and-send-modal .modal-dialog .modal-content .modal-body .salutation {
+        text-transform: uppercase; }
+      #save-and-send-modal .modal-dialog .modal-content .modal-body .image-name {
+        font-size: var(--page-title); }
+      #save-and-send-modal .modal-dialog .modal-content .modal-body .context {
+        margin-top: 4vh;
+        font-size: var(--save-and-send-context);
+        line-height: 110%;
+        color: white; }
+      #save-and-send-modal .modal-dialog .modal-content .modal-body #enterEmailButtonId {
+        color: var(--bright-green); }
+
+#save-and-send-enter-email-button {
+  font-size: var(--save-and-send-context);
+  color: var(--bright-green);
+  border-color: var(--bright-green);
+  margin-top: 8vh;
+  margin-left: 4vw; }
+
 canvas {
   height: 100%;
   width: 100%;
   object-fit: contain; }
+
+div#save-and-send-canvas-container {
+  position: relative;
+  min-height: 55vh;
+  margin: 0vh 1vh;
+  padding: 0;
+  background-color: var(--almost-black);
+  border: 3px solid var(--canvas-container-border-color);
+  border-radius: 3px; }
+  div#save-and-send-canvas-container:fullscreen {
+    width: 90vw;
+    height: 80vh;
+    border: 3px solid var(--canvas-container-border-color-fullscreen); }
+  div#save-and-send-canvas-container canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+    object-fit: contain; }
+    div#save-and-send-canvas-container canvas.red {
+      background-color: red; }
+    div#save-and-send-canvas-container canvas.green {
+      background-color: green; }
+    div#save-and-send-canvas-container canvas.blue {
+      background-color: blue; }
+    div#save-and-send-canvas-container canvas.layer {
+      cursor: all-scroll;
+      background-color: var(--almost-black); }
+    div#save-and-send-canvas-container canvas:last-child {
+      display: block;
+      background-color: var(--almost-black); }
 
 div#main-image-canvas-container {
   position: relative;

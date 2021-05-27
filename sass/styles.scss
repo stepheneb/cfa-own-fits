@@ -41,6 +41,7 @@ html {
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.2vh;
+  --save-and-send-context: 2vh;
 }
 
 body {
@@ -944,10 +945,128 @@ div.animate-center {
   }
 }
 
+#save-and-send-modal.fade {
+  transition: opacity 0.15s linear;
+}
+
+body.fadeout .modal-backdrop.show {
+  opacity: 1;
+}
+
+#save-and-send-modal .modal-dialog {
+  max-width: none;
+  width: 100vw;
+  height: 80vh;
+  .modal-content {
+    border: none;
+    button {
+      width: fit-content;
+    }
+    .modal-header {
+      border: none;
+      h5 {
+        font-size: var(--page-title);
+        color: var(--bright-green);
+        text-transform: uppercase;
+      }
+      padding: 0.5vh 2vh;
+      div.image-container {
+        margin-left: 2vh;
+        height: 10vh;
+        width: 30%;
+        background-color: black;
+        img {
+          background-color: black;
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+      button.btn-close {
+        min-width: 3vw;
+        font-size: 6vh;
+        color: white;
+      }
+    }
+    .modal-footer {
+      border: none;
+    }
+    .modal-body {
+      height: 60vh;
+      width: 100%;
+      font-size: var(--page-title);
+      color: var(--bright-teal);
+      line-height: 120%;
+      .salutation {
+        text-transform: uppercase;
+      }
+      .image-name {
+        font-size: var(--page-title);
+      }
+      .context {
+        margin-top: 4vh;
+        font-size: var(--save-and-send-context);
+        line-height: 110%;
+        color: white;
+      }
+      #enterEmailButtonId {
+        color: var(--bright-green);
+      }
+    }
+  }
+}
+
+#save-and-send-enter-email-button {
+  font-size: var(--save-and-send-context);
+  color: var(--bright-green);
+  border-color: var(--bright-green);
+  margin-top: 8vh;
+  margin-left: 4vw;
+}
+
 canvas {
   height: 100%;
   width: 100%;
   object-fit: contain;
+}
+
+div#save-and-send-canvas-container {
+  position: relative;
+  min-height: 55vh;
+  margin: 0vh 1vh;
+  padding: 0;
+  background-color: var(--almost-black);
+  border: 3px solid var(--canvas-container-border-color);
+  border-radius: 3px;
+  &:fullscreen {
+    width: 90vw;
+    height: 80vh;
+    border: 3px solid var(--canvas-container-border-color-fullscreen);
+  }
+  canvas {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+    background-color: gray;
+    object-fit: contain;
+    &.red {
+      background-color: red;
+    }
+    &.green {
+      background-color: green;
+    }
+    &.blue {
+      background-color: blue;
+    }
+    &.layer {
+      cursor: all-scroll;
+      background-color: var(--almost-black);
+    }
+    &:last-child {
+      display: block;
+      background-color: var(--almost-black);
+    }
+  }
 }
 
 div#main-image-canvas-container {

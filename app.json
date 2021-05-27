@@ -74,6 +74,7 @@
           "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "In this star-forming cloud of dust and gas, different gases glow with different colors.",
           "image": {
             "name": "Lagoon Nebula",
             "about": {
@@ -162,6 +163,7 @@
           "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Whirlpool Galaxy",
             "about": {
@@ -250,6 +252,7 @@
           "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Cosmic Reef Nebulae",
             "source": "https://www.spacetelescope.org/images/heic2007a/",
@@ -339,6 +342,7 @@
           "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Antennae Galaxies",
             "source": "https://www.spacetelescope.org/images/potw1345a/",
@@ -428,6 +432,7 @@
           "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Jupiter",
             "source": "",
@@ -525,6 +530,7 @@
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Cigar Galaxy",
             "source": "",
@@ -618,6 +624,7 @@
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Whirlpool Galaxy",
             "source": "",
@@ -719,6 +726,7 @@
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Whirlpool Galaxy",
             "about": {
@@ -775,6 +783,7 @@
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Moon - Near Side",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
@@ -839,6 +848,7 @@
           "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Moon - Far Side",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
@@ -911,6 +921,7 @@
           "subtitle": "Lorem Ipsum ...",
           "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
           "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "stepDuration": 1000,
           "image": {
             "name": "Jupiter",
@@ -1013,6 +1024,7 @@
           "subtitle": "Lorem Ipsum ...",
           "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
           "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "stepDuration": 1000,
           "image": {
             "name": "Sun UV",

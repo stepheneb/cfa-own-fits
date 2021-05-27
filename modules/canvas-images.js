@@ -26,6 +26,7 @@ class CanvasImages {
     this.rawdata = [];
     this.layerCanvases = [];
     this.rgbCanvas = null;
+    this.saveAndSendCanvas = null;
     this.filters = [];
 
     this.mainContainer = null;
@@ -118,6 +119,9 @@ class CanvasImages {
     return this.rgbCanvas;
   }
 
+  get canvasSaveAndSend() {
+    return this.saveAndSendCanvas;
+  }
   // return uint8 data
 
   uint8FromCanvas(c) {
@@ -192,6 +196,7 @@ class CanvasImages {
         this.initializeAnimateCanvas(this.selectedSource);
         break;
       }
+      this.initializeSaveAndSendCanvas();
       this.spinner.hide("then imageBufferItems");
     }).catch(function (e) {
       spinner.cancel("fetchError");
@@ -254,6 +259,20 @@ class CanvasImages {
     c.width = this.nx;
     c.height = this.ny;
     this.renderPreview(source);
+    return c;
+  }
+
+  initializeSaveAndSendCanvas() {
+    this.saveAndSendContainer = document.getElementById('save-and-send-canvas-container');
+    let c = document.createElement("canvas");
+    c.id = 'save-and-send-canvas';
+    c.classList = 'save-and-send-canvas';
+    this.initializeCanvas(c);
+    this.saveAndSendContainer.prepend(c);
+    this.saveAndSendCanvas = c;
+    c.width = this.nx;
+    c.height = this.ny;
+    this.renderSaveAndSend();
     return c;
   }
 
@@ -780,6 +799,17 @@ class CanvasImages {
     let sourceCtx = sourceCanvas.getContext('2d');
     let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
     let ctx = this.previewCanvas.getContext('2d');
+    createImageBitmap(imageData, 0, 0, this.nx, this.ny)
+      .then(imageBitmap => {
+        ctx.drawImage(imageBitmap, 0, 0);
+      });
+  }
+
+  renderSaveAndSend() {
+    let sourceCanvas = this.canvasRGB;
+    let sourceCtx = sourceCanvas.getContext('2d');
+    let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
+    let ctx = this.saveAndSendCanvas.getContext('2d');
     createImageBitmap(imageData, 0, 0, this.nx, this.ny)
       .then(imageBitmap => {
         ctx.drawImage(imageBitmap, 0, 0);

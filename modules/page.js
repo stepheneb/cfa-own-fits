@@ -75,7 +75,6 @@ class Page {
 
   generateHtml() {
     [this.telescopeHtmls, this.telescopeHtmlModals] = telescopes.render(this, this.registeredCallbacks);
-    // this.saveAndSend = saveAndSend.render(this, this.registeredCallbacks);
     [this.saveAndSend, this.saveAndSendModals] = saveAndSend.render(this, this.registeredCallbacks);
     this.leftColumnHtml = '';
     this.mainImageHtml = '';
@@ -149,6 +148,7 @@ class Page {
       </div>
       ${navigation.page(this.registeredCallbacks)}
       ${this.telescopeHtmlModals}
+      ${this.saveAndSendModals}
     `;
     return html;
   }
