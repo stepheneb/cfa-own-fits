@@ -11,7 +11,16 @@ import Page from '../page.js';
 import splash from './splash.js';
 
 let renderMenu = {};
-let line = null;
+let connectLine = null;
+let separatorLine = null;
+
+let multiWaveImage = null;
+let telescopeImage = null;
+let multiWaveTitle = null;
+let menuCategoryTelescope = null;
+
+let content = null;
+
 let selectedCategoryElement = null;
 let selectedCategoryPagesElement = null;
 let categoryPagesVisible = false;
@@ -26,17 +35,31 @@ renderMenu.page = (ctype) => {
 
   let html = renderMenu.pageHeader();
   html += `
-      <div class="activity-category-menu">
-        ${renderMenu.activityCategory()}
-      </div>
+      ${renderMenu.activityCategory()}
 
       ${renderMenu.activityCategoryPages()}
 
       ${navigation.menu(renderedCallbacks)}
     `;
-  document.getElementById("content").innerHTML = html;
+  content = document.getElementById("content");
+  content.innerHTML = html;
   events.setupGlobal();
-  line = document.getElementById('menu-connnect-line');
+
+  connectLine = document.getElementById('menu-connnect-line');
+  separatorLine = document.getElementById('menu-separator-line');
+
+  multiWaveImage = document.getElementById('menu-category-multi-wave-image');
+  multiWaveTitle = document.getElementById('menu-activity-multi-wave-title');
+  telescopeImage = document.getElementById('menu-category-telescope-image');
+  menuCategoryTelescope = document.getElementById('menu-category-telescope');
+
+  renderMenu.redraw = requestAnimationFrame(() => {
+    setTimeout(() => {
+      renderMenu.drawSeparatorLine();
+    }, 100);
+  });
+
+  window.addEventListener('resize', renderMenu.drawSeparatorLine);
 
   if (ctype) {
     selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
@@ -72,7 +95,7 @@ renderMenu.page = (ctype) => {
   let addStartPageListener = (ctype, page) => {
     let id = `open-page-${ctype}-${page.name}`;
     document.getElementById(id).addEventListener('click', () => {
-      line.classList.remove('show');
+      connectLine.classList.remove('show');
       categoryPagesVisible = false;
       app.page = new Page(ctype, page);
     });
@@ -104,7 +127,7 @@ renderMenu.pageHeader = () => {
 
 renderMenu.activityCategory = () => {
   let html = `
-      <div class="row">
+      <div class="row activity-category-menu">
     `;
   let categories = app.categories;
   let categoryCount = categories.length;
@@ -112,9 +135,9 @@ renderMenu.activityCategory = () => {
     let category = categories[i];
     let type = category.type;
     html += `
-        <div class="category col-2"  id="menu-category-${type}" data-num="${i}">
-          <img src="${category.menuimage}"></img>
-          <div class="menu-activity-category-title">
+        <div class="category col"  id="menu-category-${type}" data-num="${i}">
+          <img src="${category.menuimage}"  id="menu-category-${type}-image"></img>
+          <div id="menu-activity-${type}-title" class="menu-activity-category-title">
             <header class="menu-activity-category-title">${category.title}</header>
           </div>
         </div>
@@ -137,8 +160,9 @@ renderMenu.categoryPages = (ctype) => {
       elem.removeEventListener("transitionend", renderMenu.transitionListener);
       categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
       categoryPagesElement.classList.remove("selected");
-      line.classList.remove('show');
+      connectLine.classList.remove('show');
       categoryPagesVisible = false;
+      renderMenu.drawSeparatorLine();
       hash = `menu`;
     }
   } else {
@@ -163,12 +187,35 @@ renderMenu.categoryPages = (ctype) => {
         categoryPagesElement.classList.remove("selected");
       }
     }
+    renderMenu.drawSeparatorLine();
   }
   router.updateHash(hash);
 };
 
 renderMenu.transitionListener = () => {
   renderMenu.drawCategoryLine(selectedCategoryElement, selectedCategoryPagesElement);
+};
+
+renderMenu.drawSeparatorLine = () => {
+  if (menuCategoryTelescope.classList.contains('not-selected') ||
+    menuCategoryTelescope.classList.contains('selected')) {
+    separatorLine.classList.remove('show');
+  } else {
+    separatorLine.classList.add('show');
+  }
+  let boundingRect1 = multiWaveImage.getBoundingClientRect();
+  let boundingRect2 = telescopeImage.getBoundingClientRect();
+  let boundingRect3 = multiWaveTitle.getBoundingClientRect();
+  let xshift = (boundingRect2.left - boundingRect1.right) / 2;
+  let yextend = (boundingRect1.bottom - boundingRect1.top) * 0.07;
+  let x1 = boundingRect1.right + xshift;
+  let x2 = x1;
+  let y1 = boundingRect3.bottom + yextend;
+  let y2 = boundingRect2.top - yextend;
+  separatorLine.setAttribute('x1', x1);
+  separatorLine.setAttribute('y1', y1);
+  separatorLine.setAttribute('x2', x2);
+  separatorLine.setAttribute('y2', y2);
 };
 
 renderMenu.drawCategoryLine = (fromElem, toElem) => {
@@ -179,18 +226,20 @@ renderMenu.drawCategoryLine = (fromElem, toElem) => {
     let x2 = x1;
     let y1 = boundingRect1.bottom;
     let y2 = boundingRect2.top;
-    line.setAttribute('x1', x1);
-    line.setAttribute('y1', y1);
-    line.setAttribute('x2', x2);
-    line.setAttribute('y2', y2);
-    line.classList.add('show');
+    connectLine.setAttribute('x1', x1);
+    connectLine.setAttribute('y1', y1);
+    connectLine.setAttribute('x2', x2);
+    connectLine.setAttribute('y2', y2);
+    connectLine.classList.add('show');
   } else {
-    line.classList.remove('show');
+    connectLine.classList.remove('show');
   }
 };
 
 renderMenu.activityCategoryPages = () => {
-  let html = '';
+  let html = `
+      <div class="d-flex flex-row activity-category-pages">
+  `;
   app.categories.forEach((category) => {
     let type = category.type;
     let id = `menu-category-${type}-pages`;
@@ -207,7 +256,7 @@ renderMenu.activityCategoryPages = () => {
         <div class="header">
           <div class="title">${title}</div>
           <div class="subtitle">${subtitle}</div>
-          <div class="action">${app.action}</div>
+          <div class="action">${category.action}</div>
 
         </div>
         <div class="body">
@@ -216,6 +265,9 @@ renderMenu.activityCategoryPages = () => {
       </div>
     `;
   });
+  html += `
+    </div>
+  `;
   return html;
 };
 

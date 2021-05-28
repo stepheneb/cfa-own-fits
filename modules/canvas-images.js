@@ -187,6 +187,7 @@ class CanvasImages {
         this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
         break;
+      case 'find-apollo':
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
         this.addScalingLayer();

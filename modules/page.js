@@ -90,6 +90,16 @@ class Page {
 
     switch (this.type) {
 
+    case 'find-apollo':
+      this.leftColumnHtml = `
+        <div class='col-3 pr-1 m-0'>
+        </div>
+      `;
+      this.mainImageHtml = `
+          ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
+        `;
+      break;
+
     case 'rgb':
     case 'multi-wave':
       this.leftColumnHtml = `
@@ -164,6 +174,10 @@ class Page {
       this.controllerImageSelectFilterLayerToAdjust();
       this.controllerImageSelectMainLayer();
       adjustImage.update(this);
+      break;
+
+    case 'find-apollo':
+      this.canvasImages = new CanvasImages(this.image, this.type);
       break;
 
     case 'masterpiece':
@@ -340,6 +354,7 @@ class Page {
     case 'multi-wave':
       underImageRow = this.renderUnderMainImageRGBLayerSelectors();
       break;
+    case 'find-apollo':
     case 'masterpiece':
       underImageRow = this.renderUnderMainImageMasterpiece();
       break;
