@@ -93,6 +93,7 @@ class Page {
     case 'find-apollo':
       this.leftColumnHtml = `
         <div class='col-3 pr-1 m-0'>
+          ${this.renderApolloLandingLeftColumn()}
         </div>
       `;
       this.mainImageHtml = `
@@ -304,6 +305,21 @@ class Page {
   renderImageLayerPreview() {
     return `
       <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+      </div>
+    `;
+  }
+
+  renderApolloLandingLeftColumn() {
+    let id = `${this.type}-${this.poster}`;
+    return `
+      <div class='control-collection'>
+        <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.findtext}</div>
+        <div class="${this.type}">
+          <img src="images/page-images/${id}.jpg" ></img>
+        </div>
+        <div class="name">${this.image.name}</div>
+        <div id="preview-image-canvas-container" class="mt-4 mb-2"></div>
+        <div class="name">${this.youaretext}</div>
       </div>
     `;
   }
