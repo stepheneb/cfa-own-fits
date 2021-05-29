@@ -33,6 +33,7 @@ class CanvasImages {
 
     this.previewContainer = null;
     this.previewCanvas = null;
+    this.previewZoomCanvas = null;
 
     this.animatePreviewBackContainer = null;
     this.animatePreviewCenterContainer = null;
@@ -189,8 +190,8 @@ class CanvasImages {
         break;
       case 'find-apollo':
         this.initializeMainCanvases(this.type);
-        this.addScalingLayer();
-        this.initializePreviewCanvas(this.selectedSource);
+        this.addScalingLayer(this.previewZoomUpdate);
+        this.initializePreviewZoomCanvas(this.selectedSource);
         break;
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
@@ -209,7 +210,28 @@ class CanvasImages {
     });
   }
 
-  addScalingLayer() {
+  previewZoomUpdate(ci, zp) {
+    // console.log(zp);
+    const ctx = ci.previewZoomCanvas.getContext('2d');
+    const w = ci.previewZoomCanvas.width;
+    const h = ci.previewZoomCanvas.height;
+    ctx.clearRect(0, 0, w, h);
+    if (zp.sw + zp.sh != 2) {
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.lineWidth = 2;
+      let zwidth = w * zp.sw;
+      let zheight = h * zp.sh;
+      let zx1 = zp.sx * w;
+      let zy1 = zp.sy * h;
+      let zx2 = zwidth;
+      let zy2 = zheight;
+      // console.log([zx1, zy1, zx2, zy2]);
+      // console.log([w, h, zwidth, zheight]);
+      ctx.strokeRect(zx1, zy1, zx2, zy2);
+    }
+  }
+
+  addScalingLayer(callbackFunc) {
     let canvas = this.canvasRGB;
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
@@ -222,7 +244,7 @@ class CanvasImages {
         this.initializeCanvas(c);
         this.mainContainer.append(c);
         this.scalingCanvas = c;
-        this.scaling = new Scaling(c, imageBitmap);
+        this.scaling = new Scaling(c, imageBitmap, this, callbackFunc);
       });
   }
 
@@ -251,6 +273,18 @@ class CanvasImages {
     });
     this.rgbCanvas = this.appendMainCanvas(this.mainContainer, 'rgb', 'rgb');
     this.renderCanvasRGB(type);
+  }
+
+  initializePreviewZoomCanvas(source) {
+    this.initializePreviewCanvas(source);
+    let c = document.createElement("canvas");
+    c.id = 'preview-zoom-canvas';
+    c.classList = 'preview-zoom-canvas';
+    this.initializeCanvas(c);
+    this.previewContainer.append(c);
+    this.previewZoomCanvas = c;
+    c.width = this.nx / 10;
+    c.height = this.ny / 10;
   }
 
   initializePreviewCanvas(source) {
@@ -525,7 +559,7 @@ class CanvasImages {
     }
     let renderTime = performance.now();
     ctx.putImageData(imageData, 0, 0);
-    console.log(`images.renderCanvas: name: ${source.name}, filter: ${source.filter}: render: ${utilities.roundNumber(renderTime  - startTime, 4)}`);
+    // console.log(`images.renderCanvas: name: ${source.name}, filter: ${source.filter}: render: ${utilities.roundNumber(renderTime  - startTime, 4)}`);
   }
 
   renderCanvasRGB(type) {
@@ -563,7 +597,7 @@ class CanvasImages {
     }
     let renderTime = performance.now();
     ctx.putImageData(imageData, 0, 0);
-    console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
+    // console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
   }
 
   renderCanvasRGB3() {
@@ -634,7 +668,7 @@ class CanvasImages {
     }
     let renderTime = performance.now();
     ctx.putImageData(imageData, 0, 0);
-    console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
+    // console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
   }
 
   renderMasterpiece() {

@@ -1,9 +1,11 @@
 /*jshint esversion: 6 */
 
 class Scaling {
-  constructor(canvas, imageBitmap) {
+  constructor(canvas, imageBitmap, ci, callbackFunc) {
     this.canvas = canvas;
     this.imageBitmap = imageBitmap;
+    this.ci = ci;
+    this.callbackFunc = callbackFunc;
     this.bindCallbacks();
     this.setupButtons();
     this.touchinfo = document.querySelector('span.touchinfo');
@@ -125,8 +127,8 @@ class Scaling {
     e.preventDefault();
     var dx = 0;
     var dy = 0;
-    console.log(' ');
-    console.log(`wheel listener: ${e.deltaX}, ${e.deltaY}`);
+    // console.log(' ');
+    // console.log(`wheel listener: ${e.deltaX}, ${e.deltaY}`);
 
     if (e.ctrlKey) {
       // zoom
@@ -185,7 +187,7 @@ class Scaling {
         }
         break;
       }
-      console.log(`pan dx, dy: ${dx}, ${dy}`);
+      // console.log(`pan dx, dy: ${dx}, ${dy}`);
       dx = Math.sign(dx) * Math.min(24, Math.abs(dx));
       dy = Math.sign(dy) * Math.min(24, Math.abs(dy));
 
@@ -263,7 +265,7 @@ class Scaling {
       this.moveY = -(imageHeight - offsetY - this.canvas.height);
     }
 
-    console.log(`canvasDraw: ${this.moveX}, ${this.moveY}`);
+    // console.log(`canvasDraw: ${this.moveX}, ${this.moveY}`);
     this.ctx.drawImage(
       this.imageBitmap,
       -offsetX + this.moveX,
@@ -271,6 +273,14 @@ class Scaling {
       imageWidth,
       imageHeight
     );
+    if (this.callbackFunc) {
+      this.callbackFunc(this.ci, {
+        sw: w / imageWidth,
+        sh: h / imageHeight,
+        sx: (offsetX - this.moveX) / imageWidth,
+        sy: (offsetY - this.moveY) / imageHeight
+      });
+    }
   }
 
   calcMaxScale() {
