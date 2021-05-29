@@ -317,7 +317,7 @@ class Page {
         <div class="${this.type}">
           <img src="images/page-images/${id}.jpg" ></img>
         </div>
-        <div class="name">${this.image.name}</div>
+        <div class="name">${this.image.site}</div>
         <div class="zoom-preview-container mt-4 mb-2">
           <div class="label">${this.youaretext}</div>
           <div id="preview-image-canvas-container" class="zoomrect"></div>

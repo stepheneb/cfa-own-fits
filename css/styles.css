@@ -435,6 +435,8 @@ div.control-collection {
   div.control-collection > .subtitle {
     font-size: var(--control-subtitle);
     padding: 0vh 0vh 0.25vh 0.5vh; }
+  div.control-collection > .name {
+    text-transform: uppercase; }
   div.control-collection > .context {
     font-size: var(--control-subtitle);
     padding: 0.5vh 0vh 0.25vh 0.5vh; }

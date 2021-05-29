@@ -283,7 +283,7 @@ renderMenu.categoryPageCollection = category => {
         <div class="image-wrapper">
           <img src="images/page-images/${type}-${page.poster}.jpg"></img>
         </div>
-        <div class="name">${page.image.name}</div>
+        <div class="name">${page.title}</div>
         <div class="telescope">${telescopes}</div>
       </div>
     `;

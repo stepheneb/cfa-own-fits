@@ -77,7 +77,8 @@
           "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
-            "name": "Apollo 11",
+            "name": "Apollo Mission 11",
+            "site": "Apollo Site 11",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
@@ -143,7 +144,8 @@
           "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
-            "name": "Apollo 12",
+            "name": "Apollo Mission 12",
+            "site": "Apollo Site 12",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
@@ -209,7 +211,8 @@
           "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
-            "name": "Apollo 14",
+            "name": "Apollo Mission 14",
+            "site": "Apollo Site 14",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
@@ -275,7 +278,8 @@
           "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
-            "name": "Apollo 15",
+            "name": "Apollo Mission 15",
+            "site": "Apollo Site 15",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
@@ -341,7 +345,8 @@
           "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
-            "name": "Apollo 16",
+            "name": "Apollo Mission 16",
+            "site": "Apollo Site 16",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [
@@ -407,7 +412,8 @@
           "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
-            "name": "Apollo 17",
+            "name": "Apollo Mission 17",
+            "site": "Apollo Site 17",
             "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
             "about": {
               "telescopes": [

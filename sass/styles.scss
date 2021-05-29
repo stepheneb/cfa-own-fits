@@ -555,6 +555,9 @@ div.control-collection {
     font-size: var(--control-subtitle);
     padding: 0vh 0vh 0.25vh 0.5vh;
   }
+  > .name {
+    text-transform: uppercase;
+  }
   > .context {
     font-size: var(--control-subtitle);
     padding: 0.5vh 0vh 0.25vh 0.5vh;
