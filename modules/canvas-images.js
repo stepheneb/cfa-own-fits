@@ -218,7 +218,7 @@ class CanvasImages {
     ctx.clearRect(0, 0, w, h);
     if (zp.sw + zp.sh != 2) {
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 4;
       let zwidth = w * zp.sw;
       let zheight = h * zp.sh;
       let zx1 = zp.sx * w;

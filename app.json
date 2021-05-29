@@ -74,6 +74,7 @@
           "subtitle": "The Lunar Reconnaissance Orbbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
           "findtext": "Find the Apollo site pictured below",
           "youaretext": "You are here",
+          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Apollo 11",
@@ -139,6 +140,7 @@
           "subtitle": "The Lunar Reconnaissance Orbbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
           "findtext": "Find the Apollo site pictured below",
           "youaretext": "You are here",
+          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Apollo 12",
@@ -204,6 +206,7 @@
           "subtitle": "The Lunar Reconnaissance Orbbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
           "findtext": "Find the Apollo site pictured below",
           "youaretext": "You are here",
+          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Apollo 14",
@@ -269,6 +272,7 @@
           "subtitle": "The Lunar Reconnaissance Orbbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
           "findtext": "Find the Apollo site pictured below",
           "youaretext": "You are here",
+          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Apollo 15",
@@ -334,6 +338,7 @@
           "subtitle": "The Lunar Reconnaissance Orbbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
           "findtext": "Find the Apollo site pictured below",
           "youaretext": "You are here",
+          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Apollo 16",
@@ -399,6 +404,7 @@
           "subtitle": "The Lunar Reconnaissance Orbbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
           "findtext": "Find the Apollo site pictured below",
           "youaretext": "You are here",
+          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
             "name": "Apollo 17",

@@ -318,8 +318,11 @@ class Page {
           <img src="images/page-images/${id}.jpg" ></img>
         </div>
         <div class="name">${this.image.name}</div>
-        <div id="preview-image-canvas-container" class="mt-4 mb-2"></div>
-        <div class="name">${this.youaretext}</div>
+        <div class="zoom-preview-container mt-4 mb-2">
+          <div class="label">${this.youaretext}</div>
+          <div id="preview-image-canvas-container" class="zoomrect"></div>
+        </div>
+        <div class="context">${this.context}</div>
       </div>
     `;
   }

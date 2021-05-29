@@ -36,7 +36,7 @@ html {
   --page-subtitle: 2vh;
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
-  --control-subtitle: 1.2vh;
+  --control-subtitle: 1.6vh;
   --save-and-send-context: 2vh; }
 
 body {
@@ -435,6 +435,9 @@ div.control-collection {
   div.control-collection > .subtitle {
     font-size: var(--control-subtitle);
     padding: 0vh 0vh 0.25vh 0.5vh; }
+  div.control-collection > .context {
+    font-size: var(--control-subtitle);
+    padding: 0.5vh 0vh 0.25vh 0.5vh; }
   div.control-collection > .row,
   div.control-collection form > .row {
     margin: 0.75em 0em;
@@ -676,6 +679,13 @@ div#preview-image-next-name {
   -ms-user-select: none;
   user-select: none; }
 
+div.zoom-preview-container {
+  border: 2px solid var(--bright-teal);
+  padding: 0.5vh 1vh 1vh 1vh;
+  background-color: black; }
+  div.zoom-preview-container > .label {
+    float: left; }
+
 div#preview-image-canvas-container {
   position: relative;
   height: 30vh;
@@ -684,6 +694,11 @@ div#preview-image-canvas-container {
   background-color: var(--almost-black);
   border: 2px solid var(--canvas-container-border-color);
   border-radius: 3px; }
+  div#preview-image-canvas-container.zoomrect {
+    height: 18vh;
+    margin: 2vh 0vh 0.5vh 0vh;
+    background-color: black;
+    border: none; }
   div#preview-image-canvas-container canvas {
     position: absolute;
     padding: 0;
