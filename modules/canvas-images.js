@@ -190,8 +190,8 @@ class CanvasImages {
         break;
       case 'find-apollo':
         this.initializeMainCanvases(this.type);
-        this.addScalingLayer(this.previewZoomUpdate);
         this.initializePreviewZoomCanvas(this.selectedSource);
+        this.addScalingLayer(this.previewZoomCanvas);
         break;
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
@@ -210,28 +210,7 @@ class CanvasImages {
     });
   }
 
-  previewZoomUpdate(ci, zp) {
-    // console.log(zp);
-    const ctx = ci.previewZoomCanvas.getContext('2d');
-    const w = ci.previewZoomCanvas.width;
-    const h = ci.previewZoomCanvas.height;
-    ctx.clearRect(0, 0, w, h);
-    if (zp.sw + zp.sh != 2) {
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-      ctx.lineWidth = 4;
-      let zwidth = w * zp.sw;
-      let zheight = h * zp.sh;
-      let zx1 = zp.sx * w;
-      let zy1 = zp.sy * h;
-      let zx2 = zwidth;
-      let zy2 = zheight;
-      // console.log([zx1, zy1, zx2, zy2]);
-      // console.log([w, h, zwidth, zheight]);
-      ctx.strokeRect(zx1, zy1, zx2, zy2);
-    }
-  }
-
-  addScalingLayer(callbackFunc) {
+  addScalingLayer(previewZoomCanvas) {
     let canvas = this.canvasRGB;
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
@@ -244,7 +223,7 @@ class CanvasImages {
         this.initializeCanvas(c);
         this.mainContainer.append(c);
         this.scalingCanvas = c;
-        this.scaling = new Scaling(c, imageBitmap, this, callbackFunc);
+        this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas);
       });
   }
 

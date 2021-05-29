@@ -1,11 +1,10 @@
 /*jshint esversion: 6 */
 
 class Scaling {
-  constructor(canvas, imageBitmap, ci, callbackFunc) {
+  constructor(canvas, imageBitmap, previewZoomCanvas) {
     this.canvas = canvas;
     this.imageBitmap = imageBitmap;
-    this.ci = ci;
-    this.callbackFunc = callbackFunc;
+    this.previewZoomCanvas = previewZoomCanvas;
     this.bindCallbacks();
     this.setupButtons();
     this.touchinfo = document.querySelector('span.touchinfo');
@@ -273,13 +272,26 @@ class Scaling {
       imageWidth,
       imageHeight
     );
-    if (this.callbackFunc) {
-      this.callbackFunc(this.ci, {
-        sw: w / imageWidth,
-        sh: h / imageHeight,
-        sx: (offsetX - this.moveX) / imageWidth,
-        sy: (offsetY - this.moveY) / imageHeight
-      });
+    if (this.previewZoomCanvas) {
+      const ctx = this.previewZoomCanvas.getContext('2d');
+      const pzcW = this.previewZoomCanvas.width;
+      const pczH = this.previewZoomCanvas.height;
+      let sw = w / imageWidth;
+      let sh = h / imageHeight;
+      let sx = (offsetX - this.moveX) / imageWidth;
+      let sy = (offsetY - this.moveY) / imageHeight;
+      ctx.clearRect(0, 0, w, h);
+      if (sw + sh != 2) {
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+        ctx.lineWidth = 4;
+        let zwidth = pzcW * sw;
+        let zheight = pczH * sh;
+        let zx1 = sx * pzcW;
+        let zy1 = sy * pczH;
+        let zx2 = zwidth;
+        let zy2 = zheight;
+        ctx.strokeRect(zx1, zy1, zx2, zy2);
+      }
     }
   }
 
