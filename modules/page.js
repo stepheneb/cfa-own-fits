@@ -320,7 +320,9 @@ class Page {
         <div class="name">${this.image.site}</div>
         <div class="zoom-preview-container mt-4 mb-2">
           <div class="label">${this.youaretext}</div>
-          <div id="preview-image-canvas-container" class="zoomrect"></div>
+          <div class="zoom-rect-container">
+            <div id="preview-image-canvas-container" class="zoomrect"></div>
+          </div>
         </div>
         <div class="context">${this.context}</div>
       </div>

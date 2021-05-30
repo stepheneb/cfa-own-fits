@@ -696,16 +696,27 @@ div#preview-image-canvas-container {
   background-color: var(--almost-black);
   border: 2px solid var(--canvas-container-border-color);
   border-radius: 3px; }
-  div#preview-image-canvas-container.zoomrect {
-    height: 18vh;
-    margin: 2vh 0vh 0.5vh 0vh;
-    background-color: black;
-    border: none; }
   div#preview-image-canvas-container canvas {
     position: absolute;
+    left: 0;
+    top: 0;
     padding: 0;
     margin: 0;
     object-fit: contain; }
+  div#preview-image-canvas-container.zoomrect {
+    height: 18vh;
+    width: 18vh;
+    background-color: black;
+    border: none; }
+  div#preview-image-canvas-container.zoomrect > canvas {
+    width: 18vh; }
+
+.zoom-rect-container {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center; }
 
 div#preview-image-center-canvas-container {
   position: relative;
