@@ -3,29 +3,57 @@
 class Scaling {
   constructor(canvas, imageBitmap, previewZoomCanvas) {
     this.canvas = canvas;
+    this.clientDimensions = {};
+
+    this.stmx = -4;
+
     this.imageBitmap = imageBitmap;
     this.previewZoomCanvas = previewZoomCanvas;
+    this.pzcZoomRectDisplayed = false;
+    this.pzcClientWidth = null;
+    this.pzcClientHeight = null;
+
+    this.mainEvents = null;
+    this.previewZoomEvents = null;
     this.bindCallbacks();
     this.setupButtons();
     this.touchinfo = document.querySelector('span.touchinfo');
     this.ctx = this.canvas.getContext('2d');
-    this.clientDimensions = {};
     this.nx = imageBitmap.width;
     this.ny = imageBitmap.height;
-    this.scaling = false;
     this.scale = 1;
     this.maxScale = 0;
     this.ratio = 0;
     this.scaleFactor = 1.1;
     this.scaleDraw = null;
     this.distance = 0;
+
+    this.zp = null;
+
     this.lastDistance = 0;
+    this.previewZoomLastDistance = 0;
+
+    this.scaling = false;
+    this.previewZoomScaling = false;
+
     this.canDrag = false;
+    this.previewZoomCanDrag = false;
+
     this.isDragging = false;
+    this.previewZoomIsDragging = false;
+
     this.startCoords = { x: 0, y: 0 };
+    this.previewZoomStartCoords = { x: 0, y: 0 };
+
     this.last = { x: 0, y: 0 };
+    this.previewZoomLast = { x: 0, y: 0 };
+
     this.moveX = 0;
+    this.previewZoomMoveX = 0;
+
     this.moveY = 0;
+    this.previewZoomMoveY = 0;
+
     this.redraw = null;
     this.dxOld = 0;
     this.dyOld = 0;
@@ -46,7 +74,11 @@ class Scaling {
       'listenerMouseDownTouchStart',
       'listenerMouseMoveTouchMove',
       'listenerMouseUpTouchEnd',
-      'listenerZoom'
+      'listenerZoom',
+      'previewZoomListenerMouseDownTouchStart',
+      'previewZoomListenerMouseMoveTouchMove',
+      'previewZoomListenerMouseLeave',
+      'previewZoomListenerMouseUpTouchEnd'
     ].forEach(method => {
       this[method] = this[method].bind(this);
     });
@@ -69,39 +101,63 @@ class Scaling {
     }
 
     window.addEventListener('resize', () => {
-      this.resizeCanvas(this.canvas);
+      this.handleResize();
     });
 
     // Startup ...
 
     this.setupButtons();
-    this.resizeCanvas(this.canvas);
+    this.handleResize();
     this.updateZoomButtons();
     this.showTouchTooltip();
 
-    this.canvas.addEventListener('mousedown', this.listenerMouseDownTouchStart);
-    this.canvas.addEventListener('touchstart', this.listenerMouseDownTouchStart);
+    this.mainEvents = [
+      ['mousedown', this.listenerMouseDownTouchStart],
+      ['touchstart', this.listenerMouseDownTouchStart],
 
-    this.canvas.addEventListener('mousemove', this.listenerMouseMoveTouchMove);
-    this.canvas.addEventListener('touchmove', this.listenerMouseMoveTouchMove);
+      ['mousemove', this.listenerMouseMoveTouchMove],
+      ['touchmove', this.listenerMouseMoveTouchMove],
 
-    this.canvas.addEventListener('mouseup', this.listenerMouseUpTouchEnd);
-    this.canvas.addEventListener('touchend', this.listenerMouseUpTouchEnd);
+      ['mouseleave', this.listenerMouseUpTouchEnd],
+      ['mouseup', this.listenerMouseUpTouchEnd],
+      ['touchend', this.listenerMouseUpTouchEnd],
 
-    this.canvas.addEventListener('wheel', this.listenerZoom);
+      ['wheel', this.listenerZoom]
+    ];
+
+    this.mainEvents.forEach((eventItem) => {
+      this.canvas.addEventListener(eventItem[0], eventItem[1]);
+    });
+
+    this.previewZoomEvents = [
+      ['mousedown', this.previewZoomListenerMouseDownTouchStart],
+      ['touchstart', this.previewZoomListenerMouseDownTouchStart],
+
+      ['mousemove', this.previewZoomListenerMouseMoveTouchMove],
+      ['touchmove', this.previewZoomListenerMouseMoveTouchMove],
+
+      ['mouseleave', this.previewZoomListenerMouseLeave],
+      ['mouseup', this.previewZoomListenerMouseUpTouchEnd],
+      ['touchend', this.previewZoomListenerMouseUpTouchEnd]
+    ];
+
+    if (this.previewZoomCanvas) {
+      this.previewZoomEvents.forEach((eventItem) => {
+        this.previewZoomCanvas.addEventListener(eventItem[0], eventItem[1]);
+      });
+    }
   }
 
   close() {
-    this.canvas.removeEventListener('mousedown', this.listenerMouseDownTouchStart);
-    this.canvas.removeEventListener('touchstart', this.listenerMouseDownTouchStart);
+    this.mainEvents.forEach((eventItem) => {
+      this.canvas.removeEventListener(eventItem[0], eventItem[1]);
+    });
 
-    this.canvas.removeEventListener('mousemove', this.listenerMouseMoveTouchMove);
-    this.canvas.removeEventListener('touchmove', this.listenerMouseMoveTouchMove);
-
-    this.canvas.removeEventListener('mouseup', this.listenerMouseUpTouchEnd);
-    this.canvas.removeEventListener('touchend', this.listenerMouseUpTouchEnd);
-
-    this.canvas.removeEventListener('wheel', this.listenerZoom);
+    if (this.previewZoomCanvas) {
+      this.previewZoomEvents.forEach((eventItem) => {
+        this.previewZoomCanvas.removeEventListener(eventItem[0], eventItem[1]);
+      });
+    }
   }
 
   isTouchDevice() {
@@ -273,25 +329,32 @@ class Scaling {
       imageHeight
     );
     if (this.previewZoomCanvas) {
-      const ctx = this.previewZoomCanvas.getContext('2d');
-      const pzcW = this.previewZoomCanvas.width;
-      const pczH = this.previewZoomCanvas.height;
-      let sw = w / imageWidth;
-      let sh = h / imageHeight;
-      let sx = (offsetX - this.moveX) / imageWidth;
-      let sy = (offsetY - this.moveY) / imageHeight;
-      ctx.clearRect(0, 0, w, h);
-      if (sw + sh != 2) {
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
-        ctx.lineWidth = 4;
-        let zwidth = pzcW * sw;
-        let zheight = pczH * sh;
-        let zx1 = sx * pzcW;
-        let zy1 = sy * pczH;
-        let zx2 = zwidth;
-        let zy2 = zheight;
-        ctx.strokeRect(zx1, zy1, zx2, zy2);
-      }
+      this.previewZoomCanvasDraw({
+        sw: w / imageWidth,
+        sh: h / imageHeight,
+        sx: (offsetX - this.moveX) / imageWidth,
+        sy: (offsetY - this.moveY) / imageHeight
+      });
+    }
+  }
+
+  previewZoomCanvasDraw(zp) {
+    this.zp = zp;
+    const ctx = this.previewZoomCanvas.getContext('2d');
+    const pzcW = this.previewZoomCanvas.width;
+    const pczH = this.previewZoomCanvas.height;
+    ctx.clearRect(0, 0, pzcW, pczH);
+    if (zp.sw + zp.sh != 2) {
+      this.pzcZoomRectDisplayed = true;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.lineWidth = 4;
+      this.zx = zp.sx * pzcW;
+      this.zy = zp.sy * pczH;
+      this.zwidth = pzcW * zp.sw;
+      this.zheight = pczH * zp.sh;
+      ctx.strokeRect(this.zx, this.zy, this.zwidth, this.zheight);
+    } else {
+      this.pzcZoomRectDisplayed = false;
     }
   }
 
@@ -302,6 +365,19 @@ class Scaling {
 
   getWidthHeight(elem) {
     return { width: elem.clientWidth, height: elem.clientHeight };
+  }
+
+  handleResize() {
+    this.resizeCanvas(this.canvas);
+    if (this.previewZoomCanvas) {
+      let rect = this.previewZoomCanvas.getBoundingClientRect();
+      this.pzcClientWidth = rect.width;
+      this.pzcClientHeight = rect.height;
+      this.scaleToMoveX = this.clientDimensions.width / this.pzcClientWidth;
+      this.scaleToMoveY = this.clientDimensions.height / this.pzcClientHeight;
+      // this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
+      // this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
+    }
   }
 
   resizeCanvas(c) {
@@ -347,7 +423,7 @@ class Scaling {
   }
 
   /*
-      POINTER EVENTS
+      POINTER EVENTS for main scaling canvas
   */
 
   pointerEvents(e) {
@@ -397,12 +473,15 @@ class Scaling {
       x: position.x - e.target.offsetLeft - this.last.x,
       y: position.y - e.target.offsetTop - this.last.y
     };
+    console.log(['start', this.startCoords]);
   }
 
   listenerMouseMoveTouchMove(e) {
     e.preventDefault();
 
-    this.isDragging = true;
+    if (this.canDrag) {
+      this.isDragging = true;
+    }
 
     if (this.isDragging && this.canDrag && this.scaling === false) {
       var position = this.pointerEvents(e),
@@ -410,6 +489,8 @@ class Scaling {
 
       this.moveX = (position.x - e.target.offsetLeft - this.startCoords.x) * offset;
       this.moveY = (position.y - e.target.offsetTop - this.startCoords.y) * offset;
+
+      console.log(['move', this.moveX, this.moveY]);
 
       this.redraw = requestAnimationFrame(this.canvasDraw);
     } else if (this.scaling === true) {
@@ -429,18 +510,215 @@ class Scaling {
 
   }
 
-  listenerMouseUpTouchEnd(e) {
+  listenerMouseLeave(e) {
     var position = this.pointerEvents(e);
+
+    if (this.isDragging) {
+      this.last = {
+        x: position.x - e.target.offsetLeft - this.startCoords.x,
+        y: position.y - e.target.offsetTop - this.startCoords.y
+      };
+    }
 
     this.canDrag = this.isDragging = this.scaling = false;
 
-    this.last = {
-      x: position.x - e.target.offsetLeft - this.startCoords.x,
-      y: position.y - e.target.offsetTop - this.startCoords.y
-    };
+    cancelAnimationFrame(this.scaleDraw);
+    cancelAnimationFrame(this.redraw);
+  }
+
+  listenerMouseUpTouchEnd(e) {
+    var position = this.pointerEvents(e);
+
+    if (this.isDragging) {
+      this.last = {
+        x: position.x - e.target.offsetLeft - this.startCoords.x,
+        y: position.y - e.target.offsetTop - this.startCoords.y
+      };
+    }
+
+    this.canDrag = this.isDragging = this.scaling = false;
 
     cancelAnimationFrame(this.scaleDraw);
     cancelAnimationFrame(this.redraw);
+  }
+
+  /*
+      POINTER EVENTS for preview zoom canvas
+  */
+
+  previewZoomPointerEvents(e) {
+    const rect = this.previewZoomCanvas.getBoundingClientRect();
+    var pos = {
+      x: 0,
+      y: 0
+    };
+    if (e.type == "touchstart" || e.type == "touchmove" || e.type == "touchend") {
+      var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+      pos.x = touch.pageX;
+      pos.y = touch.pageY;
+    } else if (
+      e.type == "mousedown" ||
+      e.type == "mouseup" ||
+      e.type == "mousemove"
+    ) {
+      pos.x = e.clientX - rect.left;
+      pos.y = e.clientY - rect.top;
+    }
+
+    return pos;
+  }
+
+  inZoomRect(pos) {
+    let inside = false;
+    let inColumn = false;
+    let inRow = false;
+    let zx, zy, zw, zh = 0;
+    if (this.pzcZoomRectDisplayed) {
+      zx = this.zp.sx * this.pzcClientWidth;
+      zy = this.zp.sy * this.pzcClientHeight;
+      zw = this.zp.sw * this.pzcClientWidth;
+      zh = this.zp.sh * this.pzcClientHeight;
+      inRow = pos.y >= zy && pos.y <= (zy + zh);
+      inColumn = pos.x >= zx && pos.x <= (zx + zw);
+      inside = inColumn && inRow;
+    }
+    return inside;
+  }
+
+  applyScaleToMoveX(px) {
+    this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
+    return px * -4 * this.scaleToMoveY - this.canvas.offsetLeft;
+  }
+
+  applyScaleToMoveY(py) {
+    this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
+    return py * -4 * this.scaleToMoveY - this.canvas.offsetTop;
+  }
+
+  previewZoomListenerMouseDownTouchStart(e) {
+    var position = this.previewZoomPointerEvents(e),
+      touch;
+
+    if (this.inZoomRect(position)) {
+      if (e.type === "touchstart" && touch.length === 2) {
+        // touch = e.originalEvent.touches || e.originalEvent.changedTouches;
+        touch = e.touches || e.changedTouches;
+        this.scaling = true;
+
+        // Pinch detection credits: http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch/11183333#11183333
+        this.previewZoomLastDistance = Math.sqrt(
+          (touch[0].clientX - touch[1].clientX) *
+          (touch[0].clientX - touch[1].clientX) +
+          (touch[0].clientY - touch[1].clientY) *
+          (touch[0].clientY - touch[1].clientY)
+        );
+      } else {
+        this.previewZoomCanDrag = true;
+      }
+      this.previewZoomIsDragging = this.previewZoomScaling = false;
+
+      this.previewZoomStartCoords = {
+        x: position.x - e.target.offsetLeft - this.previewZoomLast.x,
+        y: position.y - e.target.offsetTop - this.previewZoomLast.y
+      };
+
+      this.startCoords = {
+        x: this.applyScaleToMoveX(this.previewZoomStartCoords.x),
+        y: this.applyScaleToMoveY(this.previewZoomStartCoords.y)
+      };
+
+      console.log(['start', this.previewZoomStartCoords]);
+
+    }
+  }
+
+  previewZoomListenerMouseMoveTouchMove(e) {
+    e.preventDefault();
+
+    if (this.previewZoomCanDrag) {
+      this.previewZoomIsDragging = true;
+    }
+
+    if (this.previewZoomIsDragging && this.previewZoomCanDrag && this.scaling === false) {
+      var position = this.previewZoomPointerEvents(e),
+        offset = e.type === "touchmove" ? 1.3 : 1;
+
+      if (this.inZoomRect(position)) {
+
+        this.previewZoomMoveX = (position.x - e.target.offsetLeft - this.previewZoomStartCoords.x) * offset;
+        this.previewZoomMoveY = (position.y - e.target.offsetTop - this.previewZoomStartCoords.y) * offset;
+
+        // this.redraw = requestAnimationFrame(this.canvasDraw);
+        console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY]);
+
+        let moveX = this.applyScaleToMoveX(this.previewZoomMoveX);
+        let moveY = this.applyScaleToMoveY(this.previewZoomMoveY);
+        console.log(['move', moveX, moveY]);
+
+        this.moveX = moveX;
+        this.moveY = moveY;
+        this.redraw = requestAnimationFrame(this.canvasDraw);
+
+      }
+    } else if (this.scaling === true) {
+      if (e instanceof TouchEvent) {
+        var touch = e.originalEvent.touches || e.originalEvent.changedTouches;
+
+        //Pinch detection credits: http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch/11183333#11183333
+        this.previewZoomDistance = Math.sqrt(
+          (touch[0].clientX - touch[1].clientX) *
+          (touch[0].clientX - touch[1].clientX) +
+          (touch[0].clientY - touch[1].clientY) *
+          (touch[0].clientY - touch[1].clientY)
+        );
+        console.log(['move', this.previewZoomDistance]);
+      }
+      // this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
+      console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY, this.previewZoomDistance]);
+    }
+  }
+
+  previewZoomListenerMouseLeave(e) {
+    var position = this.previewZoomPointerEvents(e);
+
+    if (this.previewZoomIsDragging) {
+      this.previewZoomLast = {
+        x: position.x - e.target.offsetLeft - this.previewZoomStartCoords.x,
+        y: position.y - e.target.offsetTop - this.previewZoomStartCoords.y
+      };
+      console.log(['end', this.previewZoomLast]);
+
+      this.last = {
+        x: this.applyScaleToMoveX(this.previewZoomLast.x),
+        y: this.applyScaleToMoveY(this.previewZoomLast.y)
+      };
+
+      this.previewZoomCanDrag = this.previewZoomIsDragging = false;
+      cancelAnimationFrame(this.scaleDraw);
+      cancelAnimationFrame(this.redraw);
+    }
+  }
+
+  previewZoomListenerMouseUpTouchEnd(e) {
+    var position = this.previewZoomPointerEvents(e);
+
+    if (this.previewZoomIsDragging) {
+      this.previewZoomLast = {
+        x: position.x - e.target.offsetLeft - this.previewZoomStartCoords.x,
+        y: position.y - e.target.offsetTop - this.previewZoomStartCoords.y
+      };
+
+      console.log(['end', this.previewZoomLast]);
+
+      this.last = {
+        x: this.applyScaleToMoveX(this.previewZoomLast.x),
+        y: this.applyScaleToMoveY(this.previewZoomLast.y)
+      };
+
+      this.previewZoomCanDrag = this.previewZoomIsDragging = false;
+      cancelAnimationFrame(this.scaleDraw);
+      cancelAnimationFrame(this.redraw);
+    }
   }
 
 }
