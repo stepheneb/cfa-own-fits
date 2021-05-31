@@ -46,6 +46,9 @@ class Scaling {
     this.last = { x: 0, y: 0 };
     this.previewZoomLast = { x: 0, y: 0 };
 
+    this.lastDraggedPos = {};
+    this.lastDraggedPreviewZoomPos = {};
+
     this.moveX = 0;
     this.previewZoomMoveX = 0;
 
@@ -72,6 +75,8 @@ class Scaling {
       'listenerMouseDownTouchStart',
       'listenerMouseMoveTouchMove',
       'listenerMouseUpTouchEnd',
+      'listenerMouseLeave',
+      'listenerUpLeaveEnd',
       'listenerMouseOverZoomRect',
       'listenerMouseMoveZoomRect',
       'listenerMouseOutZoomRect',
@@ -119,7 +124,7 @@ class Scaling {
       ['mousemove', this.listenerMouseMoveTouchMove],
       ['touchmove', this.listenerMouseMoveTouchMove],
 
-      ['mouseleave', this.listenerMouseUpTouchEnd],
+      ['mouseleave', this.listenerMouseLeave],
       ['mouseup', this.listenerMouseUpTouchEnd],
       ['touchend', this.listenerMouseUpTouchEnd],
 
@@ -450,7 +455,7 @@ class Scaling {
   }
 
   listenerMouseDownTouchStart(e) {
-    var position = this.pointerEvents(e),
+    var pos = this.pointerEvents(e),
       touch;
 
     if (e.type === "touchstart" && touch.length === 2) {
@@ -470,11 +475,12 @@ class Scaling {
     this.isDragging = this.scaling = false;
 
     this.startCoords = {
-      x: position.x - this.last.x,
-      y: position.y - this.last.y
-      // x: position.x,
-      // y: position.y
+      x: pos.x - this.last.x,
+      y: pos.y - this.last.y
     };
+
+    this.lastDraggedPos.x = pos.x;
+    this.lastDraggedPos.y = pos.y;
 
     console.log(['start', this.startCoords]);
   }
@@ -487,11 +493,14 @@ class Scaling {
     }
 
     if (this.isDragging && this.canDrag() && this.scaling === false) {
-      var position = this.pointerEvents(e),
+      var pos = this.pointerEvents(e),
         offset = e.type === "touchmove" ? 1.3 : 1;
 
-      this.moveX = (position.x - this.startCoords.x) * offset;
-      this.moveY = (position.y - this.startCoords.y) * offset;
+      this.moveX = (pos.x - this.startCoords.x) * offset;
+      this.moveY = (pos.y - this.startCoords.y) * offset;
+
+      this.lastDraggedPos.x = pos.x;
+      this.lastDraggedPos.y = pos.y;
 
       console.log(['move', this.moveX, this.moveY]);
 
@@ -510,43 +519,30 @@ class Scaling {
       }
       this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
     }
+  }
 
+  listenerUpLeaveEnd(name, pos) {
+    if (this.dragStarted || this.isDragging) {
+      this.last = {
+        x: pos.x - this.startCoords.x,
+        y: pos.y - this.startCoords.y
+      };
+    }
+    this.dragStarted = this.isDragging = this.scaling = false;
+    cancelAnimationFrame(this.scaleDraw);
+    cancelAnimationFrame(this.redraw);
+    console.log([name, this.last]);
   }
 
   listenerMouseLeave(e) {
-    var position = this.pointerEvents(e);
-
-    if (this.dragStarted || this.isDragging) {
-      this.last = {
-        x: position.x - this.startCoords.x,
-        y: position.y - this.startCoords.y
-      };
-    }
-
-    this.dragStartedStarted = this.isDragging = this.scaling = false;
-
-    console.log(['leave', this.last]);
-
-    cancelAnimationFrame(this.scaleDraw);
-    cancelAnimationFrame(this.redraw);
+    e.preventDefault();
+    this.listenerUpLeaveEnd('leave', this.lastDraggedPos);
   }
 
   listenerMouseUpTouchEnd(e) {
-    var position = this.pointerEvents(e);
-
-    if (this.dragStarted || this.isDragging) {
-      this.last = {
-        x: position.x - this.startCoords.x,
-        y: position.y - this.startCoords.y
-      };
-    }
-
-    this.dragStarted = this.isDragging = this.scaling = false;
-
-    console.log(['end', this.last]);
-
-    cancelAnimationFrame(this.scaleDraw);
-    cancelAnimationFrame(this.redraw);
+    // var pos = this.pointerEvents(e);
+    e.preventDefault();
+    this.listenerUpLeaveEnd('up-end', this.lastDraggedPos);
   }
 
   /*
@@ -622,10 +618,8 @@ class Scaling {
       let rect = this.previewZoomCanvas.getBoundingClientRect();
       this.pzcClientWidth = rect.width;
       this.pzcClientHeight = rect.height;
-      this.scaleToMoveX = this.clientDimensions.width / this.pzcClientWidth;
-      this.scaleToMoveY = this.clientDimensions.height / this.pzcClientHeight;
-      // this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
-      // this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
+      // this.scaleToMoveX = this.clientDimensions.width / this.pzcClientWidth;
+      // this.scaleToMoveY = this.clientDimensions.height / this.pzcClientHeight;
     }
   }
 
@@ -656,8 +650,6 @@ class Scaling {
           (touch[0].clientY - touch[1].clientY) *
           (touch[0].clientY - touch[1].clientY)
         );
-      } else {
-        this.previewZoomCanDrag = true;
       }
       this.previewZoomDragStarted = true;
       this.previewZoomIsDragging = this.previewZoomScaling = false;
@@ -671,6 +663,9 @@ class Scaling {
         x: this.applyScaleToMoveX(this.previewZoomStartCoords.x),
         y: this.applyScaleToMoveY(this.previewZoomStartCoords.y)
       };
+
+      this.lastDraggedPreviewZoomPos.x = pos.x;
+      this.lastDraggedPreviewZoomPos.y = pos.y;
 
       console.log(['start', this.previewZoomStartCoords]);
 
@@ -686,19 +681,22 @@ class Scaling {
       this.previewZoomIsDragging = true;
     }
 
-    if (this.previewZoomIsDragging && this.canDrag() && this.scaling === false) {
+    if (this.previewZoomIsDragging && this.canDrag()) {
 
       if (this.inZoomRect(pos)) {
 
         this.previewZoomMoveX = (pos.x - this.previewZoomStartCoords.x) * offset;
         this.previewZoomMoveY = (pos.y - this.previewZoomStartCoords.y) * offset;
 
+        this.lastDraggedPreviewZoomPos.x = pos.x;
+        this.lastDraggedPreviewZoomPos.y = pos.y;
+
         // this.redraw = requestAnimationFrame(this.canvasDraw);
-        console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY]);
+        console.log(['move-in-rect', this.previewZoomMoveX, this.previewZoomMoveY]);
 
         let moveX = this.applyScaleToMoveX(this.previewZoomMoveX);
         let moveY = this.applyScaleToMoveY(this.previewZoomMoveY);
-        console.log(['move', moveX, moveY]);
+        // console.log(['move', moveX, moveY]);
 
         this.moveX = moveX;
         this.moveY = moveY;
@@ -718,29 +716,24 @@ class Scaling {
       }
       // this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
       console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY, this.previewZoomDistance]);
+    } else {
+      this.pzlUpEndLeave('move-touch-out', pos);
     }
   }
 
-  pzlLeaveEnd(e) {
-    e.preventDefault();
-    var pos = this.previewZoomPointerEvents(e);
-
+  pzlUpEndLeave(name, pos) {
     if (this.previewZoomDragStarted || this.previewZoomIsDragging) {
-
       this.previewZoomLast = {
-        // x: position.x - e.target.offsetLeft - this.previewZoomStartCoords.x,
-        // y: position.y - e.target.offsetTop - this.previewZoomStartCoords.y
         x: pos.x - this.previewZoomStartCoords.x,
         y: pos.y - this.previewZoomStartCoords.y
       };
-      console.log(['end', this.previewZoomLast]);
+      console.log([name, this.previewZoomLast]);
 
       this.last = {
         x: this.applyScaleToMoveX(this.previewZoomLast.x),
         y: this.applyScaleToMoveY(this.previewZoomLast.y)
       };
 
-      this.previewZoomIsDragging = false;
       cancelAnimationFrame(this.scaleDraw);
       cancelAnimationFrame(this.redraw);
     }
@@ -748,11 +741,14 @@ class Scaling {
   }
 
   previewZoomListenerMouseLeave(e) {
-    this.pzlLeaveEnd(e);
+    e.preventDefault();
+    this.pzlUpEndLeave('up-end', this.lastDraggedPreviewZoomPos);
   }
 
   previewZoomListenerMouseUpTouchEnd(e) {
-    this.pzlLeaveEnd(e);
+    // var pos = this.previewZoomPointerEvents(e);
+    e.preventDefault();
+    this.pzlUpEndLeave('up-end', this.lastDraggedPreviewZoomPos);
   }
 
 }
