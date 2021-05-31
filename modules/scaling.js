@@ -397,12 +397,16 @@ class Scaling {
   }
 
   handleResize() {
-    this.resizeCanvas(this.canvas);
-    this.reCalculatePreviewZoomRect();
+    this.redraw = requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.clientDimensions = this.getWidthHeight(this.canvas.parentElement);
+        this.resizeCanvas(this.canvas);
+        this.reCalculatePreviewZoomRect();
+      });
+    });
   }
 
   resizeCanvas(c) {
-    this.clientDimensions = this.getWidthHeight(c);
     let { clientWidth, clientHeight } = this.clientDimensions;
 
     clientWidth = this.clientDimensions.width;
@@ -420,8 +424,7 @@ class Scaling {
     c.width = resizeW;
     c.height = resizeH;
     this.calcMaxScale();
-    this.queueCanvasDraw();
-    // this.redraw = requestAnimationFrame(this.canvasDraw);
+    this.redraw = requestAnimationFrame(this.canvasDraw);
   }
 
   updateZoomButtons() {
