@@ -886,7 +886,7 @@ div#preview-image-next-name {
   user-select: none;
 }
 
-div.zoom-preview-container {
+div.zoom-preview-content {
   border: 2px solid var(--bright-teal);
   padding: 0.5vh 1vh 1vh 1vh;
   background-color: black;
@@ -916,9 +916,15 @@ div#preview-image-canvas-container {
     width: 18vh;
     background-color: black;
     border: none;
+    &.overzoomrect {
+      cursor: move;
+    }
   }
   &.zoomrect > canvas {
     width: 18vh;
+    &.overzoomrect {
+      cursor: move;
+    }
   }
 }
 
@@ -1153,15 +1159,22 @@ div#save-and-send-canvas-container {
   }
 }
 
+div#micc-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  border: 3px solid var(--canvas-container-border-color);
+  border-radius: 3px;
+}
+
 div#main-image-canvas-container {
   position: relative;
-  width: auto;
+  width: 100%;
   height: 76vh;
   margin: 0vh 1vh;
   padding: 0;
-  background-color: var(--almost-black);
-  border: 3px solid var(--canvas-container-border-color);
-  border-radius: 3px;
+  background-color: black;
   &:fullscreen {
     width: 90vw;
     height: 80vh;
@@ -1171,6 +1184,13 @@ div#main-image-canvas-container {
     position: absolute;
     padding: 0;
     margin: 0;
+    top: 0;
+    // left: 0;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, 0%);
+    width: unset;
+    max-width: 100%;
     background-color: gray;
     object-fit: contain;
     &.red {
@@ -1194,8 +1214,8 @@ div#main-image-canvas-container {
 }
 
 canvas#main-image-canvas-red {
-  height: 100%;
-  width: 100%;
+  // height: 100%;
+  // width: 100%;
   object-fit: contain;
 }
 

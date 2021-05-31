@@ -318,7 +318,7 @@ class Page {
           <img src="images/page-images/${id}.jpg" ></img>
         </div>
         <div class="name">${this.image.site}</div>
-        <div class="zoom-preview-container mt-4 mb-2">
+        <div class="zoom-preview-content mt-4 mb-2">
           <div class="label">${this.youaretext}</div>
           <div class="zoom-rect-container">
             <div id="preview-image-canvas-container" class="zoomrect"></div>
@@ -335,10 +335,12 @@ class Page {
       // images.resizeCanvas(this.image.destinations.main.canvas, this.image.nx, this.image.ny);
     };
     return `
-      <div id='main-image-content' class='main-image-content col-9 justify-content-center'>
-        <div id='${id2}' class="row d-flex justify-content-center align-items-center">
-          ${renderDev.fullScreenButton(id2, '#main-image-content', this.registeredCallbacks, optionalFunc)}
-          ${this.renderSpinner()}
+      <div id='main-image-content' class='main-image-content col-9'>
+        <div id="micc-container">
+          <div id='${id2}' class="">
+              ${renderDev.fullScreenButton(id2, '#micc', this.registeredCallbacks, optionalFunc)}
+              ${this.renderSpinner()}
+          </div>
         </div>
         ${this.renderUnderMainImageRow(this.type, this.registeredCallbacks)}
         <span class="touchinfo hidden">Use your fingers to zoom and move the image<br>(touch to hide this tooltip)</span>

@@ -5,8 +5,6 @@ class Scaling {
     this.canvas = canvas;
     this.clientDimensions = {};
 
-    this.stmx = -4;
-
     this.imageBitmap = imageBitmap;
     this.previewZoomCanvas = previewZoomCanvas;
     this.pzcZoomRectDisplayed = false;
@@ -36,8 +34,8 @@ class Scaling {
     this.scaling = false;
     this.previewZoomScaling = false;
 
-    this.canDrag = false;
-    this.previewZoomCanDrag = false;
+    this.dragStarted = false;
+    this.previewZoomDragStarted = false;
 
     this.isDragging = false;
     this.previewZoomIsDragging = false;
@@ -74,6 +72,9 @@ class Scaling {
       'listenerMouseDownTouchStart',
       'listenerMouseMoveTouchMove',
       'listenerMouseUpTouchEnd',
+      'listenerMouseOverZoomRect',
+      'listenerMouseMoveZoomRect',
+      'listenerMouseOutZoomRect',
       'listenerZoom',
       'previewZoomListenerMouseDownTouchStart',
       'previewZoomListenerMouseMoveTouchMove',
@@ -138,7 +139,12 @@ class Scaling {
 
       ['mouseleave', this.previewZoomListenerMouseLeave],
       ['mouseup', this.previewZoomListenerMouseUpTouchEnd],
-      ['touchend', this.previewZoomListenerMouseUpTouchEnd]
+      ['touchend', this.previewZoomListenerMouseUpTouchEnd],
+
+      ['mouseover', this.listenerMouseOverZoomRect],
+      ['mousemove', this.listenerMouseMoveZoomRect],
+      ['mouseout', this.listenerMouseOutZoomRect],
+
     ];
 
     if (this.previewZoomCanvas) {
@@ -344,7 +350,7 @@ class Scaling {
     const pzcW = this.previewZoomCanvas.width;
     const pczH = this.previewZoomCanvas.height;
     ctx.clearRect(0, 0, pzcW, pczH);
-    if (zp.sw + zp.sh != 2) {
+    if (this.canDrag()) {
       this.pzcZoomRectDisplayed = true;
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
       ctx.lineWidth = 4;
@@ -369,15 +375,7 @@ class Scaling {
 
   handleResize() {
     this.resizeCanvas(this.canvas);
-    if (this.previewZoomCanvas) {
-      let rect = this.previewZoomCanvas.getBoundingClientRect();
-      this.pzcClientWidth = rect.width;
-      this.pzcClientHeight = rect.height;
-      this.scaleToMoveX = this.clientDimensions.width / this.pzcClientWidth;
-      this.scaleToMoveY = this.clientDimensions.height / this.pzcClientHeight;
-      // this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
-      // this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
-    }
+    this.reCalculatePreviewZoomRect();
   }
 
   resizeCanvas(c) {
@@ -426,6 +424,10 @@ class Scaling {
       POINTER EVENTS for main scaling canvas
   */
 
+  canDrag() {
+    return this.scale > 1;
+  }
+
   pointerEvents(e) {
     var pos = {
       x: 0,
@@ -444,7 +446,6 @@ class Scaling {
       pos.x = e.pageX;
       pos.y = e.pageY;
     }
-
     return pos;
   }
 
@@ -464,31 +465,33 @@ class Scaling {
         (touch[0].clientY - touch[1].clientY) *
         (touch[0].clientY - touch[1].clientY)
       );
-    } else {
-      this.canDrag = true;
     }
+    this.dragStarted = true;
     this.isDragging = this.scaling = false;
 
     this.startCoords = {
-      x: position.x - e.target.offsetLeft - this.last.x,
-      y: position.y - e.target.offsetTop - this.last.y
+      x: position.x - this.last.x,
+      y: position.y - this.last.y
+      // x: position.x,
+      // y: position.y
     };
+
     console.log(['start', this.startCoords]);
   }
 
   listenerMouseMoveTouchMove(e) {
     e.preventDefault();
 
-    if (this.canDrag) {
+    if (this.canDrag() && this.dragStarted) {
       this.isDragging = true;
     }
 
-    if (this.isDragging && this.canDrag && this.scaling === false) {
+    if (this.isDragging && this.canDrag() && this.scaling === false) {
       var position = this.pointerEvents(e),
         offset = e.type === "touchmove" ? 1.3 : 1;
 
-      this.moveX = (position.x - e.target.offsetLeft - this.startCoords.x) * offset;
-      this.moveY = (position.y - e.target.offsetTop - this.startCoords.y) * offset;
+      this.moveX = (position.x - this.startCoords.x) * offset;
+      this.moveY = (position.y - this.startCoords.y) * offset;
 
       console.log(['move', this.moveX, this.moveY]);
 
@@ -513,14 +516,16 @@ class Scaling {
   listenerMouseLeave(e) {
     var position = this.pointerEvents(e);
 
-    if (this.isDragging) {
+    if (this.dragStarted || this.isDragging) {
       this.last = {
-        x: position.x - e.target.offsetLeft - this.startCoords.x,
-        y: position.y - e.target.offsetTop - this.startCoords.y
+        x: position.x - this.startCoords.x,
+        y: position.y - this.startCoords.y
       };
     }
 
-    this.canDrag = this.isDragging = this.scaling = false;
+    this.dragStartedStarted = this.isDragging = this.scaling = false;
+
+    console.log(['leave', this.last]);
 
     cancelAnimationFrame(this.scaleDraw);
     cancelAnimationFrame(this.redraw);
@@ -529,14 +534,16 @@ class Scaling {
   listenerMouseUpTouchEnd(e) {
     var position = this.pointerEvents(e);
 
-    if (this.isDragging) {
+    if (this.dragStarted || this.isDragging) {
       this.last = {
-        x: position.x - e.target.offsetLeft - this.startCoords.x,
-        y: position.y - e.target.offsetTop - this.startCoords.y
+        x: position.x - this.startCoords.x,
+        y: position.y - this.startCoords.y
       };
     }
 
-    this.canDrag = this.isDragging = this.scaling = false;
+    this.dragStarted = this.isDragging = this.scaling = false;
+
+    console.log(['end', this.last]);
 
     cancelAnimationFrame(this.scaleDraw);
     cancelAnimationFrame(this.redraw);
@@ -561,10 +568,12 @@ class Scaling {
       e.type == "mouseup" ||
       e.type == "mousemove"
     ) {
+      pos.x = e.pageX;
+      pos.y = e.pageY;
+
       pos.x = e.clientX - rect.left;
       pos.y = e.clientY - rect.top;
     }
-
     return pos;
   }
 
@@ -585,21 +594,56 @@ class Scaling {
     return inside;
   }
 
+  listenerMouseOverZoomRect() {
+    this.overPreviewZoom = true;
+  }
+
+  listenerMouseMoveZoomRect(e) {
+    const rect = this.previewZoomCanvas.getBoundingClientRect();
+    var pos = {};
+    if (this.overPreviewZoom) {
+      pos.x = e.clientX - rect.left;
+      pos.y = e.clientY - rect.top;
+      if (this.inZoomRect(pos)) {
+        this.previewZoomCanvas.classList.add('overzoomrect');
+      } else {
+        this.previewZoomCanvas.classList.remove('overzoomrect');
+      }
+    }
+  }
+
+  listenerMouseOutZoomRect() {
+    this.previewZoomCanvas.classList.remove('overzoomrect');
+    this.overPreviewZoom = false;
+  }
+
+  reCalculatePreviewZoomRect() {
+    if (this.previewZoomCanvas) {
+      let rect = this.previewZoomCanvas.getBoundingClientRect();
+      this.pzcClientWidth = rect.width;
+      this.pzcClientHeight = rect.height;
+      this.scaleToMoveX = this.clientDimensions.width / this.pzcClientWidth;
+      this.scaleToMoveY = this.clientDimensions.height / this.pzcClientHeight;
+      // this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
+      // this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
+    }
+  }
+
   applyScaleToMoveX(px) {
     this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
-    return px * -4 * this.scaleToMoveY - this.canvas.offsetLeft;
+    return px * -4 * this.scaleToMoveX;
   }
 
   applyScaleToMoveY(py) {
     this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
-    return py * -4 * this.scaleToMoveY - this.canvas.offsetTop;
+    return py * -4 * this.scaleToMoveY;
   }
 
   previewZoomListenerMouseDownTouchStart(e) {
-    var position = this.previewZoomPointerEvents(e),
+    var pos = this.previewZoomPointerEvents(e),
       touch;
 
-    if (this.inZoomRect(position)) {
+    if (this.inZoomRect(pos)) {
       if (e.type === "touchstart" && touch.length === 2) {
         // touch = e.originalEvent.touches || e.originalEvent.changedTouches;
         touch = e.touches || e.changedTouches;
@@ -615,11 +659,12 @@ class Scaling {
       } else {
         this.previewZoomCanDrag = true;
       }
+      this.previewZoomDragStarted = true;
       this.previewZoomIsDragging = this.previewZoomScaling = false;
 
       this.previewZoomStartCoords = {
-        x: position.x - e.target.offsetLeft - this.previewZoomLast.x,
-        y: position.y - e.target.offsetTop - this.previewZoomLast.y
+        x: pos.x - this.previewZoomLast.x,
+        y: pos.y - this.previewZoomLast.y
       };
 
       this.startCoords = {
@@ -634,19 +679,19 @@ class Scaling {
 
   previewZoomListenerMouseMoveTouchMove(e) {
     e.preventDefault();
+    var pos = this.previewZoomPointerEvents(e),
+      offset = e.type === "touchmove" ? 1.3 : 1;
 
-    if (this.previewZoomCanDrag) {
+    if (this.canDrag() && this.previewZoomDragStarted) {
       this.previewZoomIsDragging = true;
     }
 
-    if (this.previewZoomIsDragging && this.previewZoomCanDrag && this.scaling === false) {
-      var position = this.previewZoomPointerEvents(e),
-        offset = e.type === "touchmove" ? 1.3 : 1;
+    if (this.previewZoomIsDragging && this.canDrag() && this.scaling === false) {
 
-      if (this.inZoomRect(position)) {
+      if (this.inZoomRect(pos)) {
 
-        this.previewZoomMoveX = (position.x - e.target.offsetLeft - this.previewZoomStartCoords.x) * offset;
-        this.previewZoomMoveY = (position.y - e.target.offsetTop - this.previewZoomStartCoords.y) * offset;
+        this.previewZoomMoveX = (pos.x - this.previewZoomStartCoords.x) * offset;
+        this.previewZoomMoveY = (pos.y - this.previewZoomStartCoords.y) * offset;
 
         // this.redraw = requestAnimationFrame(this.canvasDraw);
         console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY]);
@@ -658,7 +703,6 @@ class Scaling {
         this.moveX = moveX;
         this.moveY = moveY;
         this.redraw = requestAnimationFrame(this.canvasDraw);
-
       }
     } else if (this.scaling === true) {
       if (e instanceof TouchEvent) {
@@ -671,20 +715,23 @@ class Scaling {
           (touch[0].clientY - touch[1].clientY) *
           (touch[0].clientY - touch[1].clientY)
         );
-        console.log(['move', this.previewZoomDistance]);
       }
       // this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
       console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY, this.previewZoomDistance]);
     }
   }
 
-  previewZoomListenerMouseLeave(e) {
-    var position = this.previewZoomPointerEvents(e);
+  pzlLeaveEnd(e) {
+    e.preventDefault();
+    var pos = this.previewZoomPointerEvents(e);
 
-    if (this.previewZoomIsDragging) {
+    if (this.previewZoomDragStarted || this.previewZoomIsDragging) {
+
       this.previewZoomLast = {
-        x: position.x - e.target.offsetLeft - this.previewZoomStartCoords.x,
-        y: position.y - e.target.offsetTop - this.previewZoomStartCoords.y
+        // x: position.x - e.target.offsetLeft - this.previewZoomStartCoords.x,
+        // y: position.y - e.target.offsetTop - this.previewZoomStartCoords.y
+        x: pos.x - this.previewZoomStartCoords.x,
+        y: pos.y - this.previewZoomStartCoords.y
       };
       console.log(['end', this.previewZoomLast]);
 
@@ -693,32 +740,19 @@ class Scaling {
         y: this.applyScaleToMoveY(this.previewZoomLast.y)
       };
 
-      this.previewZoomCanDrag = this.previewZoomIsDragging = false;
+      this.previewZoomIsDragging = false;
       cancelAnimationFrame(this.scaleDraw);
       cancelAnimationFrame(this.redraw);
     }
+    this.previewZoomDragStarted = this.previewZoomIsDragging = false;
+  }
+
+  previewZoomListenerMouseLeave(e) {
+    this.pzlLeaveEnd(e);
   }
 
   previewZoomListenerMouseUpTouchEnd(e) {
-    var position = this.previewZoomPointerEvents(e);
-
-    if (this.previewZoomIsDragging) {
-      this.previewZoomLast = {
-        x: position.x - e.target.offsetLeft - this.previewZoomStartCoords.x,
-        y: position.y - e.target.offsetTop - this.previewZoomStartCoords.y
-      };
-
-      console.log(['end', this.previewZoomLast]);
-
-      this.last = {
-        x: this.applyScaleToMoveX(this.previewZoomLast.x),
-        y: this.applyScaleToMoveY(this.previewZoomLast.y)
-      };
-
-      this.previewZoomCanDrag = this.previewZoomIsDragging = false;
-      cancelAnimationFrame(this.scaleDraw);
-      cancelAnimationFrame(this.redraw);
-    }
+    this.pzlLeaveEnd(e);
   }
 
 }
