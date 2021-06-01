@@ -20,6 +20,9 @@ class Scaling {
     this.pzcZoomRectDisplayed = false;
     this.pzcClientWidth = null;
     this.pzcClientHeight = null;
+    this.pczScaleToPos = 1;
+
+    this.lastChangeIn = "";
 
     this.mainEvents = null;
     this.previewZoomEvents = null;
@@ -54,10 +57,10 @@ class Scaling {
     this.previewZoomStartCoords = { x: 0, y: 0 };
 
     this.lastMove = { x: 0, y: 0 };
-    this.previewZoomLast = { x: 0, y: 0 };
+    this.lastPreviewZoomMove = { x: 0, y: 0 };
 
-    this.lastDraggedPos = {};
-    this.lastDraggedPreviewZoomPos = {};
+    this.lastDraggedPos = { x: 0, y: 0 };
+    this.lastDraggedPreviewZoomPos = { x: 0, y: 0 };
 
     this.moveX = 0;
     this.previewZoomMoveX = 0;
@@ -281,6 +284,7 @@ class Scaling {
   }
 
   scaleCanvas() {
+    // let previousScale = this.scale;
     switch (this.scaling) {
     case 'zoomout':
       this.scale = this.scale / this.scaleFactor;
@@ -294,10 +298,16 @@ class Scaling {
       this.scale = 1;
       break;
     }
-    this.moveX = this.moveY = 0;
+    this.resetMainUIVars();
+    // let change = this.scale - previousScale;
+    // console.log([this.scaling, ', scale: ', this.scale, ' change: ', change]);
     this.updateZoomButtons();
     this.queueCanvasDraw();
     // this.redraw = requestAnimationFrame(this.canvasDraw);
+  }
+
+  resetMainUIVars() {
+    // this.moveX = this.moveY = 0;
   }
 
   scaleCanvasTouch() {
@@ -316,6 +326,8 @@ class Scaling {
   }
 
   calcMainWidthsHeightsLimitMoves() {
+    let previousImageWidth = this.imageWidth;
+    let previousImageHeight = this.imageHeight;
     this.imageWidth = this.imageBitmap.width * this.ratio * this.scale;
     this.imageHeight = this.imageBitmap.height * this.ratio * this.scale;
     this.w = Math.min(this.clientDimensions.width, this.imageWidth);
@@ -329,12 +341,20 @@ class Scaling {
     let minMoveX = -(this.imageWidth - this.offsetX - this.w);
     let minMoveY = -(this.imageHeight - this.offsetY - this.h);
 
-    if (this.moveX > this.offsetX) {
-      this.moveX = this.offsetX;
+    if (previousImageWidth) {
+      this.moveX *= 1 + (this.imageWidth / previousImageWidth - 1);
     }
 
-    if (this.moveX < minMoveX) {
+    if (previousImageHeight) {
+      this.moveY *= 1 + (this.imageHeight / previousImageHeight - 1);
+    }
+
+    if (this.moveX > this.offsetX) {
+      this.moveX = this.offsetX;
+    } else if (this.moveX < minMoveX) {
       this.moveX = minMoveX;
+    } else {
+      // this.moveX += (this.offsetX - this.moveX) / 2;
     }
 
     if (this.moveY > this.offsetY) {
@@ -348,7 +368,7 @@ class Scaling {
 
   canvasDraw() {
     this.calcMainWidthsHeightsLimitMoves();
-    console.log(`canvasDraw: move: ${this.moveX}, ${this.moveY}, offset: ${this.offsetX}, ${this.offsetY}`);
+    // console.log(`canvasDraw: move: ${this.moveX}, ${this.moveY}, offset: ${this.offsetX}, ${this.offsetY}`);
     this.ctx.drawImage(
       this.imageBitmap,
       -this.offsetX + this.moveX,
@@ -505,7 +525,9 @@ class Scaling {
     this.lastDraggedPos.x = pos.x;
     this.lastDraggedPos.y = pos.y;
 
-    console.log(['start: startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastStart: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
+    this.lastChangeIn = "main";
+
+    console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
   }
 
   listenerMouseMoveTouchMove(e) {
@@ -533,7 +555,7 @@ class Scaling {
       // this.redraw = requestAnimationFrame(this.canvasDraw);
       this.queueCanvasDraw();
 
-      console.log(['move', this.moveX, this.moveY]);
+      // console.log(['move', this.moveX, this.moveY]);
 
     } else if (this.scaling === true) {
       if (e instanceof TouchEvent) {
@@ -548,6 +570,7 @@ class Scaling {
         );
       }
       this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
+      this.lastChangeIn = "main";
     }
   }
 
@@ -580,12 +603,13 @@ class Scaling {
         x: this.moveX,
         y: this.moveY
       };
+      this.redraw = requestAnimationFrame(this.canvasDraw);
+      this.dragStarted = this.isDragging = this.scaling = false;
+      this.lastChangeIn = "main";
+      console.log([name, 'lastMove: ', this.lastMove.x, this.lastMove.y]);
     }
-    this.dragStarted = this.isDragging = this.scaling = false;
-    cancelAnimationFrame(this.scaleDraw);
-    cancelAnimationFrame(this.redraw);
-    this.redraw = requestAnimationFrame(this.canvasDraw);
-    console.log([name, 'lastMove: ', this.lastMove.x, this.lastMove.y]);
+    // cancelAnimationFrame(this.scaleDraw);
+    // cancelAnimationFrame(this.redraw);
   }
 
   listenerMouseLeave(e) {
@@ -670,19 +694,19 @@ class Scaling {
       let rect = this.previewZoomCanvas.getBoundingClientRect();
       this.pzcClientWidth = rect.width;
       this.pzcClientHeight = rect.height;
-      // this.scaleToMoveX = this.clientDimensions.width / this.pzcClientWidth;
-      // this.scaleToMoveY = this.clientDimensions.height / this.pzcClientHeight;
+      this.pczScaleToPos = this.pzcClientWidth / this.previewZoomCanvas.width;
     }
   }
 
   applyScaleToMoveX(px) {
-    this.scaleToMoveX = this.canvas.width / this.pzcClientWidth;
-    return px * -4 * this.scaleToMoveX;
+    this.scaleToMoveX = this.canvas.width / -(this.zwidth * this.pczScaleToPos);
+    return px * this.scaleToMoveX;
   }
 
   applyScaleToMoveY(py) {
-    this.scaleToMoveY = this.canvas.height / this.pzcClientHeight;
-    return py * -4 * this.scaleToMoveY;
+    this.scaleToMoveY = this.canvas.height / -(this.zheight * this.pczScaleToPos);
+    // this.scaleToMoveY = -2 * this.canvas.height / this.zheight;
+    return py * this.scaleToMoveY;
   }
 
   previewZoomListenerMouseDownTouchStart(e) {
@@ -707,22 +731,33 @@ class Scaling {
       this.previewZoomIsDragging = this.previewZoomScaling = false;
 
       this.previewZoomStartCoords = {
-        x: pos.x - this.previewZoomLast.x,
-        y: pos.y - this.previewZoomLast.y
-      };
-
-      this.startCoords = {
-        x: this.applyScaleToMoveX(this.previewZoomStartCoords.x),
-        y: this.applyScaleToMoveY(this.previewZoomStartCoords.y)
+        x: pos.x - this.lastPreviewZoomMove.x,
+        y: pos.y - this.lastPreviewZoomMove.y
       };
 
       this.lastDraggedPreviewZoomPos.x = pos.x;
       this.lastDraggedPreviewZoomPos.y = pos.y;
 
-      console.log(['start', pos.x, pos.y]);
+      // scale and update main image zoom and drag UI variables
+      this.startCoords = {
+        x: this.applyScaleToMoveX(this.previewZoomStartCoords.x),
+        y: this.applyScaleToMoveY(this.previewZoomStartCoords.y)
+      };
+
+      this.lastDraggedPos = {
+        x: this.applyScaleToMoveX(pos.x),
+        y: this.applyScaleToMoveY(pos.y)
+      };
+
+      this.calcMainWidthsHeightsLimitMoves();
+
+      console.log(`startPZ: start: ${this.previewZoomStartCoords.x}, ${this.previewZoomStartCoords.y}; pos: ${pos.x}, ${pos.y}; lastPzMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
     } else {
-      console.log(['start-out', pos.x, pos.y]);
+      // console.log(['startPZ-out', pos.x, pos.y]);
     }
+
+    this.lastChangeIn = "pzc";
+
   }
 
   previewZoomListenerMouseMoveTouchMove(e) {
@@ -737,21 +772,23 @@ class Scaling {
     if (this.previewZoomIsDragging && this.canDrag()) {
 
       if (this.inZoomRect(pos)) {
-
         this.previewZoomMoveX = (pos.x - this.previewZoomStartCoords.x) * offset;
         this.previewZoomMoveY = (pos.y - this.previewZoomStartCoords.y) * offset;
 
         this.lastDraggedPreviewZoomPos.x = pos.x;
         this.lastDraggedPreviewZoomPos.y = pos.y;
 
-        // console.log(['move-in-rect', this.previewZoomMoveX, this.previewZoomMoveY]);
+        // scale and update main image zoom and drag UI variables
+        this.moveX = this.applyScaleToMoveX(this.previewZoomMoveX);
+        this.moveY = this.applyScaleToMoveY(this.previewZoomMoveY);
 
-        let moveX = this.applyScaleToMoveX(this.previewZoomMoveX);
-        let moveY = this.applyScaleToMoveY(this.previewZoomMoveY);
-        // console.log(['move', moveX, moveY]);
+        this.calcMainWidthsHeightsLimitMoves();
 
-        this.moveX = moveX;
-        this.moveY = moveY;
+        this.lastDraggedPos = {
+          x: this.applyScaleToMoveX(pos.x),
+          y: this.applyScaleToMoveY(pos.y)
+        };
+
         // this.redraw = requestAnimationFrame(this.canvasDraw);
         this.queueCanvasDraw();
       }
@@ -770,38 +807,44 @@ class Scaling {
       // this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
       // console.log(['move', this.previewZoomMoveX, this.previewZoomMoveY, this.previewZoomDistance]);
     } else {
-      this.pzlUpEndLeave('move-touch-out', pos);
+      this.previewZoomUpLeaveEnd('move-touch-out', pos);
     }
+
+    this.lastChangeIn = "pzc";
+
   }
 
-  pzlUpEndLeave(name, pos) {
+  previewZoomUpLeaveEnd(name) {
     if (this.previewZoomDragStarted || this.previewZoomIsDragging) {
-      this.previewZoomLast = {
-        x: pos.x - this.previewZoomStartCoords.x,
-        y: pos.y - this.previewZoomStartCoords.y
+      this.lastChangeIn = "pzc";
+      this.lastPreviewZoomMove = {
+        x: this.previewZoomMoveX,
+        y: this.previewZoomMoveY
       };
-      // console.log([name, this.previewZoomLast]);
-
+      // update main image zoom and drag UI variables
       this.lastMove = {
-        x: this.applyScaleToMoveX(this.previewZoomLast.x),
-        y: this.applyScaleToMoveY(this.previewZoomLast.y)
+        x: this.applyScaleToMoveX(this.lastPreviewZoomMove.x),
+        y: this.applyScaleToMoveY(this.lastPreviewZoomMove.y)
       };
+      this.redraw = requestAnimationFrame(this.canvasDraw);
+      this.previewZoomDragStarted = this.previewZoomIsDragging = false;
 
-      cancelAnimationFrame(this.scaleDraw);
-      cancelAnimationFrame(this.redraw);
+      this.lastChangeIn = "pzc";
+
+      console.log(`${name}: lastPZMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
     }
-    this.previewZoomDragStarted = this.previewZoomIsDragging = false;
+    // cancelAnimationFrame(this.scaleDraw);
+    // cancelAnimationFrame(this.redraw);
   }
 
   previewZoomListenerMouseLeave(e) {
     e.preventDefault();
-    this.pzlUpEndLeave('up-end', this.lastDraggedPreviewZoomPos);
+    this.previewZoomUpLeaveEnd('leave');
   }
 
   previewZoomListenerMouseUpTouchEnd(e) {
-    // var pos = this.previewZoomPointerEvents(e);
     e.preventDefault();
-    this.pzlUpEndLeave('up-end', this.lastDraggedPreviewZoomPos);
+    this.previewZoomUpLeaveEnd('up-end');
   }
 
 }
