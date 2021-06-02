@@ -271,10 +271,14 @@ class Scaling {
     if (this.previousImageWidth > 0 && this.previousImageWidth != this.imageWidth) {
       this.moveX *= 1 + (this.imageWidth / this.previousImageWidth - 1);
       this.lastMove.x = this.moveX;
+      this.lastPreviewZoomMove.x = this.applyScaleToMoveX(this.lastMove.x);
+      this.reCalculatePreviewZoomRect();
     }
     if (this.previousImageHeight > 0 && this.previousImageHeight != this.imageHeight) {
       this.moveY *= 1 + (this.imageHeight / this.previousImageHeight - 1);
       this.lastMove.y = this.moveY;
+      this.lastPreviewZoomMove.y = this.applyScaleToMoveX(this.lastMove.y);
+      this.reCalculatePreviewZoomRect();
     }
 
     this.moveX = Math.min(this.moveX, this.offsetX);
@@ -597,6 +601,8 @@ class Scaling {
 
     this.lastChangeIn = "main";
 
+    this.queueCanvasDraw();
+
     console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
   }
 
@@ -766,18 +772,25 @@ class Scaling {
       this.pzcClientWidth = rect.width;
       this.pzcClientHeight = rect.height;
       this.pczScaleToPos = this.pzcClientWidth / this.previewZoomCanvas.width;
+      this.scaleToMoveX = this.canvas.width / -(this.zwidth * this.pczScaleToPos);
+      this.scaleToMoveY = this.canvas.height / -(this.zheight * this.pczScaleToPos);
     }
   }
 
-  applyScaleToMoveX(px) {
-    this.scaleToMoveX = this.canvas.width / -(this.zwidth * this.pczScaleToPos);
-    return px * this.scaleToMoveX;
+  applyScaleToPzcMoveX(pzcPosX) {
+    return pzcPosX * this.scaleToMoveX;
   }
 
-  applyScaleToMoveY(py) {
-    this.scaleToMoveY = this.canvas.height / -(this.zheight * this.pczScaleToPos);
-    // this.scaleToMoveY = -2 * this.canvas.height / this.zheight;
-    return py * this.scaleToMoveY;
+  applyScaleToPzcMoveY(pzcPosY) {
+    return pzcPosY * this.scaleToMoveY;
+  }
+
+  applyScaleToMoveX(posX) {
+    return posX / this.scaleToMoveX;
+  }
+
+  applyScaleToMoveY(posY) {
+    return posY / this.scaleToMoveY;
   }
 
   previewZoomListenerMouseDownTouchStart(e) {
@@ -811,16 +824,17 @@ class Scaling {
 
       // scale and update main image zoom and drag UI variables
       this.startCoords = {
-        x: this.applyScaleToMoveX(this.previewZoomStartCoords.x),
-        y: this.applyScaleToMoveY(this.previewZoomStartCoords.y)
+        x: this.applyScaleToPzcMoveX(this.previewZoomStartCoords.x),
+        y: this.applyScaleToPzcMoveY(this.previewZoomStartCoords.y)
       };
 
       this.lastDraggedPos = {
-        x: this.applyScaleToMoveX(pos.x),
-        y: this.applyScaleToMoveY(pos.y)
+        x: this.applyScaleToPzcMoveX(pos.x),
+        y: this.applyScaleToPzcMoveY(pos.y)
       };
 
       this.calcMainWidthsHeightsLimitMoves();
+      this.queueCanvasDraw();
 
       console.log(`startPZ: start: ${this.previewZoomStartCoords.x}, ${this.previewZoomStartCoords.y}; pos: ${pos.x}, ${pos.y}; lastPzMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
     } else {
@@ -850,14 +864,14 @@ class Scaling {
         this.lastDraggedPreviewZoomPos.y = pos.y;
 
         // scale and update main image zoom and drag UI variables
-        this.moveX = this.applyScaleToMoveX(this.previewZoomMoveX);
-        this.moveY = this.applyScaleToMoveY(this.previewZoomMoveY);
+        this.moveX = this.applyScaleToPzcMoveX(this.previewZoomMoveX);
+        this.moveY = this.applyScaleToPzcMoveY(this.previewZoomMoveY);
 
         this.calcMainWidthsHeightsLimitMoves();
 
         this.lastDraggedPos = {
-          x: this.applyScaleToMoveX(pos.x),
-          y: this.applyScaleToMoveY(pos.y)
+          x: this.applyScaleToPzcMoveX(pos.x),
+          y: this.applyScaleToPzcMoveY(pos.y)
         };
 
         // this.redraw = requestAnimationFrame(this.canvasDraw);
@@ -894,8 +908,8 @@ class Scaling {
       };
       // update main image zoom and drag UI variables
       this.lastMove = {
-        x: this.applyScaleToMoveX(this.lastPreviewZoomMove.x),
-        y: this.applyScaleToMoveY(this.lastPreviewZoomMove.y)
+        x: this.applyScaleToPzcMoveX(this.lastPreviewZoomMove.x),
+        y: this.applyScaleToPzcMoveY(this.lastPreviewZoomMove.y)
       };
       this.redraw = requestAnimationFrame(this.canvasDraw);
       this.previewZoomDragStarted = this.previewZoomIsDragging = false;
