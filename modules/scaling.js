@@ -403,7 +403,7 @@ class Scaling {
 
     if (this.wheeling === 'idle') {
       this.wheeling = 'running';
-      console.log(`wheeling started`);
+      // console.log(`wheeling started`);
 
       if (this.scaling) {
         this.startCoords = {
@@ -457,7 +457,7 @@ class Scaling {
           x: this.previewZoomMoveX,
           y: this.previewZoomMoveY
         };
-        console.log(`wheeling stopped`);
+        // console.log(`wheeling stopped`);
       }, 250); // waiting 250ms to change back to false.
     }
 
@@ -476,7 +476,7 @@ class Scaling {
         this.updateZoomButtons();
         // this.redraw = requestAnimationFrame(this.scaleCanvas);
         this.queueCanvasDraw();
-        console.log(`listenerZoom-pan scale: ${this.scale}; move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+        // console.log(`listenerZoom-pan scale: ${this.scale}; move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
       } else {
         // pan
@@ -539,7 +539,7 @@ class Scaling {
         this.dxOld = dx;
         this.dxOld = dx;
 
-        console.log(`listenerZoom-pan move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+        // console.log(`listenerZoom-pan move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
         this.queueCanvasDraw();
         // this.redraw = requestAnimationFrame(this.canvasDraw);
@@ -560,6 +560,7 @@ class Scaling {
   }
 
   pointerEvents(e) {
+    var touch;
     let pos = {
       x: 0,
       y: 0
@@ -567,23 +568,24 @@ class Scaling {
     let targetRect = e.target.getBoundingClientRect();
 
     if (e.type == "touchstart" || e.type == "touchmove" || e.type == "touchend") {
-      var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-      pos.x = touch.pageX - targetRect.x;
-      pos.y = touch.pageY - targetRect.y;
+      touch = e.changedTouches[0] || e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+      pos.x = touch.pageX;
+      pos.y = touch.pageY;
     } else if (
       e.type == "mousedown" ||
       e.type == "mouseup" ||
       e.type == "mousemove"
     ) {
-      pos.x = e.pageX - targetRect.x;
-      pos.y = e.pageY - targetRect.y;
+      pos.x = e.pageX;
+      pos.y = e.pageY;
     }
-    return pos;
+    pos.x -= targetRect.x;
+    pos.y -= targetRect.y;
+    return [pos, touch];
   }
 
   listenerMouseDownTouchStart(e) {
-    var pos = this.pointerEvents(e),
-      touch;
+    var [pos, touch] = this.pointerEvents(e);
 
     if (e.type === "touchstart" && touch.length === 2) {
       // touch = e.originalEvent.touches || e.originalEvent.changedTouches;
@@ -618,13 +620,12 @@ class Scaling {
 
     this.queueCanvasDraw();
 
-    console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
+    // console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
   }
 
   listenerMouseMoveTouchMove(e) {
     e.preventDefault();
-    let pos = this.pointerEvents(e);
-    let offset = e.type === "touchmove" ? 1.3 : 1;
+    let [pos, touch] = this.pointerEvents(e);
 
     if (!this.dragStarted && !this.scaling) {
       return;
@@ -635,8 +636,8 @@ class Scaling {
     }
 
     if (this.isDragging && !this.scaling) {
-      this.moveX = (pos.x - this.startCoords.x) * offset;
-      this.moveY = (pos.y - this.startCoords.y) * offset;
+      this.moveX = (pos.x - this.startCoords.x);
+      this.moveY = (pos.y - this.startCoords.y);
 
       this.calcMainWidthsHeightsLimitMoves();
 
@@ -652,11 +653,10 @@ class Scaling {
       // this.redraw = requestAnimationFrame(this.canvasDraw);
       this.queueCanvasDraw();
 
-      console.log(`move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+      // console.log(`move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
     } else if (this.scaling === true) {
       if (e instanceof TouchEvent) {
-        var touch = e.originalEvent.touches || e.originalEvent.changedTouches;
 
         //Pinch detection credits: http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch/11183333#11183333
         this.distance = Math.sqrt(
@@ -710,7 +710,7 @@ class Scaling {
       this.redraw = requestAnimationFrame(this.canvasDraw);
       this.dragStarted = this.isDragging = this.scaling = false;
       this.lastChangeIn = "main";
-      console.log([name, 'lastMove: ', this.lastMove.x, this.lastMove.y]);
+      // console.log([name, 'lastMove: ', this.lastMove.x, this.lastMove.y]);
     }
     // cancelAnimationFrame(this.scaleDraw);
     // cancelAnimationFrame(this.redraw);
@@ -732,6 +732,7 @@ class Scaling {
   */
 
   previewZoomPointerEvents(e) {
+    var touch;
     let pos = {
       x: 0,
       y: 0
@@ -739,7 +740,7 @@ class Scaling {
     let targetRect = e.target.getBoundingClientRect();
 
     if (e.type == "touchstart" || e.type == "touchmove" || e.type == "touchend") {
-      var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
+      touch = e.changedTouches[0] || e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
       pos.x = touch.pageX;
       pos.y = touch.pageY;
     } else if (
@@ -747,10 +748,12 @@ class Scaling {
       e.type == "mouseup" ||
       e.type == "mousemove"
     ) {
-      pos.x = e.pageX - targetRect.x;
-      pos.y = e.pageY - targetRect.y;
+      pos.x = e.pageX;
+      pos.y = e.pageY;
     }
-    return pos;
+    pos.x -= targetRect.x;
+    pos.y -= targetRect.y;
+    return [pos, touch];
   }
 
   inZoomRect(pos) {
@@ -821,8 +824,7 @@ class Scaling {
   }
 
   previewZoomListenerMouseDownTouchStart(e) {
-    var pos = this.previewZoomPointerEvents(e),
-      touch;
+    let [pos, touch] = this.previewZoomPointerEvents(e);
 
     if (this.inZoomRect(pos)) {
       if (e.type === "touchstart" && touch.length === 2) {
@@ -863,7 +865,7 @@ class Scaling {
       this.calcMainWidthsHeightsLimitMoves();
       this.queueCanvasDraw();
 
-      console.log(`startPZ: start: ${this.previewZoomStartCoords.x}, ${this.previewZoomStartCoords.y}; pos: ${pos.x}, ${pos.y}; lastPzMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
+      // console.log(`startPZ: start: ${this.previewZoomStartCoords.x}, ${this.previewZoomStartCoords.y}; pos: ${pos.x}, ${pos.y}; lastPzMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
     } else {
       // console.log(['startPZ-out', pos.x, pos.y]);
     }
@@ -874,8 +876,7 @@ class Scaling {
 
   previewZoomListenerMouseMoveTouchMove(e) {
     e.preventDefault();
-    var pos = this.previewZoomPointerEvents(e),
-      offset = e.type === "touchmove" ? 1.3 : 1;
+    let [pos, touch] = this.previewZoomPointerEvents(e);
 
     if (this.canDrag() && this.previewZoomDragStarted) {
       this.previewZoomIsDragging = true;
@@ -884,8 +885,8 @@ class Scaling {
     if (this.previewZoomIsDragging && this.canDrag()) {
 
       if (this.inZoomRect(pos)) {
-        this.previewZoomMoveX = (pos.x - this.previewZoomStartCoords.x) * offset;
-        this.previewZoomMoveY = (pos.y - this.previewZoomStartCoords.y) * offset;
+        this.previewZoomMoveX = (pos.x - this.previewZoomStartCoords.x);
+        this.previewZoomMoveY = (pos.y - this.previewZoomStartCoords.y);
 
         this.lastDraggedPreviewZoomPos.x = pos.x;
         this.lastDraggedPreviewZoomPos.y = pos.y;
@@ -906,7 +907,7 @@ class Scaling {
       }
     } else if (this.scaling === true) {
       if (e instanceof TouchEvent) {
-        var touch = e.originalEvent.touches || e.originalEvent.changedTouches;
+        touch = e.originalEvent.touches || e.originalEvent.changedTouches;
 
         //Pinch detection credits: http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch/11183333#11183333
         this.previewZoomDistance = Math.sqrt(
