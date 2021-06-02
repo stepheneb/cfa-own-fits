@@ -433,8 +433,14 @@ class Scaling {
           y: pos.y
         };
 
+        this.lastDraggedPreviewZoomPos = {
+          x: this.applyScaleToMoveX(pos.x),
+          y: this.applyScaleToMoveY(pos.y)
+        };
+
         this.moveX = pos.x - this.startCoords.x;
         this.moveY = pos.y - this.startCoords.y;
+
       }
 
       // clear any timeout previously started
@@ -446,6 +452,10 @@ class Scaling {
         this.lastMove = {
           x: this.moveX,
           y: this.moveY
+        };
+        this.lastPreviewZoomMove = {
+          x: this.previewZoomMoveX,
+          y: this.previewZoomMoveY
         };
         console.log(`wheeling stopped`);
       }, 250); // waiting 250ms to change back to false.
@@ -529,13 +539,13 @@ class Scaling {
         this.dxOld = dx;
         this.dxOld = dx;
 
-        // this.lastDraggedPos.x = pos.x;
-        // this.lastDraggedPos.y = pos.y;
-
         console.log(`listenerZoom-pan move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
         this.queueCanvasDraw();
         // this.redraw = requestAnimationFrame(this.canvasDraw);
+
+        this.previewZoomMoveX = this.applyScaleToMoveX(this.moveX);
+        this.previewZoomMoveY = this.applyScaleToMoveX(this.moveY);
 
       }
     }
@@ -596,6 +606,11 @@ class Scaling {
       y: pos.y - this.lastMove.y
     };
 
+    this.previewZoomStartCoords = {
+      x: this.applyScaleToMoveX(this.startCoords.x),
+      y: this.applyScaleToMoveY(this.startCoords.y)
+    };
+
     this.lastDraggedPos.x = pos.x;
     this.lastDraggedPos.y = pos.y;
 
@@ -625,8 +640,14 @@ class Scaling {
 
       this.calcMainWidthsHeightsLimitMoves();
 
+      this.previewZoomMoveX = this.applyScaleToMoveX(this.moveX);
+      this.previewZoomMoveY = this.applyScaleToMoveX(this.moveY);
+
       this.lastDraggedPos.x = pos.x;
       this.lastDraggedPos.y = pos.y;
+
+      this.lastDraggedPreviewZoomPos.x = this.applyScaleToMoveX(pos.x);
+      this.lastDraggedPreviewZoomPos.y = this.applyScaleToMoveY(pos.y);
 
       // this.redraw = requestAnimationFrame(this.canvasDraw);
       this.queueCanvasDraw();
@@ -680,6 +701,12 @@ class Scaling {
         x: this.moveX,
         y: this.moveY
       };
+
+      this.lastPreviewZoomMove = {
+        x: this.previewZoomMoveX,
+        y: this.previewZoomMoveY
+      };
+
       this.redraw = requestAnimationFrame(this.canvasDraw);
       this.dragStarted = this.isDragging = this.scaling = false;
       this.lastChangeIn = "main";
