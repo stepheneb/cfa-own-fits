@@ -26,6 +26,9 @@ class Scaling {
 
     this.mainEvents = null;
     this.previewZoomEvents = null;
+
+    this.wheeling = "idle";
+
     this.bindCallbacks();
     this.setupButtons();
     this.touchinfo = document.querySelector('span.touchinfo');
@@ -200,87 +203,6 @@ class Scaling {
     } else {
       this.touchinfo.classList.add('hidden');
     }
-  }
-
-  listenerZoom(e) {
-    e.preventDefault();
-    var dx = 0;
-    var dy = 0;
-    // console.log(' ');
-    // console.log(`wheel listener: ${e.deltaX}, ${e.deltaY}`);
-
-    if (e.ctrlKey) {
-      // zoom
-      dy = e.deltaY;
-      if (window.ui.os == 'Windows' && (window.ui.browser == 'Chrome' || window.ui.browser == 'Edge')) {
-        dy /= 20;
-      }
-      this.scale = this.scale * (1 - dy / 100);
-      if (this.scale < 1) this.scale = 1;
-      if (this.scale > this.maxScale) this.scale = this.maxScale;
-      this.updateZoomButtons();
-    } else {
-      // pan
-      switch (window.ui.os) {
-      case 'Windows':
-        switch (window.ui.browser) {
-        case 'Edge':
-          dx = e.deltaX * 0.25;
-          dy = e.deltaY * 0.25;
-          break;
-        case 'Chrome':
-          if (e.shiftKey) {
-            dx = e.deltaY * 0.25;
-          } else {
-            dy = e.deltaY * 0.25;
-          }
-          break;
-        case 'Firefox':
-          dx = e.deltaX * 10;
-          dy = e.deltaY * 10;
-          break;
-        }
-        break;
-      case 'Mac OS X':
-        switch (window.ui.browser) {
-        case 'Chrome':
-          dx = e.deltaX;
-          dy = e.deltaY;
-          break;
-        case 'Firefox':
-          dx = e.deltaX * 0.5;
-          dy = e.deltaY * 0.5;
-          break;
-        }
-        break;
-      case 'Linux':
-        switch (window.ui.browser) {
-        case 'Chrome':
-          dx = e.deltaX;
-          dy = e.deltaY;
-          break;
-        case 'Firefox':
-          dx = e.deltaX;
-          dy = e.deltaY;
-          break;
-        }
-        break;
-      }
-      // console.log(`pan dx, dy: ${dx}, ${dy}`);
-      dx = Math.sign(dx) * Math.min(24, Math.abs(dx));
-      dy = Math.sign(dy) * Math.min(24, Math.abs(dy));
-
-      dx = this.dxOld + (dx - this.dxOld * 0.5);
-      dy = this.dyOld + (dy - this.dyOld * 0.5);
-
-      this.moveX += dx;
-      this.moveY += dy;
-      this.dxOld = dx;
-      this.dxOld = dx;
-
-    }
-    this.queueCanvasDraw();
-    // this.redraw = requestAnimationFrame(this.canvasDraw);
   }
 
   scaleCanvas() {
@@ -467,6 +389,134 @@ class Scaling {
     this.scaleDraw = requestAnimationFrame(this.scaleCanvas);
   }
 
+  listenerZoom(e) {
+    e.preventDefault();
+    let targetRect = e.target.getBoundingClientRect();
+    let pos = {
+      x: e.pageX - targetRect.x,
+      y: e.pageY - targetRect.y
+    };
+
+    let wheelingTimeOut = null;
+    var dx = 0;
+    var dy = 0;
+
+    if (e.ctrlKey) {
+      // zoom
+      dy = e.deltaY;
+      if (window.ui.os == 'Windows' && (window.ui.browser == 'Chrome' || window.ui.browser == 'Edge')) {
+        dy /= 20;
+      }
+      this.scale = this.scale * (1 - dy / 100);
+      if (this.scale < 1) this.scale = 1;
+      if (this.scale > this.maxScale) this.scale = this.maxScale;
+      this.updateZoomButtons();
+      console.log(`listenerZoom-pan scale: ${this.scale}; move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+      this.scaleDraw = requestAnimationFrame(this.scaleCanvas);
+
+    } else {
+      // pan
+
+      if (this.wheeling === 'idle') {
+        this.wheeling = 'running';
+        console.log(`wheeling started`);
+        this.lastDraggedPos = {
+          x: pos.x,
+          y: pos.y
+        };
+        this.startCoords = {
+          x: pos.x - this.lastMove.x,
+          y: pos.y - this.lastMove.y
+        };
+        this.lastDraggedPos.x = pos.x;
+        this.lastDraggedPos.y = pos.y;
+
+        // clear any timeout previously started
+        clearTimeout(wheelingTimeOut);
+
+        // and start another ...
+        wheelingTimeOut = setTimeout(() => {
+          this.wheeling = 'idle';
+          this.lastMove = {
+            x: this.moveX,
+            y: this.moveY
+          };
+          console.log(`wheeling stopped`);
+        }, 250); // waiting 250ms to change back to false.
+      }
+
+      if (this.wheeling == 'running') {
+
+        switch (window.ui.os) {
+        case 'Windows':
+          switch (window.ui.browser) {
+          case 'Edge':
+            dx = e.deltaX * 0.25;
+            dy = e.deltaY * 0.25;
+            break;
+          case 'Chrome':
+            if (e.shiftKey) {
+              dx = e.deltaY * 0.25;
+            } else {
+              dy = e.deltaY * 0.25;
+            }
+            break;
+          case 'Firefox':
+            dx = e.deltaX * 10;
+            dy = e.deltaY * 10;
+            break;
+          }
+          break;
+        case 'Mac OS X':
+          switch (window.ui.browser) {
+          case 'Chrome':
+            dx = e.deltaX;
+            dy = e.deltaY;
+            break;
+          case 'Firefox':
+            dx = e.deltaX * 0.5;
+            dy = e.deltaY * 0.5;
+            break;
+          }
+          break;
+        case 'Linux':
+          switch (window.ui.browser) {
+          case 'Chrome':
+            dx = e.deltaX;
+            dy = e.deltaY;
+            break;
+          case 'Firefox':
+            dx = e.deltaX;
+            dy = e.deltaY;
+            break;
+          }
+          break;
+        }
+        // console.log(`pan dx, dy: ${dx}, ${dy}`);
+        dx = Math.sign(dx) * Math.min(24, Math.abs(dx));
+        dy = Math.sign(dy) * Math.min(24, Math.abs(dy));
+
+        dx = this.dxOld + (dx - this.dxOld * 0.5);
+        dy = this.dyOld + (dy - this.dyOld * 0.5);
+
+        this.moveX += dx;
+        this.moveY += dy;
+        this.dxOld = dx;
+        this.dxOld = dx;
+
+        this.lastDraggedPos.x = pos.x;
+        this.lastDraggedPos.y = pos.y;
+
+        console.log(`listenerZoom-pan move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+
+        this.queueCanvasDraw();
+        // this.redraw = requestAnimationFrame(this.canvasDraw);
+
+      }
+
+    }
+  }
+
   /*
       POINTER EVENTS for main scaling canvas
   */
@@ -484,8 +534,8 @@ class Scaling {
 
     if (e.type == "touchstart" || e.type == "touchmove" || e.type == "touchend") {
       var touch = e.originalEvent.touches[0] || e.originalEvent.changedTouches[0];
-      pos.x = touch.pageX;
-      pos.y = touch.pageY;
+      pos.x = touch.pageX - targetRect.x;
+      pos.y = touch.pageY - targetRect.y;
     } else if (
       e.type == "mousedown" ||
       e.type == "mouseup" ||
@@ -555,7 +605,7 @@ class Scaling {
       // this.redraw = requestAnimationFrame(this.canvasDraw);
       this.queueCanvasDraw();
 
-      // console.log(['move', this.moveX, this.moveY]);
+      console.log(`move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
     } else if (this.scaling === true) {
       if (e instanceof TouchEvent) {
@@ -570,6 +620,7 @@ class Scaling {
         );
       }
       this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
+
       this.lastChangeIn = "main";
     }
   }
