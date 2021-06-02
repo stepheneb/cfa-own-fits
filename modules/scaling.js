@@ -6,6 +6,10 @@ class Scaling {
     this.clientDimensions = {};
     this.imageWidth = 0;
     this.imageHeight = 0;
+
+    this.previousImageWidth = 0;
+    this.previousImageHeight = 0;
+
     this.w = 0;
     this.h = 0;
     this.offsetX = 0;
@@ -28,6 +32,7 @@ class Scaling {
     this.previewZoomEvents = null;
 
     this.wheeling = "idle";
+    this.wheelingTimeOut = null;
 
     this.bindCallbacks();
     this.setupButtons();
@@ -248,8 +253,8 @@ class Scaling {
   }
 
   calcMainWidthsHeightsLimitMoves() {
-    let previousImageWidth = this.imageWidth;
-    let previousImageHeight = this.imageHeight;
+    this.previousImageWidth = this.imageWidth;
+    this.previousImageHeight = this.imageHeight;
     this.imageWidth = this.imageBitmap.width * this.ratio * this.scale;
     this.imageHeight = this.imageBitmap.height * this.ratio * this.scale;
     this.w = Math.min(this.clientDimensions.width, this.imageWidth);
@@ -263,29 +268,21 @@ class Scaling {
     let minMoveX = -(this.imageWidth - this.offsetX - this.w);
     let minMoveY = -(this.imageHeight - this.offsetY - this.h);
 
-    if (previousImageWidth) {
-      this.moveX *= 1 + (this.imageWidth / previousImageWidth - 1);
+    if (this.previousImageWidth > 0 && this.previousImageWidth != this.imageWidth) {
+      this.moveX *= 1 + (this.imageWidth / this.previousImageWidth - 1);
+      this.lastMove.x = this.moveX;
+    }
+    if (this.previousImageHeight > 0 && this.previousImageHeight != this.imageHeight) {
+      this.moveY *= 1 + (this.imageHeight / this.previousImageHeight - 1);
+      this.lastMove.y = this.moveY;
     }
 
-    if (previousImageHeight) {
-      this.moveY *= 1 + (this.imageHeight / previousImageHeight - 1);
-    }
+    this.moveX = Math.min(this.moveX, this.offsetX);
+    this.moveX = Math.max(this.moveX, minMoveX);
 
-    if (this.moveX > this.offsetX) {
-      this.moveX = this.offsetX;
-    } else if (this.moveX < minMoveX) {
-      this.moveX = minMoveX;
-    } else {
-      // this.moveX += (this.offsetX - this.moveX) / 2;
-    }
+    this.moveY = Math.min(this.moveY, this.offsetY);
+    this.moveY = Math.max(this.moveY, minMoveY);
 
-    if (this.moveY > this.offsetY) {
-      this.moveY = this.offsetY;
-    }
-
-    if (this.moveY < minMoveY) {
-      this.moveY = minMoveY;
-    }
   }
 
   canvasDraw() {
@@ -389,6 +386,7 @@ class Scaling {
     this.scaleDraw = requestAnimationFrame(this.scaleCanvas);
   }
 
+  // touchpad pinch and two finger swipe AND mouse scrollwheel
   listenerZoom(e) {
     e.preventDefault();
     let targetRect = e.target.getBoundingClientRect();
@@ -396,56 +394,79 @@ class Scaling {
       x: e.pageX - targetRect.x,
       y: e.pageY - targetRect.y
     };
-
-    let wheelingTimeOut = null;
     var dx = 0;
     var dy = 0;
 
-    if (e.ctrlKey) {
-      // zoom
-      dy = e.deltaY;
-      if (window.ui.os == 'Windows' && (window.ui.browser == 'Chrome' || window.ui.browser == 'Edge')) {
-        dy /= 20;
-      }
-      this.scale = this.scale * (1 - dy / 100);
-      if (this.scale < 1) this.scale = 1;
-      if (this.scale > this.maxScale) this.scale = this.maxScale;
-      this.updateZoomButtons();
-      console.log(`listenerZoom-pan scale: ${this.scale}; move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
-      this.scaleDraw = requestAnimationFrame(this.scaleCanvas);
+    if (this.wheeling === 'idle') {
+      this.wheeling = 'running';
+      console.log(`wheeling started`);
 
-    } else {
-      // pan
-
-      if (this.wheeling === 'idle') {
-        this.wheeling = 'running';
-        console.log(`wheeling started`);
-        this.lastDraggedPos = {
-          x: pos.x,
-          y: pos.y
-        };
+      if (this.scaling) {
         this.startCoords = {
           x: pos.x - this.lastMove.x,
           y: pos.y - this.lastMove.y
         };
-        this.lastDraggedPos.x = pos.x;
-        this.lastDraggedPos.y = pos.y;
 
-        // clear any timeout previously started
-        clearTimeout(wheelingTimeOut);
+        this.lastDraggedPos = {
+          x: pos.x,
+          y: pos.y
+        };
 
-        // and start another ...
-        wheelingTimeOut = setTimeout(() => {
-          this.wheeling = 'idle';
-          this.lastMove = {
-            x: this.moveX,
-            y: this.moveY
-          };
-          console.log(`wheeling stopped`);
-        }, 250); // waiting 250ms to change back to false.
+        this.moveX = pos.x - this.startCoords.x;
+        this.moveY = pos.y - this.startCoords.y;
+
+        // this.moveX = pos.x;
+        // this.moveY = pos.y;
+
+      } else {
+        this.startCoords = {
+          x: pos.x - this.lastMove.x,
+          y: pos.y - this.lastMove.y
+        };
+
+        this.lastDraggedPos = {
+          x: pos.x,
+          y: pos.y
+        };
+
+        this.moveX = pos.x - this.startCoords.x;
+        this.moveY = pos.y - this.startCoords.y;
       }
 
-      if (this.wheeling == 'running') {
+      // clear any timeout previously started
+      clearTimeout(this.wheelingTimeOut);
+
+      // and start another ...
+      this.wheelingTimeOut = setTimeout(() => {
+        this.wheeling = 'idle';
+        this.lastMove = {
+          x: this.moveX,
+          y: this.moveY
+        };
+        console.log(`wheeling stopped`);
+      }, 250); // waiting 250ms to change back to false.
+    }
+
+    if (this.wheeling == 'running') {
+
+      if (e.ctrlKey) {
+        // zoom
+        dy = e.deltaY;
+        if (window.ui.os == 'Windows' && (window.ui.browser == 'Chrome' || window.ui.browser == 'Edge')) {
+          dy /= 20;
+        }
+        this.scaling = true;
+        this.scale = this.scale * (1 - dy / 100);
+        if (this.scale < 1) this.scale = 1;
+        if (this.scale > this.maxScale) this.scale = this.maxScale;
+        this.updateZoomButtons();
+        // this.redraw = requestAnimationFrame(this.scaleCanvas);
+        this.queueCanvasDraw();
+        console.log(`listenerZoom-pan scale: ${this.scale}; move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+
+      } else {
+        // pan
+        this.scaling = false;
 
         switch (window.ui.os) {
         case 'Windows':
@@ -504,8 +525,8 @@ class Scaling {
         this.dxOld = dx;
         this.dxOld = dx;
 
-        this.lastDraggedPos.x = pos.x;
-        this.lastDraggedPos.y = pos.y;
+        // this.lastDraggedPos.x = pos.x;
+        // this.lastDraggedPos.y = pos.y;
 
         console.log(`listenerZoom-pan move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
@@ -513,7 +534,6 @@ class Scaling {
         // this.redraw = requestAnimationFrame(this.canvasDraw);
 
       }
-
     }
   }
 
