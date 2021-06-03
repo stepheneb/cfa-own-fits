@@ -1,5 +1,6 @@
 /*jshint esversion: 6 */
 /*global app  */
+/*global bootstrap  */
 
 // https://stackoverflow.com/questions/38127416/is-it-possible-to-destructure-instance-member-variables-in-a-javascript-construc
 
@@ -12,6 +13,7 @@ import specialEffects from './render/specialEffects.js';
 import adjustImage from './render/adjustImage.js';
 import telescopes from './render/telescopes.js';
 import saveAndSend from './render/saveAndSend.js';
+import observation from './render/observation.js';
 import navigation from './render/navigation.js';
 import layerHistogram from './layerHistogram.js';
 import renderMenu from './render/menu.js';
@@ -25,11 +27,21 @@ class Page {
     this.type = ctype;
     this.category = app.categories.find(c => c.type == ctype);
     Object.assign(this, page);
-    this.image.selectedSourceNumber = this.image.selectedSourceNumber || 0;
     this.id = `page-${this.type}-${this.name}`;
     this.registeredCallbacks = [];
-    let html = this.generateHtml();
-    this.content = html;
+
+    let mb_elems = document.getElementsByClassName('modal-backdrop');
+    while (mb_elems.length > 0) {
+      var mb = mb_elems[0];
+      mb.parentNode.removeChild(mb);
+    }
+
+    if (this.type == "observation") {
+      this.content = this.generateObservationHtml();
+    } else {
+      this.image.selectedSourceNumber = this.image.selectedSourceNumber || 0;
+      this.content = this.generateHtml();
+    }
     if (checkBrowser()) {
       this.render();
       splash.hide();
@@ -69,8 +81,21 @@ class Page {
 
   get saveandsend() {
     let saveandsend;
-
     return saveandsend;
+  }
+
+  get observation() {
+    let observation;
+    return observation;
+  }
+
+  generateObservationHtml() {
+    [this.observationModalElemHtml, this.observationModalElemId] = observation.render(this, this.registeredCallbacks);
+    let html = `
+      ${this.observationModalElemHtml}
+      ${navigation.page(this.registeredCallbacks)}
+    `;
+    return html;
   }
 
   generateHtml() {
@@ -189,14 +214,30 @@ class Page {
     case 'animate':
       this.canvasImages = new CanvasImages(this.image, this.type);
       break;
+
+    case 'observation':
+      this.observationModalElem = document.getElementById(this.observationModalElemId);
+      // bootstrap.Modal.getInstance(this.observationModalElem).show();
+      this.observationModalElem.addEventListener('hidden.bs.modal', () => {
+        renderMenu.page(this.type);
+      });
+
+      break;
+
     }
 
     // run callbacks registered when interactive components were rendered
     this.registeredCallbacks.forEach(func => func());
 
     document.getElementById('btn-back').addEventListener('click', () => {
-      renderMenu.page(this.type);
+      if (this.type == "observation") {
+        bootstrap.Modal.getInstance(this.observationModalElem).hide();
+      } else {
+        renderMenu.page(this.type);
+      }
+      document.body.classList.remove('nofadeout');
     });
+
     router.updateHash(`run/${this.type}/${this.name}`);
   }
 

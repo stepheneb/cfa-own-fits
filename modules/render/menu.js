@@ -15,9 +15,9 @@ let connectLine = null;
 let separatorLine = null;
 
 let multiWaveImage = null;
-let telescopeImage = null;
+let observationImage = null;
 let multiWaveTitle = null;
-let menuCategoryTelescope = null;
+let menuCategoryObservation = null;
 
 let content = null;
 
@@ -31,6 +31,12 @@ renderMenu.page = (ctype) => {
   let hash = "menu";
   if (ctype) {
     hash = `menu/${ctype}`;
+  }
+
+  let mb_elems = document.getElementsByClassName('modal-backdrop');
+  while (mb_elems.length > 0) {
+    var mb = mb_elems[0];
+    mb.parentNode.removeChild(mb);
   }
 
   let html = renderMenu.pageHeader();
@@ -50,8 +56,8 @@ renderMenu.page = (ctype) => {
 
   multiWaveImage = document.getElementById('menu-category-multi-wave-image');
   multiWaveTitle = document.getElementById('menu-activity-multi-wave-title');
-  telescopeImage = document.getElementById('menu-category-telescope-image');
-  menuCategoryTelescope = document.getElementById('menu-category-telescope');
+  observationImage = document.getElementById('menu-category-observation-image');
+  menuCategoryObservation = document.getElementById('menu-category-observation');
 
   renderMenu.redraw = requestAnimationFrame(() => {
     setTimeout(() => {
@@ -197,14 +203,14 @@ renderMenu.transitionListener = () => {
 };
 
 renderMenu.drawSeparatorLine = () => {
-  if (menuCategoryTelescope.classList.contains('not-selected') ||
-    menuCategoryTelescope.classList.contains('selected')) {
+  if (menuCategoryObservation.classList.contains('not-selected') ||
+    menuCategoryObservation.classList.contains('selected')) {
     separatorLine.classList.remove('show');
   } else {
     separatorLine.classList.add('show');
   }
   let boundingRect1 = multiWaveImage.getBoundingClientRect();
-  let boundingRect2 = telescopeImage.getBoundingClientRect();
+  let boundingRect2 = observationImage.getBoundingClientRect();
   let boundingRect3 = multiWaveTitle.getBoundingClientRect();
   let xshift = (boundingRect2.left - boundingRect1.right) / 2;
   let yextend = (boundingRect1.bottom - boundingRect1.top) * 0.07;
@@ -277,16 +283,27 @@ renderMenu.categoryPageCollection = category => {
   let type = category.type;
   category.pages.forEach((page) => {
     var id = `open-page-${category.type}-${page.name}`;
-    telescopes = getTelescopes(page).map(telescope => telescope.name).join(", ");
-    html += `
-      <div id="${id}" class="menu-category-page">
-        <div class="image-wrapper">
-          <img src="images/page-images/${type}-${page.poster}.jpg"></img>
+    if (category.type !== "observation") {
+      telescopes = getTelescopes(page).map(telescope => telescope.name).join(", ");
+      html += `
+        <div id="${id}" class="menu-category-page">
+          <div class="image-wrapper">
+            <img src="images/page-images/${type}-${page.poster}.jpg"></img>
+          </div>
+          <div class="name">${page.title}</div>
+          <div class="telescope">${telescopes}</div>
         </div>
-        <div class="name">${page.title}</div>
-        <div class="telescope">${telescopes}</div>
-      </div>
-    `;
+      `;
+    } else {
+      html += `
+          <div id="${id}" class="menu-category-page">
+            <div class="image-wrapper">
+              <img src="${page.poster}"></img>
+            </div>
+            <div class="name">${page.title}</div>
+          </div>
+        `;
+    }
   });
   return html;
 };

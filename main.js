@@ -25,17 +25,19 @@ let setupNewApp = newApp => {
   newApp.pageNum = -1;
   newApp.categories.forEach(category => {
     category.pages.forEach(page => {
-      if (page.image.selectedSourceNumber == undefined) {
-        page.image.selectedSourceNumber = 0;
+      if (category.type !== "observation") {
+        if (page.image.selectedSourceNumber == undefined) {
+          page.image.selectedSourceNumber = 0;
+        }
+        if (page.image.selectedMainLayers == undefined) {
+          page.image.selectedMainLayers = "100";
+        }
+        page.image.sources.forEach(source => {
+          source.originalRange = source.max - source.min;
+          source.originalMax = source.max;
+          source.originalMin = source.min;
+        });
       }
-      if (page.image.selectedMainLayers == undefined) {
-        page.image.selectedMainLayers = "100";
-      }
-      page.image.sources.forEach(source => {
-        source.originalRange = source.max - source.min;
-        source.originalMax = source.max;
-        source.originalMin = source.min;
-      });
     });
   });
   return newApp;

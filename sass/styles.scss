@@ -41,6 +41,7 @@ html {
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.6vh;
+  --observation-take-your-image: 2.8vh;
   --save-and-send-context: 2vh;
 }
 
@@ -236,7 +237,7 @@ header.menu-activity-category-title {
   right: -45%;
 }
 
-#menu-category-telescope-pages {
+#menu-category-observation-pages {
   margin-left: auto;
 }
 
@@ -1032,24 +1033,57 @@ div.animate-center {
   }
 }
 
-#save-and-send-modal.fade {
+#save-and-send-modal.fade,
+#observation-modal.fade {
   transition: opacity 0.15s linear;
 }
 
 body.fadeout .modal-backdrop.show {
   opacity: 1;
+  bottom: 90vh;
 }
 
-#save-and-send-modal .modal-dialog {
+body.nofadeout .modal-backdrop.show {
+  opacity: 0;
+  top: 12vh;
+  height: 76vh;
+}
+
+body.nofadeout .modal {
+  top: 12vh;
+  height: 76vh;
+}
+
+body.nofadeout .activity-page {
+  display: none;
+}
+
+body.nofadeout #btn-toggle-developer-tools-page-navigation {
+  display: none;
+}
+
+div#observation-image-container {
+}
+
+div#observation-modal .modal-body {
+  height: 45vh;
+}
+
+#save-and-send-modal .modal-dialog,
+#observation-modal .modal-dialog {
   max-width: none;
   width: 100vw;
-  height: 80vh;
+  height: 60vh;
+  padding-left: 2vw;
+  background-color: black;
   .modal-content {
+    background-color: black;
     border: none;
     button {
       width: fit-content;
     }
     .modal-header {
+      background-color: black;
       border: none;
       h5 {
         font-size: var(--page-title);
@@ -1057,19 +1091,8 @@ body.fadeout .modal-backdrop.show {
         text-transform: uppercase;
       }
       padding: 0.5vh 2vh;
-      div.image-container {
-        margin-left: 2vh;
-        height: 10vh;
-        width: 30%;
-        background-color: black;
-        img {
-          background-color: black;
-          height: 100%;
-          width: 100%;
-          object-fit: contain;
-        }
-      }
       button.btn-close {
+        // display: none;
         min-width: 3vw;
         font-size: 6vh;
         color: white;
@@ -1077,25 +1100,52 @@ body.fadeout .modal-backdrop.show {
     }
     .modal-footer {
       border: none;
+      button {
+        display: none;
+      }
     }
     .modal-body {
       height: 60vh;
       width: 100%;
       font-size: var(--page-title);
       color: var(--bright-teal);
+      background-color: black;
       line-height: 120%;
       .salutation {
         text-transform: uppercase;
+      }
+      .take-your-image {
+        font-size: var(--observation-take-your-image);
+        .image-name {
+          font-size: var(--observation-take-your-image);
+        }
       }
       .image-name {
         font-size: var(--page-title);
       }
       .context {
-        margin-top: 4vh;
+        margin-top: 3vh;
         font-size: var(--save-and-send-context);
         line-height: 110%;
         color: white;
       }
+      .image-container {
+        margin-left: 2vh;
+        margin-top: 1vh;
+        height: 40vh;
+        width: 40vh;
+        background-color: black;
+        border: 2px solid var(--canvas-container-border-color);
+        border-radius: 3px;
+
+        img {
+          background-color: black;
+          height: 100%;
+          width: 100%;
+          object-fit: contain;
+        }
+      }
+
       #enterEmailButtonId {
         color: var(--bright-green);
       }
@@ -1103,7 +1153,8 @@ body.fadeout .modal-backdrop.show {
   }
 }
 
-#save-and-send-enter-email-button {
+#save-and-send-enter-email-button,
+#observation-enter-email-button {
   font-size: var(--save-and-send-context);
   color: var(--bright-green);
   border-color: var(--bright-green);
@@ -1122,7 +1173,7 @@ div#save-and-send-canvas-container {
   min-height: 55vh;
   margin: 0vh 1vh;
   padding: 0;
-  background-color: var(--almost-black);
+  background-color: black;
   border: 3px solid var(--canvas-container-border-color);
   border-radius: 3px;
   &:fullscreen {

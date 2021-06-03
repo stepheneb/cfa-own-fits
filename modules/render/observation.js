@@ -1,28 +1,22 @@
 /*jshint esversion: 6 */
-/*global app  */
+/*global bootstrap  */
 
-let saveandsend = {};
+let observation = {};
 
-saveandsend.render = (page, registeredCallbacks) => {
-  let title = "Save + Send";
-  let id = "save-and-send";
-  let buttonId = `${id}-button`;
+observation.render = (page, registeredCallbacks) => {
+  // let title = "Take your own image tonight";
+  let id = "observation";
   let modalId = `${id}-modal`;
   let enterEmailButtonId = `${id}-enter-email-button`;
 
   //             <textarea id="keyboard" placeholder="Enter Text..."></textarea>
-
-  let html = `
-    <button id="${buttonId}" type="button" class="btn btn-outline-primary btn-small page-navigation-button" data-bs-toggle="modal" data-bs-target="#${modalId}">
-      ${title}
-    </button>`;
 
   let modalHtml = `
     <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="${modalId}-title">${page.category.title}</h5>
+            <h5 class="modal-title" id="${modalId}-title">${page.category.title2}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
@@ -30,19 +24,21 @@ saveandsend.render = (page, registeredCallbacks) => {
           <div class="modal-body">
             <div class="row">
               <div class="col-3">
-                <div class="salutation">Great Job!</div>
-                <div class="heres-your-image">
-                  Here's your image of the <span class="image-name pe-2"> ${page.image.name}.</span>
+                <div class="salutation">Wait and See!</div>
+                <div class="take-your-image">
+                  We'll take your image of <span class="image-name pe-2"> ${page.title} </span> tonight.
                 </div>
                 <div class="context">
-                  <p>${page.saveandsendtext}</p>
+                  <p>${page.observationtext}</p>
                   <p>Enter your email to send your astrophoto creation to yourself.</p>
                 </div>
                 <button id="${enterEmailButtonId}" type="button" class="btn btn-outline-primary btn-small page-navigation-button">
                   ENTER EMAIL
                 </button>
               </div>
-              <div id="save-and-send-canvas-container" class="col-5"></div>
+              <div id="observation-image-container" class="image-container col-5">
+                <img src=${page.poster}>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -55,17 +51,13 @@ saveandsend.render = (page, registeredCallbacks) => {
 
   registeredCallbacks.push(callback);
 
-  return [html, modalHtml];
+  return [modalHtml, modalId];
 
   function callback() {
-    let button = document.getElementById(buttonId);
     let modal = document.getElementById(modalId);
-
-    button.addEventListener('click', () => {});
 
     modal.addEventListener('show.bs.modal', function () {
       document.body.classList.add('nofadeout');
-      page.canvasImages.renderSaveAndSend();
     });
 
     modal.addEventListener('shown.bs.modal', function () {});
@@ -74,8 +66,9 @@ saveandsend.render = (page, registeredCallbacks) => {
       document.body.classList.remove('nofadeout');
     });
 
+    new bootstrap.Modal(modal, {}).show();
   }
 
 };
 
-export default saveandsend;
+export default observation;

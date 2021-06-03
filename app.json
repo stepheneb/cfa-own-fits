@@ -1641,12 +1641,23 @@
       ]
     },
     {
-      "type": "telescope",
+      "type": "observation",
       "title": "Take Your Own Telescope Image",
-      "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
-      "menuimage": "images/menu-telescope.jpg",
+      "title2": "Take Your Image Tonight",
+      "subtitle": "Request your own telescope observation and have the image emailed to you.",
+      "menuimage": "images/menu-observation.jpg",
       "action": "Choose a target",
-      "pages": []
+      "pages": [
+        {
+          "name": "MW9",
+          "poster": "https://mo-www.cfa.harvard.edu/OWN/images/Stars/lagoon_lg.jpg",
+          "title": "Lagoon Nebula",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Resembling a pool of light in the sky, the Lagoon Nebula is a giant cloud of hot hydrogen gas glowing from the intense light of newborn stars. The Lagoon Nebula, like other star-forming regions, can give us an insight into the environment that gave birth to our own Sun 5 billion years ago. What color does the Lagoon look in your OWN color image?",
+          "telescope": "hubble",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        }
+      ]
     }
   ]
 }
