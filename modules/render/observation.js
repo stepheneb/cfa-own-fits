@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/*jshint esversion: 8 */
 /*global app  */
 /*global bootstrap  */
 
@@ -10,8 +10,7 @@ observation.render = (page, registeredCallbacks) => {
   let modalId = `${id}-modal`;
   let enterEmailButtonId = `${id}-enter-email-button`;
   let sendEmailButtonId = `${id}-send-email-button`;
-
-  //             <textarea id="keyboard" placeholder="Enter Text..."></textarea>
+  let sendEmailFormId = `${id}-send-email-form`;
 
   let modalHtml = `
     <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
@@ -39,7 +38,7 @@ observation.render = (page, registeredCallbacks) => {
                 </button>
               </div>
               <div id="enter-email" class="col-6 enter-email">
-                <form class="row" autocomplete="off" action="https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php" method="POST">
+                <form id="${sendEmailFormId}" class="row" autocomplete="off">
                   <label for="email">Your Email:</label>
                   <input id="email" type="email" class="col-9" name="email" required minlength="4" maxlength="45" size="30" autocomplete="none"></input>
                   <input id="email-kiosk-id" type="hidden" name='kiosk_id' value="${app.kiosk_id}"></input>
@@ -70,6 +69,7 @@ observation.render = (page, registeredCallbacks) => {
 
   function callback() {
     let modal = document.getElementById(modalId);
+    let sendEmailForm = document.getElementById(sendEmailFormId);
 
     modal.addEventListener('show.bs.modal', function () {
       document.body.classList.add('nofadeout');
@@ -82,6 +82,29 @@ observation.render = (page, registeredCallbacks) => {
     });
 
     new bootstrap.Modal(modal, {}).show();
+
+    sendEmailForm.onsubmit = async (e) => {
+      e.preventDefault();
+
+      let email = document.getElementById('email');
+      let formData = new FormData();
+      formData.append("email", email.value);
+      formData.append("kiosk_id", app.kiosk_id);
+      formData.append("observation", page.title);
+      formData.append("datetime_when_user_made_request_at_kiosk", new Date().toISOString());
+      formData.append("credential", "1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927");
+
+      let response = await fetch('https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php', {
+        method: 'POST',
+        mode: "cors",
+        body: formData
+      });
+
+      let result = response.ok;
+
+      alert(result);
+    };
+
   }
 
 };
