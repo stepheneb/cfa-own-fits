@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>CfA: Testing Virtual Keyboard</title>
+
+  <!-- https://fonts.google.com/specimen/Rajdhani -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <!-- https://getbootstrap.com/ -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+  <!-- Bootstrap Icons -->
+  <!-- https://icons.getbootstrap.com/#install -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+
+  <link href="./css/keyboard.css" rel="stylesheet" type="text/css">
+  <link href="./css/keyboard-dark.css" rel="stylesheet" type="text/css">
+
+  <!-- favicon -->
+  <!-- https://www.favicon-generator.org/ -->
+  <!-- images/lagoon-favicon-original.png -->
+  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+  <link rel="manifest" href="favicon/manifest.json">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+  <meta name="theme-color" content="#ffffff">
+</head>
+
+<body>
+  <div id="content" class="container-fluid content">
+    <div class="col-12 test-email-container">
+      <div class="row">
+        <div class="col-3">
+        </div>
+        <div id="enter-email" class="col-6">
+          <form class="row">
+            <label for="email">Your Email:</label>
+            <input class="virtual-keyboard col-9" type="text" data-kioskboard-type="keyboard" data-kioskboard-specialcharacters="false" placeholder="enter email" />
+            <button id="send-email-button" type="submit" class="btn btn-outline-primary btn-small page-navigation-button">
+              SEND EMAIL
+            </button>
+          </form>
+        </div>
+        <div class="col-3">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js" integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/kioskboard@1.4.0/dist/kioskboard-aio-1.4.0.min.js" integrity="sha256-z5830hJEd4pIVQ7DAk6gLptMbWXhkIBdZ2KpHyjt3DY=" crossorigin="anonymous"></script>
+
+  <!-- Bootstrap JS -->
+  <!-- https://getbootstrap.com/ -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+
+  <!-- initialize keyboard (required) -->
+  <script>
+    $(function() {
+      // Initialize KioskBoard (default/all options)
+
+      KioskBoard.Init({
+
+        /*!
+         * Required
+         * Have to define an Array of Objects for the custom keys. Hint: Each object creates a row element (HTML) on the keyboard.
+         * e.g. [{"key":"value"}, {"key":"value"}] => [{"0":"A","1":"B","2":"C"}, {"0":"D","1":"E","2":"F"}]
+         */
+        keysArrayOfObjects: null,
+
+        /*!
+         * Required only if "keysArrayOfObjects" is "null".
+         * The path of the "kioskboard-keys-${langugage}.json" file must be set to the "keysJsonUrl" option. (XMLHttpRequest to getting the keys from JSON file.)
+         * e.g. '/Content/Plugins/KioskBoard/dist/kioskboard-keys-english.json'
+         */
+        keysJsonUrl: './kioskboard-keys-english.json',
+
+        /*
+         * Optional: (Special Characters Object)* Can override default special characters object with the new/custom one.
+         * e.g. {"key":"value", "key":"value", ...} => {"0":"#", "1":"$", "2":"%", "3":"+", "4":"-", "5":"*"}
+         */
+        specialCharactersObject: null,
+
+        // Optional: (Other Options)
+
+        // Language Code (ISO 639-1) for custom keys (for language support) => e.g. "en" || "tr" || "es" || "de" || "fr" etc.
+        language: 'en',
+
+        // The theme of keyboard => "light" || "dark" || "flat" || "material" || "oldschool"
+        theme: 'dark',
+
+        // Uppercase or lowercase to start. Uppercase when "true"
+        capsLockActive: false,
+
+        // Allow or prevent real/physical keyboard usage. Prevented when "false"
+        allowRealKeyboard: true,
+
+        // CSS animations for opening or closing the keyboard
+        cssAnimations: true,
+
+        // CSS animations duration as millisecond
+        cssAnimationsDuration: 360,
+
+        // CSS animations style for opening or closing the keyboard => "slide" || "fade"
+        cssAnimationsStyle: 'slide',
+
+        // Allow or deny Spacebar on the keyboard. The keyboard is denied when "false"
+        keysAllowSpacebar: false,
+
+        // Text of the space key (spacebar). Without text => " "
+        keysSpacebarText: ' ',
+
+        // Font family of the keys
+        keysFontFamily: 'sans-serif',
+
+        // Font size of the keys
+        keysFontSize: '22px',
+
+        // Font weight of the keys
+        keysFontWeight: 'normal',
+
+        // Size of the icon keys
+        keysIconSize: '25px',
+
+        // v1.1.0 and the next versions
+        // Allow or prevent mobile keyboard usage. Prevented when "false"
+        allowMobileKeyboard: false,
+
+        // v1.3.0 and the next versions
+        // Scrolls the document to the top of the input/textarea element. The default value is "true" as before. Prevented when "false"
+        autoScroll: false,
+      });
+      KioskBoard.Run('.virtual-keyboard');
+    });
+  </script>
+
+</body>
+
+</html>

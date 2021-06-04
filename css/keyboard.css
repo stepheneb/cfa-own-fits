@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0; }
+
+html {
+  overflow-y: hidden; }
+
+/* color variables */
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
+:root {
+  /* colors */
+  --toggle-fullscreen: rgba(80, 80, 80, 128);
+  --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
+  --almost-black: #080808;
+  --green: #a4d292;
+  --bright-green: #bff5aa;
+  --brighter-green: #cfffbb;
+  --bright-teal: #3ddaf6;
+  --dark-teal: #2b88ac;
+  --bright-blue: #032741;
+  --bright-pink: #f33c85;
+  --category-selected-border: #f43c86;
+  --category-not-selected-border: #202e31;
+  --canvas-container-border-color: lightgray;
+  --canvas-container-border-color-fullscreen: #222;
+  /* font sizes */
+  --menu-page-title: 7.4vh;
+  --menu-page-subtitle: 3vh;
+  --menu-activity-category-title: 2.2vh;
+  --menu-activity-category-page-title: 2vh;
+  --menu-activity-category-page-subtitle: 1.8vh;
+  --menu-category-page-name: 1.7vh;
+  --menu-category-page-telescope: 1.5vh;
+  --menu-activity-page-title: 2.8vh;
+  --page-title: 3.4vh;
+  --page-subtitle: 2vh;
+  --animate-icons: 3.2vh;
+  --control-title: 1.6vh;
+  --control-subtitle: 1.6vh;
+  --about-your-image: 2.8vh;
+  --save-and-send-context: 2vh;
+  --send-email-input: 1.6vh; }
+
+body {
+  font-family: Rajdhani, Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-size: 0.9vw;
+  color: lightgray;
+  background-image: url("../images/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  line-height: 1.2rem;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0; }
+
+.test-email-container {
+  margin-top: 20vh; }
+
+#enter-email {
+  font-size: var(--page-title);
+  color: var(--bright-teal);
+  padding: 2vh 2vw 4vh 3vw;
+  background-color: black;
+  line-height: 120%; }
+  #enter-email .salutation {
+    text-transform: uppercase; }
+  #enter-email label {
+    padding-left: 0;
+    padding-bottom: 0.25vh;
+    line-height: 100%;
+    font-size: var(--send-email-input); }
+  #enter-email input {
+    padding: 0vh 1vh;
+    background-color: black;
+    color: white;
+    border: 1px solid var(--bright-teal);
+    border-radius: 2px;
+    letter-spacing: 1px; }
+    #enter-email input[type="hidden"] {
+      display: none; }
+  #enter-email button {
+    width: 10vw;
+    margin: 0vh 0vh 0vh 2vh; }
+  #enter-email .image-container {
+    margin-left: 2vh;
+    margin-top: 0.5vh;
+    height: 30vh;
+    width: 30vh;
+    padding: 0;
+    background-color: black;
+    border: 2px solid var(--canvas-container-border-color);
+    border-radius: 3px; }
+    #enter-email .image-container img {
+      background-color: black;
+      height: 100%;
+      width: 100%;
+      object-fit: contain; }
+
+#save-and-send-enter-email-button,
+#observation-enter-email-button,
+#observation-send-email-button {
+  font-size: var(--save-and-send-context);
+  color: var(--bright-green);
+  border-color: var(--bright-green);
+  margin-top: 1vh;
+  margin-left: 3vw; }
