@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*global app  */
 /*global bootstrap  */
 
 let observation = {};
@@ -8,6 +9,7 @@ observation.render = (page, registeredCallbacks) => {
   let id = "observation";
   let modalId = `${id}-modal`;
   let enterEmailButtonId = `${id}-enter-email-button`;
+  let sendEmailButtonId = `${id}-send-email-button`;
 
   //             <textarea id="keyboard" placeholder="Enter Text..."></textarea>
 
@@ -25,7 +27,7 @@ observation.render = (page, registeredCallbacks) => {
             <div class="row">
               <div class="col-3">
                 <div class="salutation">Wait and See!</div>
-                <div class="take-your-image">
+                <div class="about-your-image">
                   We'll take your image of <span class="image-name pe-2"> ${page.title} </span> tonight.
                 </div>
                 <div class="context">
@@ -36,7 +38,20 @@ observation.render = (page, registeredCallbacks) => {
                   ENTER EMAIL
                 </button>
               </div>
-              <div id="observation-image-container" class="image-container col-5">
+              <div id="enter-email" class="col-6 enter-email">
+                <form class="row" autocomplete="off" action="https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php" method="POST">
+                  <label for="email">Your Email:</label>
+                  <input id="email" type="email" class="col-9" name="email" required minlength="4" maxlength="45" size="30" autocomplete="none"></input>
+                  <input id="email-kiosk-id" type="hidden" name='kiosk_id' value="${app.kiosk_id}"></input>
+                  <input id="email-observation" type="hidden" name='observation' value="${page.title}"></input>
+                  <input id="email-date" type="hidden" name='datetime_when_user_made_request_at_kiosk' value="${new Date().toISOString()}"></input>
+                  <input id="email-credential" type="hidden" name='credential' value="1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927"></input>
+                  <button id="${sendEmailButtonId}" type="submit" class="col-3 btn btn-outline-primary btn-small page-navigation-button" autocomplete="none">
+                    SEND EMAIL
+                  </button>
+                </form>
+              </div>
+              <div id="observation-image-container" class="image-container">
                 <img src=${page.poster}>
               </div>
             </div>

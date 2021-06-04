@@ -41,8 +41,9 @@ html {
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.6vh;
-  --observation-take-your-image: 2.8vh;
+  --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
+  --send-email-input: 1.6vh;
 }
 
 body {
@@ -1073,7 +1074,7 @@ div#observation-modal .modal-body {
 #observation-modal .modal-dialog {
   max-width: none;
   width: 100vw;
-  height: 60vh;
+  height: 45vh;
   padding-left: 2vw;
   background-color: black;
   .modal-content {
@@ -1105,7 +1106,7 @@ div#observation-modal .modal-body {
       }
     }
     .modal-body {
-      height: 60vh;
+      height: 45vh;
       width: 100%;
       font-size: var(--page-title);
       color: var(--bright-teal);
@@ -1114,26 +1115,51 @@ div#observation-modal .modal-body {
       .salutation {
         text-transform: uppercase;
       }
-      .take-your-image {
-        font-size: var(--observation-take-your-image);
+      .about-your-image {
+        margin-top: 1vh;
+        line-height: 100%;
+        font-size: var(--about-your-image);
         .image-name {
-          font-size: var(--observation-take-your-image);
+          font-size: var(--about-your-image);
         }
       }
       .image-name {
         font-size: var(--page-title);
       }
       .context {
-        margin-top: 3vh;
+        margin-top: 2vh;
         font-size: var(--save-and-send-context);
         line-height: 110%;
         color: white;
       }
+      .enter-email {
+        label {
+          padding-left: 0;
+          padding-bottom: 0.25vh;
+          line-height: 100%;
+          font-size: var(--send-email-input);
+        }
+        input {
+          padding: 0vh 1vh;
+          background-color: black;
+          color: white;
+          border: 1px solid var(--bright-teal);
+          border-radius: 2px;
+          letter-spacing: 1px;
+          &[type="hidden"] {
+            display: none;
+          }
+        }
+        button {
+          margin: 0vh 2vh;
+        }
+      }
       .image-container {
         margin-left: 2vh;
-        margin-top: 1vh;
-        height: 40vh;
-        width: 40vh;
+        margin-top: 0.5vh;
+        height: 30vh;
+        width: 30vh;
+        padding: 0;
         background-color: black;
         border: 2px solid var(--canvas-container-border-color);
         border-radius: 3px;
@@ -1145,21 +1171,18 @@ div#observation-modal .modal-body {
           object-fit: contain;
         }
       }
-
-      #enterEmailButtonId {
-        color: var(--bright-green);
-      }
     }
   }
 }
 
 #save-and-send-enter-email-button,
-#observation-enter-email-button {
+#observation-enter-email-button,
+#observation-send-email-button {
   font-size: var(--save-and-send-context);
   color: var(--bright-green);
   border-color: var(--bright-green);
-  margin-top: 8vh;
-  margin-left: 4vw;
+  margin-top: 1vh;
+  margin-left: 3vw;
 }
 
 canvas {
@@ -1170,8 +1193,9 @@ canvas {
 
 div#save-and-send-canvas-container {
   position: relative;
-  min-height: 55vh;
-  margin: 0vh 1vh;
+  min-height: 30vh;
+  min-width: 30vh;
+  margin: 0;
   padding: 0;
   background-color: black;
   border: 3px solid var(--canvas-container-border-color);

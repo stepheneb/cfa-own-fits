@@ -31,7 +31,7 @@ saveandsend.render = (page, registeredCallbacks) => {
             <div class="row">
               <div class="col-3">
                 <div class="salutation">Great Job!</div>
-                <div class="heres-your-image">
+                <div class="about-your-image">
                   Here's your image of the <span class="image-name pe-2"> ${page.image.name}.</span>
                 </div>
                 <div class="context">
@@ -42,7 +42,7 @@ saveandsend.render = (page, registeredCallbacks) => {
                   ENTER EMAIL
                 </button>
               </div>
-              <div id="save-and-send-canvas-container" class="col-5"></div>
+              <div id="save-and-send-canvas-container" class="image-container"></div>
             </div>
           </div>
           <div class="modal-footer">
