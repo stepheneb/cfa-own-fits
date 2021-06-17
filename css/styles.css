@@ -414,6 +414,8 @@ div.control-collection {
     margin: 0.5vh 0vh;
     background-color: var(--almost-black);
     border: 2px solid var(--canvas-container-border-color); }
+    div.control-collection div.find-apollo.matchingscale {
+      border: 2px solid var(--bright-pink); }
     div.control-collection div.find-apollo img {
       width: 100%;
       height: 100%;

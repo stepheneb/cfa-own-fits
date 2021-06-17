@@ -1,8 +1,11 @@
 /*jshint esversion: 6 */
 
 class Scaling {
-  constructor(canvas, imageBitmap, previewZoomCanvas) {
+  constructor(canvas, imageBitmap, previewZoomCanvas, findApolloSiteContainerId) {
     this.canvas = canvas;
+    this.findApolloSiteContainerId = findApolloSiteContainerId;
+    this.findApolloSiteContainer = null;
+    this.matchingApolloSiteScale = false;
     this.clientDimensions = {};
     this.imageWidth = 0;
     this.imageHeight = 0;
@@ -133,6 +136,10 @@ class Scaling {
     });
 
     // Startup ...
+
+    if (this.findApolloSiteContainerId) {
+      this.findApolloSiteContainer = document.getElementById(this.findApolloSiteContainerId);
+    }
 
     this.calcMaxScale();
     this.setupButtons();
@@ -292,6 +299,7 @@ class Scaling {
   }
 
   canvasDraw() {
+    this.checkIfMatchingApolloSiteScale();
     this.calcMainWidthsHeightsLimitMoves();
     // console.log(`canvasDraw: move: ${this.moveX}, ${this.moveY}, offset: ${this.offsetX}, ${this.offsetY}`);
     this.ctx.drawImage(
@@ -312,15 +320,33 @@ class Scaling {
     this.canvasDrawfinished = true;
   }
 
+  checkIfMatchingApolloSiteScale() {
+    let difference = this.maxScale1to1 - this.scale;
+    if (this.findApolloSiteContainer) {
+      if (Math.abs(difference) < 0.25) {
+        this.scale = this.maxScale1to1;
+        this.matchingApolloSiteScale = true;
+        this.findApolloSiteContainer.classList.add("matchingscale");
+      } else {
+        this.findApolloSiteContainer.classList.remove("matchingscale");
+        this.matchingApolloSiteScale = false;
+      }
+    }
+  }
+
   previewZoomCanvasDraw(zp) {
     this.zp = zp;
     const ctx = this.previewZoomCanvas.getContext('2d');
     const pzcW = this.previewZoomCanvas.width;
     const pczH = this.previewZoomCanvas.height;
+    let strokestyle = 'rgba(255, 255, 255, 0.75)';
+    if (this.matchingApolloSiteScale)(
+      strokestyle = 'rgba(243, 60, 143, 0.75)'
+    );
     ctx.clearRect(0, 0, pzcW, pczH);
     if (this.canDrag()) {
       this.pzcZoomRectDisplayed = true;
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+      ctx.strokeStyle = strokestyle;
       ctx.lineWidth = 4;
       this.zx = zp.sx * pzcW;
       this.zy = zp.sy * pczH;

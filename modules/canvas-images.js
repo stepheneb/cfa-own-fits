@@ -12,9 +12,10 @@ import utilities from './utilities.js';
 import logger from './logger.js';
 
 class CanvasImages {
-  constructor(image, ctype) {
+  constructor(image, ctype, findApolloSiteContainerId) {
     this.image = image;
     this.type = ctype;
+    this.findApolloSiteContainerId = findApolloSiteContainerId;
     this.name = image.name;
     this.size = image.size;
     this.about = image.about;
@@ -191,7 +192,7 @@ class CanvasImages {
       case 'find-apollo':
         this.initializeMainCanvases(this.type);
         this.initializePreviewZoomCanvas(this.selectedSource);
-        this.addScalingLayer(this.previewZoomCanvas);
+        this.addScalingLayer(this.previewZoomCanvas, this.findApolloSiteContainerId);
         break;
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
@@ -210,7 +211,7 @@ class CanvasImages {
     });
   }
 
-  addScalingLayer(previewZoomCanvas) {
+  addScalingLayer(previewZoomCanvas, findApolloSiteContainerId) {
     let canvas = this.canvasRGB;
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
@@ -223,7 +224,7 @@ class CanvasImages {
         this.initializeCanvas(c);
         this.mainContainer.append(c);
         this.scalingCanvas = c;
-        this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas);
+        this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas, findApolloSiteContainerId);
       });
   }
 
