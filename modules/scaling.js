@@ -47,7 +47,7 @@ class Scaling {
     this.maxScale1to1 = 0;
     this.maxScale = 0;
     this.ratio = 0;
-    this.scaleFactor = 1.1;
+    this.scaleFactor = 1.08;
     this.scaleDraw = null;
     this.distance = 0;
 
@@ -323,7 +323,7 @@ class Scaling {
   checkIfMatchingApolloSiteScale() {
     let difference = this.maxScale1to1 - this.scale;
     if (this.findApolloSiteContainer) {
-      if (Math.abs(difference) < 0.25) {
+      if (Math.abs(difference) < 0.4) {
         this.scale = this.maxScale1to1;
         this.matchingApolloSiteScale = true;
         this.findApolloSiteContainer.classList.add("matchingscale");
