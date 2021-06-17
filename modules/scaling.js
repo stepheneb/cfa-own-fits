@@ -41,6 +41,7 @@ class Scaling {
     this.nx = imageBitmap.width;
     this.ny = imageBitmap.height;
     this.scale = 1;
+    this.maxScale1to1 = 0;
     this.maxScale = 0;
     this.ratio = 0;
     this.scaleFactor = 1.1;
@@ -133,6 +134,7 @@ class Scaling {
 
     // Startup ...
 
+    this.calcMaxScale();
     this.setupButtons();
     this.handleResize();
     this.updateZoomButtons();
@@ -219,7 +221,7 @@ class Scaling {
       break;
     case 'zoomin':
       this.scale = this.scale * this.scaleFactor;
-      if (this.scale > this.maxScale) this.scale = this.maxScale;
+      this.scale = Math.min(this.scale, this.maxScale);
       break;
     case 'zoomreset':
       this.scale = 1;
@@ -243,7 +245,7 @@ class Scaling {
       if (this.scale < 1) this.scale = 1;
     } else if (this.lastDistance < this.distance) {
       this.scale = this.scale * this.scaleFactor;
-      if (this.scale > this.maxScale) this.scale = this.maxScale;
+      this.scale = Math.min(this.scale, this.maxScale);
     }
 
     this.queueCanvasDraw();
@@ -331,8 +333,9 @@ class Scaling {
   }
 
   calcMaxScale() {
-    this.maxScale = Math.min(this.imageBitmap.height / this.canvas.height, this.imageBitmap.width / this.canvas.width);
-    this.ratio = 1 / this.maxScale;
+    this.maxScale1to1 = Math.min(this.imageBitmap.height / this.canvas.height, this.imageBitmap.width / this.canvas.width);
+    this.ratio = 1 / this.maxScale1to1;
+    this.maxScale = this.maxScale1to1 * 8;
   }
 
   getWidthHeight(elem) {
@@ -351,7 +354,6 @@ class Scaling {
 
   resizeCanvas(c) {
     let { clientWidth, clientHeight } = this.clientDimensions;
-
     clientWidth = this.clientDimensions.width;
     clientHeight = this.clientDimensions.height;
     let sourceAspectRatio = this.nx / this.ny;
@@ -374,7 +376,7 @@ class Scaling {
     this.zoomInButton.disabled = false;
     this.zoomOutButton.disabled = false;
     this.zoomResetButton.disabled = false;
-    if (this.scale == this.maxScale) {
+    if (this.scale >= this.maxScale) {
       this.zoomInButton.disabled = true;
     }
     if (this.scale == 1) {
@@ -472,7 +474,7 @@ class Scaling {
         this.scaling = true;
         this.scale = this.scale * (1 - dy / 100);
         if (this.scale < 1) this.scale = 1;
-        if (this.scale > this.maxScale) this.scale = this.maxScale;
+        this.scale = Math.min(this.scale, this.maxScale);
         this.updateZoomButtons();
         // this.redraw = requestAnimationFrame(this.scaleCanvas);
         this.queueCanvasDraw();
