@@ -203,7 +203,7 @@ class Page {
       break;
 
     case 'find-apollo':
-      this.canvasImages = new CanvasImages(this.image, this.type, this.findApolloSiteContainerId);
+      this.canvasImages = new CanvasImages(this.image, this.type, this.findApolloSiteContainerId, this.findApolloSiteCanvasId);
       break;
 
     case 'masterpiece':
@@ -352,12 +352,13 @@ class Page {
 
   renderApolloLandingLeftColumn() {
     this.findApolloSiteContainerId = `${this.type}-site`;
-    let id = `${this.type}-${this.poster}`;
+    this.findApolloSiteCanvasId = `${this.type}-canvas`;
+    // let id = `${this.type}-${this.poster}`;
     return `
       <div class='control-collection'>
         <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.findtext}</div>
         <div id="${this.findApolloSiteContainerId}" class="${this.type}">
-          <img src="images/page-images/${id}.jpg" ></img>
+          <canvas id="${this.findApolloSiteCanvasId}"></canvas>
         </div>
         <div class="name">${this.image.site}</div>
         <div class="zoom-preview-content mt-4 mb-2">

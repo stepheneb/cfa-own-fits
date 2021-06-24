@@ -524,18 +524,19 @@ div.control-collection {
   padding: 1vh 1vh;
   div.find-apollo {
     width: 100%;
+    height: 22vh;
     margin: 0.5vh 0vh;
     background-color: var(--almost-black);
     border: 2px solid var(--canvas-container-border-color);
     &.matchingscale {
       border: 2px solid var(--bright-pink);
     }
-    img {
+    canvas {
       width: 100%;
       height: 100%;
       padding: 0;
       margin: 0;
-      object-fit: contain;
+      object-fit: cover;
     }
   }
   &.select-layer,

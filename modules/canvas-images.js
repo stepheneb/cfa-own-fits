@@ -12,10 +12,11 @@ import utilities from './utilities.js';
 import logger from './logger.js';
 
 class CanvasImages {
-  constructor(image, ctype, findApolloSiteContainerId) {
+  constructor(image, ctype, findApolloSiteContainerId, findApolloSiteCanvasId) {
     this.image = image;
     this.type = ctype;
     this.findApolloSiteContainerId = findApolloSiteContainerId;
+    this.findApolloSiteCanvasId = findApolloSiteCanvasId;
     this.name = image.name;
     this.size = image.size;
     this.about = image.about;
@@ -193,6 +194,7 @@ class CanvasImages {
         this.initializeMainCanvases(this.type);
         this.initializePreviewZoomCanvas(this.selectedSource);
         this.addScalingLayer(this.previewZoomCanvas, this.findApolloSiteContainerId);
+        this.renderLandingSiteCanvas();
         break;
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
@@ -209,6 +211,30 @@ class CanvasImages {
       spinner.cancel("fetchError");
       console.log('Error fetchAllRawDataImages operation: ' + e.message);
     });
+  }
+
+  renderLandingSiteCanvas() {
+    let destinationContainer = document.getElementById(this.findApolloSiteContainerId);
+    let newHeight = Math.round(destinationContainer.clientWidth * this.mainContainer.clientHeight / this.mainContainer.clientWidth);
+    destinationContainer.style.height = `${newHeight}px`;
+    let destinationCanvas = document.getElementById(this.findApolloSiteCanvasId);
+    destinationCanvas.height = newHeight;
+    let destinationCtx = destinationCanvas.getContext('2d');
+
+    let landingX = this.image.landing.x * this.nx;
+    let landingY = this.image.landing.y * this.ny;
+
+    let clientWidth = destinationCanvas.clientWidth;
+    let clientHeight = newHeight;
+    let scale_x = clientWidth / this.mainContainer.clientWidth;
+    scale_x *= 0.85;
+    // let scale_y = clientHeight / this.mainContainer.clientHeight;
+
+    let dx = -(landingX * scale_x - clientWidth / 2);
+    let dy = -(landingY * scale_x - clientHeight / 2);
+    let dWidth = this.nx * scale_x;
+    let dHeight = this.ny * scale_x;
+    destinationCtx.drawImage(this.canvasRGB, dx, dy, dWidth, dHeight);
   }
 
   addScalingLayer(previewZoomCanvas, findApolloSiteContainerId) {
@@ -399,7 +425,7 @@ class CanvasImages {
 
   renderCanvasLayer(source) {
     let canvas = this.layerCanvasNamed(source.name);
-    let startTime = performance.now();
+    // let startTime = performance.now();
     let rawdata = this.rawDataForSource(source);
     let min = source.min;
     let max = source.max;
@@ -537,7 +563,7 @@ class CanvasImages {
       renderLogLayer();
       break;
     }
-    let renderTime = performance.now();
+    // let renderTime = performance.now();
     ctx.putImageData(imageData, 0, 0);
     // console.log(`images.renderCanvas: name: ${source.name}, filter: ${source.filter}: render: ${utilities.roundNumber(renderTime  - startTime, 4)}`);
   }
@@ -558,7 +584,7 @@ class CanvasImages {
 
   renderCanvasRGB1(source) {
     let canvas = this.canvasRGB;
-    let startTime = performance.now();
+    // let startTime = performance.now();
 
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
@@ -575,7 +601,7 @@ class CanvasImages {
       pixeldata[i + 2] = pixelDataSource[i + 2];
       pixeldata[i + 3] = 255;
     }
-    let renderTime = performance.now();
+    // let renderTime = performance.now();
     ctx.putImageData(imageData, 0, 0);
     // console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
   }

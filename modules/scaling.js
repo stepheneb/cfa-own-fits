@@ -1,8 +1,8 @@
 /*jshint esversion: 6 */
 
 class Scaling {
-  constructor(canvas, imageBitmap, previewZoomCanvas, findApolloSiteContainerId) {
-    this.canvas = canvas;
+  constructor(scalingCanvas, sourceImageBitmap, previewZoomCanvas, findApolloSiteContainerId) {
+    this.scalingCanvas = scalingCanvas;
     this.findApolloSiteContainerId = findApolloSiteContainerId;
     this.findApolloSiteContainer = null;
     this.matchingApolloSiteScale = false;
@@ -19,10 +19,10 @@ class Scaling {
     this.offsetY = 0;
 
     this.queuedmoves = [];
-    this.canvasDrawfinished = true;
+    this.scalingCanvasDrawfinished = true;
     this.tick = false;
 
-    this.imageBitmap = imageBitmap;
+    this.sourceImageBitmap = sourceImageBitmap;
     this.previewZoomCanvas = previewZoomCanvas;
     this.pzcZoomRectDisplayed = false;
     this.pzcClientWidth = null;
@@ -40,9 +40,10 @@ class Scaling {
     this.bindCallbacks();
     this.setupButtons();
     this.touchinfo = document.querySelector('span.touchinfo');
-    this.ctx = this.canvas.getContext('2d');
-    this.nx = imageBitmap.width;
-    this.ny = imageBitmap.height;
+    this.ctx = this.scalingCanvas.getContext('2d');
+    // this.imageData = this.ctx.getImageData();
+    this.nx = sourceImageBitmap.width;
+    this.ny = sourceImageBitmap.height;
     this.scale = 1;
     this.maxScale1to1 = 0;
     this.maxScale = 0;
@@ -87,13 +88,13 @@ class Scaling {
   }
 
   update(im) {
-    this.imageBitmap = im;
-    this.canvasDraw();
+    this.sourceImageBitmap = im;
+    this.scalingCanvasDraw();
   }
 
   bindCallbacks() {
     [
-      'canvasDraw',
+      'scalingCanvasDraw',
       'scaleCanvas',
       'scaleCanvasTouch',
       'buttonListener',
@@ -123,10 +124,11 @@ class Scaling {
   }
 
   startup() {
+    this.setupScaling2DContext();
     if (this.isTouchDevice()) {
       this.scaleFactor = 1.02;
-      this.canvas.classList.add('touch');
-      this.canvas.addEventListener('touchstart', this.hideTouchTooltip);
+      this.scalingCanvas.classList.add('touch');
+      this.scalingCanvas.addEventListener('touchstart', this.hideTouchTooltip);
     } else {
       this.hideTouchTooltip();
     }
@@ -162,7 +164,7 @@ class Scaling {
     ];
 
     this.mainEvents.forEach((eventItem) => {
-      this.canvas.addEventListener(eventItem[0], eventItem[1]);
+      this.scalingCanvas.addEventListener(eventItem[0], eventItem[1]);
     });
 
     this.previewZoomEvents = [
@@ -191,7 +193,7 @@ class Scaling {
 
   close() {
     this.mainEvents.forEach((eventItem) => {
-      this.canvas.removeEventListener(eventItem[0], eventItem[1]);
+      this.scalingCanvas.removeEventListener(eventItem[0], eventItem[1]);
     });
 
     if (this.previewZoomCanvas) {
@@ -219,6 +221,13 @@ class Scaling {
     }
   }
 
+  setupScaling2DContext() {
+    this.ctx.imageSmoothingEnabled = false;
+    this.ctx.mozImageSmoothingEnabled = false;
+    this.ctx.webkitImageSmoothingEnabled = false;
+    this.ctx.msImageSmoothingEnabled = false;
+  }
+
   scaleCanvas() {
     // let previousScale = this.scale;
     switch (this.scaling) {
@@ -239,7 +248,7 @@ class Scaling {
     // console.log([this.scaling, ', scale: ', this.scale, ' change: ', change]);
     this.updateZoomButtons();
     this.queueCanvasDraw();
-    // this.redraw = requestAnimationFrame(this.canvasDraw);
+    // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
   }
 
   resetMainUIVars() {
@@ -256,7 +265,7 @@ class Scaling {
     }
 
     this.queueCanvasDraw();
-    // this.redraw = requestAnimationFrame(this.canvasDraw);
+    // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
 
     this.lastDistance = this.distance;
   }
@@ -264,15 +273,15 @@ class Scaling {
   calcMainWidthsHeightsLimitMoves() {
     this.previousImageWidth = this.imageWidth;
     this.previousImageHeight = this.imageHeight;
-    this.imageWidth = this.imageBitmap.width * this.ratio * this.scale;
-    this.imageHeight = this.imageBitmap.height * this.ratio * this.scale;
+    this.imageWidth = this.sourceImageBitmap.width * this.ratio * this.scale;
+    this.imageHeight = this.sourceImageBitmap.height * this.ratio * this.scale;
     this.w = Math.min(this.clientDimensions.width, this.imageWidth);
     this.h = Math.min(this.clientDimensions.height, this.imageHeight);
-    this.canvas.width = this.w;
-    this.canvas.height = this.h;
+    this.scalingCanvas.width = this.w;
+    this.scalingCanvas.height = this.h;
 
-    this.offsetX = (this.imageWidth - this.canvas.width) / 2.01;
-    this.offsetY = (this.imageHeight - this.canvas.height) / 2.01;
+    this.offsetX = (this.imageWidth - this.scalingCanvas.width) / 2.01;
+    this.offsetY = (this.imageHeight - this.scalingCanvas.height) / 2.01;
 
     let minMoveX = -(this.imageWidth - this.offsetX - this.w);
     let minMoveY = -(this.imageHeight - this.offsetY - this.h);
@@ -295,15 +304,14 @@ class Scaling {
 
     this.moveY = Math.min(this.moveY, this.offsetY);
     this.moveY = Math.max(this.moveY, minMoveY);
-
   }
 
-  canvasDraw() {
+  scalingCanvasDraw() {
     this.checkIfMatchingApolloSiteScale();
     this.calcMainWidthsHeightsLimitMoves();
-    // console.log(`canvasDraw: move: ${this.moveX}, ${this.moveY}, offset: ${this.offsetX}, ${this.offsetY}`);
+    // console.log(`scalingCanvasDraw: move: ${this.moveX}, ${this.moveY}, offset: ${this.offsetX}, ${this.offsetY}`);
     this.ctx.drawImage(
-      this.imageBitmap,
+      this.sourceImageBitmap,
       -this.offsetX + this.moveX,
       -this.offsetY + this.moveY,
       this.imageWidth,
@@ -317,7 +325,33 @@ class Scaling {
         sy: (this.offsetY - this.moveY) / this.imageHeight
       });
     }
-    this.canvasDrawfinished = true;
+    this.scalingCanvasDrawfinished = true;
+  }
+
+  scalingCanvasDrawArgs() {
+    let argstr = `
+    scalingCanvasDraw inputs:
+      offset: ${this.offsetX}, ${this.offsetY}
+      move: ${this.moveX}, ${this.moveY}
+    scale: ${this.scale}
+    maxScale1to1: ${this.maxScale1to1}
+    ratio: ${this.ratio}
+    ratio * scale: ${this.ratio * this.scale}
+    ctx destination:
+      width: ${this.scalingCanvas.width}
+      height: ${this.scalingCanvas.height}
+    ctx.drawImage args:
+      source imageBitmap:
+        width: ${this.sourceImageBitmap.width}
+        height: ${this.sourceImageBitmap.height}
+      top-left corner in destination to place source image
+        dx: ${-this.offsetX + this.moveX}
+        dy: ${-this.offsetY + this.moveY}
+      width and height to draw source into destination
+        dWidth: ${this.imageWidth}
+        dHeight: ${this.imageHeight}
+    `;
+    return argstr;
   }
 
   checkIfMatchingApolloSiteScale() {
@@ -359,7 +393,7 @@ class Scaling {
   }
 
   calcMaxScale() {
-    this.maxScale1to1 = Math.min(this.imageBitmap.height / this.canvas.height, this.imageBitmap.width / this.canvas.width);
+    this.maxScale1to1 = Math.min(this.sourceImageBitmap.height / this.scalingCanvas.height, this.sourceImageBitmap.width / this.scalingCanvas.width);
     this.ratio = 1 / this.maxScale1to1;
     this.maxScale = this.maxScale1to1 * 8;
   }
@@ -371,8 +405,8 @@ class Scaling {
   handleResize() {
     this.redraw = requestAnimationFrame(() => {
       setTimeout(() => {
-        this.clientDimensions = this.getWidthHeight(this.canvas.parentElement);
-        this.resizeCanvas(this.canvas);
+        this.clientDimensions = this.getWidthHeight(this.scalingCanvas.parentElement);
+        this.resizeCanvas(this.scalingCanvas);
         this.reCalculatePreviewZoomRect();
       });
     });
@@ -395,7 +429,7 @@ class Scaling {
     c.width = resizeW;
     c.height = resizeH;
     this.calcMaxScale();
-    this.redraw = requestAnimationFrame(this.canvasDraw);
+    this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
   }
 
   updateZoomButtons() {
@@ -570,7 +604,7 @@ class Scaling {
         // console.log(`listenerZoom-pan move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
 
         this.queueCanvasDraw();
-        // this.redraw = requestAnimationFrame(this.canvasDraw);
+        // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
 
         this.previewZoomMoveX = this.applyScaleToMoveX(this.moveX);
         this.previewZoomMoveY = this.applyScaleToMoveX(this.moveY);
@@ -648,7 +682,10 @@ class Scaling {
 
     this.queueCanvasDraw();
 
-    // console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
+    console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
+
+    console.log(this.scalingCanvasDrawArgs());
+
   }
 
   listenerMouseMoveTouchMove(e) {
@@ -678,7 +715,7 @@ class Scaling {
       this.lastDraggedPreviewZoomPos.x = this.applyScaleToMoveX(pos.x);
       this.lastDraggedPreviewZoomPos.y = this.applyScaleToMoveY(pos.y);
 
-      // this.redraw = requestAnimationFrame(this.canvasDraw);
+      // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
       this.queueCanvasDraw();
 
       // console.log(`move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
@@ -701,10 +738,10 @@ class Scaling {
   }
 
   // queueCanvasDraw() {
-  //   this.redraw = requestAnimationFrame(this.canvasDraw);
+  //   this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
   //   // if (!this.tick) {
   //   //   this.redraw = requestAnimationFrame(() => {
-  //   //     this.canvasDraw();
+  //   //     this.scalingCanvasDraw();
   //   //     this.tick = false;
   //   //   });
   //   //   this.tick = true;
@@ -712,14 +749,14 @@ class Scaling {
   // }
 
   queueCanvasDraw() {
-    this.redraw = requestAnimationFrame(this.canvasDraw);
+    this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
     // this.queuedmoves.push([this.moveX, this.moveY]);
-    // if (this.canvasDrawfinished) {
+    // if (this.scalingCanvasDrawfinished) {
     //   this.redraw = requestAnimationFrame(() => {
-    //     this.canvasDraw();
-    //     this.canvasDrawfinished = true;
+    //     this.scalingCanvasDraw();
+    //     this.scalingCanvasDrawfinished = true;
     //   });
-    //   this.canvasDrawfinished = false;
+    //   this.scalingCanvasDrawfinished = false;
     // }
   }
 
@@ -735,7 +772,7 @@ class Scaling {
         y: this.previewZoomMoveY
       };
 
-      this.redraw = requestAnimationFrame(this.canvasDraw);
+      this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
       this.dragStarted = this.isDragging = this.scaling = false;
       this.lastChangeIn = "main";
       // console.log([name, 'lastMove: ', this.lastMove.x, this.lastMove.y]);
@@ -830,8 +867,8 @@ class Scaling {
       this.pzcClientWidth = rect.width;
       this.pzcClientHeight = rect.height;
       this.pczScaleToPos = this.pzcClientWidth / this.previewZoomCanvas.width;
-      this.scaleToMoveX = this.canvas.width / -(this.zwidth * this.pczScaleToPos);
-      this.scaleToMoveY = this.canvas.height / -(this.zheight * this.pczScaleToPos);
+      this.scaleToMoveX = this.scalingCanvas.width / -(this.zwidth * this.pczScaleToPos);
+      this.scaleToMoveY = this.scalingCanvas.height / -(this.zheight * this.pczScaleToPos);
     }
   }
 
@@ -893,7 +930,11 @@ class Scaling {
       this.calcMainWidthsHeightsLimitMoves();
       this.queueCanvasDraw();
 
-      // console.log(`startPZ: start: ${this.previewZoomStartCoords.x}, ${this.previewZoomStartCoords.y}; pos: ${pos.x}, ${pos.y}; lastPzMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
+      // console.log(`
+      // startPZ: start: $ { this.previewZoomStartCoords.x }, $ { this.previewZoomStartCoords.y };
+      // pos: $ { pos.x }, $ { pos.y };
+      // lastPzMove: $ { this.lastPreviewZoomMove.x }, $ { this.lastPreviewZoomMove.y }
+      // `);
     } else {
       // console.log(['startPZ-out', pos.x, pos.y]);
     }
@@ -930,7 +971,7 @@ class Scaling {
           y: this.applyScaleToPzcMoveY(pos.y)
         };
 
-        // this.redraw = requestAnimationFrame(this.canvasDraw);
+        // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
         this.queueCanvasDraw();
       }
     } else if (this.scaling === true) {
@@ -967,12 +1008,12 @@ class Scaling {
         x: this.applyScaleToPzcMoveX(this.lastPreviewZoomMove.x),
         y: this.applyScaleToPzcMoveY(this.lastPreviewZoomMove.y)
       };
-      this.redraw = requestAnimationFrame(this.canvasDraw);
+      this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
       this.previewZoomDragStarted = this.previewZoomIsDragging = false;
 
       this.lastChangeIn = "pzc";
 
-      console.log(`${name}: lastPZMove: ${this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
+      // console.log(`${name}: lastPZMove: $ {this.lastPreviewZoomMove.x}, ${this.lastPreviewZoomMove.y}`);
     }
     // cancelAnimationFrame(this.scaleDraw);
     // cancelAnimationFrame(this.redraw);

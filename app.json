@@ -86,6 +86,10 @@
                 "lro"
               ]
             },
+            "landing": {
+              "x": 0.69918,
+              "y": 0.49407
+            },
             "size": "x2large",
             "dimensions": {
               "small": {
@@ -152,6 +156,10 @@
               "telescopes": [
                 "lro"
               ]
+            },
+            "landing": {
+              "x": 0.302,
+              "y": 0.5242
             },
             "size": "x2large",
             "dimensions": {
@@ -220,6 +228,10 @@
                 "lro"
               ]
             },
+            "landing": {
+              "x": 0.35035,
+              "y": 0.53307
+            },
             "size": "x2large",
             "dimensions": {
               "small": {
@@ -287,6 +299,10 @@
                 "lro"
               ]
             },
+            "landing": {
+              "x": 0.52846,
+              "y": 0.27978
+            },
             "size": "x2large",
             "dimensions": {
               "small": {
@@ -304,6 +320,10 @@
               "x2large": {
                 "nx": 4344,
                 "ny": 4344
+              },
+              "x4large": {
+                "nx": 8687,
+                "ny": 8687
               }
             },
             "maximumBrightness": 2,
@@ -353,6 +373,10 @@
               "telescopes": [
                 "lro"
               ]
+            },
+            "landing": {
+              "x": 0.63183,
+              "y": 0.57802
             },
             "size": "x2large",
             "dimensions": {
@@ -420,6 +444,10 @@
               "telescopes": [
                 "lro"
               ]
+            },
+            "landing": {
+              "x": 0.74027,
+              "y": 0.32811
             },
             "size": "x2large",
             "dimensions": {
