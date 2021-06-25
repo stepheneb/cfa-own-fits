@@ -8,7 +8,7 @@ import Filter from './filter.js';
 import Scaling from './scaling.js';
 import Spinner from './spinner.js';
 import cmap from './render/cmap.js';
-import utilities from './utilities.js';
+import canvasUtils from './canvasUtils.js';
 import logger from './logger.js';
 
 class CanvasImages {
@@ -221,8 +221,8 @@ class CanvasImages {
     destinationCanvas.height = newHeight;
     let destinationCtx = destinationCanvas.getContext('2d');
 
-    let landingX = this.image.landing.x * this.nx;
-    let landingY = this.image.landing.y * this.ny;
+    let sourceLandingX = this.image.landing.x * this.nx;
+    let sourceLandingY = this.image.landing.y * this.ny;
 
     let clientWidth = destinationCanvas.clientWidth;
     let clientHeight = newHeight;
@@ -230,28 +230,44 @@ class CanvasImages {
     scale_x *= 0.85;
     // let scale_y = clientHeight / this.mainContainer.clientHeight;
 
-    let dx = -(landingX * scale_x - clientWidth / 2);
-    let dy = -(landingY * scale_x - clientHeight / 2);
+    let dx = -(sourceLandingX * scale_x - clientWidth / 2);
+    let dy = -(sourceLandingY * scale_x - clientHeight / 2);
     let dWidth = this.nx * scale_x;
     let dHeight = this.ny * scale_x;
     destinationCtx.drawImage(this.canvasRGB, dx, dy, dWidth, dHeight);
+
+    // destinationCtx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+    destinationCtx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
+    destinationCtx.fillStyle = 'rgba(243, 60, 143, 1.0)';
+    destinationCtx.lineWidth = 4;
+    // destinationCtx.beginPath();
+    // destinationCtx.arc(clientWidth / 2, clientHeight / 2, clientWidth / 30, 0, 2 * Math.PI);
+    // destinationCtx.stroke();
+
+    let destinationLandingX = clientWidth / 2;
+    let destinationLandingY = clientHeight / 2;
+    canvasUtils.canvasArrow(
+      destinationCtx,
+      destinationLandingX - clientWidth / 10,
+      destinationLandingY,
+      destinationLandingX,
+      destinationLandingY,
+      false,
+      true
+    );
   }
 
   addScalingLayer(previewZoomCanvas, findApolloSiteContainerId) {
-    let canvas = this.canvasRGB;
-    let ctx = canvas.getContext('2d');
-    let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
-
-    createImageBitmap(imageData, 0, 0, this.nx, this.ny)
-      .then(imageBitmap => {
-        let c = document.createElement("canvas");
-        c.id = 'scaling-image-canvas';
-        c.classList = 'scaling-image-canvas';
-        this.initializeCanvas(c);
-        this.mainContainer.append(c);
-        this.scalingCanvas = c;
-        this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas, findApolloSiteContainerId);
-      });
+    let sourceCtx = this.canvasRGB.getContext('2d');
+    canvasUtils.createImageBitmapFromCtx(sourceCtx, 0, 0, this.nx, this.ny, (imageBitmap) => {
+      let c = document.createElement("canvas");
+      c.id = 'scaling-image-canvas';
+      c.classList = 'scaling-image-canvas';
+      this.initializeCanvas(c);
+      this.mainContainer.append(c);
+      this.scalingCanvas = c;
+      this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas, findApolloSiteContainerId, sourceCtx, this.image.landing);
+    });
   }
 
   updateScalingLayer() {

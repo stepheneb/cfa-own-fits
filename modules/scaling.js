@@ -1,9 +1,13 @@
 /*jshint esversion: 6 */
 
+import canvasUtils from './canvasUtils.js';
+
 class Scaling {
-  constructor(scalingCanvas, sourceImageBitmap, previewZoomCanvas, findApolloSiteContainerId) {
+  constructor(scalingCanvas, sourceImageBitmap, previewZoomCanvas, findApolloSiteContainerId, sourceCtx, landing) {
     this.scalingCanvas = scalingCanvas;
     this.findApolloSiteContainerId = findApolloSiteContainerId;
+    this.sourceCtx = sourceCtx;
+    this.landing = landing;
     this.findApolloSiteContainer = null;
     this.matchingApolloSiteScale = false;
     this.clientDimensions = {};
@@ -17,6 +21,8 @@ class Scaling {
     this.h = 0;
     this.offsetX = 0;
     this.offsetY = 0;
+
+    this.arrowNotDrawn = true;
 
     this.queuedmoves = [];
     this.scalingCanvasDrawfinished = true;
@@ -324,6 +330,9 @@ class Scaling {
         sx: (this.offsetX - this.moveX) / this.imageWidth,
         sy: (this.offsetY - this.moveY) / this.imageHeight
       });
+      if (this.checkIfGreaterThanOrEqualApolloSiteScale() && this.arrowNotDrawn) {
+        this.drawArrowAndUpdate();
+      }
     }
     this.scalingCanvasDrawfinished = true;
   }
@@ -360,12 +369,44 @@ class Scaling {
       if (Math.abs(difference) < 0.4) {
         this.scale = this.maxScale1to1;
         this.matchingApolloSiteScale = true;
-        this.findApolloSiteContainer.classList.add("matchingscale");
+        // this.findApolloSiteContainer.classList.add("matchingscale");
       } else {
-        this.findApolloSiteContainer.classList.remove("matchingscale");
+        // this.findApolloSiteContainer.classList.remove("matchingscale");
         this.matchingApolloSiteScale = false;
       }
     }
+  }
+
+  checkIfGreaterThanOrEqualApolloSiteScale() {
+    let result = false;
+    if (this.findApolloSiteContainer) {
+      result = this.scale >= this.maxScale1to1;
+    }
+    return result;
+  }
+
+  drawArrowAndUpdate() {
+    let landingX = this.sourceImageBitmap.width * this.landing.x;
+    let landingY = this.sourceImageBitmap.height * this.landing.y;
+    this.sourceCtx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
+    this.sourceCtx.fillStyle = 'rgba(243, 60, 143, 1.0)';
+    this.sourceCtx.lineWidth = 4;
+
+    canvasUtils.canvasArrow(
+      this.sourceCtx,
+      landingX - 30,
+      landingY,
+      landingX,
+      landingY,
+      false,
+      true
+    );
+
+    canvasUtils.createImageBitmapFromCtx(this.sourceCtx, 0, 0, this.nx, this.ny, (imageBitmap) => {
+      this.sourceImageBitmap = imageBitmap;
+    });
+
+    this.arrowNotDrawn = false;
   }
 
   previewZoomCanvasDraw(zp) {
@@ -374,9 +415,9 @@ class Scaling {
     const pzcW = this.previewZoomCanvas.width;
     const pczH = this.previewZoomCanvas.height;
     let strokestyle = 'rgba(255, 255, 255, 0.75)';
-    if (this.matchingApolloSiteScale)(
-      strokestyle = 'rgba(243, 60, 143, 0.75)'
-    );
+    // if (this.matchingApolloSiteScale)(
+    //   strokestyle = 'rgba(243, 60, 143, 0.75)'
+    // );
     ctx.clearRect(0, 0, pzcW, pczH);
     if (this.canDrag()) {
       this.pzcZoomRectDisplayed = true;
@@ -389,6 +430,22 @@ class Scaling {
       ctx.strokeRect(this.zx, this.zy, this.zwidth, this.zheight);
     } else {
       this.pzcZoomRectDisplayed = false;
+    }
+    if (this.checkIfGreaterThanOrEqualApolloSiteScale()) {
+      let landingX = pzcW * this.landing.x;
+      let landingY = pczH * this.landing.y;
+      ctx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
+      ctx.fillStyle = 'rgba(243, 60, 143, 1.0)';
+      ctx.lineWidth = 10;
+      canvasUtils.canvasArrow(
+        this.previewZoomCanvas.getContext('2d'),
+        landingX - 70,
+        landingY,
+        landingX,
+        landingY,
+        false,
+        true
+      );
     }
   }
 
