@@ -16,59 +16,53 @@ canvasUtils.createImageBitmapFromCtx = (ctx, sx, sy, sw, sh, callback) => {
     });
 };
 
-canvasUtils.canvasArrow = (ctx, x1, y1, x2, y2, start, end) => {
-  var rot = -Math.atan2(x1 - x2, y1 - y2);
-  let lineX2 = x2;
-  switch (true) {
-  case ctx.lineWidth <= 4:
-    lineX2 -= 3;
-    break;
-  case ctx.lineWidth <= 8:
-    lineX2 -= 6;
-    break;
-  case ctx.lineWidth <= 12:
-    lineX2 -= 12;
-    break;
+canvasUtils.canvasArrow = (ctx, x1, y1, x2, y2, start, end, color, arrowScale) => {
+  color = (color === undefined) ? 'rgba(243, 60, 143, 1.0)' : color;
+  arrowScale = (arrowScale === undefined) ? 1 : arrowScale;
+
+  ctx.save();
+  if (arrowScale > 1) {
+    ctx.lineWidth = arrowScale;
   }
+  var rot = -Math.atan2(x1 - x2, y1 - y2);
+  let lineX2 = x2 - arrowScale;
+  ctx.strokeStyle = color;
+  ctx.linecap = 'round';
   ctx.beginPath();
   ctx.moveTo(x1, y1);
   ctx.lineTo(lineX2, y2);
   ctx.stroke();
+  ctx.linecap = 'butt';
+  ctx.beginPath();
+  ctx.moveTo(lineX2, y1);
+  ctx.lineTo(lineX2 - arrowScale, y2);
+  ctx.stroke();
   if (start) {
-    canvasUtils.canvasArrowHead(ctx, x1, y1, rot);
+    canvasArrowHead(ctx, x1, y1, rot);
   }
   if (end) {
-    canvasUtils.canvasArrowHead(ctx, x2, y2, rot + Math.PI);
+    canvasArrowHead(ctx, x2, y2, rot + Math.PI);
   }
-};
-
-canvasUtils.canvasArrowHead = (ctx, x, y, rot) => {
-  let scale = 1;
-  switch (true) {
-  case ctx.lineWidth == 1:
-    break;
-  case ctx.lineWidth <= 4:
-    scale = 1.5;
-    break;
-  case ctx.lineWidth <= 8:
-    scale = 2.5;
-    break;
-  case ctx.lineWidth <= 12:
-    scale = 3.0;
-    break;
-  }
-
-  ctx.save();
-  ctx.lineWidth = 1;
-  ctx.translate(x, y);
-  ctx.rotate(rot);
-  ctx.beginPath();
-  ctx.moveTo(0, 0);
-  ctx.lineTo(-5 * scale, -9 * scale);
-  ctx.lineTo(5 * scale, -9 * scale);
-  ctx.closePath();
-  ctx.fill();
   ctx.restore();
+
+  function canvasArrowHead(ctx, x, y, rot) {
+    ctx.save();
+    ctx.lineCap = 'round';
+    // ctx.lineWidth = 1;
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    // ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(-1.5 * arrowScale, -3 * arrowScale);
+    ctx.stroke();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(1.5 * arrowScale, -3 * arrowScale);
+    ctx.stroke();
+    // ctx.closePath();
+    // ctx.fill();
+    ctx.restore();
+  }
+
 };
 
 export default canvasUtils;

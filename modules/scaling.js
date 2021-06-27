@@ -22,7 +22,7 @@ class Scaling {
     this.offsetX = 0;
     this.offsetY = 0;
 
-    this.arrowNotDrawn = true;
+    this.arrowDrawn = false;
 
     this.queuedmoves = [];
     this.scalingCanvasDrawfinished = true;
@@ -310,6 +310,9 @@ class Scaling {
 
     this.moveY = Math.min(this.moveY, this.offsetY);
     this.moveY = Math.max(this.moveY, minMoveY);
+
+    this.dx = -this.offsetX + this.moveX;
+    this.dy = -this.offsetY + this.moveY;
   }
 
   scalingCanvasDraw() {
@@ -318,8 +321,8 @@ class Scaling {
     // console.log(`scalingCanvasDraw: move: ${this.moveX}, ${this.moveY}, offset: ${this.offsetX}, ${this.offsetY}`);
     this.ctx.drawImage(
       this.sourceImageBitmap,
-      -this.offsetX + this.moveX,
-      -this.offsetY + this.moveY,
+      this.dx,
+      this.dy,
       this.imageWidth,
       this.imageHeight
     );
@@ -327,10 +330,10 @@ class Scaling {
       this.previewZoomCanvasDraw({
         sw: this.w / this.imageWidth,
         sh: this.h / this.imageHeight,
-        sx: (this.offsetX - this.moveX) / this.imageWidth,
-        sy: (this.offsetY - this.moveY) / this.imageHeight
+        sx: -this.dx / this.imageWidth,
+        sy: -this.dy / this.imageHeight
       });
-      if (this.checkIfGreaterThanOrEqualApolloSiteScale() && this.arrowNotDrawn) {
+      if (this.checkIfGreaterThanOrEqualApolloSiteScale() || this.arrowDrawn) {
         this.drawArrowAndUpdate();
       }
     }
@@ -354,8 +357,8 @@ class Scaling {
         width: ${this.sourceImageBitmap.width}
         height: ${this.sourceImageBitmap.height}
       top-left corner in destination to place source image
-        dx: ${-this.offsetX + this.moveX}
-        dy: ${-this.offsetY + this.moveY}
+        dx: ${this.dx}
+        dy: ${this.dy}
       width and height to draw source into destination
         dWidth: ${this.imageWidth}
         dHeight: ${this.imageHeight}
@@ -386,27 +389,26 @@ class Scaling {
   }
 
   drawArrowAndUpdate() {
-    let landingX = this.sourceImageBitmap.width * this.landing.x;
-    let landingY = this.sourceImageBitmap.height * this.landing.y;
+    let landingX = this.imageWidth * this.landing.x + this.dx;
+    let landingY = this.imageWidth * this.landing.y + this.dy;
+    let arrowScale = 10;
+    let color = 'rgba(243, 60, 143, 1.0)';
     this.sourceCtx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
     this.sourceCtx.fillStyle = 'rgba(243, 60, 143, 1.0)';
     this.sourceCtx.lineWidth = 4;
 
     canvasUtils.canvasArrow(
-      this.sourceCtx,
-      landingX - 30,
+      this.ctx,
+      landingX - arrowScale * 8,
       landingY,
       landingX,
       landingY,
       false,
-      true
+      true,
+      color,
+      arrowScale
     );
-
-    canvasUtils.createImageBitmapFromCtx(this.sourceCtx, 0, 0, this.nx, this.ny, (imageBitmap) => {
-      this.sourceImageBitmap = imageBitmap;
-    });
-
-    this.arrowNotDrawn = false;
+    this.arrowDrawn = true;
   }
 
   previewZoomCanvasDraw(zp) {
@@ -414,7 +416,8 @@ class Scaling {
     const ctx = this.previewZoomCanvas.getContext('2d');
     const pzcW = this.previewZoomCanvas.width;
     const pczH = this.previewZoomCanvas.height;
-    let strokestyle = 'rgba(255, 255, 255, 0.75)';
+    const strokestyle = 'rgba(255, 255, 255, 0.75)';
+    const arrowColor = 'rgba(243, 60, 143, 1.0)';
     // if (this.matchingApolloSiteScale)(
     //   strokestyle = 'rgba(243, 60, 143, 0.75)'
     // );
@@ -436,15 +439,17 @@ class Scaling {
       let landingY = pczH * this.landing.y;
       ctx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
       ctx.fillStyle = 'rgba(243, 60, 143, 1.0)';
-      ctx.lineWidth = 10;
+      let arrowScale = 8;
       canvasUtils.canvasArrow(
         this.previewZoomCanvas.getContext('2d'),
-        landingX - 70,
+        landingX - arrowScale * 8,
         landingY,
         landingX,
         landingY,
         false,
-        true
+        true,
+        arrowColor,
+        arrowScale
       );
     }
   }

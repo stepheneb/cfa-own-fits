@@ -239,21 +239,24 @@ class CanvasImages {
     // destinationCtx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
     destinationCtx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
     destinationCtx.fillStyle = 'rgba(243, 60, 143, 1.0)';
-    destinationCtx.lineWidth = 4;
     // destinationCtx.beginPath();
     // destinationCtx.arc(clientWidth / 2, clientHeight / 2, clientWidth / 30, 0, 2 * Math.PI);
     // destinationCtx.stroke();
 
     let destinationLandingX = clientWidth / 2;
     let destinationLandingY = clientHeight / 2;
+    let color = 'rgba(243, 60, 143, 1.0)';
+    let arrowScale = 4;
     canvasUtils.canvasArrow(
       destinationCtx,
-      destinationLandingX - clientWidth / 10,
+      destinationLandingX - arrowScale * 8,
       destinationLandingY,
       destinationLandingX,
       destinationLandingY,
       false,
-      true
+      true,
+      color,
+      4
     );
   }
 
