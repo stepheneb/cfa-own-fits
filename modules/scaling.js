@@ -370,7 +370,6 @@ class Scaling {
     let difference = this.maxScale1to1 - this.scale;
     if (this.findApolloSiteContainer) {
       if (Math.abs(difference) < 0.4) {
-        this.scale = this.maxScale1to1;
         this.matchingApolloSiteScale = true;
         // this.findApolloSiteContainer.classList.add("matchingscale");
       } else {
@@ -391,7 +390,7 @@ class Scaling {
   drawArrowAndUpdate() {
     let landingX = this.imageWidth * this.landing.x + this.dx;
     let landingY = this.imageWidth * this.landing.y + this.dy;
-    let arrowScale = 10;
+    let arrowScale = 8;
     let color = 'rgba(243, 60, 143, 1.0)';
     this.sourceCtx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
     this.sourceCtx.fillStyle = 'rgba(243, 60, 143, 1.0)';
@@ -439,7 +438,7 @@ class Scaling {
       let landingY = pczH * this.landing.y;
       ctx.strokeStyle = 'rgba(243, 60, 143, 1.0)';
       ctx.fillStyle = 'rgba(243, 60, 143, 1.0)';
-      let arrowScale = 8;
+      let arrowScale = 6;
       canvasUtils.canvasArrow(
         this.previewZoomCanvas.getContext('2d'),
         landingX - arrowScale * 8,
