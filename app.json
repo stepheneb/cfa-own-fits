@@ -87,6 +87,12 @@
               ]
             },
             "landing": {
+              "source": {
+                "width": 34748,
+                "height": 34748,
+                "px": 24295,
+                "py": 17167
+              },
               "x": 0.69918,
               "y": 0.49407
             },
@@ -120,7 +126,8 @@
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
                   "large": "rawdata/WAC_GL000/2172x2172/wac_gl000-R.bmp",
-                  "x2large": "rawdata/WAC_GL000/4344x4344/wac_gl000-R.bmp"
+                  "x2large": "rawdata/WAC_GL000/4344x4344/wac_gl000-R.bmp",
+                  "x4large": "rawdata/WAC_GL000/8687x8687/wac_gl000-R.bmp"
                 },
                 "filter": "gray",
                 "min": 0,
@@ -158,6 +165,12 @@
               ]
             },
             "landing": {
+              "source": {
+                "width": 34748,
+                "height": 34748,
+                "px": 10494,
+                "py": 18215
+              },
               "x": 0.302,
               "y": 0.5242
             },
@@ -229,6 +242,12 @@
               ]
             },
             "landing": {
+              "source": {
+                "width": 34748,
+                "height": 34748,
+                "px": 12174,
+                "py": 18523
+              },
               "x": 0.35035,
               "y": 0.53307
             },
@@ -300,6 +319,12 @@
               ]
             },
             "landing": {
+              "source": {
+                "width": 34748,
+                "height": 34748,
+                "px": 18363,
+                "py": 9721
+              },
               "x": 0.52846,
               "y": 0.27978
             },
@@ -375,6 +400,12 @@
               ]
             },
             "landing": {
+              "source": {
+                "width": 34748,
+                "height": 34748,
+                "px": 21955,
+                "py": 20085
+              },
               "x": 0.63183,
               "y": 0.57802
             },
@@ -446,6 +477,12 @@
               ]
             },
             "landing": {
+              "source": {
+                "width": 34748,
+                "height": 34748,
+                "px": 25723,
+                "py": 11401
+              },
               "x": 0.74027,
               "y": 0.32811
             },

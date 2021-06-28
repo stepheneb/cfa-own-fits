@@ -191,6 +191,8 @@ class CanvasImages {
         this.initializePreviewCanvas(this.selectedSource);
         break;
       case 'find-apollo':
+        this.image.landing.x = this.image.landing.source.px / this.image.landing.source.width;
+        this.image.landing.y = this.image.landing.source.py / this.image.landing.source.height;
         this.initializeMainCanvases(this.type);
         this.initializePreviewZoomCanvas(this.selectedSource);
         this.addScalingLayer(this.previewZoomCanvas, this.findApolloSiteContainerId);
