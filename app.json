@@ -126,8 +126,8 @@
                 "min": 0,
                 "max": 10,
                 "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
+                "brightness": 1.1,
+                "contrast": 1.1
               },
               {
                 "type": "composite",
