@@ -127,17 +127,35 @@ class Page {
       break;
 
     case 'rgb':
-    case 'multi-wave':
       this.leftColumnHtml = `
           <div class='col-3 pr-1 m-0'>
             ${this.renderImageSelectFilterLayerToAdjust()}
             ${this.renderImageLayerPreview()}
             ${adjustImage.renderRGB(this, this.registeredCallbacks)}
+            <div class="control-collection">
+              <div class="context">${this.context}</div>
+            </div>
           </div>
         `;
       this.mainImageHtml = `
           ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
         `;
+      break;
+
+    case 'multi-wave':
+      this.leftColumnHtml = `
+            <div class='col-3 pr-1 m-0'>
+              ${this.renderImageSelectFilterLayerToAdjust()}
+              ${this.renderImageLayerPreview()}
+              ${adjustImage.renderRGB(this, this.registeredCallbacks)}
+              <div class="control-collection">
+                <div class="context">${this.context}</div>
+              </div>
+            </div>
+          `;
+      this.mainImageHtml = `
+            ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
+          `;
       break;
 
     case 'masterpiece':
@@ -146,6 +164,9 @@ class Page {
           ${colorMaps.render(this, this.registeredCallbacks)}
           ${specialEffects.render(this, this.registeredCallbacks)}
           ${adjustImage.renderMasterpiece(this, this.registeredCallbacks)}
+          <div class="control-collection">
+            <div class="context">${this.context}</div>
+          </div>
         </div>
       `;
       this.mainImageHtml = `
@@ -157,8 +178,10 @@ class Page {
       this.leftColumnHtml = `
             <div class='left-column col-3 pr-1 m-0'>
               <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
-              <div class='morecontext'>${this.morecontext}</div>
               ${animate.render(this, this.registeredCallbacks)}
+              <div class="control-collection">
+                <div class="context">${this.context}</div>
+              </div>
             </div>
           `;
       this.mainImageHtml = `
@@ -251,6 +274,7 @@ class Page {
     registeredCallbacks.push(callback);
     return `
       <div id = "${id}" class='developer'>
+        There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.
       </div>
     `;
 
@@ -296,6 +320,10 @@ class Page {
       this.image.selectedSourceNumber = layerNum;
       adjustImage.update(this);
       this.canvasImages.renderPreview(this.selectedSource);
+      if (this.type == "multi-wave") {
+        let telescopeName = document.getElementById('multi-wave-telescope-name');
+        telescopeName.textContent = this.telescopes.find(t => t.key == this.selectedSource.telescope).name;
+      }
       logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
     });
     if (typeof layerNum == 'number') {
@@ -328,7 +356,6 @@ class Page {
       }
       return html;
     }
-
     return `
       <div id="image-select-filter-layer-to-adjust"  class='control-collection select-layer'>
         <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.selectfiltertext}</div>
@@ -344,10 +371,20 @@ class Page {
   }
 
   renderImageLayerPreview() {
-    return `
-      <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
-      </div>
-    `;
+    if (this.type == "multi-wave") {
+      return `
+        <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+          <div id="multi-wave-telescope-name" class="label">
+            ${this.telescopes.find(t => t.key == this.selectedSource.telescope).name}
+          </div>
+        </div>
+      `;
+    } else {
+      return `
+        <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+        </div>
+      `;
+    }
   }
 
   renderApolloLandingLeftColumn() {

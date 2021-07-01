@@ -551,6 +551,7 @@ div.control-collection {
   }
   &.adjust-layer {
     margin-top: 1vh;
+    margin-bottom: 1vh;
   }
   > .title {
     color: var(--bright-green);
@@ -909,6 +910,9 @@ div#preview-image-canvas-container {
   background-color: var(--almost-black);
   border: 2px solid var(--canvas-container-border-color);
   border-radius: 3px;
+  > .label {
+    float: left;
+  }
   canvas {
     position: absolute;
     left: 0;
@@ -929,6 +933,12 @@ div#preview-image-canvas-container {
       cursor: move;
     }
   }
+}
+
+#multi-wave-telescope-name {
+  margin-top: 0.25vh;
+  margin-left: -0.5vh;
+  z-index: 10;
 }
 
 .zoom-rect-container {

@@ -64,7 +64,7 @@
     {
       "type": "find-apollo",
       "title": "Find the Apollo Site",
-      "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
+      "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. High resoultion images allow scientists to investigate small details.",
       "menuimage": "images/menu-find-apollo.jpg",
       "action": "Choose a mission",
       "pages": [
@@ -72,11 +72,10 @@
           "name": "apollo-11",
           "poster": "11",
           "title": "Apollo 11",
-          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
-          "findtext": "Find the Apollo site pictured below",
+          "subtitle": "The Lunar Reconnaissance Orbiter created this high-resolution map of the Moon’s surface. “Hi-res” images allow scientists to investigate small details.",
+          "findtext": "Find the Apollo 11 site pictured below",
           "youaretext": "You are here",
-          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
+          "context": "In July, 1969, Apollo 11 carried the first humans to the surface of the Moon. NASA chose a landing site that was flat, smooth, and with relatively few craters.",
           "image": {
             "name": "Apollo Mission 11",
             "site": "Apollo Site 11",
@@ -150,11 +149,10 @@
           "name": "apollo-12",
           "poster": "12",
           "title": "Apollo 12",
-          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
-          "findtext": "Find the Apollo site pictured below",
+          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the Moon’s surface. This image is made up of many smaller images stitched together.",
+          "findtext": "Find the Apollo 12 site pictured below",
           "youaretext": "You are here",
-          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
+          "context": "The Apollo 12 Lunar Module landed on the Moon’s surface in November of 1969. This mission achieved a precision landing, just 535 feet from an earlier robotic spacecraft named Surveyor 3.",
           "image": {
             "name": "Apollo Mission 12",
             "site": "Apollo Site 12",
@@ -227,11 +225,10 @@
           "name": "apollo-14",
           "poster": "14",
           "title": "Apollo 14",
-          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
-          "findtext": "Find the Apollo site pictured below",
+          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the Moon’s surface. This image, however, is not quite detailed enough to resolve signs of human visitation.",
+          "findtext": "Find the Apollo 14 site pictured below",
           "youaretext": "You are here",
-          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
+          "context": "Apollo 14 (January 31, 1971 - February 9, 1971) was the third crewed mission to land on the Moon, after an on-board explosion forced Apollo 13 to return to Earth in a dramatic rescue operation.",
           "image": {
             "name": "Apollo Mission 14",
             "site": "Apollo Site 14",
@@ -304,11 +301,10 @@
           "name": "apollo-15",
           "poster": "15",
           "title": "Apollo 15",
-          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
-          "findtext": "Find the Apollo site pictured below",
+          "subtitle": "The Lunar Reconnaissance Orbiter created this high-resolution map of the Moon’s surface. “Hi-res” images allow scientists to investigate small details.",
+          "findtext": "Find the Apollo 15 site pictured below",
           "youaretext": "You are here",
-          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
+          "context": "Apollo 15 took place from July 26, 1971 to August 7, 1971, and landed near a rugged mountain range named after the Italian Apennines. This mission was the first where astronauts used a Lunar Roving Vehicle.",
           "image": {
             "name": "Apollo Mission 15",
             "site": "Apollo Site 15",
@@ -385,11 +381,10 @@
           "name": "apollo-16",
           "poster": "16",
           "title": "Apollo 16",
-          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
-          "findtext": "Find the Apollo site pictured below",
+          "subtitle": "The Lunar Reconnaissance Orbiter created this high-resolution map of the Moon’s surface. “Hi-res” images allow scientists to investigate small details.",
+          "findtext": "Find the Apollo 16 site pictured below",
           "youaretext": "You are here",
-          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
+          "context": "Apollo 16 landed in the lunar highlands, where the astronauts collected rocks to look for evidence of volcanic activity. No such evidence was found.",
           "image": {
             "name": "Apollo Mission 16",
             "site": "Apollo Site 16",
@@ -462,11 +457,10 @@
           "name": "apollo-17",
           "poster": "17",
           "title": "Apollo 17",
-          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the moon's surface. Hi resoultion images allow scientists to investigate small details.",
-          "findtext": "Find the Apollo site pictured below",
+          "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the Moon’s surface. This image is made up of many smaller images stitched together.",
+          "findtext": "Find the Apollo 17 site pictured below",
           "youaretext": "You are here",
-          "context": "Additional information about this Apollo site or mission can go here lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
+          "context": "The December, 1972 Apollo 17 mission was the last time humans walked on the Moon.",
           "image": {
             "name": "Apollo Mission 17",
             "site": "Apollo Site 17",
@@ -540,15 +534,16 @@
     {
       "type": "masterpiece",
       "title": "Create Your Own Masterpiece",
-      "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
+      "subtitle": "Try your hand at enhancing and bringing out details in images the same way NASA scientists do.",
       "menuimage": "images/menu-masterpiece.jpg",
-      "action": "Choose an Image",
+      "action": "Choose a celestial object",
       "pages": [
         {
           "name": "m51-whirlpool",
           "poster": "m51",
           "title": "Messier 51 (The Whirlpool Galaxy)",
-          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
+          "subtitle": "Try your hand at enhancing and bringing out details in images the same way NASA scientists do.",
+          "context": "A scientist might choose colors that enhance the structure of the dark spiral dust lanes.",
           "selectfiltertext": "Select and adjust each of the light wave images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
@@ -602,75 +597,11 @@
           }
         },
         {
-          "name": "wacgl000",
-          "poster": "wacgl000",
-          "title": "The Near Side of the Moon",
-          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
-          "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
-          "adjustimagetext": "Use these sliders to show more detail in the image",
-          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
-          "image": {
-            "name": "Moon - Near Side",
-            "source": "http://lroc.sese.asu.edu/ptif/download_file?fName=WAC_GL000.tif",
-            "about": {
-              "telescopes": [
-                "lro"
-              ]
-            },
-            "size": "x2large",
-            "dimensions": {
-              "small": {
-                "nx": 543,
-                "ny": 543
-              },
-              "medium": {
-                "nx": 1086,
-                "ny": 1086
-              },
-              "large": {
-                "nx": 2172,
-                "ny": 2172
-              },
-              "x2large": {
-                "nx": 4344,
-                "ny": 4344
-              }
-            },
-            "maximumBrightness": 2,
-            "selectedSourceNumber": 0,
-            "selectedMainLayers": "111",
-            "sources": [
-              {
-                "type": "rawdata",
-                "name": "gray",
-                "path": {
-                  "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
-                  "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
-                  "large": "rawdata/WAC_GL000/2172x2172/wac_gl000-R.bmp",
-                  "x2large": "rawdata/WAC_GL000/4344x4344/wac_gl000-R.bmp"
-                },
-                "filter": "gray",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
-                "brightness": 1,
-                "contrast": 1
-              },
-              {
-                "type": "composite",
-                "name": "RGB",
-                "layers": [
-                  "Gray"
-                ]
-              }
-            ]
-          }
-        },
-        {
           "name": "wacgl180",
           "poster": "wacgl180",
           "title": "The Far Side of the Moon",
-          "subtitle": "Use this software to enhance and bring out details in the image the same way NASA scientists do.",
+          "subtitle": "Try your hand at enhancing and bringing out details in images the same way NASA scientists do.",
+          "context": "A scientist might zoom in and choose colors that enhance the pattern of craters on the Moon’s backside.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
@@ -736,7 +667,7 @@
     {
       "type": "animate",
       "title": "Animate Images Over Time",
-      "subtitle": "Lorem Ipsum ...",
+      "subtitle": "Look for patterns of change in a series of images the same way scientists do.",
       "menuimage": "images/menu-animate.jpg",
       "action": "Choose an Image",
       "pages": [
@@ -744,9 +675,9 @@
           "name": "jupiter",
           "poster": "jupiter",
           "title": "Jupiter",
-          "subtitle": "Lorem Ipsum ...",
+          "subtitle": "Scientists use sequences of images like these to investigate how objects in space form, move, and change over time",
           "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
-          "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "context": "These images show two changing features of Jupiter over a period of hours: the motion of storms in its atmosphere and the paths and shadows of orbiting moons.",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "stepDuration": 1000,
           "image": {
@@ -847,9 +778,9 @@
           "name": "sun-uv",
           "poster": "sun-uv",
           "title": "Sun-UV",
-          "subtitle": "Lorem Ipsum ...",
+          "subtitle": "Scientists use sequences of images like these to investigate how objects in space form, move, and change over time",
           "animatetext": "Use the arrows to move through these images or play them on a loop. See what you can learn.",
-          "morecontext": "Scientists use images like these ... Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+          "context": "These images show solar storms changing as the sun rotates over several days. These magnetic storms show up best in ultraviolet images like this.",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "stepDuration": 1000,
           "image": {
@@ -1057,14 +988,15 @@
       "title": "What's Red + Green + Blue?",
       "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
       "menuimage": "images/menu-whats-red-green-blue.jpg",
-      "action": "Choose an Image",
+      "action": "Choose A Celestial Object",
       "pages": [
         {
           "name": "whats-red-green-blue",
           "poster": "whats-red-green-blue",
           "title": "Lagoon Nebula",
-          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
+          "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
+          "context": "The RGB image reveals the colors of the Lagoon Nebula’s glowing gases.",
+          "selectfiltertext": "Select and adjust each of the color-filtered images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "In this star-forming cloud of dust and gas, different gases glow with different colors.",
           "image": {
@@ -1152,8 +1084,9 @@
           "name": "m51-whirlpool",
           "poster": "m51-whirlpool",
           "title": "Messier 51 (The Whirlpool Galaxy)",
-          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
+          "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
+          "context": "The RGB image reveals the hot blue stars and red hydrogen gas of the galaxy.",
+          "selectfiltertext": "Select and adjust each of the color-filtered images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
@@ -1240,9 +1173,10 @@
         {
           "name": "heic2007a",
           "poster": "heic2007a",
-          "title": "NGC 2014, NGC 2020",
-          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
+          "title": "Cosmic Reef Nebulas",
+          "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
+          "context": "The RGB image reveals the colors of the Cosmic Reef’s glowing gases.",
+          "selectfiltertext": "Select and adjust each of the color-filtered images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
@@ -1331,8 +1265,9 @@
           "name": "potw1345a",
           "poster": "potw1345a",
           "title": "Antennae Galaxies, NGC 4038, NGC 4039",
-          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
+          "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
+          "context": "The RGB image reveals the hot blue stars and red hydrogen gas of these colliding galaxies.",
+          "selectfiltertext": "Select and adjust each of the color-filtered images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
@@ -1421,8 +1356,9 @@
           "name": "juno-jupiter-set6",
           "poster": "juno-jupiter-set6",
           "title": "Jupiter",
-          "subtitle": "Use this image to combine 3 color-filtered images from NASA spacecraft. The result represents the range of colors actually emitted by the target object.",
-          "selectfiltertext": "Select and adjust each of the light wave images",
+          "subtitle": "Combine 3 separate color-filtered images from NASA spacecraft to represent the actual range of colors emitted by objects in space.",
+          "context": "The RGB image reveals the detailed structure of the dynamic storms on Jupiter.",
+          "selectfiltertext": "Select and adjust each of the color-filtered images",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "image": {
@@ -1514,13 +1450,14 @@
       "title": "Reveal an Image using “Invisible Light”",
       "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
       "menuimage": "images/menu-invisible-light.jpg",
-      "action": "Choose an Image",
+      "action": "Choose a Celestial Object",
       "pages": [
         {
           "name": "m82",
           "poster": "m82",
-          "title": "Messier 82 (The Cigar Galaxy)",
+          "title": "Cigar Galaxy",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "context": "Multiwavelength images reveal the explosion of gas from the center of this galaxy.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
@@ -1556,6 +1493,7 @@
               {
                 "type": "rawdata",
                 "name": "Infrared",
+                "telescope": "spitzer",
                 "path": {
                   "small": "rawdata/M82/635x635/M82_Spitzer_mid_Infrared.bmp",
                   "medium": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bmp",
@@ -1571,6 +1509,7 @@
               {
                 "type": "rawdata",
                 "name": "Optical",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/M82/635x635/M82_Hubble_Optical.bmp",
                   "medium": "rawdata/M82/1270x1270/M82_Hubble_Optical.bmp",
@@ -1586,6 +1525,7 @@
               {
                 "type": "rawdata",
                 "name": "X-Ray",
+                "telescope": "chandra",
                 "path": {
                   "small": "rawdata/M82/635x635/M82_Chandra_Xray_mid_energy.bmp",
                   "medium": "rawdata/M82/1270x1270/M82_Chandra_Xray_mid_energy.bmp",
@@ -1613,8 +1553,9 @@
         {
           "name": "m51",
           "poster": "m51",
-          "title": "Messier 51 (The Whirlpool Galaxy)",
+          "title": "Whirlpool Galaxy",
           "subtitle": "Combine these images and reveal the secrets of objects in space. NASA uses space telescopes that see wavelengths of light invisible to human eyes.",
+          "context": "Infrared reveals the glowing dust in the spiral arms. X-Rays reveal the location of black holes.",
           "selectfiltertext": "Find out more about what each wavelength of light can tell us about objects in space.",
           "adjustimagetext": "Use these sliders to show more detail in the image",
           "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
@@ -1650,6 +1591,7 @@
               {
                 "type": "rawdata",
                 "name": "Infrared",
+                "telescope": "spitzer",
                 "path": {
                   "small": "rawdata/m51-multi/387x584/Spitzer_M51_Infrared_lowerRes.bmp",
                   "medium": "rawdata/m51-multi/775x1168/Spitzer_M51_Infrared_lowerRes.bmp",
@@ -1665,6 +1607,7 @@
               {
                 "type": "rawdata",
                 "name": "Optical",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/m51-multi/387x584/Hubble_M51_Green_lowerRes.bmp",
                   "medium": "rawdata/m51-multi/775x1168/Hubble_M51_Green_lowerRes.bmp",
@@ -1680,6 +1623,7 @@
               {
                 "type": "rawdata",
                 "name": "X-Ray",
+                "telescope": "chandra",
                 "path": {
                   "small": "rawdata/m51-multi/387x584/Chandra_M51_Xray_lowerRes.bmp",
                   "medium": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bmp",
