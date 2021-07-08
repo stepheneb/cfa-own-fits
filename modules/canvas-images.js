@@ -7,25 +7,30 @@
 import Filter from './filter.js';
 import Scaling from './scaling.js';
 import Spinner from './spinner.js';
-import layerHistogram from './layerHistogram.js';
+// import layerHistogram from './layerHistogram.js';
 import cmap from './render/cmap.js';
 import canvasUtils from './canvasUtils.js';
+// import utilities from './utilities.js';
 import logger from './logger.js';
 
 class CanvasImages {
-  constructor(image, ctype, findApolloSiteContainerId, findApolloSiteCanvasId) {
-    this.image = image;
-    this.type = ctype;
-    this.findApolloSiteContainerId = findApolloSiteContainerId;
-    this.findApolloSiteCanvasId = findApolloSiteCanvasId;
-    this.name = image.name;
-    this.size = image.size;
-    this.about = image.about;
-    this.dimensions = image.dimensions;
-    this.sources = image.sources;
-    // Object.assign(this, image);
+  constructor(page) {
+    this.page = page;
+    this.type = page.type;
+    this.findApolloSiteContainerId = page.findApolloSiteContainerId;
+    this.findApolloSiteCanvasId = page.findApolloSiteCanvasId;
+
+    this.image = page.image;
+    this.sources = this.image.sources;
+
+    this.name = this.image.name;
+    this.size = this.image.size;
+    this.about = this.image.about;
+
+    this.dimensions = this.image.dimensions;
     this.nx = this.dimensions[this.size].nx;
     this.ny = this.dimensions[this.size].ny;
+
     this.rawdata = [];
     this.layerCanvases = [];
     this.rgbCanvas = null;
@@ -163,7 +168,12 @@ class CanvasImages {
   }
 
   close() {
-    if (this.scaling) this.scaling.close();
+    if (this.scaling) {
+      this.scaling.close();
+    }
+    if (this.imageInspect) {
+      this.imageInspect.close();
+    }
   }
 
   load() {
@@ -190,6 +200,7 @@ class CanvasImages {
       case 'multi-wave':
         this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
+        this.page.imageInspect.connect(this);
         logger.imageData(this, this.selectedSource);
         break;
       case 'find-apollo':
@@ -520,7 +531,7 @@ class CanvasImages {
     };
 
     let renderLogLayer = () => {
-      scale = source.brightness * 256 / Math.log(range + 1);
+      scale = source.brightness * 256 / Math.log(range);
       switch (source.filter) {
       case 'red':
         pixindex = 0;

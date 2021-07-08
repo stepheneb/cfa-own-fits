@@ -22,6 +22,8 @@ html {
   --dark-teal: #2b88ac;
   --bright-blue: #032741;
   --bright-pink: #f33c85;
+  --bright-red: #ff0000;
+  --medium-red: #800000;
   --category-selected-border: #f43c86;
   --category-not-selected-border: #202e31;
   --canvas-container-border-color: lightgray;
@@ -429,17 +431,52 @@ div.offcanvas-end {
     color: var(--green);
     text-decoration: none;
   }
+  a.reset {
+    color: var(--medium-red);
+    font-size: 120%;
+    &:hover {
+      color: var(--bright-red);
+    }
+  }
+  a.toggle {
+    color: lightgray;
+    font-size: 120%;
+    &:hover {
+      color: white;
+    }
+  }
+  a.toggle.on {
+    color: white;
+  }
   div {
     margin-bottom: 0.5vh;
   }
+  div.image-inspect {
+    input {
+      margin-right: 0.5vw;
+    }
+    div.data {
+      div {
+        margin-bottom: 0;
+      }
+      div.pos {
+        width: 4vw;
+        padding-right: 0;
+      }
+    }
+    div.pos {
+      width: 4vw;
+      padding-right: 0;
+    }
+  }
 }
 
-a#page-reset {
-  padding-top: 0.12rem;
-  padding-bottom: 0.12rem;
-  color: var(--brighter-green);
-  font-size: 150%;
-}
+// a#page-reset {
+//   padding-top: 0.12rem;
+//   padding-bottom: 0.12rem;
+//   color: var(--brighter-green);
+//   font-size: 150%;
+// }
 
 header.menu-activity-page-title {
   font-size: var(--menu-activity-page-title);
@@ -1343,6 +1380,10 @@ div#main-image-canvas-container {
     &:last-child {
       display: block;
       background-color: var(--almost-black);
+    }
+    &.inspect {
+      cursor: crosshair;
+      border: 1px solid white;
     }
   }
 }

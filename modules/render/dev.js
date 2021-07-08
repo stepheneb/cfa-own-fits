@@ -1,5 +1,4 @@
 /*jshint esversion: 6 */
-/*global app  */
 
 import u from '../utilities.js';
 
@@ -83,11 +82,20 @@ renderDev.developerToolsButton = (containerId, registerCallback) => {
   registerCallback.push(renderedCallback);
   return html;
 
-  function renderedCallback() {
+  function renderedCallback(page) {
     let btn = document.getElementById(id);
+    let elems = document.querySelectorAll('.developer');
+    let canvasImages = page.canvasImages;
+    let isEnabled = false;
     if (btn) {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.developer').forEach(fsButton => fsButton.classList.toggle('show'));
+        elems.forEach(fsButton => fsButton.classList.toggle('show'));
+        isEnabled = elems[0].classList.contains('show');
+        if (isEnabled && canvasImages) {
+          canvasImages.imageInspect.enable();
+        } else {
+          canvasImages.imageInspect.disable();
+        }
       });
     } else {
       console.log(`fsButton #${id} not found`);

@@ -42,7 +42,7 @@ export function compileSass() {
 }
 
 const runJest = () => {
-  process.env.NODE_ENV = 'test';
+  cp.process.env.NODE_ENV = 'test';
   return gulp
     .src("tests/**/*test.js")
     .pipe(jest({
@@ -54,7 +54,8 @@ const runJest = () => {
 };
 
 const watch = () => {
-  gulp.watch(["*.html", "./css/*.css", "main.js", "./modules/**/*.js", "./images/**/*", "./rawdata/**/*.bin", "app.json"], reload);
+  // "./rawdata/**/*.bmp", 
+  gulp.watch(["*.html", "./css/*.css", "main.js", "./modules/**/*.js", "./images/**/*", "app.json"], reload);
   gulp.watch(myGlobs.scssSource, compileSass);
 };
 

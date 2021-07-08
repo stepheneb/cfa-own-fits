@@ -19,6 +19,8 @@ html {
   --dark-teal: #2b88ac;
   --bright-blue: #032741;
   --bright-pink: #f33c85;
+  --bright-red: #ff0000;
+  --medium-red: #800000;
   --category-selected-border: #f43c86;
   --category-not-selected-border: #202e31;
   --canvas-container-border-color: lightgray;
@@ -332,14 +334,30 @@ div.offcanvas-end {
   #developerToolsSideBar-body a {
     color: var(--green);
     text-decoration: none; }
+  #developerToolsSideBar-body a.reset {
+    color: var(--medium-red);
+    font-size: 120%; }
+    #developerToolsSideBar-body a.reset:hover {
+      color: var(--bright-red); }
+  #developerToolsSideBar-body a.toggle {
+    color: lightgray;
+    font-size: 120%; }
+    #developerToolsSideBar-body a.toggle:hover {
+      color: white; }
+  #developerToolsSideBar-body a.toggle.on {
+    color: white; }
   #developerToolsSideBar-body div {
     margin-bottom: 0.5vh; }
-
-a#page-reset {
-  padding-top: 0.12rem;
-  padding-bottom: 0.12rem;
-  color: var(--brighter-green);
-  font-size: 150%; }
+  #developerToolsSideBar-body div.image-inspect input {
+    margin-right: 0.5vw; }
+  #developerToolsSideBar-body div.image-inspect div.data div {
+    margin-bottom: 0; }
+  #developerToolsSideBar-body div.image-inspect div.data div.pos {
+    width: 4vw;
+    padding-right: 0; }
+  #developerToolsSideBar-body div.image-inspect div.pos {
+    width: 4vw;
+    padding-right: 0; }
 
 header.menu-activity-page-title {
   font-size: var(--menu-activity-page-title);
@@ -1067,6 +1085,9 @@ div#main-image-canvas-container {
     div#main-image-canvas-container canvas:last-child {
       display: block;
       background-color: var(--almost-black); }
+    div#main-image-canvas-container canvas.inspect {
+      cursor: crosshair;
+      border: 1px solid white; }
 
 canvas#main-image-canvas-red {
   object-fit: contain; }

@@ -1498,7 +1498,7 @@
                 "ny": 1200
               }
             },
-            "maximumBrightness": 1,
+            "maximumBrightness": 2,
             "selectedSourceNumber": 0,
             "selectedMainLayers": "100",
             "sources": [
@@ -1513,9 +1513,9 @@
                 },
                 "filter": "red",
                 "min": 0,
-                "max": 15,
+                "max": 1000,
                 "scaling": "log",
-                "brightness": 0.75,
+                "brightness": 1,
                 "contrast": 1,
                 "original": {
                   "type": "FITS",
@@ -1535,7 +1535,7 @@
                 "min": 0,
                 "max": 10,
                 "scaling": "log",
-                "brightness": 0.5,
+                "brightness": 1,
                 "contrast": 1,
                 "original": {
                   "type": "FITS",
@@ -1553,13 +1553,13 @@
                 },
                 "filter": "blue",
                 "min": 0,
-                "max": 10,
-                "scaling": "linear",
+                "max": 1000,
+                "scaling": "log",
                 "brightness": 0.5,
                 "contrast": 1,
                 "original": {
                   "type": "FITS",
-                  "path": "source-images/fits/M82/M82_Spitzer_mid_Infrared.FITS"
+                  "path": "source-images/fits/M82/M82_Chandra_Xray_mid_energy.FITS"
                 }
               },
               {

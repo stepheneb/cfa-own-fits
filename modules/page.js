@@ -5,6 +5,7 @@
 // https://stackoverflow.com/questions/38127416/is-it-possible-to-destructure-instance-member-variables-in-a-javascript-construc
 
 import CanvasImages from './canvas-images.js';
+import ImageInspect from './image-inspect.js';
 import events from './events.js';
 import router from '../router.js';
 import colorMaps from './render/colorMaps.js';
@@ -251,7 +252,8 @@ class Page {
 
     case 'rgb':
     case 'multi-wave':
-      this.canvasImages = new CanvasImages(this.image, this.type);
+      this.imageInspect = new ImageInspect();
+      this.canvasImages = new CanvasImages(this, this.image, this.type);
       this.canvasImages.renderPalettes();
       this.controllerImageSelectFilterLayerToAdjust();
       this.controllerImageSelectMainLayer();
@@ -260,16 +262,16 @@ class Page {
       break;
 
     case 'find-apollo':
-      this.canvasImages = new CanvasImages(this.image, this.type, this.findApolloSiteContainerId, this.findApolloSiteCanvasId);
+      this.canvasImages = new CanvasImages(this, this.image, this.type, this.findApolloSiteContainerId, this.findApolloSiteCanvasId);
       break;
 
     case 'masterpiece':
-      this.canvasImages = new CanvasImages(this.image, this.type);
+      this.canvasImages = new CanvasImages(this, this.image, this.type);
       this.canvasImages.renderColorMaps();
       break;
 
     case 'animate':
-      this.canvasImages = new CanvasImages(this.image, this.type);
+      this.canvasImages = new CanvasImages(this, this.image, this.type);
       break;
 
     case 'observation':
@@ -278,12 +280,10 @@ class Page {
       this.observationModalElem.addEventListener('hidden.bs.modal', () => {
         renderMenu.page(this.type);
       });
-
       break;
-
     }
 
-    // run callbacks registered when interactive components were rendered
+    // run callbacks registered after interactive components are rendered
     this.registeredCallbacks.forEach(func => func(this));
 
     document.getElementById('btn-back').addEventListener('click', () => {
@@ -308,6 +308,7 @@ class Page {
       ${this.renderReset(this, this.registeredCallbacks)}
       ${layerHistogram.render(this.selectedSource)}
       ${adjustImage.renderScaling(this)}
+      ${this.imageInspect.render(this, this.registeredCallbacks)}
     `);
     if (app.dev) {
       this.bsDevSideBar.show();
@@ -324,7 +325,7 @@ class Page {
     return `
       <div>
         RESET:
-        <a id = "${id}" class="text-decoration-none"><i class="bi bi-arrow-counterclockwise"></i></a>
+        <a id = "${id}" class="reset text-decoration-none"><i class="bi bi-arrow-counterclockwise"></i></a>
       </div>
     `;
 
@@ -364,7 +365,7 @@ class Page {
     html += `
       <div>Image size: ${nx} x ${ny}</div>
       <header>Settings</header>
-      <div>min: ${utilities.roundNumber(source.min, 3)}, max: ${utilities.roundNumber(source.max, 3)}</div>
+      <div>min: ${utilities.roundNumber(source.min, 3)}, max: ${utilities.roundNumber(source.max, 4)}</div>
       <div>brightness: ${utilities.roundNumber(source.brightness, 3)}, contrast: ${utilities.roundNumber(source.contrast, 3)}</div>
       <div>filter: ${source.filter}</div>
     `;

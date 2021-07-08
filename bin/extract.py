@@ -24,6 +24,11 @@ if len(sys.argv) < 2:
     quit()
 
 indir = sys.argv[1]
+
+logscalestr = "000"
+if len(sys.argv) == 3:
+    logscalestr = sys.argv[2]
+
 exists = path.exists(indir)
 
 if exists:
@@ -110,7 +115,7 @@ def write_img_to_file(image, base_filename, outdir, scale=1):
         print()
 
 
-def extract_raw_image_data(infile, outdir):
+def extract_raw_image_data(infile, outdir, logscaling):
     original_filename = os.path.split(infile)[1]
     base_filename = os.path.splitext(original_filename)[0]
 
@@ -121,12 +126,23 @@ def extract_raw_image_data(infile, outdir):
         print("creating output directory for rawdata: " + outdir)
         os.makedirs(outdir)
 
+    if logscaling:
+        print("process with log-scaling")
+    else:
+        print()
+
     fits = fitsio.FITS(infile)
 
     print("hdus: " + str(len(fits)))
 
     img = fits[0].read()
     img_flat = img.flatten()
+
+    print()
+    print("fits image min: " + str(img_flat.min()))
+    print("fits image max: " + str(img_flat.max()))
+    print()
+
     image_size = img.size
     file_size = image_file_size(img)
 
@@ -191,6 +207,9 @@ def extract_raw_image_data(infile, outdir):
     original_min = np.min(img)
     original_max = np.max(img)
 
+    print(f"min: {str(round(original_min, 3))}")
+    print(f"max: {str(round(original_max, 1))}")
+
     next_min_index = np.argmax(img_flat > original_min)
     next_min = img_flat[next_min_index]
     min_greater_than_next_min = img_flat[np.argmax(img_flat > next_min)]
@@ -206,9 +225,6 @@ def extract_raw_image_data(infile, outdir):
     count_less_than_min_greater_than_next_min = np.count_nonzero(
         img_flat < min_greater_than_next_min)
     percent_less_than_min_greater_than_next_min = count_less_than_min_greater_than_next_min / image_size
-
-    print(f"min: {str(round(original_min, 3))}")
-    print(f"max: {str(round(original_max, 1))}")
 
     print()
 
@@ -244,6 +260,18 @@ def extract_raw_image_data(infile, outdir):
     else:
         bottom = next_min
 
+    # if logscaling:
+    #     bottom = percentile_99
+    #     bottom = percentile_1
+    #     bottom = original_min
+    #     top = percentile_9999
+    #     top = percentile_995
+    #     top = original_max
+    #
+        # bottom = next_min
+    #     top = percentile_995
+
+
     # special case for M51 X-ray clip: 90..99 percentile
     # bottom = percentile_90
     # top = percentile_99
@@ -265,8 +293,15 @@ def extract_raw_image_data(infile, outdir):
     print(f"shifted min: {str(round(offset_min, 3))}")
     print(f"shifted max: {str(round(offset_max, 3))}")
 
-    print("\nRescaling data to 0..10")
-    img = img * 10 / (offset_max - offset_min)
+    if logscaling:
+        print("\nRescaling data to 0..1000")
+        img = img * 1000 / (offset_max - offset_min)
+    else:
+        print("\nRescaling data to 0..10")
+        img = img * 10 / (offset_max - offset_min)
+
+
+
 
     scaled_min = np.min(img)
     scaled_max = np.max(img)
@@ -323,9 +358,12 @@ def extract_raw_image_data(infile, outdir):
     # time.sleep(10)
 
 
+index = 0
 for entry in os.scandir(indir):
     if (entry.path.endswith(".fits") or entry.path.endswith(".FITS")):
         # print(entry.path)
-        extract_raw_image_data(entry.path, outdir)
+        logscaling = logscalestr[index] != "0"
+        extract_raw_image_data(entry.path, outdir, logscaling)
+        index += 1
 
 print()
