@@ -11,6 +11,12 @@ let router = {};
 
 router.route = () => {
   [router.path, router.props] = router.getHash(window.location.hash);
+  app.dev = router.props.has("dev");
+  if (app.dev) {
+    document.body.classList.add('dev');
+  } else {
+    document.body.classList.remove('dev');
+  }
   if (router.path.action) {
     let category = app.categories.find(c => c.type == router.path.category);
     let page = null;
@@ -27,7 +33,7 @@ router.route = () => {
       break;
     case "run":
       if (category && page) {
-        if (app.page) page.close();
+        if (app.page) app.page.close();
         app.page = new Page(category.type, page);
       } else {
         router.updateHash('menu');
@@ -61,8 +67,11 @@ router.updateHash = h => {
   if (h.charAt(0) != '#') {
     h = '#' + h;
   }
-  let search = "";
-  let hash = h + search;
+  let hash = h;
+  let search = router.props.toString();
+  if (search.length > 0) {
+    hash += `?${search}`;
+  }
   app.hashRendered = hash;
   if (hash != window.location.hash) {
     window.location.hash = hash;

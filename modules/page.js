@@ -107,10 +107,6 @@ class Page {
         ${this.telescopeHtmls}
         <div id="column-middle-spacer"></div>
         ${this.saveAndSend}
-        <div id="dev-right">
-          ${layerHistogram.render(this.selectedSource)}
-          ${this.renderimageSize(this, this.registeredCallbacks)}
-        </div>
     `;
 
     switch (this.type) {
@@ -208,12 +204,14 @@ class Page {
       ${navigation.page(this.registeredCallbacks)}
       ${this.telescopeHtmlModals}
       ${this.saveAndSendModals}
+      ${renderDev.developerToolsSideBar()}
     `;
     return html;
   }
 
   render() {
     events.setupGlobal(this);
+
     switch (this.type) {
 
     case 'rgb':
@@ -222,6 +220,7 @@ class Page {
       this.canvasImages.renderPalettes();
       this.controllerImageSelectFilterLayerToAdjust();
       this.controllerImageSelectMainLayer();
+      this.renderDevSideBar();
       adjustImage.update(this);
       break;
 
@@ -262,8 +261,18 @@ class Page {
     });
 
     router.updateHash(`run/${this.type}/${this.name}`);
+
   }
 
+  renderDevSideBar() {
+    this.devSideBar = document.getElementById('developerToolsSideBar-body');
+    this.devSideBar.insertAdjacentHTML('beforeend', `
+      <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
+      ${this.renderimageSize(this, this.registeredCallbacks)}
+      ${layerHistogram.render(this.selectedSource)}
+      ${adjustImage.renderScaling(this)}
+    `);
+  }
   //
   // Component rendering ...
   //
@@ -273,9 +282,7 @@ class Page {
     let id = 'image-stats';
     registeredCallbacks.push(callback);
     return `
-      <div id = "${id}" class='developer'>
-        There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.
-      </div>
+      <div id = "${id}"></div>
     `;
 
     function callback() {

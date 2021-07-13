@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*global app  */
 
 import u from '../utilities.js';
 
@@ -6,11 +7,15 @@ let renderDev = {};
 
 renderDev.fullScreenButton = (containerId, epandedElement, registeredCallbacks, optionalFunc) => {
   let classStr = 'btn-tf';
+  let flexClasses = "";
+  if (containerId == "page-navigation") {
+    flexClasses = "d-flex align-items-end";
+  }
   let shortcid = u.shortenStr(containerId);
   let id = `${classStr}-${shortcid}`;
 
   let fsOpenCloseSVG = `
-  <div id="${id}" class="${classStr} ps-1 pe-1 flex">
+  <div id="${id}" class="${classStr} ps-1 pe-1 ${flexClasses}">
     <svg class="fsOpen show" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-fullscreen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
       <path fill-rule="evenodd" d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
     </svg>
@@ -72,7 +77,7 @@ renderDev.developerToolsButton = (containerId, registerCallback) => {
   let id = `btn-toggle-developer-tools-${containerId}`;
   let html = `
     <div  id="${id}" class="ps-1 pe-1">
-      <button type="button" class="btn btn-outline-primary btn-small page-navigation-button">Toggle Advanced Tools</button>
+      <button type="button" class="btn btn-outline-primary btn-small page-navigation-button" data-bs-toggle="offcanvas" data-bs-target="#developerToolsSideBar" aria-controls="developerToolsSideBar">DEV</button>
     </div>
   `;
   registerCallback.push(renderedCallback);
@@ -88,6 +93,19 @@ renderDev.developerToolsButton = (containerId, registerCallback) => {
       console.log(`fsButton #${id} not found`);
     }
   }
+};
+
+renderDev.developerToolsSideBar = () => {
+  let html = `
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="developerToolsSideBar" data-bs-backdrop="false" aria-labelledby="offcanvasExampleLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Developer Tools</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div id="developerToolsSideBar-body" class="offcanvas-body"></div>
+    </div>
+  `;
+  return html;
 };
 
 export default renderDev;

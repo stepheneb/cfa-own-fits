@@ -7,6 +7,7 @@
 import Filter from './filter.js';
 import Scaling from './scaling.js';
 import Spinner from './spinner.js';
+import layerHistogram from './layerHistogram.js';
 import cmap from './render/cmap.js';
 import canvasUtils from './canvasUtils.js';
 import logger from './logger.js';
@@ -162,7 +163,7 @@ class CanvasImages {
   }
 
   close() {
-    this.scaling.close();
+    if (this.scaling) this.scaling.close();
   }
 
   load() {
@@ -189,6 +190,7 @@ class CanvasImages {
       case 'multi-wave':
         this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
+        logger.imageData(this, this.selectedSource);
         break;
       case 'find-apollo':
         this.image.landing.x = this.image.landing.source.px / this.image.landing.source.width;

@@ -4,8 +4,8 @@ let layerHistogram = {};
 
 layerHistogram.render = () => {
   let html = `
-    <div id="layer-histogram" class="layer-histogram developer">
-      <div class="mt-2">Image Layer Histogram</div>
+    <div id="layer-histogram" class="layer-histogram">
+      <div id="layer-histogram-title" class="mt-2">Image Layer Histogram</div>
       <div id="image-layer-histogram-container" class="col-12">
         <canvas id="image-layer-histogram"></canvas>
       </div>
@@ -14,9 +14,11 @@ layerHistogram.render = () => {
   return html;
 };
 
-layerHistogram.update = (h, scaling) => {
+layerHistogram.update = (h, source) => {
   let canvas = document.getElementById("image-layer-histogram");
   let { width, height } = canvas.parentElement.getBoundingClientRect();
+  let title = document.getElementById('layer-histogram-title');
+  title.innerHTML = `Image Layer Histogram: ${source.name}`;
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext('2d');
@@ -31,7 +33,7 @@ layerHistogram.update = (h, scaling) => {
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = '#bff5aa';
   for (var i = 0; i < bars; i++) {
-    switch (scaling) {
+    switch (source.scaling) {
     case "linear":
       barHeight = data[i] / maxCount * height * 0.9;
       break;

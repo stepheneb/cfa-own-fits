@@ -56,7 +56,7 @@ let scaling = page => {
   }
 
   let html = `
-    <div id="scaling-control" class='row developer'>
+    <div id="scaling-control" class='row'>
       <div class='col-4'>
         <label>Scaling</label>
       </div>
@@ -93,6 +93,12 @@ let html = page => {
   `;
 };
 
+adjustImage.renderScaling = page => {
+  return `
+    ${scaling(page)}
+  `;
+};
+
 adjustImage.renderRGB = (page, registeredCallbacks) => {
   let source = page.selectedSource;
 
@@ -102,7 +108,6 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       ${brightness(page)}
       ${contrast(page)}
-      ${scaling(page)}
     </div>
   `;
 
