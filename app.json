@@ -1504,7 +1504,11 @@
                 "max": 15,
                 "scaling": "log",
                 "brightness": 0.75,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/M82/M82_Spitzer_mid_Infrared.FITS"
+                }
               },
               {
                 "type": "rawdata",
@@ -1520,7 +1524,11 @@
                 "max": 10,
                 "scaling": "log",
                 "brightness": 0.5,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/M82/M82_Hubble_Optical.FITS"
+                }
               },
               {
                 "type": "rawdata",
@@ -1536,7 +1544,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 0.5,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/M82/M82_Spitzer_mid_Infrared.FITS"
+                }
               },
               {
                 "type": "composite",

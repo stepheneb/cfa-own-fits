@@ -317,6 +317,11 @@ div.offcanvas {
   color: lightgray;
   border: 1px solid var(--dark-teal); }
 
+div.offcanvas-header button.btn-close-white {
+  border: none;
+  width: 2vh;
+  height: 2vh; }
+
 div.offcanvas-end {
   width: 18vw;
   top: 10px;
@@ -324,6 +329,11 @@ div.offcanvas-end {
 
 #developerToolsSideBar-body {
   padding-top: 0vh; }
+  #developerToolsSideBar-body a {
+    color: var(--green);
+    text-decoration: none; }
+  #developerToolsSideBar-body div {
+    margin-bottom: 0.5vh; }
 
 header.menu-activity-page-title {
   font-size: var(--menu-activity-page-title);

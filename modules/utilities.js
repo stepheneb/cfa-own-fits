@@ -18,7 +18,7 @@ utilities.containsAll = (arr1, arr2) =>
   arr2.every(arr2Item => arr1.includes(arr2Item));
 
 utilities.sameMembers = (arr1, arr2) =>
-  containsAll(arr1, arr2) && containsAll(arr2, arr1);
+  utilities.containsAll(arr1, arr2) && utilities.containsAll(arr2, arr1);
 
 utilities.forLoopMinMax = (array) => {
   let min = array[0],
@@ -60,5 +60,7 @@ utilities.histogram = (array, numbuckets, min, max) => {
   }
   return buckets;
 };
+
+utilities.getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1);
 
 export default utilities;

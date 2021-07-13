@@ -21,6 +21,7 @@ import renderDev from './render/dev.js';
 import splash from './render/splash.js';
 import checkBrowser from './check-browser.js';
 import logger from './logger.js';
+import utilities from './utilities.js';
 
 class Page {
   constructor(ctype, page) {
@@ -268,7 +269,7 @@ class Page {
     this.devSideBar = document.getElementById('developerToolsSideBar-body');
     this.devSideBar.insertAdjacentHTML('beforeend', `
       <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
-      ${this.renderimageSize(this, this.registeredCallbacks)}
+      ${this.renderImageStats(this, this.registeredCallbacks)}
       ${layerHistogram.render(this.selectedSource)}
       ${adjustImage.renderScaling(this)}
     `);
@@ -277,7 +278,7 @@ class Page {
   // Component rendering ...
   //
 
-  renderimageSize(page, registeredCallbacks) {
+  renderImageStats(page, registeredCallbacks) {
     let { nx, ny } = page.image.dimensions[page.image.size];
     let id = 'image-stats';
     registeredCallbacks.push(callback);
@@ -287,8 +288,15 @@ class Page {
 
     function callback() {
       let elem = document.getElementById(id);
-      let size = document.createTextNode(`Image size: ${nx} x ${ny}`);
-      elem.append(size);
+      let html = "";
+      let original = page.selectedSource.original;
+      if (original) {
+        html += `
+          <div>Original: <a href="${original.path}" target="_blank" download>${utilities.getLastItem(original.path)}</a></div>
+        `;
+      }
+      html += `<div>Image size: ${nx} x ${ny}</div>`;
+      elem.insertAdjacentHTML('beforeend', html);
     }
   }
 

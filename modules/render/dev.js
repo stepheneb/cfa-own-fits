@@ -100,7 +100,7 @@ renderDev.developerToolsSideBar = () => {
     <div class="offcanvas offcanvas-end" tabindex="-1" id="developerToolsSideBar" data-bs-backdrop="false" aria-labelledby="offcanvasExampleLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Developer Tools</h5>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <button type="button" class="btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close">X</button>
       </div>
       <div id="developerToolsSideBar-body" class="offcanvas-body"></div>
     </div>
