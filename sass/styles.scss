@@ -434,6 +434,13 @@ div.offcanvas-end {
   }
 }
 
+a#page-reset {
+  padding-top: 0.12rem;
+  padding-bottom: 0.12rem;
+  color: var(--brighter-green);
+  font-size: 150%;
+}
+
 header.menu-activity-page-title {
   font-size: var(--menu-activity-page-title);
   line-height: 120%;

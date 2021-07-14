@@ -4,6 +4,8 @@ import logger from '../logger.js';
 
 let adjustImage = {};
 
+let stepSize = 0.1;
+
 let brightness = page => {
   let html = `
     <div class='row adjust-filter'>
@@ -12,7 +14,7 @@ let brightness = page => {
       </div>
       <div class='col-8 adjust-layer'>
         <input type='range' id='brightness' name='brightness'  min='0' max='${page.image.maximumBrightness}' value='${page.image.maximumBrightness / 2}'
-          step='0.05'>
+          step='${stepSize}'>
       </div>
     </div>
   `;
@@ -26,7 +28,7 @@ let contrast = () => {
         <label for='contrast'>Contrast</label>
       </div>
       <div class='col-8'>
-        <input type='range' id='contrast' name='contrast' min='0.04' max='1.96' value='1' step='0.01'>
+        <input type='range' id='contrast' name='contrast' min='0.04' max='1.96' value='1' step='${stepSize}'>
       </div>
     </div>
   `;
@@ -40,7 +42,7 @@ let colorShift = () => {
         <label for='color-shift'>Color Shift</label>
       </div>
       <div class='col-8'>
-        <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' disabled>
+        <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' step='${stepSize} disabled>
       </div>
     </div>
   `;
@@ -143,13 +145,19 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
     });
 
     function render(source) {
-      let canvas = page.canvasImages.layerCanvasNamed(source.filter);
-      page.canvasImages.renderCanvasLayer(source, canvas);
-      page.canvasImages.renderCanvasRGB();
-      page.canvasImages.renderPreview(source);
-      logger.imageData(page.canvasImages, source);
+      adjustImage.renderRGBUpdate(page, source);
     }
   }
+};
+
+adjustImage.renderRGBUpdate = (page, source) => {
+  let canvas = page.canvasImages.layerCanvasNamed(source.filter);
+  page.canvasImages.renderCanvasLayer(source, canvas);
+  page.canvasImages.renderCanvasRGB();
+  page.canvasImages.renderPreview(source);
+  logger.imageData(page.canvasImages, source);
+  page.imageStatsUpdate(page);
+  source.changed = false;
 };
 
 adjustImage.renderMasterpiece = (page, registeredCallbacks) => {

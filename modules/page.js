@@ -1,5 +1,5 @@
 /*jshint esversion: 6 */
-/*global app  */
+/*global app  defaultApp */
 /*global bootstrap  */
 
 // https://stackoverflow.com/questions/38127416/is-it-possible-to-destructure-instance-member-variables-in-a-javascript-construc
@@ -49,6 +49,40 @@ class Page {
     } else {
       splash.hide();
     }
+  }
+
+  reset() {
+    let category = defaultApp.categories.find(c => c.type == this.type);
+    let page = category.pages.find(p => p.name == router.path.page);
+    let sources = page.image.sources;
+    let keys = ['brightness', 'contrast', 'min', 'max', 'scaling'];
+    for (var i = 0; i < sources.length; i++) {
+      var source = sources[i];
+      if (source.type == 'rawdata') {
+        for (let key of keys) {
+          let currentValue = this.image.sources[i][key];
+          let defaultValue = source[key];
+          if (defaultValue && defaultValue !== currentValue) {
+            this.image.sources[i][key] = defaultValue;
+            this.image.sources[i].changed = true;
+          }
+        }
+      }
+    }
+    this.updateAll();
+  }
+
+  updateAll() {
+    this.updateImageSelectFilterLayer();
+    for (var i = 0; i < this.image.sources.length; i++) {
+      let source = this.image.sources[i];
+      if (source.type == 'rawdata' && source.changed) {
+        adjustImage.renderRGBUpdate(this, source);
+      }
+    }
+    adjustImage.renderRGBUpdate(this, this.selectedSource);
+    logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+    this.imageStatsUpdate(this);
   }
 
   close() {
@@ -250,7 +284,7 @@ class Page {
     }
 
     // run callbacks registered when interactive components were rendered
-    this.registeredCallbacks.forEach(func => func());
+    this.registeredCallbacks.forEach(func => func(this));
 
     document.getElementById('btn-back').addEventListener('click', () => {
       if (this.type == "observation") {
@@ -266,38 +300,73 @@ class Page {
   }
 
   renderDevSideBar() {
-    this.devSideBar = document.getElementById('developerToolsSideBar-body');
-    this.devSideBar.insertAdjacentHTML('beforeend', `
+    this.bsDevSideBar = new bootstrap.Offcanvas(document.getElementById('developerToolsSideBar'));
+    this.devSideBarBody = document.getElementById('developerToolsSideBar-body');
+    this.devSideBarBody.insertAdjacentHTML('beforeend', `
       <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
       ${this.renderImageStats(this, this.registeredCallbacks)}
+      ${this.renderReset(this, this.registeredCallbacks)}
       ${layerHistogram.render(this.selectedSource)}
       ${adjustImage.renderScaling(this)}
     `);
+    if (app.dev) {
+      this.bsDevSideBar.show();
+    }
   }
+
   //
   // Component rendering ...
   //
 
-  renderImageStats(page, registeredCallbacks) {
-    let { nx, ny } = page.image.dimensions[page.image.size];
-    let id = 'image-stats';
+  renderReset(page, registeredCallbacks) {
+    let id = 'page-reset';
     registeredCallbacks.push(callback);
     return `
-      <div id = "${id}"></div>
+      <div>
+        RESET:
+        <a id = "${id}" class="text-decoration-none"><i class="bi bi-arrow-counterclockwise"></i></a>
+      </div>
+    `;
+
+    function callback(page) {
+      let elem = document.getElementById(id);
+      if (elem) {
+        elem.addEventListener('click', () => {
+          page.reset();
+        });
+      }
+    }
+  }
+
+  renderImageStats(page, registeredCallbacks) {
+    page.imageStatsId = 'image-stats';
+    registeredCallbacks.push(callback);
+    return `
+      <div id = "${page.imageStatsId}"></div>
     `;
 
     function callback() {
-      let elem = document.getElementById(id);
-      let html = "";
-      let original = page.selectedSource.original;
-      if (original) {
-        html += `
-          <div>Original: <a href="${original.path}" target="_blank" download>${utilities.getLastItem(original.path)}</a></div>
-        `;
-      }
-      html += `<div>Image size: ${nx} x ${ny}</div>`;
-      elem.insertAdjacentHTML('beforeend', html);
+      page.imageStatsUpdate(page);
     }
+  }
+
+  imageStatsUpdate(page) {
+    let { nx, ny } = page.image.dimensions[page.image.size];
+    let elem = document.getElementById(page.imageStatsId);
+    let html = "";
+    let source = page.selectedSource;
+    let original = source.original;
+    if (original) {
+      html += `
+        <div>Original: <a href="${original.path}" target="_blank" download>${utilities.getLastItem(original.path)}</a></div>
+      `;
+    }
+    html += `
+      <div>Image size: ${nx} x ${ny}</div>
+      <div>min: ${utilities.roundNumber(source.min, 3)}, max: ${utilities.roundNumber(source.max, 3)}</div>
+      <div>brightness: ${utilities.roundNumber(source.brightness, 3)}, contrast: ${utilities.roundNumber(source.contrast, 3)}</div>
+    `;
+    elem.innerHTML = html;
   }
 
   renderPageHeader() {
@@ -333,18 +402,23 @@ class Page {
     elem.addEventListener('change', (e) => {
       var layerNum = Number(e.target.value);
       this.image.selectedSourceNumber = layerNum;
-      adjustImage.update(this);
-      this.canvasImages.renderPreview(this.selectedSource);
-      if (this.type == "multi-wave") {
-        let telescopeName = document.getElementById('multi-wave-telescope-name');
-        telescopeName.textContent = this.telescopes.find(t => t.key == this.selectedSource.telescope).name;
-      }
-      logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+      this.updateImageSelectFilterLayer();
     });
     if (typeof layerNum == 'number') {
       elem.querySelector(`[value='${layerNum}']`).checked = true;
       this.image.selectedSourceNumber = layerNum;
     }
+  }
+
+  updateImageSelectFilterLayer() {
+    adjustImage.update(this);
+    this.canvasImages.renderPreview(this.selectedSource);
+    if (this.type == "multi-wave") {
+      let telescopeName = document.getElementById('multi-wave-telescope-name');
+      telescopeName.textContent = this.telescopes.find(t => t.key == this.selectedSource.telescope).name;
+    }
+    logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+    this.imageStatsUpdate(this);
   }
 
   renderImageSelectFilterLayerToAdjust() {
