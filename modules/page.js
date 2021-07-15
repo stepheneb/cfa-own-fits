@@ -363,8 +363,10 @@ class Page {
     }
     html += `
       <div>Image size: ${nx} x ${ny}</div>
+      <header>Settings</header>
       <div>min: ${utilities.roundNumber(source.min, 3)}, max: ${utilities.roundNumber(source.max, 3)}</div>
       <div>brightness: ${utilities.roundNumber(source.brightness, 3)}, contrast: ${utilities.roundNumber(source.contrast, 3)}</div>
+      <div>filter: ${source.filter}</div>
     `;
     elem.innerHTML = html;
   }
