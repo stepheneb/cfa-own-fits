@@ -471,6 +471,17 @@ div.offcanvas-end {
   }
 }
 
+svg#inspect-indicator {
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  z-index: 10;
+  display: none;
+  &.show {
+    display: block;
+  }
+}
+
 // a#page-reset {
 //   padding-top: 0.12rem;
 //   padding-bottom: 0.12rem;

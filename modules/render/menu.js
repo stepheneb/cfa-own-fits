@@ -155,7 +155,7 @@ renderMenu.activityCategory = () => {
   return html;
 };
 
-renderMenu.categoryPages = (ctype) => {
+renderMenu.categoryPages = () => {
   var elem, category, categoryPagesElement;
   let hash = "";
   let categories = app.categories;

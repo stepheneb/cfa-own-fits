@@ -359,6 +359,15 @@ div.offcanvas-end {
     width: 4vw;
     padding-right: 0; }
 
+svg#inspect-indicator {
+  position: absolute;
+  left: 100px;
+  top: 100px;
+  z-index: 10;
+  display: none; }
+  svg#inspect-indicator.show {
+    display: block; }
+
 header.menu-activity-page-title {
   font-size: var(--menu-activity-page-title);
   line-height: 120%;

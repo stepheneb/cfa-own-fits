@@ -30,16 +30,33 @@ class ImageInspect {
 
   render(page, registeredCallbacks) {
     this.page = page;
+    this.indicatorId = "inspect-indicator";
+    this.indicatorWidth = 16;
+    this.indicatorHeight = 16;
+    this.indicator = `
+      <svg id="${this.indicatorId}" xmlns="http://www.w3.org/2000/svg" width="${this.indicatorWidth}" height="${this.indicatorHeight}" fill="currentColor" class="show bi bi-brightness-high" viewBox="0 0 16 16">
+        <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
+      </svg>
+    `;
+    this.indicatorPos = {
+      top: 10,
+      left: 10
+    };
     let html = "";
     let that = this;
     this.posxId = "image-inspect-posx";
     this.posyId = "image-inspect-posy";
+
     this.cposxId = "image-inspect-cposx";
     this.cposyId = "image-inspect-cposy";
+
     this.cposRedId = "image-inspect-cpos-red";
     this.cposGreenId = "image-inspect-cpos-green";
     this.cposBlueId = "image-inspect-cpos-blue";
+
     this.cposRawId = "image-inspect-cpos-raw";
+    this.rawMinId = "image-inspect-raw-min";
+    this.rawMaxId = "image-inspect-raw-max";
 
     this.js9posxId = "image-inspect-js9-posx";
     this.js9posyId = "image-inspect-js9-posy";
@@ -52,7 +69,15 @@ class ImageInspect {
         ${position(page, registeredCallbacks)}
       </div>
     `;
+    registeredCallbacks.push(callback);
     return html;
+
+    function callback() {
+      that.imageContainer = document.getElementById(that.page.miccCanvasContainerId);
+      that.imageContainerTargetRect = that.imageContainer.getBoundingClientRect();
+      that.imageContainer.insertAdjacentHTML('beforeend', that.indicator);
+      that.indicatorElem = document.getElementById(that.indicatorId);
+    }
 
     function checkbox(page, registeredCallbacks) {
       let id = 'image-inspect-checkbox';
@@ -98,6 +123,8 @@ class ImageInspect {
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div class="pos">raw value</div>
             <div class="pos"><span id="${that.cposRawId}"></span></div>
+            <div class="pos">min: <span id="${that.rawMinId}"></span></div>
+            <div class="pos">max: <span id="${that.rawMaxId}"></span></div>
           </div>
           <div>&nbsp;</div>
           <div class="d-flex flex-row justify-content-start align-items-center">
@@ -125,6 +152,8 @@ class ImageInspect {
         that.cposBlueElem = document.getElementById(that.cposBlueId);
 
         that.cposRawElem = document.getElementById(that.cposRawId);
+        that.rawMinElem = document.getElementById(that.rawMinId);
+        that.rawMaxElem = document.getElementById(that.rawMaxId);
 
         that.js9posxElem = document.getElementById(that.js9posxId);
         that.js9posyElem = document.getElementById(that.js9posyId);
@@ -147,11 +176,26 @@ class ImageInspect {
     this.cposBlueElem.textContent = this.cpos.b;
 
     this.cposRawElem.textContent = u.roundNumber(this.cpos.raw, 3);
+    this.rawMinElem.textContent = u.roundNumber(this.rawMinValue, 3);
+    this.rawMaxElem.textContent = u.roundNumber(this.rawMaxValue, 3);
 
     this.js9posxElem.textContent = u.roundNumber(this.js9.x, 3);
     this.js9posyElem.textContent = u.roundNumber(this.js9.y, 3);
     this.js9RawElem.textContent = u.roundNumber(this.js9.raw, 3);
     this.js9PtrElem.textContent = this.js9.ptr;
+
+    // this.indicatorPos = {
+    //   left: this.pos.x + this.canvasTargetRect.left,
+    //   top: this.pos.x + this.canvasTargetRect.top,
+    // };
+    let offsetx = this.canvasTargetRect.left - this.imageContainerTargetRect.left - this.indicatorWidth / 2;
+    let offsety = this.canvasTargetRect.top - this.imageContainerTargetRect.top - this.indicatorHeight / 2;
+    this.indicatorPos = {
+      left: this.pos.x * this.width / this.canvasImages.nx + offsetx,
+      top: this.pos.y * this.height / this.canvasImages.ny + offsety
+    };
+
+    Object.assign(this.indicatorElem.style, this.indicatorPos);
 
   }
 
@@ -181,11 +225,13 @@ class ImageInspect {
     this.source = this.page.selectedSource;
     this.canvasImages = canvasImages;
     this.canvas = this.canvasImages.canvasRGB;
+    this.canvasTargetRect = this.canvas.getBoundingClientRect();
     this.width = this.canvas.clientWidth;
     this.height = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext('2d');
     this.canvasData = this.ctx.getImageData(0, 0, this.canvasImages.nx, this.canvasImages.ny).data;
     this.rawData = canvasImages.selectedSourceRawData;
+    [this.rawMinValue, this.rawMaxValue] = u.forLoopMinMax(this.rawData);
     this.bindCallbacks();
     this.startup();
     this.connected = true;
@@ -249,6 +295,10 @@ class ImageInspect {
   /// Event Handling ...
 
   pointerEvents(e) {
+    this.containerPos = {
+      x: e.pageX,
+      y: e.pageY
+    };
     let pos = {
       x: e.pageX,
       y: e.pageY

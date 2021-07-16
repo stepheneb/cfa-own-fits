@@ -502,15 +502,15 @@ class Page {
   }
 
   renderMainImageContent() {
-    let id2 = 'main-image-canvas-container';
+    this.miccCanvasContainerId = 'main-image-canvas-container';
     let optionalFunc = function () {
       // images.resizeCanvas(this.image.destinations.main.canvas, this.image.nx, this.image.ny);
     };
     return `
       <div id='main-image-content' class='main-image-content col-9'>
         <div id="micc-container">
-          <div id='${id2}' class="">
-              ${renderDev.fullScreenButton(id2, '#micc', this.registeredCallbacks, optionalFunc)}
+          <div id='${this.miccCanvasContainerId}' class="">
+              ${renderDev.fullScreenButton(this.miccCanvasContainerId, '#micc', this.registeredCallbacks, optionalFunc)}
               ${this.renderSpinner()}
           </div>
         </div>
