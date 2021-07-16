@@ -161,6 +161,7 @@ adjustImage.renderRGBUpdate = (page, source) => {
   if (app.dev) {
     logger.imageData(page.canvasImages, source);
     page.imageStatsUpdate(page);
+    page.imageInspect.connectUpdate(page.canvasImages);
   }
   source.changed = false;
 };
