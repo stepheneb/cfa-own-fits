@@ -415,6 +415,7 @@ class Page {
 
   updateImageSelectFilterLayer() {
     adjustImage.update(this);
+    this.imageInspect.connectUpdate(this.canvasImages);
     this.canvasImages.renderPreview(this.selectedSource);
     if (this.type == "multi-wave") {
       let telescopeName = document.getElementById('multi-wave-telescope-name');
@@ -538,6 +539,7 @@ class Page {
       checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"'));
       this.image.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
       this.canvasImages.renderCanvasRGB();
+      this.imageInspect.connectUpdate(this.canvasImages);
     });
   }
 
