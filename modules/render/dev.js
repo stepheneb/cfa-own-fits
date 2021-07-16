@@ -1,10 +1,12 @@
 /*jshint esversion: 6 */
+/*global app */
 
 import u from '../utilities.js';
 
 let renderDev = {};
 
 renderDev.fullScreenButton = (containerId, epandedElement, registeredCallbacks, optionalFunc) => {
+  if (app.dev == false) return '';
   let classStr = 'btn-tf';
   let flexClasses = "";
   if (containerId == "page-navigation") {
@@ -72,40 +74,23 @@ renderDev.fullScreenButton = (containerId, epandedElement, registeredCallbacks, 
   }
 };
 
-renderDev.developerToolsButton = (containerId, registerCallback) => {
+renderDev.developerToolsButton = (containerId) => {
+  if (app.dev == false) return '';
   let id = `btn-toggle-developer-tools-${containerId}`;
   let html = `
     <div  id="${id}" class="ps-1 pe-1">
       <button type="button" class="btn btn-outline-primary btn-small page-navigation-button" data-bs-toggle="offcanvas" data-bs-target="#developerToolsSideBar" aria-controls="developerToolsSideBar">DEV</button>
     </div>
   `;
-  registerCallback.push(renderedCallback);
+  // registerCallback.push(renderedCallback);
   return html;
 
-  function renderedCallback(page) {
-    let btn = document.getElementById(id);
-    // let elems = document.querySelectorAll('.developer');
-    // let canvasImages = page.canvasImages;
-    // let isEnabled = false;
-    // if (btn) {
-    //   btn.addEventListener('click', () => {
-    //     elems.forEach(fsButton => fsButton.classList.toggle('show'));
-    //     if (elems.length > 0) {
-    //       isEnabled = elems[0].classList.contains('show');
-    //     }
-    //     if (isEnabled && canvasImages) {
-    //       page.imageInspect.enable();
-    //     } else {
-    //       page.imageInspect.disable();
-    //     }
-    //   });
-    // } else {
-    //   console.log(`fsButton #${id} not found`);
-    // }
-  }
+  // function renderedCallback(page) {
+  // }
 };
 
 renderDev.developerToolsSideBar = () => {
+  if (app.dev == false) return '';
   let html = `
     <div class="offcanvas offcanvas-end" tabindex="-1" id="developerToolsSideBar" data-bs-backdrop="false" aria-labelledby="offcanvasExampleLabel">
       <div class="offcanvas-header">

@@ -1,4 +1,5 @@
 /*jshint esversion: 8 */
+/*global app */
 
 //
 // Image fetching and rendering ...
@@ -200,8 +201,10 @@ class CanvasImages {
       case 'multi-wave':
         this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
-        this.page.imageInspect.connect(this);
-        logger.imageData(this, this.selectedSource);
+        if (app.dev) {
+          this.page.imageInspect.connect(this);
+          logger.imageData(this, this.selectedSource);
+        }
         break;
       case 'find-apollo':
         this.image.landing.x = this.image.landing.source.px / this.image.landing.source.width;
@@ -642,7 +645,7 @@ class CanvasImages {
 
   renderCanvasRGB3() {
     let canvas = this.canvasRGB;
-    let startTime = performance.now();
+    // let startTime = performance.now();
 
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
@@ -706,7 +709,7 @@ class CanvasImages {
       }
       break;
     }
-    let renderTime = performance.now();
+    // let renderTime = performance.now();
     ctx.putImageData(imageData, 0, 0);
     // console.log(`renderMain: ${utilities.roundNumber(this.selectedMainLayers, 4)}: render: ${utilities.roundNumber(renderTime - startTime, 4)}`);
   }

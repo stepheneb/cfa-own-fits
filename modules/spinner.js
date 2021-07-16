@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*global app */
 
 class Spinner {
   constructor(id) {
@@ -26,7 +27,7 @@ class Spinner {
     this._log("cancel", mesg);
   }
   _log(name, mesg) {
-    if (mesg) {
+    if (app.dev && mesg) {
       console.log(`spinner.${name}: ${mesg}`);
     }
   }

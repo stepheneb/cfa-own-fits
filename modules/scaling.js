@@ -821,7 +821,7 @@ class Scaling {
     // }
   }
 
-  listenerUpLeaveEnd(name) {
+  listenerUpLeaveEnd() {
     if (this.dragStarted || this.isDragging) {
       this.lastMove = {
         x: this.moveX,

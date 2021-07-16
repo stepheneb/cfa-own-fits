@@ -300,21 +300,23 @@ class Page {
   }
 
   renderDevSideBar(page, registeredCallbacks) {
-    this.devSideBar = document.getElementById('developerToolsSideBar');
-    this.bsDevSideBar = new bootstrap.Offcanvas(this.devSideBar);
-    this.devSideBarBody = document.getElementById('developerToolsSideBar-body');
-    this.devSideBarBody.insertAdjacentHTML('beforeend', `
-      <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
-      ${this.renderImageStats(this, this.registeredCallbacks)}
-      ${this.renderReset(this, this.registeredCallbacks)}
-      ${layerHistogram.render(this.selectedSource)}
-      ${adjustImage.renderScaling(this)}
-      ${this.imageInspect.render(this, this.registeredCallbacks)}
-    `);
     if (app.dev) {
-      this.bsDevSideBar.show();
+      this.devSideBar = document.getElementById('developerToolsSideBar');
+      this.bsDevSideBar = new bootstrap.Offcanvas(this.devSideBar);
+      this.devSideBarBody = document.getElementById('developerToolsSideBar-body');
+      this.devSideBarBody.insertAdjacentHTML('beforeend', `
+        <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
+        ${this.renderImageStats(this, this.registeredCallbacks)}
+        ${this.renderReset(this, this.registeredCallbacks)}
+        ${layerHistogram.render(this.selectedSource)}
+        ${adjustImage.renderScaling(this)}
+        ${this.imageInspect.render(this, this.registeredCallbacks)}
+      `);
+      if (app.dev) {
+        this.bsDevSideBar.show();
+      }
+      registeredCallbacks.push(callback);
     }
-    registeredCallbacks.push(callback);
 
     function callback(page) {
       page.devSideBar.addEventListener('hidden.bs.offcanvas', function () {
@@ -429,14 +431,18 @@ class Page {
 
   updateImageSelectFilterLayer() {
     adjustImage.update(this);
-    this.imageInspect.connectUpdate(this.canvasImages);
+    if (app.dev) {
+      this.imageInspect.connectUpdate(this.canvasImages);
+    }
     this.canvasImages.renderPreview(this.selectedSource);
     if (this.type == "multi-wave") {
       let telescopeName = document.getElementById('multi-wave-telescope-name');
       telescopeName.textContent = this.telescopes.find(t => t.key == this.selectedSource.telescope).name;
     }
-    logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
-    this.imageStatsUpdate(this);
+    if (app.dev) {
+      logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+      this.imageStatsUpdate(this);
+    }
   }
 
   renderImageSelectFilterLayerToAdjust() {
@@ -553,7 +559,9 @@ class Page {
       checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"'));
       this.image.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
       this.canvasImages.renderCanvasRGB();
-      this.imageInspect.connectUpdate(this.canvasImages);
+      if (app.dev) {
+        this.imageInspect.connectUpdate(this.canvasImages);
+      }
     });
   }
 

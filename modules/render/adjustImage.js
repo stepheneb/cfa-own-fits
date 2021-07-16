@@ -1,4 +1,5 @@
 /*jshint esversion: 8 */
+/*global app */
 
 import logger from '../logger.js';
 
@@ -138,11 +139,13 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
     // elem.addEventListener('input', () => {});
 
     elem = document.getElementById("scaling");
-    elem.addEventListener('change', () => {
-      source = page.selectedSource;
-      source.scaling = event.target.value;
-      render(source);
-    });
+    if (elem) {
+      elem.addEventListener('change', () => {
+        source = page.selectedSource;
+        source.scaling = event.target.value;
+        render(source);
+      });
+    }
 
     function render(source) {
       adjustImage.renderRGBUpdate(page, source);
@@ -155,8 +158,10 @@ adjustImage.renderRGBUpdate = (page, source) => {
   page.canvasImages.renderCanvasLayer(source, canvas);
   page.canvasImages.renderCanvasRGB();
   page.canvasImages.renderPreview(source);
-  logger.imageData(page.canvasImages, source);
-  page.imageStatsUpdate(page);
+  if (app.dev) {
+    logger.imageData(page.canvasImages, source);
+    page.imageStatsUpdate(page);
+  }
   source.changed = false;
 };
 
@@ -231,8 +236,11 @@ adjustImage.update = page => {
   let source = page.selectedSource;
   document.getElementById("brightness").value = source.brightness;
   document.getElementById("contrast").value = source.contrast;
-  let radios = document.getElementById("scaling").elements.scaling;
-  radios.value = source.scaling;
+  let scalingElem = document.getElementById("scaling");
+  if (scalingElem) {
+    let radios = document.getElementById("scaling").elements.scaling;
+    radios.value = source.scaling;
+  }
 };
 
 export default adjustImage;
