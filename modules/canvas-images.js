@@ -531,15 +531,15 @@ class CanvasImages {
     };
 
     let renderLogLayer = () => {
-      scale = source.brightness * 256 / Math.log(range);
+      scale = source.brightness * 256 / Math.log10(range);
       switch (source.filter) {
       case 'red':
         pixindex = 0;
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
-            val = rawdata[i];
-            scaledval = Math.log(val + 1) * scale;
+            val = rawdata[i] - min;
+            scaledval = Math.max(Math.log10(val), 0) * scale;
             pixeldata[pixindex] = scaledval;
             pixeldata[pixindex + 3] = 255;
             pixindex += 4;
@@ -551,8 +551,8 @@ class CanvasImages {
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
-            val = rawdata[i];
-            scaledval = Math.log(val + 1) * scale;
+            val = rawdata[i] - min;
+            scaledval = Math.max(Math.log10(val), 0) * scale;
             pixeldata[pixindex + 1] = scaledval;
             pixeldata[pixindex + 3] = 255;
             pixindex += 4;
@@ -564,8 +564,8 @@ class CanvasImages {
         for (y = 0; y < this.ny; y++) {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
-            val = rawdata[i];
-            scaledval = Math.log(val + 1) * scale;
+            val = rawdata[i] - min;
+            scaledval = Math.max(Math.log10(val), 0) * scale;
             pixeldata[pixindex + 2] = scaledval;
             pixeldata[pixindex + 3] = 255;
             pixindex += 4;
@@ -578,7 +578,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = rawdata[i];
-            scaledval = Math.log(val + 1) * scale;
+            scaledval = Math.max(Math.log10(val), 0) * scale;
             pixeldata[pixindex] = scaledval;
             pixeldata[++pixindex] = scaledval;
             pixeldata[++pixindex] = scaledval;
