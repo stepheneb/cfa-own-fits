@@ -1138,7 +1138,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/m51/m51_optical_R.fits"
+                }
               },
               {
                 "type": "rawdata",
@@ -1153,7 +1157,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/m51/m51_optical_G.fits"
+                }
               },
               {
                 "type": "rawdata",
@@ -1168,7 +1176,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/m51/m51_optical_B.fits"
+                }
               },
               {
                 "type": "composite",
