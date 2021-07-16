@@ -362,6 +362,7 @@ div.offcanvas-end {
 
 svg#inspect-indicator {
   position: absolute;
+  pointer-events: none;
   left: 100px;
   top: 100px;
   z-index: 10;
@@ -1098,6 +1099,8 @@ div#main-image-canvas-container {
     div#main-image-canvas-container canvas.inspect {
       cursor: crosshair;
       border: 1px solid darkgray; }
+    div#main-image-canvas-container canvas.inspecting {
+      cursor: none; }
 
 canvas#main-image-canvas-red {
   object-fit: contain; }

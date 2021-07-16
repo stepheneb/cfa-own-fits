@@ -14,7 +14,8 @@ class ImageInspect {
       r: 0,
       b: 0,
       g: 0,
-      raw: 0
+      raw: 0,
+      ptr: 0
     };
     this.enabled = false;
     this.enableWhenConnected = true;
@@ -55,7 +56,9 @@ class ImageInspect {
     this.cposGreenId = "image-inspect-cpos-green";
     this.cposBlueId = "image-inspect-cpos-blue";
 
-    this.layerId = "image-inspect-layer";
+    this.cposPtrId = "image-inspect-cpos-ptr";
+
+    this.layerNameId = "image-inspect-layer";
     this.cposRawId = "image-inspect-cpos-raw";
     this.rawMinId = "image-inspect-raw-min";
     this.rawMaxId = "image-inspect-raw-max";
@@ -63,7 +66,6 @@ class ImageInspect {
     this.js9posxId = "image-inspect-js9-posx";
     this.js9posyId = "image-inspect-js9-posy";
     this.js9RawId = "image-inspect-js9-raw";
-    this.js9PtrId = "image-inspect-js9-ptr";
 
     html = `
       <div class="image-inspect">
@@ -122,6 +124,10 @@ class ImageInspect {
             <div class="pos">g: <span id="${that.cposGreenId}"></span></div>
             <div class="pos">b: <span id="${that.cposBlueId}"></span></div>
           </div>
+          <div class="d-flex flex-row justify-content-start align-items-center">
+            <div class="pos">rgb ptr</div>
+            <div class="pos"><span id="${that.cposPtrId}"></span></div>
+          </div>
           <div>&nbsp;</div>
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div class="pos">Layer: </div>
@@ -139,14 +145,6 @@ class ImageInspect {
             <div class="pos">x: <span id="${that.js9posxId}"></span></div>
             <div class="pos">y: <span id="${that.js9posyId}"></span></div>
           </div>
-          <div class="d-flex flex-row justify-content-start align-items-center">
-            <div class="pos">js9 value</div>
-            <div class="pos"><span id="${that.js9RawId}"></span></div>
-          </div>
-          <div class="d-flex flex-row justify-content-start align-items-center">
-            <div class="pos">js9 ptr</div>
-            <div class="pos"><span id="${that.js9PtrId}"></span></div>
-          </div>
         </div>
       `;
 
@@ -158,6 +156,8 @@ class ImageInspect {
         that.cposGreenElem = document.getElementById(that.cposGreenId);
         that.cposBlueElem = document.getElementById(that.cposBlueId);
 
+        that.cposPtrElem = document.getElementById(that.cposPtrId);
+
         that.layerNameElem = document.getElementById(that.layerNameId);
         that.cposRawElem = document.getElementById(that.cposRawId);
         that.rawMinElem = document.getElementById(that.rawMinId);
@@ -166,8 +166,7 @@ class ImageInspect {
         that.js9posxElem = document.getElementById(that.js9posxId);
         that.js9posyElem = document.getElementById(that.js9posyId);
 
-        that.js9RawElem = document.getElementById(that.js9RawId);
-        that.js9PtrElem = document.getElementById(that.js9PtrId);
+        // that.js9RawElem = document.getElementById(that.js9RawId);
       }
     }
 
@@ -183,6 +182,8 @@ class ImageInspect {
     this.cposGreenElem.textContent = this.cpos.g;
     this.cposBlueElem.textContent = this.cpos.b;
 
+    this.cposPtrElem.textContent = this.cpos.ptr;
+
     this.layerNameElem.textContent = this.source.name;
     this.cposRawElem.textContent = u.roundNumber(this.cpos.raw, 3);
     this.rawMinElem.textContent = u.roundNumber(this.rawMinValue, 3);
@@ -190,30 +191,28 @@ class ImageInspect {
 
     this.js9posxElem.textContent = u.roundNumber(this.js9.x, 3);
     this.js9posyElem.textContent = u.roundNumber(this.js9.y, 3);
-    this.js9RawElem.textContent = u.roundNumber(this.js9.raw, 3);
-    this.js9PtrElem.textContent = this.js9.ptr;
 
     let offsetx = this.canvasTargetRect.left - this.imageContainerTargetRect.left - this.indicatorWidth / 2;
     let offsety = this.canvasTargetRect.top - this.imageContainerTargetRect.top - this.indicatorHeight / 2;
     this.indicatorPos = {
-      left: this.pos.x * this.width / this.canvasImages.nx + offsetx,
-      top: this.pos.y * this.height / this.canvasImages.ny + offsety
+      left: this.pos.x + offsetx,
+      top: this.pos.y + offsety
     };
+
     Object.assign(this.indicatorElem.style, this.indicatorPos);
   }
 
   updateCalcs() {
-    let cdataptr = this.cpos.x * 4 + this.cpos.y * this.canvasImages.ny * 4;
-    this.cpos.r = this.canvasData[cdataptr];
-    this.cpos.g = this.canvasData[cdataptr + 1];
-    this.cpos.b = this.canvasData[cdataptr + 2];
-    let rawdataptr = this.cpos.x + this.cpos.y * this.canvasImages.ny;
+    this.cpos.ptr = this.cpos.x * 4 + this.cpos.y * this.canvasImages.nx * 4;
+    this.cpos.r = this.canvasData[this.cpos.ptr];
+    this.cpos.g = this.canvasData[this.cpos.ptr + 1];
+    this.cpos.b = this.canvasData[this.cpos.ptr + 2];
+    let rawdataptr = this.cpos.x + this.cpos.y * this.canvasImages.nx;
     this.cpos.raw = this.rawData[rawdataptr];
     this.js9.x = this.cpos.x;
     this.js9.y = this.canvasImages.ny - this.cpos.y;
-    let range = this.source.max - this.source.min;
-    this.js9.raw = this.cpos.raw / range * this.js9.max;
-    this.js9.ptr = this.js9.x * 4 + ((this.canvasImages.ny - this.js9.y) * 4 * this.canvasImages.nx);
+    // let range = this.source.max - this.source.min;
+    // this.js9.raw = this.cpos.raw / range * this.js9.max;
   }
 
   connect(canvasImages) {
@@ -261,9 +260,7 @@ class ImageInspect {
 
   bindCallbacks() {
     [
-      'listenerMouseEnter',
       'listenerMouseMove',
-      'listenerMouseLeave',
       'listenerResize',
     ].forEach(method => {
       this[method] = this[method].bind(this);
@@ -272,9 +269,7 @@ class ImageInspect {
 
   startup() {
     this.mainEvents = [
-      ['mouseenter', this.listenerMouseEnter],
       ['mousemove', this.listenerMouseMove],
-      ['mouseleave', this.listenerMouseLeave],
       ['resize', this.listeneresize],
     ];
   }
@@ -314,41 +309,26 @@ class ImageInspect {
   /// Event Handling ...
 
   pointerEvents(e) {
-    this.containerPos = {
-      x: e.pageX,
-      y: e.pageY
-    };
-    let targetRect = e.target.getBoundingClientRect();
-    this.pos.x = e.pageX - targetRect.x;
-    this.pos.y = e.pageY - targetRect.y;
+    this.pos.x = e.offsetX;
+    this.pos.y = e.offsetY;
     this.updateCpos();
   }
 
   updateCpos() {
-    let x = Math.round(this.pos.x *= this.canvasImages.nx / this.width);
-    let y = Math.round(this.pos.y *= this.canvasImages.ny / this.height);
+    let x = Math.round(this.pos.x * this.canvasImages.nx / this.width);
+    let y = Math.round(this.pos.y * this.canvasImages.ny / this.height);
     this.cpos.x = x;
     this.cpos.y = y;
   }
 
-  listenerMouseEnter(e) {
-    if (e.shiftKey) {
-      this.pointerEvents(e);
-      this.update();
-    }
-  }
-
   listenerMouseMove(e) {
     if (e.shiftKey) {
+      this.canvas.classList.add('inspecting');
       this.pointerEvents(e);
+      console.log(`mousemove: pos x: ${this.pos.x} y: ${this.pos.y}`);
       this.update();
-    }
-  }
-
-  listenerMouseLeave(e) {
-    if (e.shiftKey) {
-      this.pointerEvents(e);
-      this.update();
+    } else {
+      this.canvas.classList.remove('inspecting');
     }
   }
 
