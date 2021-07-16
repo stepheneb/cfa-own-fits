@@ -1512,7 +1512,7 @@
                   "large": "rawdata/M82/1270x1270/M82_Spitzer_mid_Infrared.bmp"
                 },
                 "filter": "red",
-                "min": 1,
+                "min": 0,
                 "max": 3107,
                 "scaling": "log",
                 "brightness": 1,
@@ -1532,8 +1532,8 @@
                   "large": "rawdata/M82/1270x1270/M82_Hubble_Optical.bmp"
                 },
                 "filter": "green",
-                "min": 0,
-                "max": 10,
+                "min": 13.5,
+                "max": 17967,
                 "scaling": "log",
                 "brightness": 1,
                 "contrast": 1,

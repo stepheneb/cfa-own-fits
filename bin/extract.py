@@ -263,12 +263,13 @@ def extract_raw_image_data(infile, outdir, logscaling):
     if logscaling:
     #     bottom = percentile_99
     #     bottom = percentile_1
+    #     bottom = percentile_01
     #     bottom = original_min
     #     top = percentile_9999
     #     top = percentile_995
     #     top = original_max
     #
-        bottom = percentile_1
+        bottom = original_min
         top = original_max
 
 
