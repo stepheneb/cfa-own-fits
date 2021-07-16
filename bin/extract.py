@@ -260,7 +260,7 @@ def extract_raw_image_data(infile, outdir, logscaling):
     else:
         bottom = next_min
 
-    # if logscaling:
+    if logscaling:
     #     bottom = percentile_99
     #     bottom = percentile_1
     #     bottom = original_min
@@ -268,8 +268,8 @@ def extract_raw_image_data(infile, outdir, logscaling):
     #     top = percentile_995
     #     top = original_max
     #
-        # bottom = next_min
-    #     top = percentile_995
+        bottom = percentile_1
+        top = original_max
 
 
     # special case for M51 X-ray clip: 90..99 percentile
@@ -295,7 +295,7 @@ def extract_raw_image_data(infile, outdir, logscaling):
 
     if logscaling:
         print("\nRescaling data to 0..1000")
-        img = img * 1000 / (offset_max - offset_min)
+        # img = img * 1000 / (offset_max - offset_min)
     else:
         print("\nRescaling data to 0..10")
         img = img * 10 / (offset_max - offset_min)
