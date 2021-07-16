@@ -1097,7 +1097,7 @@ div#main-image-canvas-container {
       background-color: var(--almost-black); }
     div#main-image-canvas-container canvas.inspect {
       cursor: crosshair;
-      border: 1px solid white; }
+      border: 1px solid darkgray; }
 
 canvas#main-image-canvas-red {
   object-fit: contain; }

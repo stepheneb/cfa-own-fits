@@ -16,6 +16,7 @@ class ImageInspect {
       g: 0,
       raw: 0
     };
+    this.enabled = false;
     this.enableWhenConnected = true;
     let js9posx = 569;
     let js9posy = 737;
@@ -34,7 +35,7 @@ class ImageInspect {
     this.indicatorWidth = 16;
     this.indicatorHeight = 16;
     this.indicator = `
-      <svg id="${this.indicatorId}" xmlns="http://www.w3.org/2000/svg" width="${this.indicatorWidth}" height="${this.indicatorHeight}" fill="currentColor" class="show bi bi-brightness-high" viewBox="0 0 16 16">
+      <svg id="${this.indicatorId}" xmlns="http://www.w3.org/2000/svg" width="${this.indicatorWidth}" height="${this.indicatorHeight}" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
         <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
       </svg>
     `;
@@ -233,7 +234,7 @@ class ImageInspect {
 
   connectUpdate(canvasImages) {
     this.setupConnect(canvasImages);
-    if (this.isEnabled()) {
+    if (this.inspectChecked()) {
       this.cpos.x = this.js9.x;
       this.cpos.y = this.canvasImages.ny - this.js9.y;
       // this.update();
@@ -254,7 +255,7 @@ class ImageInspect {
     [this.rawMinValue, this.rawMaxValue] = u.forLoopMinMax(this.rawData);
   }
 
-  isEnabled() {
+  inspectChecked() {
     return this.enabledElem.checked;
   }
 
@@ -283,12 +284,18 @@ class ImageInspect {
       this.mainEvents.forEach((eventItem) => {
         this.canvas.addEventListener(eventItem[0], eventItem[1]);
       });
+      this.canvas.classList.add('inspect');
+      this.indicatorElem.classList.add('show');
+      this.enabled = true;
     }
   }
 
   disable() {
     if (this.connected) {
       this.close();
+      this.canvas.classList.remove('inspect');
+      this.indicatorElem.classList.remove('show');
+      this.enabled = false;
     }
   }
 
@@ -326,45 +333,30 @@ class ImageInspect {
 
   listenerMouseEnter(e) {
     if (e.shiftKey) {
-      this.crosshairCursor(true);
       this.pointerEvents(e);
       this.update();
-    } else {
-      this.crosshairCursor(false);
     }
-    // console.log(`imageInspect.mouseenter: pos: ${this.pos.x}, ${this.pos.y}`);
   }
 
   listenerMouseMove(e) {
     if (e.shiftKey) {
-      this.crosshairCursor(true);
       this.pointerEvents(e);
       this.update();
-    } else {
-      this.crosshairCursor(false);
     }
-    // console.log(`imageInspect.mousemove: pos: ${this.pos.x}, ${this.pos.y}`);
   }
 
   listenerMouseLeave(e) {
     if (e.shiftKey) {
-      this.crosshairCursor(true);
       this.pointerEvents(e);
       this.update();
-    } else {
-      this.crosshairCursor(false);
-    }
-    // console.log(`imageInspect.mouseleave: pos: ${this.pos.x}, ${this.pos.y}`);
-  }
-
-  crosshairCursor(visible) {
-    if (visible) {
-      this.canvas.classList.add('inspect');
-
-    } else {
-      this.canvas.classList.remove('inspect');
     }
   }
+
+  // crosshairCursor(visible) {
+  //   if (visible) {
+  //   } else {
+  //   }
+  // }
 
 }
 

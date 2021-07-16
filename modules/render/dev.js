@@ -84,22 +84,24 @@ renderDev.developerToolsButton = (containerId, registerCallback) => {
 
   function renderedCallback(page) {
     let btn = document.getElementById(id);
-    let elems = document.querySelectorAll('.developer');
-    let canvasImages = page.canvasImages;
-    let isEnabled = false;
-    if (btn) {
-      btn.addEventListener('click', () => {
-        elems.forEach(fsButton => fsButton.classList.toggle('show'));
-        isEnabled = elems[0].classList.contains('show');
-        if (isEnabled && canvasImages) {
-          canvasImages.imageInspect.enable();
-        } else {
-          canvasImages.imageInspect.disable();
-        }
-      });
-    } else {
-      console.log(`fsButton #${id} not found`);
-    }
+    // let elems = document.querySelectorAll('.developer');
+    // let canvasImages = page.canvasImages;
+    // let isEnabled = false;
+    // if (btn) {
+    //   btn.addEventListener('click', () => {
+    //     elems.forEach(fsButton => fsButton.classList.toggle('show'));
+    //     if (elems.length > 0) {
+    //       isEnabled = elems[0].classList.contains('show');
+    //     }
+    //     if (isEnabled && canvasImages) {
+    //       page.imageInspect.enable();
+    //     } else {
+    //       page.imageInspect.disable();
+    //     }
+    //   });
+    // } else {
+    //   console.log(`fsButton #${id} not found`);
+    // }
   }
 };
 

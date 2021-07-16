@@ -257,7 +257,7 @@ class Page {
       this.canvasImages.renderPalettes();
       this.controllerImageSelectFilterLayerToAdjust();
       this.controllerImageSelectMainLayer();
-      this.renderDevSideBar();
+      this.renderDevSideBar(this, this.registeredCallbacks);
       adjustImage.update(this);
       break;
 
@@ -299,8 +299,9 @@ class Page {
 
   }
 
-  renderDevSideBar() {
-    this.bsDevSideBar = new bootstrap.Offcanvas(document.getElementById('developerToolsSideBar'));
+  renderDevSideBar(page, registeredCallbacks) {
+    this.devSideBar = document.getElementById('developerToolsSideBar');
+    this.bsDevSideBar = new bootstrap.Offcanvas(this.devSideBar);
     this.devSideBarBody = document.getElementById('developerToolsSideBar-body');
     this.devSideBarBody.insertAdjacentHTML('beforeend', `
       <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
@@ -312,6 +313,19 @@ class Page {
     `);
     if (app.dev) {
       this.bsDevSideBar.show();
+    }
+    registeredCallbacks.push(callback);
+
+    function callback(page) {
+      page.devSideBar.addEventListener('hidden.bs.offcanvas', function () {
+        page.imageInspect.disable();
+      });
+      page.devSideBar.addEventListener('shown.bs.offcanvas', function () {
+        if (page.imageInspect.connected && page.imageInspect.inspectChecked() && page.imageInspect.enabled == false) {
+          page.imageInspect.enable();
+        }
+      });
+
     }
   }
 
