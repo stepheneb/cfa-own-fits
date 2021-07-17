@@ -19,12 +19,9 @@ class ImageInspect {
     };
     this.enabled = false;
     this.enableWhenConnected = true;
-    let js9posx = 569;
-    let js9posy = 737;
-    //val = 15.92
     this.js9 = {
-      x: js9posx,
-      y: js9posy,
+      x: 0,
+      y: 0,
       min: 0,
       max: 3107.1
     };
@@ -224,9 +221,21 @@ class ImageInspect {
       this.enable();
       // this.cpos.x = this.js9.x;
       // this.cpos.y = this.canvasImages.ny - this.js9.y;
-      this.pos.x = this.js9.x * this.width / this.canvasImages.nx;
-      this.pos.y = (this.canvasImages.ny - this.js9.y) * this.height / this.canvasImages.ny;
-      this.updateCpos();
+      // this.pos.x = this.js9.x * this.width / this.canvasImages.nx;
+      // this.pos.y = (this.canvasImages.ny - this.js9.y) * this.height / this.canvasImages.ny;
+      // this.pos.x = this.js9.x * this.width / this.canvasImages.nx;
+      // this.pos.y = (this.canvasImages.ny - this.js9.y) * this.height / this.canvasImages.ny;
+      // this.updateCposFromPos();
+
+      let x = this.canvasImages.nx / 2;
+      let y = this.canvasImages.ny / 2;
+      if (this.page.image.indicator) {
+        x = this.page.image.indicator.x;
+        y = this.page.image.indicator.y;
+      }
+      this.cpos.x = x;
+      this.cpos.y = y;
+      this.updatePosFromCpos();
       this.update();
     }
   }
@@ -311,14 +320,21 @@ class ImageInspect {
   pointerEvents(e) {
     this.pos.x = e.offsetX;
     this.pos.y = e.offsetY;
-    this.updateCpos();
+    this.updateCposFromPos();
   }
 
-  updateCpos() {
+  updateCposFromPos() {
     let x = Math.round(this.pos.x * this.canvasImages.nx / this.width);
     let y = Math.round(this.pos.y * this.canvasImages.ny / this.height);
     this.cpos.x = x;
     this.cpos.y = y;
+  }
+
+  updatePosFromCpos() {
+    let x = Math.round(this.cpos.x * this.width / this.canvasImages.nx);
+    let y = Math.round(this.cpos.y * this.height / this.canvasImages.ny);
+    this.pos.x = x;
+    this.pos.y = y;
   }
 
   listenerMouseMove(e) {

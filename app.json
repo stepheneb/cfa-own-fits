@@ -1510,6 +1510,10 @@
                 "ny": 1200
               }
             },
+            "indicator": {
+              "x": 543,
+              "y": 587
+            },
             "maximumBrightness": 2,
             "selectedSourceNumber": 0,
             "selectedMainLayers": "100",
@@ -1619,6 +1623,10 @@
                 "nx": 775,
                 "ny": 1168
               }
+            },
+            "indicator": {
+              "x": 247,
+              "y": 519
             },
             "maximumBrightness": 2,
             "selectedSourceNumber": 0,
