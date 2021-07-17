@@ -307,7 +307,10 @@ class Page {
       this.devSideBarBody.insertAdjacentHTML('beforeend', `
         <p>There are numbers behind each of these images. Scaling tools use math to enhance the dimmest pixel values.</p>
         ${this.renderImageStats(this, this.registeredCallbacks)}
-        ${this.renderReset(this, this.registeredCallbacks)}
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">${this.renderReset(this, this.registeredCallbacks)}</div>
+          <div class="pos">${this.renderCopySource(this, this.registeredCallbacks)}</div>
+        </div>
         ${layerHistogram.render(this.selectedSource)}
         ${adjustImage.renderScaling(this)}
         ${this.imageInspect.render(this, this.registeredCallbacks)}
@@ -337,19 +340,78 @@ class Page {
 
   renderReset(page, registeredCallbacks) {
     let id = 'page-reset';
+    let tooltip = 'Reset adjustments to default settings';
+    let tooltipDone = 'Reset!';
     registeredCallbacks.push(callback);
     return `
-      <div>
-        RESET:
-        <a id = "${id}" class="reset text-decoration-none"><i class="bi bi-arrow-counterclockwise"></i></a>
-      </div>
+      <button type="button" id="${id}" class="btn-reset" title="${tooltip}">Reset <i class="bi bi-arrow-counterclockwise"></i></button>
     `;
 
     function callback(page) {
       let elem = document.getElementById(id);
       if (elem) {
+        let b = new bootstrap.Tooltip(elem);
+        elem.addEventListener('mouseleave', function () {
+          b.hide();
+        });
         elem.addEventListener('click', () => {
           page.reset();
+          let b = bootstrap.Tooltip.getInstance(elem);
+          elem.setAttribute('data-bs-original-title', tooltipDone);
+          b.show();
+          elem.setAttribute('data-bs-original-title', tooltip);
+          elem.focus();
+          document.activeElement.blur();
+          window.getSelection().removeAllRanges();
+        });
+      }
+    }
+  }
+
+  renderCopySource(page, registeredCallbacks) {
+    // let id = 'page-copy-source';
+    let id = 'btn-clipboard';
+    let tooltip = `Copy JSON for source layer '${page.selectedSource.name}' to clipboard`;
+    let tooltipDone = 'Copied!';
+    registeredCallbacks.push(callback);
+    return `
+      <button type="button" id="${id}" class="btn-clipboard" title="${tooltip}">Copy <i class="bi bi-clipboard-plus"></i></button>
+    `;
+
+    function callback(page) {
+      const { ClipboardItem } = window;
+      let elem = document.getElementById(id);
+      if (elem) {
+        let b = new bootstrap.Tooltip(elem);
+        elem.addEventListener('mouseleave', function () {
+          b.hide();
+        });
+        elem.addEventListener('click', () => {
+          let text = JSON.stringify(page.selectedSource, null, 2);
+          var type = "text/plain";
+          var blob = new Blob([text], { type });
+          var data = [new ClipboardItem({
+            [type]: blob
+          })];
+
+          navigator.clipboard.write(data).then(
+            function () {
+              /* success */
+              console.log('success');
+              let b = bootstrap.Tooltip.getInstance(elem);
+              elem.setAttribute('data-bs-original-title', tooltipDone);
+              b.show();
+              elem.setAttribute('data-bs-original-title', tooltip);
+              elem.focus();
+              document.activeElement.blur();
+              window.getSelection().removeAllRanges();
+            },
+            function (a) {
+              /* failure */
+              console.log('failure');
+              console.log(a);
+            }
+          );
         });
       }
     }
@@ -378,12 +440,32 @@ class Page {
         <div>Original: <a href="${original.path}" target="_blank" download>${utilities.getLastItem(original.path)}</a></div>
       `;
     }
+
     html += `
       <div>Image size: ${nx} x ${ny}</div>
       <header>Settings</header>
-      <div>min: ${utilities.roundNumber(source.min, 3)}, max: ${utilities.roundNumber(source.max, 4)}</div>
-      <div>brightness: ${utilities.roundNumber(source.brightness, 3)}, contrast: ${utilities.roundNumber(source.contrast, 3)}</div>
-      <div>filter: ${source.filter}</div>
+      <div class="data">
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">min: </div>
+          <div class="pos">${utilities.roundNumber(source.min, 3)}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">max: </div>
+          <div class="pos">${utilities.roundNumber(source.max, 4)}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">brightness: </div>
+          <div class="pos">${utilities.roundNumber(source.brightness, 3)}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">contrast: </div>
+          <div class="pos">${utilities.roundNumber(source.contrast, 3)}</div>
+        </div>
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">filter: </div>
+          <div class="pos">${source.filter}</div>
+        </div>
+      </div>
     `;
     elem.innerHTML = html;
   }

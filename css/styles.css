@@ -332,9 +332,15 @@ div.offcanvas-end {
 #developerToolsSideBar-body {
   font-size: 90%;
   padding-top: 0vh; }
+  #developerToolsSideBar-body header {
+    margin-bottom: 0.5vh; }
   #developerToolsSideBar-body a {
     color: var(--green);
     text-decoration: none; }
+    #developerToolsSideBar-body a.btn-light {
+      font-size: 90%;
+      font-weight: bold;
+      color: black; }
   #developerToolsSideBar-body a.reset {
     color: var(--medium-red);
     font-size: 120%; }
@@ -347,6 +353,22 @@ div.offcanvas-end {
       color: white; }
   #developerToolsSideBar-body a.toggle.on {
     color: white; }
+  #developerToolsSideBar-body div.pos {
+    width: 4vw;
+    padding-right: 0; }
+  #developerToolsSideBar-body div.data label {
+    text-transform: none; }
+  #developerToolsSideBar-body div.data input {
+    margin-right: 0.5vw; }
+  #developerToolsSideBar-body div.data div {
+    margin-bottom: 0.1vh; }
+  #developerToolsSideBar-body div.data div.pos {
+    width: 4vw;
+    padding-right: 0; }
+  #developerToolsSideBar-body div.pos {
+    width: 4vw;
+    padding-right: 0;
+    margin-botton: 0.5vh; }
   #developerToolsSideBar-body div {
     margin-bottom: 0.5vh; }
   #developerToolsSideBar-body div.image-inspect input {
@@ -359,6 +381,23 @@ div.offcanvas-end {
   #developerToolsSideBar-body div.image-inspect div.pos {
     width: 4vw;
     padding-right: 0; }
+
+.btn-clipboard,
+.btn-reset {
+  display: block;
+  padding: 0.25rem 0.25rem;
+  color: var(--dark-teal);
+  background-color: #fff;
+  border: 1px solid;
+  border-radius: 0.25rem; }
+  .btn-clipboard:hover,
+  .btn-reset:hover {
+    font-weight: bold; }
+
+.btn-reset i {
+  color: var(--medium-red); }
+  .btn-reset i:hover {
+    color: var(--bright-red); }
 
 svg#inspect-indicator {
   position: absolute;

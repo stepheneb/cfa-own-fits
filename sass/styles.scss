@@ -428,9 +428,17 @@ div.offcanvas-end {
 #developerToolsSideBar-body {
   font-size: 90%;
   padding-top: 0vh;
+  header {
+    margin-bottom: 0.5vh;
+  }
   a {
     color: var(--green);
     text-decoration: none;
+    &.btn-light {
+      font-size: 90%;
+      font-weight: bold;
+      color: black;
+    }
   }
   a.reset {
     color: var(--medium-red);
@@ -448,6 +456,30 @@ div.offcanvas-end {
   }
   a.toggle.on {
     color: white;
+  }
+  div.pos {
+    width: 4vw;
+    padding-right: 0;
+  }
+  div.data {
+    label {
+      text-transform: none;
+    }
+    input {
+      margin-right: 0.5vw;
+    }
+    div {
+      margin-bottom: 0.1vh;
+    }
+    div.pos {
+      width: 4vw;
+      padding-right: 0;
+    }
+  }
+  div.pos {
+    width: 4vw;
+    padding-right: 0;
+    margin-botton: 0.5vh;
   }
   div {
     margin-bottom: 0.5vh;
@@ -468,6 +500,28 @@ div.offcanvas-end {
     div.pos {
       width: 4vw;
       padding-right: 0;
+    }
+  }
+}
+
+.btn-clipboard,
+.btn-reset {
+  display: block;
+  padding: 0.25rem 0.25rem;
+  color: var(--dark-teal);
+  background-color: #fff;
+  border: 1px solid;
+  border-radius: 0.25rem;
+  &:hover {
+    font-weight: bold;
+  }
+}
+
+.btn-reset {
+  i {
+    color: var(--medium-red);
+    &:hover {
+      color: var(--bright-red);
     }
   }
 }
