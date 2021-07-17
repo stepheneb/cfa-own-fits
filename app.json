@@ -1635,8 +1635,8 @@
                 },
                 "filter": "red",
                 "min": 0,
-                "max": 10,
-                "scaling": "linear",
+                "max": 295,
+                "scaling": "log",
                 "brightness": 1,
                 "contrast": 1,
                 "original": {
@@ -1654,9 +1654,9 @@
                   "large": "rawdata/m51-multi/775x1168/Hubble_M51_Green_lowerRes.bmp"
                 },
                 "filter": "green",
-                "min": 0,
-                "max": 10,
-                "scaling": "linear",
+                "min": 5,
+                "max": 1414,
+                "scaling": "log",
                 "brightness": 1,
                 "contrast": 1,
                 "original": {
@@ -1674,8 +1674,8 @@
                   "large": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bmp"
                 },
                 "filter": "blue",
-                "min": 0,
-                "max": 10,
+                "min": 1,
+                "max": 298,
                 "scaling": "log",
                 "brightness": 1,
                 "contrast": 1,
