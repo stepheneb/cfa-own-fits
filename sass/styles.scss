@@ -458,6 +458,16 @@ div.offcanvas-end {
   a.toggle.on {
     color: white;
   }
+  label {
+    text-transform: none;
+  }
+  input[type="number"] {
+    margin-left: 0.5vw;
+    padding-left: 0.25vw;
+    width: 3vw;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+  }
   div.pos {
     width: 4vw;
     padding-right: 0;

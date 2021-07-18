@@ -52,8 +52,8 @@ class ImageInspect {
     let that = this;
     const propsAndIds = [
       ['sourceFilterId', 'image-inspect-source-filter'],
-      ['sourceMinId', 'image-inspect-source-min'],
-      ['sourceMaxId', 'image-inspect-source-max'],
+      ['sourceMinInputId', 'image-inspect-source-min-input'],
+      ['sourceMaxInputId', 'image-inspect-source-max-input'],
       ['sourceBrightnessId', 'image-inspect-source-brightness'],
       ['sourceContrastId', 'image-inspect-source-contrast'],
       ['posxId', 'image-inspect-posx'],
@@ -182,10 +182,18 @@ class ImageInspect {
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div class="pos">filter: <span id="${that.sourceFilterId}"></span></div>
           </div>
+
           <div class="d-flex flex-row justify-content-start align-items-center">
-            <div class="setting">min: <span id="${that.sourceMinId}"></span></div>
-            <div class="setting">max: <span id="${that.sourceMaxId}"></span></div>
+            <div class="setting">
+              <label for="${that.sourceMinInputId}">min: </label>
+              <input type="number" id="${that.sourceMinInputId}" name="min" step="0.01" required</input>
+            </div>
+            <div class="setting">
+              <label for="${that.sourceMaxInputId}">max: </label>
+              <input type="number" id="${that.sourceMaxInputId}" name="max"</input>
+            </div>
           </div>
+
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div class="setting">brightness: <span id="${that.sourceBrightnessId}"></span></div>
             <div class="setting">contrast: <span id="${that.sourceContrastId}"></span></div>
@@ -195,11 +203,24 @@ class ImageInspect {
       return html;
 
       function callback() {
-        that.sourceMinElem = document.getElementById(that.sourceMinId);
-        that.sourceMaxElem = document.getElementById(that.sourceMaxId);
+        that.sourceMinInputElem = document.getElementById(that.sourceMinInputId);
+        that.sourceMaxInputElem = document.getElementById(that.sourceMaxInputId);
+        that.updateSourceMinMaxElements();
+
         that.sourceBrightnessElem = document.getElementById(that.sourceBrightnessId);
         that.sourceContrastElem = document.getElementById(that.sourceContrastId);
         that.sourceFilterElem = document.getElementById(that.sourceFilterId);
+
+        that.sourceMinInputElem.addEventListener('input', (e) => {
+          let source = that.page.selectedSource;
+          source.min = e.target.valueAsNumber;
+          adjustImage.renderRGBUpdate(page, source);
+        });
+        that.sourceMaxInputElem.addEventListener('input', (e) => {
+          let source = that.page.selectedSource;
+          source.max = e.target.valueAsNumber;
+          adjustImage.renderRGBUpdate(page, source);
+        });
       }
     }
 
@@ -272,7 +293,7 @@ class ImageInspect {
           });
           elem.addEventListener('click', () => {
             let text = JSON.stringify(page.image, null, 2);
-            var type = "text/json";
+            var type = "text/plain";
             var blob = new Blob([text], { type });
             var data = [new ClipboardItem({
               [type]: blob
@@ -395,10 +416,10 @@ class ImageInspect {
     this.updateCalcs();
     let source = this.page.selectedSource;
 
+    this.updateSourceMinMaxElements();
+
     this.sourceFilterElem.textContent = source.filter;
 
-    this.sourceMinElem.textContent = u.roundNumber(source.min, 4);
-    this.sourceMaxElem.textContent = u.roundNumber(source.max, 4);
     this.sourceBrightnessElem.textContent = u.roundNumber(source.brightness, 4);
     this.sourceContrastElem.textContent = u.roundNumber(source.contrast, 4);
 
@@ -453,6 +474,16 @@ class ImageInspect {
       top: this.pos.y + offsety
     };
     Object.assign(this.indicatorElem.style, this.indicatorPos);
+  }
+
+  updateSourceMinMaxElements() {
+    let source = this.page.selectedSource;
+    this.sourceMinInputElem.setAttribute('min', source.originalMin);
+    this.sourceMinInputElem.setAttribute('max', source.originalMax);
+    this.sourceMinInputElem.valueAsNumber = source.min;
+    this.sourceMaxInputElem.setAttribute('min', source.originalMin);
+    this.sourceMaxInputElem.setAttribute('max', source.originalMax);
+    this.sourceMaxInputElem.valueAsNumber = source.max;
   }
 
   reset() {
