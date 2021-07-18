@@ -9,28 +9,33 @@ let adjustImage = {};
 let stepSize = 0.05;
 
 let brightness = page => {
+  let min = 0;
+  let max = page.image.maximumBrightness;
+  let val = (max - min) / 2 + min;
   let html = `
     <div class='row adjust-filter'>
       <div class='col-4'>
         <label for='brightness'>Brightness</label>
       </div>
       <div class='col-8 adjust-layer'>
-        <input type='range' id='brightness' name='brightness'  min='0' max='${page.image.maximumBrightness}' value='${page.image.maximumBrightness / 2}'
-          step='${stepSize}'>
+        <input type='range' id='brightness' name='brightness'  min='${min}' max='${max}' value='${val}' step='${stepSize}'>
       </div>
     </div>
   `;
   return html;
 };
 
-let contrast = () => {
+let contrast = page => {
+  let min = 0 + stepSize;
+  let max = page.image.maximumBrightness - stepSize;
+  let val = (max - min) / 2 + min;
   let html = `
     <div class=' row adjust-filter'>
       <div class='col-4'>
         <label for='contrast'>Contrast</label>
       </div>
       <div class='col-8'>
-        <input type='range' id='contrast' name='contrast' min='0.04' max='1.96' value='1' step='${stepSize}'>
+        <input type='range' id='contrast' name='contrast' min='${min}' max='${max}' value='${val}' step='${stepSize}'>
       </div>
     </div>
   `;
