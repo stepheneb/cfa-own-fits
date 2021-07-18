@@ -371,7 +371,7 @@ class ImageInspect {
     this.cposPtrElem.textContent = this.cpos.ptr;
 
     this.layerNameElem.textContent = this.source.name;
-    this.cposRawElem.textContent = u.roundNumber(this.cpos.raw, 3);
+    this.cposRawElem.textContent = u.roundNumber(this.cpos.raw, 4);
     this.rawMinElem.textContent = u.roundNumber(this.rawMinValue, 3);
     this.rawMaxElem.textContent = u.roundNumber(this.rawMaxValue, 5);
 
