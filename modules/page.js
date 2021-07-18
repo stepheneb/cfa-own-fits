@@ -81,6 +81,9 @@ class Page {
     }
     adjustImage.renderRGBUpdate(this, this.selectedSource);
     logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+    if (app.dev) {
+      this.imageInspect.reset();
+    }
   }
 
   close() {

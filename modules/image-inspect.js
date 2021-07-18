@@ -397,8 +397,25 @@ class ImageInspect {
     this.cpos.raw = this.rawData[rawdataptr];
     this.js9.x = this.cpos.x;
     this.js9.y = this.canvasImages.ny - this.cpos.y;
-    // let range = this.source.max - this.source.min;
-    // this.js9.raw = this.cpos.raw / range * this.js9.max;
+  }
+
+  reset() {
+    if (this.enabled) {
+      this.setupIndicator();
+      this.update();
+    }
+  }
+
+  setupIndicator() {
+    let x = this.canvasImages.nx / 2;
+    let y = this.canvasImages.ny / 2;
+    if (this.page.image.indicator) {
+      x = this.page.image.indicator.x;
+      y = this.page.image.indicator.y;
+    }
+    this.cpos.x = x;
+    this.cpos.y = y;
+    this.updatePosFromCpos();
   }
 
   connect(canvasImages) {
@@ -408,15 +425,7 @@ class ImageInspect {
     this.connected = true;
     if (this.enableWhenConnected) {
       this.enable();
-      let x = this.canvasImages.nx / 2;
-      let y = this.canvasImages.ny / 2;
-      if (this.page.image.indicator) {
-        x = this.page.image.indicator.x;
-        y = this.page.image.indicator.y;
-      }
-      this.cpos.x = x;
-      this.cpos.y = y;
-      this.updatePosFromCpos();
+      this.setupIndicator();
       this.update();
     }
   }
@@ -426,7 +435,6 @@ class ImageInspect {
     if (this.inspectChecked()) {
       this.cpos.x = this.js9.x;
       this.cpos.y = this.canvasImages.ny - this.js9.y;
-      // this.update();
     }
     this.update();
   }
