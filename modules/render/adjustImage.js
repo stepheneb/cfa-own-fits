@@ -1,11 +1,12 @@
 /*jshint esversion: 8 */
 /*global app */
 
+import u from '../utilities.js';
 import logger from '../logger.js';
 
 let adjustImage = {};
 
-let stepSize = 0.1;
+let stepSize = 0.05;
 
 let brightness = page => {
   let html = `
@@ -115,25 +116,30 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
   `;
 
   function callback() {
-    let elem;
+    let debounceTime = 125;
 
-    elem = document.getElementById("brightness");
-    elem.addEventListener('input', (e) => {
+    const listenerDebounceBrightness = u.debounce((e) => {
       source = page.selectedSource;
       let brightness = e.target.valueAsNumber;
       source.brightness = brightness;
       render(source);
-    });
+    }, debounceTime);
 
-    elem = document.getElementById("contrast");
-    elem.addEventListener('input', (e) => {
+    const listenerDebounceContrast = u.debounce((e) => {
       source = page.selectedSource;
       source.contrast = e.target.valueAsNumber;
       let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
       source.max = source.originalMax - contrastShift;
       source.min = Math.max(0, source.originalMin + contrastShift);
       render(source);
-    });
+    }, debounceTime);
+
+    let elem;
+    elem = document.getElementById("brightness");
+    elem.addEventListener('input', listenerDebounceBrightness);
+
+    elem = document.getElementById("contrast");
+    elem.addEventListener('input', listenerDebounceContrast);
 
     // elem = document.getElementById("color-shift");
     // elem.addEventListener('input', () => {});
