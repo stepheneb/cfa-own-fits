@@ -2,12 +2,30 @@
 
 let layerHistogram = {};
 
+layerHistogram.canvasDataId = "image-layer-histogram-canvas";
+layerHistogram.canvasRawDataId = "layer-histogram-rawdata-canvas";
+
+layerHistogram.canvasTitleId = "layer-histogram-title";
+layerHistogram.rawDataTitleId = "layer-histogram-title-rawdata";
+
 layerHistogram.render = () => {
   let html = `
     <div id="layer-histogram" class="layer-histogram">
-      <div id="layer-histogram-title" class="mt-2">Image Layer Histogram</div>
-      <div id="image-layer-histogram-container" class="col-12">
-        <canvas id="image-layer-histogram"></canvas>
+      <div id="${layerHistogram.canvasTitleId}" class="mt-2">Image Layer Histogram</div>
+      <div class="col-12 histogram-container">
+        <canvas id="${layerHistogram.canvasDataId}"></canvas>
+      </div>
+    </div>
+  `;
+  return html;
+};
+
+layerHistogram.renderRawData = () => {
+  let html = `
+    <div id="layer-histogram-rawdata" class="layer-histogram">
+      <div id="${layerHistogram.rawDataTitleId}" class="mt-2">Raw Data Histogram</div>
+      <div class="col-12 histogram-container">
+        <canvas id="${layerHistogram.canvasRawDataId}"></canvas>
       </div>
     </div>
   `;
@@ -15,15 +33,25 @@ layerHistogram.render = () => {
 };
 
 layerHistogram.update = (h, source) => {
-  let histogram = [];
-  let canvas = document.getElementById("image-layer-histogram");
-  let { width, height } = canvas.parentElement.getBoundingClientRect();
-  let title = document.getElementById('layer-histogram-title');
+  let canvas = document.getElementById(layerHistogram.canvasDataId);
+  let title = document.getElementById(layerHistogram.canvasTitleId);
   title.innerHTML = `Image Layer Histogram: ${source.name}`;
+  layerHistogram.finishUpdate(h, source, canvas);
+};
+
+layerHistogram.updateRawData = (h, source) => {
+  let canvas = document.getElementById(layerHistogram.canvasRawDataId);
+  let title = document.getElementById(layerHistogram.rawDataTitleId);
+  title.innerHTML = `Raw Data Histogram: ${source.name}`;
+  layerHistogram.finishUpdate(h, source, canvas);
+};
+
+layerHistogram.finishUpdate = (h, source, canvas) => {
+  let histogram = [];
+  let { width, height } = canvas.parentElement.getBoundingClientRect();
   canvas.width = width;
   canvas.height = height;
-  const ctx = canvas.getContext('2d');
-
+  let ctx = canvas.getContext('2d');
   switch (source.scaling) {
   case "linear":
     histogram = h.slice(1, h.length - 1);

@@ -20,9 +20,9 @@ let printTable = msg => {
 
 logger.imageData = (canvasImage, source) => {
   if (app.dev) {
-    let data = canvasImage.selectedSourcePixelData;
-    let h = u.histogram(data, 64, 0, 256);
-    let [min, max] = u.forLoopMinMax(data);
+    let rgbData = canvasImage.selectedSourcePixelData;
+    let h = u.histogram(rgbData, 64, 0, 256);
+    let [min, max] = u.forLoopMinMax(rgbData);
     let str = `
       Histogram (canvas uint8Data): name: ${source.name}, min: ${min}, max: ${max}
       hmin: ${u.roundNumber(source.min, 4)}, hmax: ${u.roundNumber(source.max, 4)}
@@ -33,6 +33,12 @@ logger.imageData = (canvasImage, source) => {
     print(str);
     printTable(h);
     layerHistogram.update(h, source);
+
+    let rawdata = canvasImage.rawDataForSource(source);
+    [min, max] = u.forLoopMinMax(rawdata);
+    h = u.histogram(rawdata, 64, min, max);
+    layerHistogram.updateRawData(h, source);
+
   }
 };
 

@@ -1502,7 +1502,7 @@ div#image-stats {
   display: flex;
 }
 
-div#image-layer-histogram-container {
+div.histogram-container {
   height: 10vh;
   width: 100%;
   margin: 0.5em 0em;
@@ -1511,7 +1511,8 @@ div#image-layer-histogram-container {
   border: 1px solid var(--bright-teal);
 }
 
-#image-layer-histogram.canvas {
+#image-layer-histogram.canvas,
+#layer-histogram-rawdata.canvas {
   background-color: black;
   height: 100%;
   width: 100%;

@@ -1,5 +1,8 @@
 /*jshint esversion: 6 */
+/*global bootstrap  */
 
+import layerHistogram from './layerHistogram.js';
+import adjustImage from './render/adjustImage.js';
 import u from './utilities.js';
 
 class ImageInspect {
@@ -64,8 +67,17 @@ class ImageInspect {
     this.js9posyId = "image-inspect-js9-posy";
     this.js9RawId = "image-inspect-js9-raw";
 
+    this.imageStatsId = 'image-stats';
+
     html = `
       <div class="image-inspect">
+        ${imageStats(page, registeredCallbacks)}
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">${renderReset(page, registeredCallbacks)}</div>
+          <div class="pos">${renderCopySource(page, registeredCallbacks)}</div>
+        </div>
+        ${layerHistogram.render(page.selectedSource)}
+        ${adjustImage.renderScaling(page)}
         ${checkbox(page, registeredCallbacks)}
         ${position(page, registeredCallbacks)}
       </div>
@@ -78,6 +90,134 @@ class ImageInspect {
       that.imageContainerTargetRect = that.imageContainer.getBoundingClientRect();
       that.imageContainer.insertAdjacentHTML('beforeend', that.indicator);
       that.indicatorElem = document.getElementById(that.indicatorId);
+    }
+
+    function imageStats(page, registeredCallbacks) {
+      registeredCallbacks.push(callback);
+      return `
+        <div id = "${that.imageStatsId}"></div>
+      `;
+
+      function callback(page) {
+        let { nx, ny } = page.image.dimensions[page.image.size];
+        let elem = document.getElementById(that.imageStatsId);
+        let html = "";
+        let source = page.selectedSource;
+        let original = source.original;
+        if (original) {
+          html += `
+              <div>Original: <a href="${original.path}" target="_blank" download>${u.getLastItem(original.path)}</a></div>
+            `;
+        }
+
+        html += `
+            <div>Image size: ${nx} x ${ny}</div>
+            ${layerHistogram.renderRawData(that.page.selectedSource)}
+            <header>Settings</header>
+            <div class="data">
+              <div class="d-flex flex-row justify-content-start align-items-center">
+                <div class="pos">min: </div>
+                <div class="pos">${u.roundNumber(source.min, 3)}</div>
+              </div>
+              <div class="d-flex flex-row justify-content-start align-items-center">
+                <div class="pos">max: </div>
+                <div class="pos">${u.roundNumber(source.max, 4)}</div>
+              </div>
+              <div class="d-flex flex-row justify-content-start align-items-center">
+                <div class="pos">brightness: </div>
+                <div class="pos">${u.roundNumber(source.brightness, 3)}</div>
+              </div>
+              <div class="d-flex flex-row justify-content-start align-items-center">
+                <div class="pos">contrast: </div>
+                <div class="pos">${u.roundNumber(source.contrast, 3)}</div>
+              </div>
+              <div class="d-flex flex-row justify-content-start align-items-center">
+                <div class="pos">filter: </div>
+                <div class="pos">${source.filter}</div>
+              </div>
+            </div>
+          `;
+        elem.innerHTML = html;
+
+      }
+    }
+
+    function renderReset(page, registeredCallbacks) {
+      let id = 'page-reset';
+      let tooltip = 'Reset adjustments to default settings';
+      let tooltipDone = 'Reset!';
+      registeredCallbacks.push(callback);
+      return `
+        <button type="button" id="${id}" class="btn-reset" title="${tooltip}">Reset <i class="bi bi-arrow-counterclockwise"></i></button>
+      `;
+
+      function callback(page) {
+        let elem = document.getElementById(id);
+        if (elem) {
+          let b = new bootstrap.Tooltip(elem);
+          elem.addEventListener('mouseleave', function () {
+            b.hide();
+          });
+          elem.addEventListener('click', () => {
+            page.reset();
+            let b = bootstrap.Tooltip.getInstance(elem);
+            elem.setAttribute('data-bs-original-title', tooltipDone);
+            b.show();
+            elem.setAttribute('data-bs-original-title', tooltip);
+            elem.focus();
+            document.activeElement.blur();
+            window.getSelection().removeAllRanges();
+          });
+        }
+      }
+    }
+
+    function renderCopySource(page, registeredCallbacks) {
+      let id = 'btn-clipboard';
+      let tooltip = `Copy JSON for source layer '${that.page.selectedSource.name}' to clipboard`;
+      let tooltipDone = 'Copied!';
+      registeredCallbacks.push(callback);
+      return `
+        <button type="button" id="${id}" class="btn-clipboard" title="${tooltip}">Copy <i class="bi bi-clipboard-plus"></i></button>
+      `;
+
+      function callback(page) {
+        const { ClipboardItem } = window;
+        let elem = document.getElementById(id);
+        if (elem) {
+          let b = new bootstrap.Tooltip(elem);
+          elem.addEventListener('mouseleave', function () {
+            b.hide();
+          });
+          elem.addEventListener('click', () => {
+            let text = JSON.stringify(page.selectedSource, null, 2);
+            var type = "text/plain";
+            var blob = new Blob([text], { type });
+            var data = [new ClipboardItem({
+              [type]: blob
+            })];
+
+            navigator.clipboard.write(data).then(
+              function () {
+                /* success */
+                console.log('success');
+                let b = bootstrap.Tooltip.getInstance(elem);
+                elem.setAttribute('data-bs-original-title', tooltipDone);
+                b.show();
+                elem.setAttribute('data-bs-original-title', tooltip);
+                elem.focus();
+                document.activeElement.blur();
+                window.getSelection().removeAllRanges();
+              },
+              function (a) {
+                /* failure */
+                console.log('failure');
+                console.log(a);
+              }
+            );
+          });
+        }
+      }
     }
 
     function checkbox(page, registeredCallbacks) {
