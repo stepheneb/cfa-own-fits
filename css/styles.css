@@ -356,6 +356,11 @@ div.offcanvas-end {
   #developerToolsSideBar-body div.pos {
     width: 4vw;
     padding-right: 0; }
+  #developerToolsSideBar-body div.xaxis {
+    font-size: 90%; }
+  #developerToolsSideBar-body div.setting {
+    width: 6vw;
+    padding-right: 0; }
   #developerToolsSideBar-body div.data label {
     text-transform: none; }
   #developerToolsSideBar-body div.data input {
@@ -1171,7 +1176,7 @@ div#image-stats {
   display: block; }
 
 #scaling-control {
-  margin: 2vh 0vh;
+  margin: 1vh 0vh;
   display: flex; }
 
 div.histogram-container {

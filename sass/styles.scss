@@ -461,6 +461,13 @@ div.offcanvas-end {
     width: 4vw;
     padding-right: 0;
   }
+  div.xaxis {
+    font-size: 90%;
+  }
+  div.setting {
+    width: 6vw;
+    padding-right: 0;
+  }
   div.data {
     label {
       text-transform: none;
@@ -1498,7 +1505,7 @@ div#image-stats {
 }
 
 #scaling-control {
-  margin: 2vh 0vh;
+  margin: 1vh 0vh;
   display: flex;
 }
 

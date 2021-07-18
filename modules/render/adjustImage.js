@@ -60,7 +60,7 @@ let scaling = page => {
 
   let html = `
     <div id="scaling-control" class='row'>
-      <div class='col-4'>
+      <div class='col-4 ps-0'>
         <label>Scaling</label>
       </div>
       <div class="col-8">

@@ -25,7 +25,7 @@ layerHistogram.renderRawData = () => {
     <div id="layer-histogram-rawdata" class="layer-histogram">
       <div id="${layerHistogram.rawDataTitleId}" class="mt-2">Raw Data Histogram</div>
       <div class="col-12 histogram-container">
-        <canvas id="${layerHistogram.canvasRawDataId}"></canvas>
+        <canvas id="${layerHistogram.canvasRawDataId}" data-scalingtype="linear"></canvas>
       </div>
     </div>
   `;
@@ -43,7 +43,7 @@ layerHistogram.updateRawData = (h, source) => {
   let canvas = document.getElementById(layerHistogram.canvasRawDataId);
   let title = document.getElementById(layerHistogram.rawDataTitleId);
   title.innerHTML = `Raw Data Histogram: ${source.name}`;
-  layerHistogram.finishUpdate(h, source, canvas);
+  layerHistogram.finishUpdate(h, source, canvas, 'linear');
 };
 
 layerHistogram.finishUpdate = (h, source, canvas) => {
@@ -52,7 +52,8 @@ layerHistogram.finishUpdate = (h, source, canvas) => {
   canvas.width = width;
   canvas.height = height;
   let ctx = canvas.getContext('2d');
-  switch (source.scaling) {
+  let scalingtype = canvas.dataset.scalingtype || source.scaling;
+  switch (scalingtype) {
   case "linear":
     histogram = h.slice(1, h.length - 1);
     break;
@@ -60,7 +61,6 @@ layerHistogram.finishUpdate = (h, source, canvas) => {
     histogram = h.slice(0, h.length - 1);
     break;
   }
-
   let bars = histogram.length;
   let columnWidth = width / bars;
   let barWidth = Math.floor(columnWidth - 1);
@@ -72,7 +72,7 @@ layerHistogram.finishUpdate = (h, source, canvas) => {
   ctx.fillRect(0, 0, width, height);
   ctx.fillStyle = '#bff5aa';
   for (var i = 0; i < bars; i++) {
-    switch (source.scaling) {
+    switch (scalingtype) {
     case "linear":
       barHeight = data[i] / maxCount * height * 0.9;
       break;

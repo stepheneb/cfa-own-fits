@@ -46,40 +46,41 @@ class ImageInspect {
     };
     let html = "";
     let that = this;
-    this.posxId = "image-inspect-posx";
-    this.posyId = "image-inspect-posy";
-
-    this.cposxId = "image-inspect-cposx";
-    this.cposyId = "image-inspect-cposy";
-
-    this.cposRedId = "image-inspect-cpos-red";
-    this.cposGreenId = "image-inspect-cpos-green";
-    this.cposBlueId = "image-inspect-cpos-blue";
-
-    this.cposPtrId = "image-inspect-cpos-ptr";
-
-    this.layerNameId = "image-inspect-layer";
-    this.cposRawId = "image-inspect-cpos-raw";
-    this.rawMinId = "image-inspect-raw-min";
-    this.rawMaxId = "image-inspect-raw-max";
-
-    this.js9posxId = "image-inspect-js9-posx";
-    this.js9posyId = "image-inspect-js9-posy";
-    this.js9RawId = "image-inspect-js9-raw";
-
-    this.imageStatsId = 'image-stats';
+    const propsAndIds = [
+      ['posxId', 'image-inspect-posx'],
+      ['posyId', 'image-inspect-posy'],
+      ['cposxId', 'image-inspect-cposx'],
+      ['cposyId', 'image-inspect-cposy'],
+      ['cposRedId', 'image-inspect-cpos-red'],
+      ['cposGreenId', 'image-inspect-cpos-green'],
+      ['cposBlueId', 'image-inspect-cpos-blue'],
+      ['cposPtrId', 'image-inspect-cpos-ptr'],
+      ['layerNameId', 'image-inspect-layer'],
+      ['cposRawId', 'image-inspect-cpos-raw'],
+      ['rawMinId', 'image-inspect-raw-min'],
+      ['rawMaxId', 'image-inspect-raw-max'],
+      ['js9posxId', 'image-inspect-js9-posx'],
+      ['js9posyId', 'image-inspect-js9-posy'],
+      ['js9RawId', 'image-inspect-js9-raw'],
+      ['originalImageId', 'original-image'],
+      ['rawDataHistogramContainerId', 'raw-data-histogram-container'],
+      ['pixelLayerDataHistogramContainerId', 'pixel-data-histogram-container'],
+      ['imageStatsId', 'image-stats'],
+      ['scalingId', 'scaling-container-id'],
+    ];
+    for (const e of propsAndIds) {
+      this[e[0]] = e[1];
+    }
 
     html = `
       <div class="image-inspect">
-        ${imageStats(page, registeredCallbacks)}
-        <div class="d-flex flex-row justify-content-start align-items-center">
-          <div class="pos">${renderReset(page, registeredCallbacks)}</div>
-          <div class="pos">${renderCopySource(page, registeredCallbacks)}</div>
-        </div>
-        ${layerHistogram.render(page.selectedSource)}
-        ${adjustImage.renderScaling(page)}
-        ${checkbox(page, registeredCallbacks)}
-        ${position(page, registeredCallbacks)}
+        ${originalImage(page, registeredCallbacks)}
+        ${rawDataHistogram(page, registeredCallbacks)}
+        ${imageSettings(page, registeredCallbacks)}
+        ${resetCopyButtons(page, registeredCallbacks)}
+        ${pixelLayerDataHistogram(page, registeredCallbacks)}
+        ${inspectCheckbox(page, registeredCallbacks)}
+        ${inspectPosition(page, registeredCallbacks)}
       </div>
     `;
     registeredCallbacks.push(callback);
@@ -92,57 +93,108 @@ class ImageInspect {
       that.indicatorElem = document.getElementById(that.indicatorId);
     }
 
-    function imageStats(page, registeredCallbacks) {
+    function originalImage(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
-        <div id = "${that.imageStatsId}"></div>
+        <div id = "${that.originalImageId}"></div>
       `;
 
       function callback(page) {
         let { nx, ny } = page.image.dimensions[page.image.size];
-        let elem = document.getElementById(that.imageStatsId);
+        let elem = document.getElementById(that.originalImageId);
         let html = "";
         let source = page.selectedSource;
         let original = source.original;
         if (original) {
           html += `
               <div>Original: <a href="${original.path}" target="_blank" download>${u.getLastItem(original.path)}</a></div>
+              <div>Image size: ${nx} x ${ny}</div>
             `;
         }
-
-        html += `
-            <div>Image size: ${nx} x ${ny}</div>
-            ${layerHistogram.renderRawData(that.page.selectedSource)}
-            <header>Settings</header>
-            <div class="data">
-              <div class="d-flex flex-row justify-content-start align-items-center">
-                <div class="pos">min: </div>
-                <div class="pos">${u.roundNumber(source.min, 3)}</div>
-              </div>
-              <div class="d-flex flex-row justify-content-start align-items-center">
-                <div class="pos">max: </div>
-                <div class="pos">${u.roundNumber(source.max, 4)}</div>
-              </div>
-              <div class="d-flex flex-row justify-content-start align-items-center">
-                <div class="pos">brightness: </div>
-                <div class="pos">${u.roundNumber(source.brightness, 3)}</div>
-              </div>
-              <div class="d-flex flex-row justify-content-start align-items-center">
-                <div class="pos">contrast: </div>
-                <div class="pos">${u.roundNumber(source.contrast, 3)}</div>
-              </div>
-              <div class="d-flex flex-row justify-content-start align-items-center">
-                <div class="pos">filter: </div>
-                <div class="pos">${source.filter}</div>
-              </div>
-            </div>
-          `;
         elem.innerHTML = html;
-
       }
     }
 
-    function renderReset(page, registeredCallbacks) {
+    // histogram of R, G, or B pixel data from canvas image for selected source layer
+    function pixelLayerDataHistogram(page, registeredCallbacks) {
+      registeredCallbacks.push(callback);
+      return `
+          <div id = "${that.pixelLayerDataHistogramContainerId}">
+            <div class="d-flex flex-row justify-content-between align-items-center">
+              <div class="xaxis"><span>0</span></div>
+              <div class="xaxis ms-auto"><span>255</span></div>
+            </div>
+          </div>
+        `;
+
+      function callback(page) {
+        let elem = document.getElementById(that.pixelLayerDataHistogramContainerId);
+        let template = document.createElement('template');
+        template.innerHTML = layerHistogram.render(page.selectedSource).trim();
+        let canvas = template.content.firstChild;
+        elem.insertAdjacentElement('afterbegin', canvas);
+      }
+    }
+
+    // histogram of raw data from original image for selected source layer
+    function rawDataHistogram(page, registeredCallbacks) {
+      registeredCallbacks.push(callback);
+      return `
+          <div id = "${that.rawDataHistogramContainerId}">
+            <div class="d-flex flex-row justify-content-between align-items-center">
+              <div class="xaxis"><span id="${that.rawMinId}"></span></div>
+              <div class="xaxis ms-auto"><span id="${that.rawMaxId}"></span></div>
+            </div>
+          </div>
+        `;
+
+      function callback(page) {
+        that.rawMinElem = document.getElementById(that.rawMinId);
+        that.rawMaxElem = document.getElementById(that.rawMaxId);
+        let elem = document.getElementById(that.rawDataHistogramContainerId);
+        let template = document.createElement('template');
+        template.innerHTML = layerHistogram.renderRawData(page.selectedSource).trim();
+        let canvas = template.content.firstChild;
+        elem.insertAdjacentElement('afterbegin', canvas);
+      }
+    }
+
+    // Settings for image layer
+    function imageSettings(page) {
+      let source = page.selectedSource;
+      let html = "";
+      // registeredCallbacks.push(callback);
+      html = `
+        <div id = "${that.imageStatsId}">
+          <header>Settings, <span>filter: ${source.filter}</span></header>
+          <div class="data">
+            <div class="d-flex flex-row justify-content-start align-items-center">
+              <div class="setting">min: ${u.roundNumber(source.min, 3)}</div>
+              <div class="setting">max: ${u.roundNumber(source.max, 4)}</div>
+            </div>
+            <div class="d-flex flex-row justify-content-start align-items-center">
+              <div class="setting">brightness: ${u.roundNumber(source.brightness, 3)}</div>
+              <div class="setting">contrast: ${u.roundNumber(source.contrast, 3)}</div>
+            </div>
+          </div>
+          ${adjustImage.renderScaling(page)}
+        </div>
+        `;
+      return html;
+    }
+
+    // wrapper for reset and copy buttons
+    function resetCopyButtons(page, registeredCallbacks) {
+      return `
+        <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos">${resetButton(page, registeredCallbacks)}</div>
+          <div class="pos">${copyButton(page, registeredCallbacks)}</div>
+        </div>
+      `;
+    }
+
+    // button: Reset adjustments to default settings
+    function resetButton(page, registeredCallbacks) {
       let id = 'page-reset';
       let tooltip = 'Reset adjustments to default settings';
       let tooltipDone = 'Reset!';
@@ -172,7 +224,8 @@ class ImageInspect {
       }
     }
 
-    function renderCopySource(page, registeredCallbacks) {
+    // button: Copy JSON for source layer into the system clipboard
+    function copyButton(page, registeredCallbacks) {
       let id = 'btn-clipboard';
       let tooltip = `Copy JSON for source layer '${that.page.selectedSource.name}' to clipboard`;
       let tooltipDone = 'Copied!';
@@ -196,7 +249,6 @@ class ImageInspect {
             var data = [new ClipboardItem({
               [type]: blob
             })];
-
             navigator.clipboard.write(data).then(
               function () {
                 /* success */
@@ -220,7 +272,8 @@ class ImageInspect {
       }
     }
 
-    function checkbox(page, registeredCallbacks) {
+    // checkbox: enable/disable image layer inspect tool
+    function inspectCheckbox(page, registeredCallbacks) {
       let id = 'image-inspect-checkbox';
       let checkedState = that.enableWhenConnected ? "checked" : "";
       registeredCallbacks.push(callback);
@@ -246,7 +299,7 @@ class ImageInspect {
       }
     }
 
-    function position(page, registeredCallbacks) {
+    function inspectPosition(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
         <div class="data">
@@ -273,8 +326,6 @@ class ImageInspect {
           <div class="d-flex flex-row justify-content-start align-items-center">
             <div class="pos">raw value</div>
             <div class="pos"><span id="${that.cposRawId}"></span></div>
-            <div class="pos">min: <span id="${that.rawMinId}"></span></div>
-            <div class="pos">max: <span id="${that.rawMaxId}"></span></div>
           </div>
           <div>&nbsp;</div>
           <div class="d-flex flex-row justify-content-start align-items-center">
@@ -297,8 +348,6 @@ class ImageInspect {
 
         that.layerNameElem = document.getElementById(that.layerNameId);
         that.cposRawElem = document.getElementById(that.cposRawId);
-        that.rawMinElem = document.getElementById(that.rawMinId);
-        that.rawMaxElem = document.getElementById(that.rawMaxId);
 
         that.js9posxElem = document.getElementById(that.js9posxId);
         that.js9posyElem = document.getElementById(that.js9posyId);
@@ -359,14 +408,6 @@ class ImageInspect {
     this.connected = true;
     if (this.enableWhenConnected) {
       this.enable();
-      // this.cpos.x = this.js9.x;
-      // this.cpos.y = this.canvasImages.ny - this.js9.y;
-      // this.pos.x = this.js9.x * this.width / this.canvasImages.nx;
-      // this.pos.y = (this.canvasImages.ny - this.js9.y) * this.height / this.canvasImages.ny;
-      // this.pos.x = this.js9.x * this.width / this.canvasImages.nx;
-      // this.pos.y = (this.canvasImages.ny - this.js9.y) * this.height / this.canvasImages.ny;
-      // this.updateCposFromPos();
-
       let x = this.canvasImages.nx / 2;
       let y = this.canvasImages.ny / 2;
       if (this.page.image.indicator) {
