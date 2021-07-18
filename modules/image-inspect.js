@@ -3,6 +3,7 @@
 
 import layerHistogram from './layerHistogram.js';
 import adjustImage from './render/adjustImage.js';
+import logger from './logger.js';
 import u from './utilities.js';
 
 class ImageInspect {
@@ -30,6 +31,9 @@ class ImageInspect {
     };
   }
 
+  //
+  // Rendering ...
+  //
   render(page, registeredCallbacks) {
     this.page = page;
     this.indicatorId = "inspect-indicator";
@@ -115,7 +119,9 @@ class ImageInspect {
       }
     }
 
+    //
     // histogram of R, G, or B pixel data from canvas image for selected source layer
+    //
     function pixelLayerDataHistogram(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
@@ -140,13 +146,13 @@ class ImageInspect {
     function rawDataHistogram(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
-          <div id = "${that.rawDataHistogramContainerId}">
-            <div class="d-flex flex-row justify-content-between align-items-center">
-              <div class="xaxis"><span id="${that.rawMinId}"></span></div>
-              <div class="xaxis ms-auto"><span id="${that.rawMaxId}"></span></div>
-            </div>
+        <div id = "${that.rawDataHistogramContainerId}">
+          <div class="d-flex flex-row justify-content-between align-items-center">
+            <div class="xaxis"><span id="${that.rawMinId}"></span></div>
+            <div class="xaxis ms-auto"><span id="${that.rawMaxId}"></span></div>
           </div>
-        `;
+        </div>
+      `;
 
       function callback(page) {
         that.rawMinElem = document.getElementById(that.rawMinId);
@@ -159,7 +165,9 @@ class ImageInspect {
       }
     }
 
+    //
     // Settings for image layer
+    //
     function imageSettings(page) {
       let source = page.selectedSource;
       let html = "";
@@ -183,7 +191,9 @@ class ImageInspect {
       return html;
     }
 
+    //
     // wrapper for reset and copy buttons
+    //
     function resetCopyButtons(page, registeredCallbacks) {
       return `
         <div class="d-flex flex-row justify-content-start align-items-center">
@@ -193,7 +203,9 @@ class ImageInspect {
       `;
     }
 
+    //
     // button: Reset adjustments to default settings
+    //
     function resetButton(page, registeredCallbacks) {
       let id = 'page-reset';
       let tooltip = 'Reset adjustments to default settings';
@@ -224,7 +236,9 @@ class ImageInspect {
       }
     }
 
+    //
     // button: Copy JSON for source layer into the system clipboard
+    //
     function copyButton(page, registeredCallbacks) {
       let id = 'btn-clipboard';
       let tooltip = `Copy JSON for '${page.name}-${page.title}' image to clipboard`;
@@ -272,7 +286,9 @@ class ImageInspect {
       }
     }
 
+    //
     // checkbox: enable/disable image layer inspect tool
+    //
     function inspectCheckbox(page, registeredCallbacks) {
       let id = 'image-inspect-checkbox';
       let checkedState = that.enableWhenConnected ? "checked" : "";
@@ -299,6 +315,9 @@ class ImageInspect {
       }
     }
 
+    //
+    // display position data while imspecting image layer
+    //
     function inspectPosition(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
@@ -351,13 +370,13 @@ class ImageInspect {
 
         that.js9posxElem = document.getElementById(that.js9posxId);
         that.js9posyElem = document.getElementById(that.js9posyId);
-
-        // that.js9RawElem = document.getElementById(that.js9RawId);
       }
     }
-
   }
 
+  //
+  // Connection Handling ...
+  //
   update() {
     this.updateCalcs();
 
@@ -377,15 +396,7 @@ class ImageInspect {
 
     this.js9posxElem.textContent = u.roundNumber(this.js9.x, 3);
     this.js9posyElem.textContent = u.roundNumber(this.js9.y, 3);
-
-    let offsetx = this.canvasTargetRect.left - this.imageContainerTargetRect.left - this.indicatorWidth / 2;
-    let offsety = this.canvasTargetRect.top - this.imageContainerTargetRect.top - this.indicatorHeight / 2;
-    this.indicatorPos = {
-      left: this.pos.x + offsetx,
-      top: this.pos.y + offsety
-    };
-
-    Object.assign(this.indicatorElem.style, this.indicatorPos);
+    this.updateIndicatorPos();
   }
 
   updateCalcs() {
@@ -399,13 +410,6 @@ class ImageInspect {
     this.js9.y = this.canvasImages.ny - this.cpos.y;
   }
 
-  reset() {
-    if (this.enabled) {
-      this.setupIndicator();
-      this.update();
-    }
-  }
-
   setupIndicator() {
     let x = this.canvasImages.nx / 2;
     let y = this.canvasImages.ny / 2;
@@ -416,6 +420,24 @@ class ImageInspect {
     this.cpos.x = x;
     this.cpos.y = y;
     this.updatePosFromCpos();
+  }
+
+  updateIndicatorPos() {
+    this.canvasTargetRect = this.canvas.getBoundingClientRect();
+    let offsetx = this.canvasTargetRect.left - this.imageContainerTargetRect.left - this.indicatorWidth / 2;
+    let offsety = this.canvasTargetRect.top - this.imageContainerTargetRect.top - this.indicatorHeight / 2;
+    this.indicatorPos = {
+      left: this.pos.x + offsetx,
+      top: this.pos.y + offsety
+    };
+    Object.assign(this.indicatorElem.style, this.indicatorPos);
+  }
+
+  reset() {
+    if (this.enabled) {
+      this.setupIndicator();
+      this.update();
+    }
   }
 
   connect(canvasImages) {
@@ -433,8 +455,7 @@ class ImageInspect {
   connectUpdate(canvasImages) {
     this.setupConnect(canvasImages);
     if (this.inspectChecked()) {
-      this.cpos.x = this.js9.x;
-      this.cpos.y = this.canvasImages.ny - this.js9.y;
+      this.setupIndicator();
     }
     this.update();
   }
@@ -444,6 +465,7 @@ class ImageInspect {
     this.canvasImages = canvasImages;
     this.canvas = this.canvasImages.canvasRGB;
     this.canvasTargetRect = this.canvas.getBoundingClientRect();
+    this.imageContainerTargetRect = this.imageContainer.getBoundingClientRect();
     this.width = this.canvas.clientWidth;
     this.height = this.canvas.clientHeight;
     this.ctx = this.canvas.getContext('2d');
@@ -459,7 +481,6 @@ class ImageInspect {
   bindCallbacks() {
     [
       'listenerMouseMove',
-      'listenerResize',
     ].forEach(method => {
       this[method] = this[method].bind(this);
     });
@@ -467,16 +488,21 @@ class ImageInspect {
 
   startup() {
     this.mainEvents = [
-      ['mousemove', this.listenerMouseMove],
-      ['resize', this.listeneresize],
+      [this.canvas, 'mousemove', this.listenerMouseMove]
     ];
   }
 
   enable() {
     if (this.connected) {
       this.mainEvents.forEach((eventItem) => {
-        this.canvas.addEventListener(eventItem[0], eventItem[1]);
+        eventItem[0].addEventListener(eventItem[1], eventItem[2]);
       });
+      window.addEventListener('resize', u.debounce(() => {
+        setTimeout(() => {
+          this.connectUpdate(this.canvasImages);
+          logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
+        }, 100);
+      }), 250);
       this.canvas.classList.add('inspect');
       this.indicatorElem.classList.add('show');
       this.enabled = true;
@@ -494,18 +520,18 @@ class ImageInspect {
 
   close() {
     this.mainEvents.forEach((eventItem) => {
-      this.canvas.removeEventListener(eventItem[0], eventItem[1]);
+      eventItem[0].removeEventListener(eventItem[1], eventItem[2]);
     });
+    window.removeEventListener('resize', this.debounce);
   }
 
   getWidthHeight(elem) {
     return { width: elem.clientWidth, height: elem.clientHeight };
   }
 
-  listenerResize() {}
-
-  /// Event Handling ...
-
+  //
+  // Event Handling ...
+  //
   pointerEvents(e) {
     this.pos.x = e.offsetX;
     this.pos.y = e.offsetY;
@@ -536,13 +562,6 @@ class ImageInspect {
       this.canvas.classList.remove('inspecting');
     }
   }
-
-  // crosshairCursor(visible) {
-  //   if (visible) {
-  //   } else {
-  //   }
-  // }
-
 }
 
 export default ImageInspect;
