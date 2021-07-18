@@ -227,7 +227,7 @@ class ImageInspect {
     // button: Copy JSON for source layer into the system clipboard
     function copyButton(page, registeredCallbacks) {
       let id = 'btn-clipboard';
-      let tooltip = `Copy JSON for source layer '${that.page.selectedSource.name}' to clipboard`;
+      let tooltip = `Copy JSON for '${page.name}-${page.title}' image to clipboard`;
       let tooltipDone = 'Copied!';
       registeredCallbacks.push(callback);
       return `
@@ -243,8 +243,8 @@ class ImageInspect {
             b.hide();
           });
           elem.addEventListener('click', () => {
-            let text = JSON.stringify(page.selectedSource, null, 2);
-            var type = "text/plain";
+            let text = JSON.stringify(page.image, null, 2);
+            var type = "text/json";
             var blob = new Blob([text], { type });
             var data = [new ClipboardItem({
               [type]: blob
