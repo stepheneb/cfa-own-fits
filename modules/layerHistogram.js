@@ -11,7 +11,7 @@ layerHistogram.rawDataTitleId = "layer-histogram-title-rawdata";
 layerHistogram.render = () => {
   let html = `
     <div id="layer-histogram" class="layer-histogram">
-      <div id="${layerHistogram.canvasTitleId}" class="mt-2">Image Layer Histogram</div>
+      <header id="${layerHistogram.canvasTitleId}" class="mt-2">Image Layer Histogram</header>
       <div class="col-12 histogram-container">
         <canvas id="${layerHistogram.canvasDataId}"></canvas>
       </div>
@@ -23,7 +23,7 @@ layerHistogram.render = () => {
 layerHistogram.renderRawData = () => {
   let html = `
     <div id="layer-histogram-rawdata" class="layer-histogram">
-      <div id="${layerHistogram.rawDataTitleId}" class="mt-2">Raw Data Histogram</div>
+      <header id="${layerHistogram.rawDataTitleId}" class="mt-2">Raw Data Histogram</header>
       <div class="col-12 histogram-container">
         <canvas id="${layerHistogram.canvasRawDataId}" data-scalingtype="linear"></canvas>
       </div>
