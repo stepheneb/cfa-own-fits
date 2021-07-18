@@ -333,6 +333,7 @@ div.offcanvas-end {
   font-size: 90%;
   padding-top: 0vh; }
   #developerToolsSideBar-body header {
+    font-size: 110%;
     margin-bottom: 0.5vh; }
   #developerToolsSideBar-body a {
     color: var(--green);

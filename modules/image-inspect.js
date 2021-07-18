@@ -51,6 +51,11 @@ class ImageInspect {
     let html = "";
     let that = this;
     const propsAndIds = [
+      ['sourceFilterId', 'image-inspect-source-filter'],
+      ['sourceMinId', 'image-inspect-source-min'],
+      ['sourceMaxId', 'image-inspect-source-max'],
+      ['sourceBrightnessId', 'image-inspect-source-brightness'],
+      ['sourceContrastId', 'image-inspect-source-contrast'],
       ['posxId', 'image-inspect-posx'],
       ['posyId', 'image-inspect-posy'],
       ['cposxId', 'image-inspect-cposx'],
@@ -80,8 +85,8 @@ class ImageInspect {
       <div class="image-inspect">
         ${originalImage(page, registeredCallbacks)}
         ${rawDataHistogram(page, registeredCallbacks)}
-        ${imageSettings(page, registeredCallbacks)}
         ${resetCopyButtons(page, registeredCallbacks)}
+        ${imageSettings(page, registeredCallbacks)}
         ${pixelLayerDataHistogram(page, registeredCallbacks)}
         ${inspectCheckbox(page, registeredCallbacks)}
         ${inspectPosition(page, registeredCallbacks)}
@@ -169,26 +174,33 @@ class ImageInspect {
     // Settings for image layer
     //
     function imageSettings(page) {
-      let source = page.selectedSource;
       let html = "";
-      // registeredCallbacks.push(callback);
+      registeredCallbacks.push(callback);
       html = `
         <div id = "${that.imageStatsId}">
-          <header>Settings, <span>filter: ${source.filter}</span></header>
-          <div class="data">
-            <div class="d-flex flex-row justify-content-start align-items-center">
-              <div class="setting">min: ${u.roundNumber(source.min, 3)}</div>
-              <div class="setting">max: ${u.roundNumber(source.max, 4)}</div>
-            </div>
-            <div class="d-flex flex-row justify-content-start align-items-center">
-              <div class="setting">brightness: ${u.roundNumber(source.brightness, 3)}</div>
-              <div class="setting">contrast: ${u.roundNumber(source.contrast, 3)}</div>
-            </div>
-          </div>
           ${adjustImage.renderScaling(page)}
+          <div class="d-flex flex-row justify-content-start align-items-center">
+            <div class="pos">filter: <span id="${that.sourceFilterId}"></span></div>
+          </div>
+          <div class="d-flex flex-row justify-content-start align-items-center">
+            <div class="setting">min: <span id="${that.sourceMinId}"></span></div>
+            <div class="setting">max: <span id="${that.sourceMaxId}"></span></div>
+          </div>
+          <div class="d-flex flex-row justify-content-start align-items-center">
+            <div class="setting">brightness: <span id="${that.sourceBrightnessId}"></span></div>
+            <div class="setting">contrast: <span id="${that.sourceContrastId}"></span></div>
+          </div>
         </div>
-        `;
+      `;
       return html;
+
+      function callback() {
+        that.sourceMinElem = document.getElementById(that.sourceMinId);
+        that.sourceMaxElem = document.getElementById(that.sourceMaxId);
+        that.sourceBrightnessElem = document.getElementById(that.sourceBrightnessId);
+        that.sourceContrastElem = document.getElementById(that.sourceContrastId);
+        that.sourceFilterElem = document.getElementById(that.sourceFilterId);
+      }
     }
 
     //
@@ -197,8 +209,10 @@ class ImageInspect {
     function resetCopyButtons(page, registeredCallbacks) {
       return `
         <div class="d-flex flex-row justify-content-start align-items-center">
+          <div class="pos"><header>Settings</header></div>
           <div class="pos">${resetButton(page, registeredCallbacks)}</div>
           <div class="pos">${copyButton(page, registeredCallbacks)}</div>
+
         </div>
       `;
     }
@@ -379,6 +393,14 @@ class ImageInspect {
   //
   update() {
     this.updateCalcs();
+    let source = this.page.selectedSource;
+
+    this.sourceFilterElem.textContent = source.filter;
+
+    this.sourceMinElem.textContent = u.roundNumber(source.min, 4);
+    this.sourceMaxElem.textContent = u.roundNumber(source.max, 4);
+    this.sourceBrightnessElem.textContent = u.roundNumber(source.brightness, 4);
+    this.sourceContrastElem.textContent = u.roundNumber(source.contrast, 4);
 
     this.cposxElem.textContent = u.roundNumber(this.cpos.x, 4);
     this.cposyElem.textContent = u.roundNumber(this.cpos.y, 4);
