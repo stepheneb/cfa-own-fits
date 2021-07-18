@@ -63,4 +63,16 @@ utilities.histogram = (array, numbuckets, min, max) => {
 
 utilities.getLastItem = thePath => thePath.substring(thePath.lastIndexOf('/') + 1);
 
+// event listener wrapper: discard events until <wait> time has passed
+// https://www.joshwcomeau.com/snippets/javascript/debounce/
+utilities.debounce = (callback, wait) => {
+  let timeoutId = null;
+  return (...args) => {
+    window.clearTimeout(timeoutId);
+    timeoutId = window.setTimeout(() => {
+      callback.apply(null, args);
+    }, wait);
+  };
+};
+
 export default utilities;
