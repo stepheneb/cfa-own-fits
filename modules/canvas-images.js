@@ -475,7 +475,7 @@ class CanvasImages {
     let transform = this.brightnessContrastTransforms[source.name];
     for (let i = 0; i < 256; i++) {
       value = Math.max(i * cscale - cshiftY + bshift, 0) + cshiftX + bshift;
-      transform[i] = Math.max(Math.min(value, 255), 0);
+      transform[i] = Math.min(Math.max(Math.min(value, 255), 0), 255);
     }
     return transform;
   }
@@ -489,13 +489,13 @@ class CanvasImages {
     let max = source.max;
     let range = max - min;
     let scale;
-    let i, pixindex, x, y, val, scaledval, bvalue;
+    let i, pixindex, x, y, val, scaledval;
     let ctx = canvas.getContext('2d');
     let imageData = ctx.getImageData(0, 0, this.nx, this.ny);
     let pixeldata = imageData.data;
 
     let renderLinearLayer = () => {
-      scale = 256 / range;
+      scale = 255 / range;
       switch (source.filter) {
       case 'red':
         pixindex = 0;
@@ -503,7 +503,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = rawdata[i];
-            scaledval = transform[Math.floor(Math.max(val * scale - min), 0)];
+            scaledval = transform[Math.round(Math.max(val * scale - min, 0))];
             pixeldata[pixindex] = scaledval;
             pixeldata[pixindex + 3] = 255;
             pixindex += 4;
@@ -516,7 +516,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = rawdata[i];
-            scaledval = transform[Math.floor(Math.max(val * scale - min), 0)];
+            scaledval = transform[Math.round(Math.max(val * scale - min, 0))];
             pixeldata[pixindex + 1] = scaledval;
             pixeldata[pixindex + 3] = 255;
             pixindex += 4;
@@ -529,7 +529,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = rawdata[i];
-            scaledval = transform[Math.floor(Math.max(val * scale - min), 0)];
+            scaledval = transform[Math.round(Math.max(val * scale - min, 0))];
             pixeldata[pixindex + 2] = scaledval;
             pixeldata[pixindex + 3] = 255;
             pixindex += 4;
@@ -542,10 +542,10 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = rawdata[i];
-            scaledval = transform[Math.floor(Math.max(val * scale - min), 0)];
+            scaledval = transform[Math.round(Math.max(val * scale - min, 0))];
             pixeldata[pixindex] = scaledval;
-            pixeldata[++pixindex] = bvalue;
-            pixeldata[++pixindex] = bvalue;
+            pixeldata[++pixindex] = scaledval;
+            pixeldata[++pixindex] = scaledval;
             pixeldata[++pixindex] = 255;
             ++pixindex;
           }
@@ -556,7 +556,7 @@ class CanvasImages {
 
     let renderLogLayer = () => {
       var index;
-      scale = 256 / Math.log10(range);
+      scale = 255 / Math.log10(range);
       switch (source.filter) {
       case 'red':
         pixindex = 0;
@@ -564,7 +564,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = Math.log10(Math.max((rawdata[i] - min), 1));
-            index = Math.min(Math.floor(Math.max(val * scale), 0), 255);
+            index = Math.min(Math.round(Math.max(val * scale, 0), 255));
             scaledval = transform[index];
             pixeldata[pixindex] = scaledval;
             pixeldata[pixindex + 3] = 255;
@@ -578,7 +578,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = Math.log10(Math.max((rawdata[i] - min), 1));
-            index = Math.min(Math.floor(Math.max(val * scale), 0), 255);
+            index = Math.min(Math.round(Math.max(val * scale, 0), 255));
             scaledval = transform[index];
             pixeldata[pixindex + 1] = scaledval;
             pixeldata[pixindex + 3] = 255;
@@ -592,7 +592,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = Math.log10(Math.max((rawdata[i] - min), 1));
-            index = Math.min(Math.floor(Math.max(val * scale), 0), 255);
+            index = Math.min(Math.round(Math.max(val * scale, 0), 255));
             scaledval = transform[index];
             pixeldata[pixindex + 2] = scaledval;
             pixeldata[pixindex + 3] = 255;
@@ -606,7 +606,7 @@ class CanvasImages {
           for (x = 0; x < this.nx; x++) {
             i = y * this.nx + x;
             val = Math.log10(Math.max((rawdata[i] - min), 1));
-            index = Math.min(Math.floor(Math.max(val * scale), 0), 255);
+            index = Math.min(Math.round(Math.max(val * scale, 0), 255));
             scaledval = transform[index];
             pixeldata[pixindex] = scaledval;
             pixeldata[++pixindex] = scaledval;
