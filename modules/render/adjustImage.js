@@ -91,17 +91,6 @@ let scaling = page => {
 
 };
 
-let html = page => {
-  return `
-    <div class='control-collection adjust-layer'>
-      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
-      ${brightness(page)}
-      ${contrast(page)}
-      ${scaling(page)}
-    </div>
-  `;
-};
-
 adjustImage.renderScaling = page => {
   return `
     ${scaling(page)}
