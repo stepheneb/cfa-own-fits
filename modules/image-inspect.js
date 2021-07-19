@@ -104,6 +104,9 @@ class ImageInspect {
       that.indicatorElem = document.getElementById(that.indicatorId);
     }
 
+    //
+    // link to original source image, image dimensions
+    //
     function originalImage(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
@@ -111,18 +114,7 @@ class ImageInspect {
       `;
 
       function callback(page) {
-        let { nx, ny } = page.image.dimensions[page.image.size];
-        let elem = document.getElementById(that.originalImageId);
-        let html = "";
-        let source = page.selectedSource;
-        let original = source.original;
-        if (original) {
-          html += `
-              <div>Original: <a href="${original.path}" target="_blank" download>${u.getLastItem(original.path)}</a></div>
-              <div>Image size: ${nx} x ${ny}</div>
-            `;
-        }
-        elem.innerHTML = html;
+        that.updateOriginalImage(page);
       }
     }
 
@@ -441,6 +433,7 @@ class ImageInspect {
     this.updateCalcs();
     let source = this.page.selectedSource;
 
+    this.updateOriginalImage(this.page);
     this.updateSourceMinMaxElements();
 
     this.sourceFilterElem.textContent = source.filter;
@@ -509,6 +502,21 @@ class ImageInspect {
     this.sourceMaxInputElem.setAttribute('min', source.originalMin);
     this.sourceMaxInputElem.setAttribute('max', source.originalMax);
     this.sourceMaxInputElem.valueAsNumber = source.max;
+  }
+
+  updateOriginalImage(page) {
+    let { nx, ny } = page.image.dimensions[page.image.size];
+    let elem = document.getElementById(this.originalImageId);
+    let html = "";
+    let source = page.selectedSource;
+    let original = source.original;
+    if (original) {
+      html += `
+        <div>Original: <a href="${original.path}" target="_blank" download>${u.getLastItem(original.path)}</a></div>
+        <div>Image size: ${nx} x ${ny}</div>
+      `;
+    }
+    elem.innerHTML = html;
   }
 
   reset() {
