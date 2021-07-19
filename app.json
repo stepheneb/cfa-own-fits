@@ -605,7 +605,7 @@
                 },
                 "filter": "gray",
                 "min": 0,
-                "max": 65535,
+                "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
                 "contrast": 1,
