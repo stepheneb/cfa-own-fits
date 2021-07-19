@@ -42,19 +42,19 @@ let contrast = () => {
   return html;
 };
 
-let colorShift = () => {
-  let html = `
-    <div class='row adjust-filter'>
-      <div class='col-4'>
-        <label for='color-shift'>Color Shift</label>
-      </div>
-      <div class='col-8'>
-        <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' step='${stepSize} disabled>
-      </div>
-    </div>
-  `;
-  return html;
-};
+// let colorShift = () => {
+//   let html = `
+//     <div class='row adjust-filter'>
+//       <div class='col-4'>
+//         <label for='color-shift'>Color Shift</label>
+//       </div>
+//       <div class='col-8'>
+//         <input type='range' id='color-shift' name='color-shift' min='0' max='10' value='5' step='${stepSize} disabled>
+//       </div>
+//     </div>
+//   `;
+//   return html;
+// };
 
 let scaling = page => {
   let scale = page.selectedSource.scaling;
