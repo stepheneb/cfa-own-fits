@@ -34,7 +34,7 @@ let setupNewApp = newApp => {
         }
         page.image.sources.forEach(source => {
           source.defaultValues = {};
-          let keys = ['max', 'min', 'brightness', 'contrast', 'scaling'];
+          let keys = ['max', 'min', 'brightness', 'contrast', 'scaling', 'filter'];
           source.defaultValues.keys = keys;
           for (let key of keys) {
             source.defaultValues[key] = source[key];

@@ -52,6 +52,7 @@ class ImageInspect {
     let that = this;
     const propsAndIds = [
       ['sourceFilterId', 'image-inspect-source-filter'],
+      ['sourceFilterForceGrayId', 'image-inspect-force-gray-filter'],
       ['sourceMinInputId', 'image-inspect-source-min-input'],
       ['sourceMaxInputId', 'image-inspect-source-max-input'],
       ['sourceBrightnessId', 'image-inspect-source-brightness'],
@@ -191,13 +192,17 @@ class ImageInspect {
     // Settings for image layer
     //
     function imageSettings(page) {
-      let html = "";
       registeredCallbacks.push(callback);
-      html = `
+      let checkedState = '';
+      let html = `
         <div id = "${that.imageStatsId}">
           ${adjustImage.renderScaling(page)}
           <div class="d-flex flex-row justify-content-start align-items-center">
-            <div class="pos">filter: <span id="${that.sourceFilterId}"></span></div>
+            <div class="setting">filter: <span id="${that.sourceFilterId}"></span></div>
+            <div class="setting">
+              <label class="pe-2" for='${that.sourceFilterForceGrayId}'>force gray</label>
+              <input type='checkbox' id='${that.sourceFilterForceGrayId}' name='forcegray' ${checkedState} value='0'>
+            </div>
           </div>
 
           <div class="d-flex flex-row justify-content-start align-items-center">
@@ -219,7 +224,7 @@ class ImageInspect {
       `;
       return html;
 
-      function callback() {
+      function callback(page) {
         that.sourceMinInputElem = document.getElementById(that.sourceMinInputId);
         that.sourceMaxInputElem = document.getElementById(that.sourceMaxInputId);
         that.updateSourceMinMaxElements();
@@ -227,6 +232,20 @@ class ImageInspect {
         that.sourceBrightnessElem = document.getElementById(that.sourceBrightnessId);
         that.sourceContrastElem = document.getElementById(that.sourceContrastId);
         that.sourceFilterElem = document.getElementById(that.sourceFilterId);
+
+        that.sourceFilterForceGray = document.getElementById(that.sourceFilterForceGrayId);
+        if (that.sourceFilterForceGray) {
+          that.sourceFilterForceGray.addEventListener('change', (e) => {
+            let source = page.selectedSource;
+            if (e.target.checked) {
+              source.filter = 'gray';
+            } else {
+              source.filter = source.defaultValues.filter;
+            }
+            page.canvasImages.clearCanvas(source);
+            adjustImage.renderRGBUpdate(page, source);
+          });
+        }
 
         that.sourceMinInputElem.addEventListener('input', (e) => {
           let source = that.page.selectedSource;
@@ -287,6 +306,7 @@ class ImageInspect {
             b.hide();
           });
           elem.addEventListener('click', () => {
+            that.sourceFilterForceGray.checked = false;
             page.reset();
             let b = bootstrap.Tooltip.getInstance(elem);
             elem.setAttribute('data-bs-original-title', tooltipDone);

@@ -495,6 +495,12 @@ class CanvasImages {
     return transform;
   }
 
+  clearCanvas(source) {
+    let canvas = this.layerCanvasNamed(source.name);
+    let ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, this.nx, this.ny);
+  }
+
   renderCanvasLayer(source) {
     let canvas = this.layerCanvasNamed(source.name);
     // let startTime = performance.now();

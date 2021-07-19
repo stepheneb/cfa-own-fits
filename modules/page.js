@@ -77,6 +77,7 @@ class Page {
     for (var i = 0; i < this.image.sources.length; i++) {
       let source = this.image.sources[i];
       if (source.type == 'rawdata' && source.changed) {
+        this.canvasImages.clearCanvas(source);
         adjustImage.renderRGBUpdate(this, source);
       }
     }
