@@ -54,18 +54,19 @@ class Page {
     let category = defaultApp.categories.find(c => c.type == this.type);
     let page = category.pages.find(p => p.name == router.path.page);
     let sources = page.image.sources;
-    let keys = ['brightness', 'contrast', 'min', 'max', 'scaling'];
     for (var i = 0; i < sources.length; i++) {
       var source = sources[i];
       if (source.type == 'rawdata') {
-        for (let key of keys) {
-          let currentValue = this.image.sources[i][key];
-          let defaultValue = source[key];
-          if (defaultValue && defaultValue !== currentValue) {
-            this.image.sources[i][key] = defaultValue;
-            this.image.sources[i].changed = true;
+        let sourceInUse = this.image.sources[i];
+        for (let key of source.defaultValues.keys) {
+          let currentValue = sourceInUse[key];
+          let defaultValue = source.defaultValues[key];
+          if ((defaultValue !== undefined) && defaultValue !== currentValue) {
+            sourceInUse[key] = defaultValue;
+            sourceInUse.changed = true;
           }
         }
+        source.range = source.max - source.min;
       }
     }
     this.updateAll();

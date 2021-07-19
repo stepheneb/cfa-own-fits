@@ -33,9 +33,12 @@ let setupNewApp = newApp => {
           page.image.selectedMainLayers = "100";
         }
         page.image.sources.forEach(source => {
-          source.originalRange = source.max - source.min;
-          source.originalMax = source.max;
-          source.originalMin = source.min;
+          source.defaultValues = {};
+          let keys = ['max', 'min', 'brightness', 'contrast', 'scaling'];
+          source.defaultValues.keys = keys;
+          for (let key of keys) {
+            source.defaultValues[key] = source[key];
+          }
         });
       }
     });
