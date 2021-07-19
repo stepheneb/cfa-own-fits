@@ -336,17 +336,28 @@ class CanvasImages {
   }
 
   initializePreviewCanvas(source) {
-    this.previewContainer = document.getElementById('preview-image-canvas-container');
+    this.previewContainer = document.getElementById('preview-image-container');
+    this.previewCanvasContainer = document.getElementById('preview-image-canvas-container');
     let c = document.createElement("canvas");
     c.id = 'preview-image-canvas';
     c.classList = 'preview-image-canvas';
     this.initializeCanvas(c);
-    this.previewContainer.prepend(c);
+    this.previewCanvasContainer.prepend(c);
     this.previewCanvas = c;
     c.width = this.nx;
     c.height = this.ny;
+    this.previewPalette = addPalette(this, this.previewContainer);
     this.renderPreview(source);
     return c;
+
+    function addPalette(ci, container) {
+      let c = document.createElement("canvas");
+      c.id = 'preview-palette';
+      c.classList = 'preview-image-palette-canvas';
+      ci.initializeCanvas(c);
+      container.append(c);
+      return c;
+    }
   }
 
   initializeSaveAndSendCanvas() {
@@ -915,6 +926,13 @@ class CanvasImages {
       .then(imageBitmap => {
         ctx.drawImage(imageBitmap, 0, 0);
       });
+    this.renderPreviewPalette(source);
+  }
+
+  renderPreviewPalette(source) {
+    let width = this.previewPalette.width;
+    let height = 16;
+    this.renderPalette(this.previewPalette, source.filter, width, height);
   }
 
   renderSaveAndSend() {
@@ -959,7 +977,7 @@ class CanvasImages {
 
   renderPalettes() {
     let id, canvas, name;
-    let [nx, ny] = [256, 16];
+    let [width, height] = [256, 16];
     let sources = this.rawdataSources;
     let palettes = sources.map((source, i) => {
       name = source.filter;
@@ -967,11 +985,15 @@ class CanvasImages {
       canvas = document.getElementById(id);
       return [name, canvas];
     });
-
     palettes.forEach(([name, canvas]) => {
-      init(canvas, nx, ny);
-      render(canvas, name, nx, ny);
+      this.renderPalette(canvas, name, width, height);
     });
+  }
+
+  renderPalette(canvas, name, width, height) {
+
+    init(canvas, width, height);
+    render(canvas, name, width, height);
 
     function init(canvas, nx, ny) {
       canvas.ctx = canvas.getContext('2d');

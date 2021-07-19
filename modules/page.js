@@ -428,15 +428,18 @@ class Page {
   renderImageLayerPreview() {
     if (this.type == "multi-wave") {
       return `
-        <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
-          <div id="multi-wave-telescope-name" class="label">
-            ${this.telescopes.find(t => t.key == this.selectedSource.telescope).name}
+        <div id="preview-image-container" class="">
+          <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+            <div id="multi-wave-telescope-name" class="label">
+              ${this.telescopes.find(t => t.key == this.selectedSource.telescope).name}
+            </div>
           </div>
         </div>
       `;
     } else {
       return `
-        <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+        <div id="preview-image-container" class="">
+          <div id="preview-image-canvas-container" class="row d-flex justify-content-center"></div>
         </div>
       `;
     }

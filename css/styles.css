@@ -810,14 +810,15 @@ div.zoom-preview-content {
   div.zoom-preview-content > .label {
     float: left; }
 
+div#preview-image-container {
+  border: 2px solid var(--canvas-container-border-color); }
+
 div#preview-image-canvas-container {
   position: relative;
   height: 30vh;
   width: 100%;
   margin: 0;
-  background-color: var(--almost-black);
-  border: 2px solid var(--canvas-container-border-color);
-  border-radius: 3px; }
+  background-color: var(--almost-black); }
   div#preview-image-canvas-container > .label {
     float: left; }
   div#preview-image-canvas-container canvas {
@@ -836,6 +837,10 @@ div#preview-image-canvas-container {
     width: 18vh; }
     div#preview-image-canvas-container.zoomrect > canvas.overzoomrect {
       cursor: move; }
+
+canvas#preview-palette {
+  position: unset;
+  display: block; }
 
 #multi-wave-telescope-name {
   margin-top: 0.25vh;
