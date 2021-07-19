@@ -133,7 +133,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1.1,
-                "contrast": 1.1
+                "contrast": 1.1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL000/wac_gl000.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -209,7 +213,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL000/wac_gl000.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -285,7 +293,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL000/wac_gl000.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -365,7 +377,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL000/wac_gl000.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -441,7 +457,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL000/wac_gl000.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -517,7 +537,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL000/wac_gl000.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -581,10 +605,14 @@
                 },
                 "filter": "gray",
                 "min": 0,
-                "max": 10,
+                "max": 65535,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/m51/m51_optical_G.fits"
+                }
               },
               {
                 "type": "composite",
@@ -650,13 +678,17 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/WAC_GL180/wac_gl180_0.125.jpg"
+                }
               },
               {
                 "type": "composite",
                 "name": "RGB",
                 "layers": [
-                  "Gray"
+                  "gray"
                 ]
               }
             ]
@@ -717,7 +749,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/h_jupiter_01/01_h_jupiter_343_070301x_drz_sci.fits"
+                }
               },
               {
                 "type": "rawdata",
@@ -732,7 +768,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "ssource-images/fits/h_jupiter_02/02_h_jupiter_410_070301x2_drz_sci.fits"
+                }
               },
               {
                 "type": "rawdata",
@@ -747,7 +787,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/h_jupiter_03/03_h_jupiter_410_070301y_drz_sci.fits"
+                }
               },
               {
                 "type": "rawdata",
@@ -762,7 +806,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "FITS",
+                  "path": "source-images/fits/h_jupiter_04/04_h_jupiter_410_070302z_drz_sci.fits"
+                }
               },
               {
                 "type": "composite",
@@ -825,7 +873,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -841,7 +893,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -857,7 +913,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -873,7 +933,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -889,7 +953,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -905,7 +973,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -921,7 +993,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -937,7 +1013,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -953,7 +1033,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -969,7 +1053,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.png"
+                }
               },
               {
                 "type": "composite",
@@ -1241,7 +1329,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/heic2007a/heic2007a.jpg"
+                }
               },
               {
                 "type": "rawdata",
@@ -1256,7 +1348,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/heic2007a/heic2007a.jpg"
+                }
               },
               {
                 "type": "rawdata",
@@ -1271,7 +1367,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/heic2007a/heic2007a.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -1332,7 +1432,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/potw1345a/potw1345a.jpg"
+                }
               },
               {
                 "type": "rawdata",
@@ -1347,7 +1451,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/potw1345a/potw1345a.jpg"
+                }
               },
               {
                 "type": "rawdata",
@@ -1362,7 +1470,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "jpg",
+                  "path": "source-images/jpg/potw1345a/potw1345a.jpg"
+                }
               },
               {
                 "type": "composite",
@@ -1423,7 +1535,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/Juno_Jupiter_Set6/JNCE_2016346_03C00118_V02-red.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -1438,7 +1554,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/Juno_Jupiter_Set6/JNCE_2016346_03C00118_V02-green.png"
+                }
               },
               {
                 "type": "rawdata",
@@ -1453,7 +1573,11 @@
                 "max": 10,
                 "scaling": "linear",
                 "brightness": 1,
-                "contrast": 1
+                "contrast": 1,
+                "original": {
+                  "type": "png",
+                  "path": "source-images/png/Juno_Jupiter_Set6/JNCE_2016346_03C00118_V02-blue.png"
+                }
               },
               {
                 "type": "composite",
