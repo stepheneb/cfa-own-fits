@@ -412,7 +412,7 @@ class ImageInspect {
           </div>
           <div>&nbsp;</div>
           <div class="d-flex flex-row justify-content-start align-items-center">
-            <div class="pos">js9 pos</div>
+            <div class="pos">js9.si</div>
             <div class="pos">x: <span id="${that.js9posxId}"></span></div>
             <div class="pos">y: <span id="${that.js9posyId}"></span></div>
           </div>
