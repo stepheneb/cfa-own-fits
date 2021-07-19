@@ -218,6 +218,10 @@ class CanvasImages {
       case 'masterpiece':
         this.initializeMainCanvases(this.type);
         this.addScalingLayer();
+        if (app.dev) {
+          this.page.imageInspect.connect(this);
+          logger.imageData(this, this.selectedSource);
+        }
         break;
       case 'animate':
         this.initializeMainCanvases(this.type);

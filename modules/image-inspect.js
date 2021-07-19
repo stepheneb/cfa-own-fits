@@ -231,13 +231,25 @@ class ImageInspect {
         that.sourceMinInputElem.addEventListener('input', (e) => {
           let source = that.page.selectedSource;
           source.min = e.target.valueAsNumber;
-          adjustImage.renderRGBUpdate(page, source);
+          render(page, source);
         });
         that.sourceMaxInputElem.addEventListener('input', (e) => {
           let source = that.page.selectedSource;
           source.max = e.target.valueAsNumber;
-          adjustImage.renderRGBUpdate(page, source);
+          render(page, source);
         });
+
+        function render(page, source) {
+          switch (page.type) {
+          case 'rgb':
+          case 'multi-wave':
+            adjustImage.renderRGBUpdate(page, source);
+            break;
+          case 'masterpiece':
+            adjustImage.renderMasterpieceUpdate(page, source);
+            break;
+          }
+        }
       }
     }
 
@@ -549,7 +561,7 @@ class ImageInspect {
   setupConnect(canvasImages) {
     this.source = this.page.selectedSource;
     this.canvasImages = canvasImages;
-    this.canvas = this.canvasImages.canvasRGB;
+    this.canvas = getCanvas(this.page);
     this.canvasTargetRect = this.canvas.getBoundingClientRect();
     this.imageContainerTargetRect = this.imageContainer.getBoundingClientRect();
     this.width = this.canvas.clientWidth;
@@ -559,6 +571,22 @@ class ImageInspect {
     this.rawData = canvasImages.selectedSourceRawData;
     [this.rawMinValue, this.rawMaxValue] = u.forLoopMinMax(this.rawData);
     layerHistogram.updateTransform(this.page);
+
+    function getCanvas(page) {
+      let canvas;
+      switch (page.type) {
+      case 'rgb':
+      case 'multi-wave':
+        canvas = page.canvasImages.canvasRGB;
+        break;
+      case 'masterpiece':
+        canvas = page.canvasImages.canvasRGB;
+        // canvas = page.canvasImages.scalingCanvas;
+        break;
+      }
+      return canvas;
+    }
+
   }
 
   inspectChecked() {

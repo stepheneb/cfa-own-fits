@@ -266,8 +266,10 @@ class Page {
       break;
 
     case 'masterpiece':
+      this.imageInspect = new ImageInspect();
       this.canvasImages = new CanvasImages(this, this.image, this.type);
       this.canvasImages.renderColorMaps();
+      this.renderDevSideBar(this, this.registeredCallbacks);
       break;
 
     case 'animate':
@@ -307,9 +309,7 @@ class Page {
       this.devSideBarBody.insertAdjacentHTML('beforeend', `
         ${this.imageInspect.render(this, this.registeredCallbacks)}
       `);
-      if (app.dev) {
-        this.bsDevSideBar.show();
-      }
+      this.bsDevSideBar.show();
       registeredCallbacks.push(callback);
     }
 

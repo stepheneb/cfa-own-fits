@@ -110,7 +110,6 @@ adjustImage.renderScaling = page => {
 
 adjustImage.renderRGB = (page, registeredCallbacks) => {
   let source = page.selectedSource;
-
   registeredCallbacks.push(callback);
   return `
     <div class='control-collection adjust-layer'>
@@ -163,7 +162,6 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
 
 adjustImage.renderRGBUpdate = (page, source) => {
   let canvas = page.canvasImages.layerCanvasNamed(source.filter);
-  // page.canvasImages.updateBrightnessTransformForLayer(source);
   page.canvasImages.renderCanvasLayer(source, canvas);
   page.canvasImages.renderCanvasRGB();
   page.canvasImages.renderPreview(source);
@@ -175,67 +173,92 @@ adjustImage.renderRGBUpdate = (page, source) => {
 };
 
 adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
+  let source = page.selectedSource;
   registeredCallbacks.push(callback);
-  return html(page);
+  return `
+    <div class='control-collection adjust-layer'>
+      <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
+      ${brightness(page)}
+      ${contrast(page)}
+    </div>
+  `;
 
   function callback() {
-    let elem;
+    let debounceTime = 125;
 
-    elem = document.getElementById("brightness");
-    elem.addEventListener('input', (e) => {
+    const listenerDebounceBrightness = u.debounce((e) => {
       let brightness = e.target.valueAsNumber;
       page.canvasImages.rawdataSources.forEach(source => {
         source.brightness = brightness;
       });
       render(page);
-    });
+    }, debounceTime);
 
-    elem = document.getElementById("contrast");
-    elem.addEventListener('input', (e) => {
+    const listenerDebounceContrast = u.debounce((e) => {
       let contrast = e.target.valueAsNumber;
       page.canvasImages.rawdataSources.forEach(source => {
         source.contrast = contrast;
-        let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
-        source.max = source.originalMax - contrastShift;
-        source.min = Math.max(0, source.originalMin + contrastShift);
       });
       render(page);
-    });
+    }, debounceTime);
+
+    let elem;
+    elem = document.getElementById("brightness");
+    elem.addEventListener('input', listenerDebounceBrightness);
+
+    elem = document.getElementById("contrast");
+    elem.addEventListener('input', listenerDebounceContrast);
 
     // elem = document.getElementById("color-shift");
     // elem.addEventListener('input', () => {});
 
     elem = document.getElementById("scaling");
-    elem.addEventListener('change', (event) => {
-      let scaling = event.target.value;
-      page.canvasImages.rawdataSources.forEach(source => {
-        source.scaling = scaling;
-      });
-      render(page);
-    });
-
-    function render(page) {
-      page.canvasImages.spinner.show("running filter");
-      page.redraw = requestAnimationFrame(() => {
-        setTimeout(() => {
-          render2().then(() => {
-            page.canvasImages.spinner.hide();
-          });
+    if (elem) {
+      elem.addEventListener('change', (event) => {
+        let scaling = event.target.value;
+        page.canvasImages.rawdataSources.forEach(source => {
+          source.scaling = scaling;
         });
+        render(page);
       });
 
+      elem.addEventListener('change', () => {
+        source = page.selectedSource;
+        source.scaling = event.target.value;
+        render(page);
+      });
     }
 
-    async function render2() {
-      let canvas;
-      page.canvasImages.rawdataSources.forEach(source => {
-        canvas = page.canvasImages.layerCanvasNamed(source.filter);
-        page.canvasImages.renderCanvasLayer(source, canvas);
+    // elem = document.getElementById("color-shift");
+    // elem.addEventListener('input', () => {});
+
+    function render(page) {
+      adjustImage.renderMasterpieceUpdate(page);
+    }
+  }
+};
+
+adjustImage.renderMasterpieceUpdate = (page) => {
+  page.canvasImages.spinner.show("running filter");
+  page.redraw = requestAnimationFrame(() => {
+    setTimeout(() => {
+      render2().then(() => {
+        page.canvasImages.spinner.hide();
       });
-      page.canvasImages.renderCanvasRGB();
-      if (page.type == 'masterpiece') {
-        page.canvasImages.renderMasterpiece();
+    });
+  });
+  async function render2() {
+    let canvas;
+    page.canvasImages.rawdataSources.forEach(source => {
+      canvas = page.canvasImages.layerCanvasNamed(source.filter);
+      page.canvasImages.renderCanvasLayer(source, canvas);
+    });
+    page.canvasImages.renderCanvasRGB();
+    if (page.type == 'masterpiece') {
+      page.canvasImages.renderMasterpiece();
+      if (app.dev) {
         logger.imageData(page.canvasImages, page.canvasImages.selectedSource);
+        page.imageInspect.connectUpdate(page.canvasImages);
       }
     }
   }
