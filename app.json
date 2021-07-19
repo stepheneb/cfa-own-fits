@@ -1787,7 +1787,7 @@
                 },
                 "filter": "green",
                 "min": 5,
-                "max": 1414,
+                "max": 14146,
                 "scaling": "log",
                 "brightness": 1,
                 "contrast": 1,
