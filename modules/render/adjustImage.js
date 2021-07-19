@@ -8,10 +8,10 @@ let adjustImage = {};
 
 let stepSize = 0.05;
 
-let brightness = page => {
+let brightness = () => {
   let min = 0;
-  let max = page.image.maximumBrightness;
-  let val = (max - min) / 2 + min;
+  let max = 2;
+  let val = 1;
   let html = `
     <div class='row adjust-filter'>
       <div class='col-4'>
@@ -25,10 +25,10 @@ let brightness = page => {
   return html;
 };
 
-let contrast = page => {
-  let min = 0 + stepSize;
-  let max = page.image.maximumBrightness - stepSize;
-  let val = (max - min) / 2 + min;
+let contrast = () => {
+  let min = 0;
+  let max = 2;
+  let val = 1;
   let html = `
     <div class=' row adjust-filter'>
       <div class='col-4'>
@@ -133,9 +133,6 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
     const listenerDebounceContrast = u.debounce((e) => {
       source = page.selectedSource;
       source.contrast = e.target.valueAsNumber;
-      let contrastShift = (source.originalRange * source.contrast - source.originalRange) / 2;
-      source.max = source.originalMax - contrastShift;
-      source.min = Math.max(0, source.originalMin + contrastShift);
       render(source);
     }, debounceTime);
 
@@ -166,6 +163,7 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
 
 adjustImage.renderRGBUpdate = (page, source) => {
   let canvas = page.canvasImages.layerCanvasNamed(source.filter);
+  // page.canvasImages.updateBrightnessTransformForLayer(source);
   page.canvasImages.renderCanvasLayer(source, canvas);
   page.canvasImages.renderCanvasRGB();
   page.canvasImages.renderPreview(source);

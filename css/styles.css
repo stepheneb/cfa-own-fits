@@ -1189,7 +1189,7 @@ div#image-stats {
   display: flex; }
 
 div.histogram-container {
-  height: 10vh;
+  height: 8vh;
   width: 100%;
   margin: 0.5em 0em;
   padding: 0px;

@@ -73,6 +73,7 @@ class ImageInspect {
       ['js9RawId', 'image-inspect-js9-raw'],
       ['originalImageId', 'original-image'],
       ['rawDataHistogramContainerId', 'raw-data-histogram-container'],
+      ['pixelLayerTransformContainerId', 'pixel-layer-transform-container'],
       ['pixelLayerDataHistogramContainerId', 'pixel-data-histogram-container'],
       ['imageStatsId', 'image-stats'],
       ['scalingId', 'scaling-container-id'],
@@ -87,6 +88,7 @@ class ImageInspect {
         ${rawDataHistogram(page, registeredCallbacks)}
         ${resetCopyButtons(page, registeredCallbacks)}
         ${imageSettings(page, registeredCallbacks)}
+        ${pixelLayerTransform(page, registeredCallbacks)}
         ${pixelLayerDataHistogram(page, registeredCallbacks)}
         ${inspectCheckbox(page, registeredCallbacks)}
         ${inspectPosition(page, registeredCallbacks)}
@@ -127,6 +129,29 @@ class ImageInspect {
     //
     // histogram of R, G, or B pixel data from canvas image for selected source layer
     //
+    function pixelLayerTransform(page, registeredCallbacks) {
+      registeredCallbacks.push(callback);
+      return `
+          <div id = "${that.pixelLayerTransformContainerId}">
+            <div class="d-flex flex-row justify-content-between align-items-center">
+              <div class="xaxis"><span>0</span></div>
+              <div class="xaxis ms-auto"><span>255</span></div>
+            </div>
+          </div>
+        `;
+
+      function callback() {
+        let elem = document.getElementById(that.pixelLayerTransformContainerId);
+        let template = document.createElement('template');
+        template.innerHTML = layerHistogram.renderTransform().trim();
+        let canvas = template.content.firstChild;
+        elem.insertAdjacentElement('afterbegin', canvas);
+      }
+    }
+
+    //
+    // histogram of R, G, or B pixel data from canvas image for selected source layer
+    //
     function pixelLayerDataHistogram(page, registeredCallbacks) {
       registeredCallbacks.push(callback);
       return `
@@ -138,10 +163,10 @@ class ImageInspect {
           </div>
         `;
 
-      function callback(page) {
+      function callback() {
         let elem = document.getElementById(that.pixelLayerDataHistogramContainerId);
         let template = document.createElement('template');
-        template.innerHTML = layerHistogram.render(page.selectedSource).trim();
+        template.innerHTML = layerHistogram.render().trim();
         let canvas = template.content.firstChild;
         elem.insertAdjacentElement('afterbegin', canvas);
       }
@@ -159,12 +184,12 @@ class ImageInspect {
         </div>
       `;
 
-      function callback(page) {
+      function callback() {
         that.rawMinElem = document.getElementById(that.rawMinId);
         that.rawMaxElem = document.getElementById(that.rawMaxId);
         let elem = document.getElementById(that.rawDataHistogramContainerId);
         let template = document.createElement('template');
-        template.innerHTML = layerHistogram.renderRawData(page.selectedSource).trim();
+        template.innerHTML = layerHistogram.renderRawData().trim();
         let canvas = template.content.firstChild;
         elem.insertAdjacentElement('afterbegin', canvas);
       }
@@ -525,6 +550,7 @@ class ImageInspect {
     this.canvasData = this.ctx.getImageData(0, 0, this.canvasImages.nx, this.canvasImages.ny).data;
     this.rawData = canvasImages.selectedSourceRawData;
     [this.rawMinValue, this.rawMaxValue] = u.forLoopMinMax(this.rawData);
+    layerHistogram.updateTransform(this.page);
   }
 
   inspectChecked() {

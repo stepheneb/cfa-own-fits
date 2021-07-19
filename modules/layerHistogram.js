@@ -4,14 +4,16 @@ let layerHistogram = {};
 
 layerHistogram.canvasDataId = "image-layer-histogram-canvas";
 layerHistogram.canvasRawDataId = "layer-histogram-rawdata-canvas";
+layerHistogram.canvasTransformId = "layer-transform-canvas";
 
 layerHistogram.canvasTitleId = "layer-histogram-title";
 layerHistogram.rawDataTitleId = "layer-histogram-title-rawdata";
+layerHistogram.transformTitleId = "layer-transform-title";
 
 layerHistogram.render = () => {
   let html = `
     <div id="layer-histogram" class="layer-histogram">
-      <header id="${layerHistogram.canvasTitleId}" class="mt-2">Image Layer Histogram</header>
+      <header id="${layerHistogram.canvasTitleId}" class="mt-2"></header>
       <div class="col-12 histogram-container">
         <canvas id="${layerHistogram.canvasDataId}"></canvas>
       </div>
@@ -23,9 +25,21 @@ layerHistogram.render = () => {
 layerHistogram.renderRawData = () => {
   let html = `
     <div id="layer-histogram-rawdata" class="layer-histogram">
-      <header id="${layerHistogram.rawDataTitleId}" class="mt-2">Raw Data Histogram</header>
+      <header id="${layerHistogram.rawDataTitleId}" class="mt-2"></header>
       <div class="col-12 histogram-container">
         <canvas id="${layerHistogram.canvasRawDataId}" data-scalingtype="linear"></canvas>
+      </div>
+    </div>
+  `;
+  return html;
+};
+
+layerHistogram.renderTransform = () => {
+  let html = `
+    <div id="layer-transform" class="layer-histogram">
+      <header id="${layerHistogram.transformTitleId}" class="mt-2"></header>
+      <div class="col-12 histogram-container">
+        <canvas id="${layerHistogram.canvasTransformId}" data-scalingtype="linear"></canvas>
       </div>
     </div>
   `;
@@ -82,6 +96,35 @@ layerHistogram.finishUpdate = (h, source, canvas) => {
     }
     ctx.fillRect(i * columnWidth, height - barHeight, barWidth, barHeight);
   }
+};
+
+layerHistogram.updateTransform = (page) => {
+  let source = page.selectedSource;
+  let transform = page.canvasImages.brightnessContrastTransforms[page.selectedSource.name];
+  let canvas = document.getElementById(layerHistogram.canvasTransformId);
+  let title = document.getElementById(layerHistogram.transformTitleId);
+  title.innerHTML = `Brightness/Contrast Transform: ${source.name}`;
+  let { width, height } = canvas.parentElement.getBoundingClientRect();
+  canvas.width = width;
+  canvas.height = height;
+  let ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#080808';
+  ctx.fillRect(0, 0, width, height);
+  ctx.fillStyle = '#bff5aa';
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#bff5aa';
+  ctx.beginPath();
+  let ybase = height - 2;
+  let yheight = height - 4;
+  let x = 0;
+  let y = ybase - transform[0] * yheight / 254;
+  ctx.moveTo(0, y);
+  for (var i = 1; i < transform.length; i++) {
+    x = i * width / 256;
+    y = ybase - transform[i] * yheight / 256;
+    ctx.lineTo(x, y);
+  }
+  ctx.stroke();
 };
 
 export default layerHistogram;
