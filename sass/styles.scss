@@ -136,8 +136,8 @@ div#splash {
 }
 
 .menu-page-header {
-  margin: 1vh 0rem 6vh 10vh;
-  padding-top: 3.6vh;
+  margin: 1vh 0rem 6vh 6vh;
+  padding-top: 1vh;
 
   .title {
     font-size: var(--menu-page-title);
@@ -284,7 +284,7 @@ div {
   &.menu-category-pages {
     display: none;
     position: relative;
-    height: 42vh;
+    height: 38vh;
     width: fit-content;
     padding: 2vh 2rem 0vh 2rem;
     border: 2px solid var(--category-selected-border);
@@ -573,7 +573,7 @@ header.menu-activity-page-title {
 }
 
 .activity-category-pages {
-  margin: 4vh 2vw;
+  margin: 4vh 1vw;
 }
 
 .activity-page {
