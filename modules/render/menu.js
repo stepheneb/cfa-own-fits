@@ -25,6 +25,8 @@ let selectedCategoryElement = null;
 let selectedCategoryPagesElement = null;
 let categoryPagesVisible = false;
 
+let menuListeners = [];
+
 renderMenu.page = (ctype) => {
   let renderedCallbacks = [];
 
@@ -42,9 +44,7 @@ renderMenu.page = (ctype) => {
   let html = renderMenu.pageHeader();
   html += `
       ${renderMenu.activityCategory()}
-
       ${renderMenu.activityCategoryPages()}
-
       ${navigation.menu(renderedCallbacks)}
     `;
   content = document.getElementById("content");
@@ -65,53 +65,7 @@ renderMenu.page = (ctype) => {
     }, 100);
   });
 
-  window.addEventListener('resize', renderMenu.drawSeparatorLine);
-
-  if (ctype) {
-    selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
-    setTimeout(() => {
-      renderMenu.categoryPages(ctype);
-    }, 50);
-  }
-
-  let addMenuCategoryListener = (ctype) => {
-    let id = `menu-category-${ctype}`;
-    document.getElementById(id).addEventListener('click', () => {
-      selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
-      renderMenu.categoryPages(ctype);
-    });
-  };
-
-  app.categories.forEach(c => {
-    addMenuCategoryListener(c.type);
-  });
-
-  let addSVGCloseMenuCategoryPagesListener = (ctype) => {
-    let id = `svg-close-menu-${ctype}-pages`;
-    document.getElementById(id).addEventListener('click', () => {
-      selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
-      renderMenu.categoryPages(ctype);
-    });
-  };
-
-  app.categories.forEach(c => {
-    addSVGCloseMenuCategoryPagesListener(c.type);
-  });
-
-  let addStartPageListener = (ctype, page) => {
-    let id = `open-page-${ctype}-${page.name}`;
-    document.getElementById(id).addEventListener('click', () => {
-      connectLine.classList.remove('show');
-      categoryPagesVisible = false;
-      app.page = new Page(ctype, page);
-    });
-  };
-
-  app.categories.forEach((category) => {
-    category.pages.forEach((page) => {
-      addStartPageListener(category.type, page);
-    });
-  });
+  renderMenu.addMenuListeners(ctype);
 
   events.setupGlobal();
   checkBrowser();
@@ -120,6 +74,104 @@ renderMenu.page = (ctype) => {
   router.updateHash(hash);
 };
 
+//
+// remove listeneters and start category activity page
+//
+renderMenu.startCategoryActivityPage = (ctype, page) => {
+  renderMenu.removeMenuListeners();
+  app.page = new Page(ctype, page);
+};
+
+//
+// Manage event listeners
+//
+renderMenu.removeMenuListeners = () => {
+  // let elem, listener;
+  menuListeners.forEach(([elem, evt, listener]) => {
+    elem.removeEventListener(evt, listener);
+  });
+};
+
+renderMenu.addMenuListeners = (ctype) => {
+  window.addEventListener('resize', renderMenu.drawSeparatorLine);
+  menuListeners.push([window, 'resize', renderMenu.drawSeparatorLine]);
+
+  if (ctype) {
+    selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
+    setTimeout(() => {
+      renderMenu.categoryPages(ctype);
+    }, 50);
+  }
+
+  //
+  // listen for click in tall/expanded category image
+  //
+  // result:
+  //  1. All tall category image/containers contract
+  //  2. render container with pages in that category type
+  //
+  //
+  let addMenuCategoryListener = (ctype) => {
+    let id = `menu-category-${ctype}`;
+    let elem = document.getElementById(id);
+    elem.addEventListener('click', listener);
+    menuListeners.push([elem, 'click', listener]);
+
+    function listener() {
+      selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
+      renderMenu.categoryPages(ctype);
+    }
+  };
+
+  app.categories.forEach(c => {
+    addMenuCategoryListener(c.type);
+  });
+
+  //
+  // listen for click in SVG close button in categoryPages
+  //
+  let addSVGCloseMenuCategoryPagesListener = (ctype) => {
+    let id = `svg-close-menu-${ctype}-pages`;
+    let elem = document.getElementById(id);
+    elem.addEventListener('click', listener);
+    menuListeners.push([elem, 'click', listener]);
+
+    function listener() {
+      selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
+      renderMenu.categoryPages(ctype);
+    }
+  };
+
+  app.categories.forEach(c => {
+    addSVGCloseMenuCategoryPagesListener(c.type);
+  });
+
+  //
+  // Any click/touch event in activity-page container starts page
+  //
+  let addStartPageListener = (ctype, page) => {
+    let id = `open-page-${ctype}-${page.name}`;
+    let elem = document.getElementById(id);
+    elem.addEventListener('click', listener);
+    menuListeners.push([elem, 'click', listener]);
+
+    function listener() {
+      connectLine.classList.remove('show');
+      categoryPagesVisible = false;
+      renderMenu.startCategoryActivityPage(ctype, page);
+    }
+  };
+
+  app.categories.forEach((category) => {
+    category.pages.forEach((page) => {
+      addStartPageListener(category.type, page);
+    });
+  });
+};
+
+//
+// Component rendering
+//
 renderMenu.pageHeader = () => {
   return `
     <div class='row menu-page-header'>
@@ -155,11 +207,17 @@ renderMenu.activityCategory = () => {
   return html;
 };
 
+//
+// render container with pages in that category type
+//
 renderMenu.categoryPages = () => {
   var elem, category, categoryPagesElement;
   let hash = "";
   let categories = app.categories;
+  //
+  // if category pages container visible ...
   if (selectedCategoryElement.classList.contains("selected")) {
+    // remove selected and not-selected classes from all category containers
     for (category of categories) {
       elem = document.getElementById(`menu-category-${category.type}`);
       elem.classList.remove("selected", "not-selected");
@@ -172,10 +230,12 @@ renderMenu.categoryPages = () => {
       hash = `menu`;
     }
   } else {
+    // else make category pages container visible and contract all category containers
     for (category of categories) {
       elem = document.getElementById(`menu-category-${category.type}`);
       categoryPagesElement = document.getElementById(`menu-category-${category.type}-pages`);
       if (elem == selectedCategoryElement) {
+        // display selected category pages container and redraw connecting if necessary
         selectedCategoryPagesElement = categoryPagesElement;
         elem.classList.add("selected");
         elem.classList.remove("not-selected");
@@ -188,6 +248,7 @@ renderMenu.categoryPages = () => {
         }
         hash = `menu/${category.type}`;
       } else {
+        // hide other category page containers
         elem.classList.add("not-selected");
         elem.classList.remove("selected");
         categoryPagesElement.classList.remove("selected");
