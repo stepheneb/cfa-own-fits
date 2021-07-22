@@ -25,9 +25,12 @@ let selectedCategoryElement = null;
 let selectedCategoryPagesElement = null;
 let categoryPagesVisible = false;
 
+let ctype = null;
+
 let menuListeners = [];
 
-renderMenu.page = (ctype) => {
+renderMenu.page = (categorytype) => {
+  ctype = categorytype;
   let renderedCallbacks = [];
 
   let hash = "menu";
@@ -117,7 +120,8 @@ renderMenu.addMenuListeners = (ctype) => {
     elem.addEventListener('click', listener);
     menuListeners.push([elem, 'click', listener]);
 
-    function listener() {
+    function listener(e) {
+      e.stopPropagation();
       selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
       renderMenu.categoryPages(ctype);
     }
@@ -136,7 +140,8 @@ renderMenu.addMenuListeners = (ctype) => {
     elem.addEventListener('click', listener);
     menuListeners.push([elem, 'click', listener]);
 
-    function listener() {
+    function listener(e) {
+      e.stopPropagation();
       selectedCategoryElement = document.getElementById(`menu-category-${ctype}`);
       renderMenu.categoryPages(ctype);
     }
@@ -155,7 +160,8 @@ renderMenu.addMenuListeners = (ctype) => {
     elem.addEventListener('click', listener);
     menuListeners.push([elem, 'click', listener]);
 
-    function listener() {
+    function listener(e) {
+      e.stopPropagation();
       connectLine.classList.remove('show');
       categoryPagesVisible = false;
       renderMenu.startCategoryActivityPage(ctype, page);
@@ -167,6 +173,26 @@ renderMenu.addMenuListeners = (ctype) => {
       addStartPageListener(category.type, page);
     });
   });
+
+  //
+  // If category page visible any click in that gets to body
+  // closes category pages container
+  //
+  let addMenuBodyListener = () => {
+    let elem = document.body;
+    elem.addEventListener('click', listener);
+    menuListeners.push([elem, 'click', listener]);
+
+    function listener() {
+      let selectedCategories = document.getElementsByClassName('category selected');
+      if (selectedCategories.length > 0) {
+        selectedCategoryElement = selectedCategories[0];
+        renderMenu.categoryPages(ctype);
+      }
+    }
+  };
+
+  addMenuBodyListener(ctype);
 };
 
 //
