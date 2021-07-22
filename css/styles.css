@@ -416,10 +416,9 @@ div.offcanvas-end {
 svg#inspect-indicator {
   position: absolute;
   pointer-events: none;
-  left: 100px;
-  top: 100px;
   z-index: 10;
-  display: none; }
+  display: none;
+  color: var(--bright-teal); }
   svg#inspect-indicator.show {
     display: block; }
 
@@ -1138,7 +1137,7 @@ div#main-image-canvas-container {
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, 0%);
-    width: unset;
+    width: 100%;
     max-width: 100%;
     background-color: gray;
     object-fit: contain; }
@@ -1159,6 +1158,23 @@ div#main-image-canvas-container {
       border: 1px solid darkgray; }
     div#main-image-canvas-container canvas.inspecting {
       cursor: none; }
+
+div#main-canvas-wrapper {
+  position: relative;
+  height: 74vh;
+  margin: 0;
+  padding: 0;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 0%);
+  width: unset;
+  max-width: 100%;
+  background-color: gray; }
+  div#main-canvas-wrapper.inspect {
+    cursor: crosshair;
+    border: 1px solid darkgray; }
+  div#main-canvas-wrapper.inspecting {
+    cursor: none; }
 
 canvas#main-image-canvas-red {
   object-fit: contain; }

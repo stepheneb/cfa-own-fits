@@ -547,21 +547,13 @@ div.offcanvas-end {
 svg#inspect-indicator {
   position: absolute;
   pointer-events: none;
-  left: 100px;
-  top: 100px;
   z-index: 10;
   display: none;
   &.show {
     display: block;
   }
+  color: var(--bright-teal);
 }
-
-// a#page-reset {
-//   padding-top: 0.12rem;
-//   padding-bottom: 0.12rem;
-//   color: var(--brighter-green);
-//   font-size: 150%;
-// }
 
 header.menu-activity-page-title {
   font-size: var(--menu-activity-page-title);
@@ -1453,7 +1445,7 @@ div#main-image-canvas-container {
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, 0%);
-    width: unset;
+    width: 100%;
     max-width: 100%;
     background-color: gray;
     object-fit: contain;
@@ -1481,6 +1473,26 @@ div#main-image-canvas-container {
     &.inspecting {
       cursor: none;
     }
+  }
+}
+
+div#main-canvas-wrapper {
+  position: relative;
+  height: 74vh;
+  margin: 0;
+  padding: 0;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, 0%);
+  width: unset;
+  max-width: 100%;
+  background-color: gray;
+  &.inspect {
+    cursor: crosshair;
+    border: 1px solid darkgray;
+  }
+  &.inspecting {
+    cursor: none;
   }
 }
 

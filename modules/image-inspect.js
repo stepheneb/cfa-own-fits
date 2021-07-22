@@ -37,8 +37,8 @@ class ImageInspect {
   render(page, registeredCallbacks) {
     this.page = page;
     this.indicatorId = "inspect-indicator";
-    this.indicatorWidth = 16;
-    this.indicatorHeight = 16;
+    this.indicatorWidth = 24;
+    this.indicatorHeight = 24;
     this.indicator = `
       <svg id="${this.indicatorId}" xmlns="http://www.w3.org/2000/svg" width="${this.indicatorWidth}" height="${this.indicatorHeight}" fill="currentColor" class="bi bi-brightness-high" viewBox="0 0 16 16">
         <path d="M8 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm0 1a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5zM3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8zm10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0zm-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0zm9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707zM4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708z"/>
@@ -350,7 +350,7 @@ class ImageInspect {
             navigator.clipboard.write(data).then(
               function () {
                 /* success */
-                console.log('success');
+                // console.log('success');
                 let b = bootstrap.Tooltip.getInstance(elem);
                 elem.setAttribute('data-bs-original-title', tooltipDone);
                 b.show();
@@ -359,10 +359,10 @@ class ImageInspect {
                 document.activeElement.blur();
                 window.getSelection().removeAllRanges();
               },
-              function (a) {
+              function () {
                 /* failure */
-                console.log('failure');
-                console.log(a);
+                // console.log('failure');
+                // console.log(a);
               }
             );
           });
@@ -503,29 +503,6 @@ class ImageInspect {
     this.js9.y = this.canvasImages.ny - this.cpos.y;
   }
 
-  setupIndicator() {
-    let x = this.canvasImages.nx / 2;
-    let y = this.canvasImages.ny / 2;
-    if (this.page.image.indicator) {
-      x = this.page.image.indicator.x;
-      y = this.page.image.indicator.y;
-    }
-    this.cpos.x = x;
-    this.cpos.y = y;
-    this.updatePosFromCpos();
-  }
-
-  updateIndicatorPos() {
-    this.canvasTargetRect = this.canvas.getBoundingClientRect();
-    let offsetx = this.canvasTargetRect.left - this.imageContainerTargetRect.left - this.indicatorWidth / 2;
-    let offsety = this.canvasTargetRect.top - this.imageContainerTargetRect.top - this.indicatorHeight / 2;
-    this.indicatorPos = {
-      left: this.pos.x + offsetx,
-      top: this.pos.y + offsety
-    };
-    Object.assign(this.indicatorElem.style, this.indicatorPos);
-  }
-
   updateSourceMinMaxElements() {
     let source = this.page.selectedSource;
     this.sourceMinInputElem.setAttribute('min', source.originalMin);
@@ -606,7 +583,6 @@ class ImageInspect {
       }
       return canvas;
     }
-
   }
 
   inspectChecked() {
@@ -623,11 +599,12 @@ class ImageInspect {
 
   startup() {
     this.mainEvents = [
-      [this.canvas, 'mousemove', this.listenerMouseMove]
+      [this.canvasImages.mainCanvasWrapper, 'mousemove', this.listenerMouseMove]
     ];
   }
 
   enable() {
+    let that = this;
     if (this.connected) {
       this.mainEvents.forEach((eventItem) => {
         eventItem[0].addEventListener(eventItem[1], eventItem[2]);
@@ -639,8 +616,21 @@ class ImageInspect {
         }, 100);
       }), 250);
       this.canvas.classList.add('inspect');
+      this.canvasImages.mainCanvasWrapper.classList.add('inspect');
       this.indicatorElem.classList.add('show');
+
+      if (this.page.type == 'masterpiece') {
+        this.canvasImages.addListener(scalingEvent);
+      }
+
       this.enabled = true;
+    }
+
+    function scalingEvent(se) {
+      console.log(se);
+      console.log(that.indicatorPos);
+      // this.canvasTargetRect
+      console.log(that.canvas.getBoundingClientRect());
     }
   }
 
@@ -648,6 +638,7 @@ class ImageInspect {
     if (this.connected) {
       this.close();
       this.canvas.classList.remove('inspect');
+      this.canvasImages.mainCanvasWrapper.classList.remove('inspect');
       this.indicatorElem.classList.remove('show');
       this.enabled = false;
     }
@@ -658,6 +649,12 @@ class ImageInspect {
       eventItem[0].removeEventListener(eventItem[1], eventItem[2]);
     });
     window.removeEventListener('resize', this.debounce);
+
+    if (this.page.type == 'masterpiece') {
+      this.canvasImages.scaling.removeListener();
+    }
+
+    this.canvasImages.scaling.removeListener();
   }
 
   getWidthHeight(elem) {
@@ -673,28 +670,81 @@ class ImageInspect {
     this.updateCposFromPos();
   }
 
-  updateCposFromPos() {
-    let x = Math.round(this.pos.x * this.canvasImages.nx / this.width);
-    let y = Math.round(this.pos.y * this.canvasImages.ny / this.height);
+  setupIndicator() {
+    let x = this.canvasImages.nx / 2;
+    let y = this.canvasImages.ny / 2;
+    if (this.page.image.indicator) {
+      x = this.page.image.indicator.x;
+      y = this.page.image.indicator.y;
+    }
     this.cpos.x = x;
     this.cpos.y = y;
+    this.updatePosFromCpos();
+  }
+
+  updateIndicatorPos() {
+    this.canvasTargetRect = this.canvas.getBoundingClientRect();
+    let offsetx = this.canvasTargetRect.left - this.imageContainerTargetRect.left - this.indicatorWidth / 2;
+    let offsety = this.canvasTargetRect.top - this.imageContainerTargetRect.top - this.indicatorHeight / 2;
+    this.indicatorPos = {
+      left: this.pos.x + offsetx,
+      top: this.pos.y + offsety
+    };
+    Object.assign(this.indicatorElem.style, this.indicatorPos);
+  }
+
+  updateCposFromPos() {
+    let that = this;
+    switch (this.page.type) {
+    case 'rgb':
+    case 'multi-wave':
+      calc();
+      break;
+    case 'masterpiece':
+      calc();
+      // canvas = page.canvasImages.scalingCanvas;
+      break;
+    }
+
+    function calc() {
+      let x = Math.round(that.pos.x * that.canvasImages.nx / that.width);
+      let y = Math.round(that.pos.y * that.canvasImages.ny / that.height);
+      that.cpos.x = x;
+      that.cpos.y = y;
+    }
   }
 
   updatePosFromCpos() {
-    let x = Math.round(this.cpos.x * this.width / this.canvasImages.nx);
-    let y = Math.round(this.cpos.y * this.height / this.canvasImages.ny);
-    this.pos.x = x;
-    this.pos.y = y;
+    let that = this;
+    switch (this.page.type) {
+    case 'rgb':
+    case 'multi-wave':
+      calc();
+      break;
+    case 'masterpiece':
+      calc();
+      // canvas = page.canvasImages.scalingCanvas;
+      break;
+    }
+
+    function calc() {
+      let x = Math.round(that.cpos.x * that.width / that.canvasImages.nx);
+      let y = Math.round(that.cpos.y * that.height / that.canvasImages.ny);
+      that.pos.x = x;
+      that.pos.y = y;
+    }
   }
 
   listenerMouseMove(e) {
     if (e.shiftKey) {
       this.canvas.classList.add('inspecting');
+      this.canvasImages.mainCanvasWrapper.classList.add('inspecting');
       this.pointerEvents(e);
-      console.log(`mousemove: pos x: ${this.pos.x} y: ${this.pos.y}`);
+      // console.log(`mousemove: pos x: ${this.pos.x} y: ${this.pos.y}`);
       this.update();
     } else {
       this.canvas.classList.remove('inspecting');
+      this.canvasImages.mainCanvasWrapper.classList.remove('inspecting');
     }
   }
 }

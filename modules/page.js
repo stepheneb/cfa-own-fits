@@ -69,19 +69,40 @@ class Page {
         source.range = source.max - source.min;
       }
     }
+    if (this.type == 'masterpiece') {
+      this.canvasImages.scaling.resetScaling();
+    }
     this.updateAll();
   }
 
   updateAll() {
-    this.updateImageSelectFilterLayer();
-    for (var i = 0; i < this.image.sources.length; i++) {
-      let source = this.image.sources[i];
-      if (source.type == 'rawdata' && source.changed) {
-        this.canvasImages.clearCanvas(source);
-        adjustImage.renderRGBUpdate(this, source);
+    switch (this.type) {
+
+    case 'rgb':
+    case 'multi-wave':
+      adjustImage.renderRGBUpdate(this, this.selectedSource);
+      this.updateImageSelectFilterLayer();
+      for (var i = 0; i < this.image.sources.length; i++) {
+        let source = this.image.sources[i];
+        if (source.type == 'rawdata' && source.changed) {
+          this.canvasImages.clearCanvas(source);
+          adjustImage.renderRGBUpdate(this, source);
+        }
       }
+      break;
+
+    case 'masterpiece':
+      adjustImage.renderMasterpieceUpdate(this);
+      break;
+
+    case 'find-apollo':
+      break;
+
+    case 'animate':
+      break;
+
     }
-    adjustImage.renderRGBUpdate(this, this.selectedSource);
+
     logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
     if (app.dev) {
       this.imageInspect.reset();

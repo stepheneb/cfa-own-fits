@@ -1,4 +1,5 @@
 /*jshint esversion: 6 */
+/*global app  */
 
 import canvasUtils from './canvasUtils.js';
 
@@ -6,6 +7,7 @@ class Scaling {
   constructor(scalingCanvas, sourceImageBitmap, previewZoomCanvas, findApolloSiteContainerId, sourceCtx, landing) {
     this.scalingCanvas = scalingCanvas;
     this.findApolloSiteContainerId = findApolloSiteContainerId;
+    this.mainCanvasWrapper = document.getElementById('main-canvas-wrapper');
     this.sourceCtx = sourceCtx;
     this.landing = landing;
     this.findApolloSiteContainer = null;
@@ -127,6 +129,11 @@ class Scaling {
     this.zoomInButton.addEventListener('click', this.buttonListener);
     this.zoomOutButton.addEventListener('click', this.buttonListener);
     this.zoomResetButton.addEventListener('click', this.buttonListener);
+  }
+
+  resetScaling() {
+    this.scale = 1;
+    this.scaleDraw = requestAnimationFrame(this.scaleCanvas);
   }
 
   startup() {
@@ -338,6 +345,8 @@ class Scaling {
       }
     }
     this.scalingCanvasDrawfinished = true;
+    this.mainCanvasWrapper.style.width = this.imageWidth + 'px';
+    this.sendEvent();
   }
 
   scalingCanvasDrawArgs() {
@@ -364,6 +373,50 @@ class Scaling {
         dHeight: ${this.imageHeight}
     `;
     return argstr;
+  }
+
+  // if (this.callback instanceof Function)
+  sendEvent() {
+    if (typeof this.callback == 'function') {
+      let scalingEvent = {
+        offset: {
+          x: this.offsetX,
+          y: this.offsetY
+        },
+        move: {
+          x: this.moveX,
+          y: this.moveY
+        },
+        scale: this.scale,
+        delta: {
+          x: this.dx,
+          y: this.dy
+        },
+        bitmap: {
+          width: this.sourceImageBitmap.width,
+          height: this.sourceImageBitmap.height
+        },
+        scaleCanvas: {
+          width: this.scalingCanvas.width,
+          height: this.scalingCanvas.height
+        },
+        image: {
+          width: this.imageWidth,
+          height: this.imageHeight
+        }
+      };
+      this.callback(scalingEvent);
+    }
+  }
+
+  addListener(callback) {
+    if (typeof callback == 'function') {
+      this.callback = callback;
+    }
+  }
+
+  removeListener() {
+    this.callback = null;
   }
 
   checkIfMatchingApolloSiteScale() {
@@ -743,9 +796,10 @@ class Scaling {
 
     this.queueCanvasDraw();
 
-    console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
-
-    console.log(this.scalingCanvasDrawArgs());
+    if (app.dev) {
+      console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
+      console.log(this.scalingCanvasDrawArgs());
+    }
 
   }
 

@@ -40,6 +40,7 @@ class CanvasImages {
     this.filters = [];
 
     this.mainContainer = null;
+    this.mainCanvasWrapper = null;
 
     this.previewContainer = null;
     this.previewCanvas = null;
@@ -290,10 +291,19 @@ class CanvasImages {
       c.id = 'scaling-image-canvas';
       c.classList = 'scaling-image-canvas';
       this.initializeCanvas(c);
-      this.mainContainer.append(c);
+      this.mainCanvasWrapper.append(c);
       this.scalingCanvas = c;
       this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas, findApolloSiteContainerId, sourceCtx, this.image.landing);
+      if (typeof this.callback == 'function') {
+        this.scaling.addListener(this.callback);
+      }
     });
+  }
+
+  addListener(callback) {
+    if (typeof callback == 'function') {
+      this.callback = callback;
+    }
   }
 
   updateScalingLayer() {
@@ -313,14 +323,18 @@ class CanvasImages {
 
   initializeMainCanvases(type) {
     let canvas;
-    this.mainContainer = document.getElementById('main-image-canvas-container');
+    this.mainContainer = document.getElementById(this.page.miccCanvasContainerId);
+    this.mainCanvasWrapper = document.createElement('div');
+    this.mainCanvasWrapper.id = 'main-canvas-wrapper';
+    this.mainContainer.append(this.mainCanvasWrapper);
     this.rawdataSources.forEach((s) => {
-      canvas = this.appendMainCanvas(this.mainContainer, s.filter, s.name);
+      canvas = this.appendMainCanvas(this.mainCanvasWrapper, s.filter, s.name);
       this.layerCanvases.push(canvas);
       this.renderCanvasLayer(s);
     });
-    this.rgbCanvas = this.appendMainCanvas(this.mainContainer, 'rgb', 'rgb');
+    this.rgbCanvas = this.appendMainCanvas(this.mainCanvasWrapper, 'rgb', 'rgb');
     this.renderCanvasRGB(type);
+    this.mainCanvasWrapper.style.width = this.canvasRGB.clientWidth + 'px';
   }
 
   initializePreviewZoomCanvas(source) {
