@@ -72,7 +72,7 @@ renderMenu.page = (categorytype) => {
 
   events.setupGlobal();
   checkBrowser();
-  splash.hide();
+  splash.hideAll();
   renderedCallbacks.forEach(func => func());
   router.updateHash(hash);
 };

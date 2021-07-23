@@ -25,6 +25,7 @@ html {
   --category-not-selected-border: #202e31;
   --canvas-container-border-color: lightgray;
   --canvas-container-border-color-fullscreen: #222;
+  --translucent-gray: rgba(32, 32, 32, 0.6);
   /* font sizes */
   --menu-page-title: 7.4vh;
   --menu-page-subtitle: 3vh;
@@ -41,7 +42,9 @@ html {
   --control-subtitle: 1.6vh;
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
-  --send-email-input: 1.6vh; }
+  --send-email-input: 1.6vh;
+  --splash2-title: 8vh;
+  --splash2-intro: 6vh; }
 
 body {
   font-family: Rajdhani, Arial, Helvetica, sans-serif;
@@ -58,7 +61,8 @@ body {
   margin: 0;
   padding: 0; }
 
-div#splash {
+div#splash,
+div#splash2 {
   position: absolute;
   left: 0;
   top: 0;
@@ -67,9 +71,17 @@ div#splash {
   height: 100%;
   color: white; }
 
+div#splash2 {
+  z-index: 50; }
+
 #splash img {
   width: inherit;
   height: inherit; }
+
+#splash2 img {
+  width: inherit;
+  height: inherit;
+  object-fit: cover; }
 
 #splash-center {
   position: fixed;
@@ -95,6 +107,39 @@ div#splash {
       font-size: 12vh;
       height: 20vh;
       font-weight: 500; }
+
+#splash2-content {
+  position: fixed;
+  height: 40vh;
+  background-color: var(--translucent-gray);
+  width: 100%;
+  left: 0;
+  top: 20vh;
+  padding: 10vh 10vw;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start; }
+  #splash2-content .title {
+    font-size: 4vh;
+    line-height: 1.2em;
+    width: 28vw;
+    color: var(--bright-green);
+    text-transform: uppercase;
+    margin: 0 2vw; }
+  #splash2-content .intro {
+    font-size: 2.5vh;
+    line-height: 1.1em;
+    width: 50vw;
+    color: lightgray;
+    margin: 0 2vw; }
+  #splash2-content #splash2-continue {
+    align-self: flex-end;
+    font-size: 120%;
+    color: var(--bright-green);
+    margin: 0 2vw;
+    width: 10vw;
+    background-color: transparent;
+    border-color: var(--bright-green); }
 
 #splash-footer {
   height: 8vh;
