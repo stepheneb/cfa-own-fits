@@ -896,7 +896,8 @@ div#preview-image-canvas-container {
 
 canvas#preview-palette {
   position: unset;
-  display: block; }
+  display: block;
+  border-top: 1px solid var(--canvas-container-border-color); }
 
 #multi-wave-telescope-name {
   margin-top: 0.25vh;
