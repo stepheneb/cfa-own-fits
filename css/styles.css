@@ -588,9 +588,6 @@ div.control-collection {
   div.control-collection.special-effects {
     margin-top: 1vh;
     margin-bottom: 1vh; }
-  div.control-collection.adjust-layer {
-    margin-top: 1vh;
-    margin-bottom: 1vh; }
   div.control-collection > .title {
     color: var(--bright-green);
     font-size: var(--control-title);
@@ -598,6 +595,11 @@ div.control-collection {
   div.control-collection > .subtitle {
     font-size: var(--control-subtitle);
     padding: 0vh 0vh 0.5vh 0.5vh; }
+  div.control-collection.adjust-layer {
+    margin-top: 1vh;
+    margin-bottom: 1vh; }
+    div.control-collection.adjust-layer > .subtitle {
+      margin-bottom: 1vh; }
   div.control-collection > .name {
     text-transform: uppercase; }
   div.control-collection > .context {
@@ -633,13 +635,13 @@ div.control-collection {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 1rem; }
+    margin-bottom: 1.5rem; }
     div.control-collection div.adjust-filter label {
-      width: 6rem;
+      width: 6.5rem;
       margin-right: 0.25rem; }
     div.control-collection div.adjust-filter div.slider-icon svg {
-      width: 1.8vw;
-      height: 1.8vw; }
+      width: 1.7vw;
+      height: 1.7vw; }
       div.control-collection div.adjust-filter div.slider-icon svg path {
         fill: lightgray;
         stroke-width: 1px; }

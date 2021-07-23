@@ -756,10 +756,6 @@ div.control-collection {
     margin-top: 1vh;
     margin-bottom: 1vh;
   }
-  &.adjust-layer {
-    margin-top: 1vh;
-    margin-bottom: 1vh;
-  }
   > .title {
     color: var(--bright-green);
     font-size: var(--control-title);
@@ -768,6 +764,13 @@ div.control-collection {
   > .subtitle {
     font-size: var(--control-subtitle);
     padding: 0vh 0vh 0.5vh 0.5vh;
+  }
+  &.adjust-layer {
+    margin-top: 1vh;
+    margin-bottom: 1vh;
+    > .subtitle {
+      margin-bottom: 1vh;
+    }
   }
   > .name {
     text-transform: uppercase;
@@ -813,16 +816,16 @@ div.control-collection {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 
     label {
-      width: 6rem;
+      width: 6.5rem;
       margin-right: 0.25rem;
     }
     div.slider-icon {
       svg {
-        width: 1.8vw;
-        height: 1.8vw;
+        width: 1.7vw;
+        height: 1.7vw;
         path {
           fill: lightgray;
           stroke-width: 1px;
