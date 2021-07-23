@@ -827,7 +827,7 @@ div.control-collection {
         width: 1.7vw;
         height: 1.7vw;
         path {
-          fill: lightgray;
+          fill: var(--dark-teal);
           stroke-width: 1px;
         }
         &:hover {

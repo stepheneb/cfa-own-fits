@@ -643,7 +643,7 @@ div.control-collection {
       width: 1.7vw;
       height: 1.7vw; }
       div.control-collection div.adjust-filter div.slider-icon svg path {
-        fill: lightgray;
+        fill: var(--dark-teal);
         stroke-width: 1px; }
       div.control-collection div.adjust-filter div.slider-icon svg:hover path {
         fill: white; }
