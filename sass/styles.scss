@@ -44,6 +44,7 @@ html {
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.6vh;
+  --main-layer-selector: 2vh;
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
   --send-email-input: 1.6vh;
@@ -824,16 +825,6 @@ div.row.select-filter {
   }
 }
 
-div.select-layer {
-  padding: 0em 1em;
-  label {
-    font-size: var(--control-subtitle);
-  }
-  input {
-    padding: 0vh 0vh 0vh 1vh;
-    width: 100%;
-  }
-}
 div.color-maps {
   > row {
     margin: 0.5em 0em;
@@ -1772,5 +1763,43 @@ div.histogram-container {
     &:checked {
       --s: 0.5;
     }
+  }
+}
+
+div.select-layer {
+  padding: 0em 1em;
+  div.eyes-input {
+    text-transform: uppercase;
+    font-size: var(--main-layer-selector);
+  }
+  label {
+    font-size: var(--control-subtitle);
+    &.eyes-input {
+      display: inline-block;
+      width: 44px;
+      height: 44px;
+      cursor: pointer;
+      background-image: url(../images/eyes/eyeclosed.svg);
+    }
+  }
+
+  input[type="checkbox"].eyes-input {
+    display: none;
+  }
+
+  input[type="checkbox"]:checked + label.eyes-input {
+    background-image: url(../images/eyes/eyeopen.svg);
+  }
+
+  label.eyes-input:has(> input[type="checkbox"]:checked) {
+    display: inline-block;
+    width: 44px;
+    height: 44px;
+    background-image: url(../images/eyes/eyeopen.svg);
+  }
+
+  input {
+    padding: 0vh 0vh 0vh 1vh;
+    width: 100%;
   }
 }
