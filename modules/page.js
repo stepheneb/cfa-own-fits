@@ -44,9 +44,9 @@ class Page {
     }
     if (checkBrowser()) {
       this.render();
-      splash.hide();
+      splash.hideAll();
     } else {
-      splash.hide();
+      splash.hideAll();
     }
   }
 
