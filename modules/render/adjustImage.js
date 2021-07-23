@@ -8,18 +8,29 @@ let adjustImage = {};
 
 let stepSize = 0.05;
 
+let plusIcon = `
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+  <path d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16z"/>
+</svg>
+`;
+
+let minusIcon = `
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+    <path d="M10 20a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zm5-9v2H5V9h10z"/>
+  </svg>
+`;
+
 let brightness = () => {
   let min = 0;
   let max = 2;
   let val = 1;
   let html = `
-    <div class='row adjust-filter'>
-      <div class='col-4'>
-        <label for='brightness'>Brightness</label>
-      </div>
-      <div class='col-8 adjust-layer'>
-        <input type='range' id='brightness' name='brightness'  min='${min}' max='${max}' value='${val}' step='${stepSize}'>
-      </div>
+    <div class='adjust-filter '>
+      <label for='brightness'>Brightness</label>
+      <div class='slider-icon'>${plusIcon}</div>
+      <input type='range' id='brightness' name='brightness'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='brightnessvalue.value=value'/>
+      <div class='slider-icon'>${minusIcon}</div>
+      <output id="brightnessvalue">${val}</output>
     </div>
   `;
   return html;
@@ -30,13 +41,12 @@ let contrast = () => {
   let max = 2;
   let val = 1;
   let html = `
-    <div class=' row adjust-filter'>
-      <div class='col-4'>
-        <label for='contrast'>Contrast</label>
-      </div>
-      <div class='col-8'>
-        <input type='range' id='contrast' name='contrast' min='${min}' max='${max}' value='${val}' step='${stepSize}'>
-      </div>
+    <div class='adjust-filter '>
+      <label for='contrast'>Contrast</label>
+      <div class='slider-icon'>${plusIcon}</div>
+      <input type='range' id='contrast' name='contrast'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='contrastvalue.value=value'/>
+      <div class='slider-icon'>${minusIcon}</div>
+      <output id="contrastvalue">${val}</output>
     </div>
   `;
   return html;

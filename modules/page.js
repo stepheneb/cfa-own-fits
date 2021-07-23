@@ -573,7 +573,7 @@ class Page {
       if (source.type == "rawdata") {
         name = source.name;
         html += `
-          <div class="select-layer  d-flex flex-row justify-content-start align-items-center">
+          <div class="select-layer d-flex flex-row justify-content-start align-items-center">
             <div class="pe-2 eyes-input">${name}</div>
             <div>
               <input class='eyes-input' type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>

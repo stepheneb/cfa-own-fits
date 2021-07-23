@@ -597,7 +597,7 @@ div.control-collection {
     padding: 0vh 0vh 0.5vh 0.5vh; }
   div.control-collection > .subtitle {
     font-size: var(--control-subtitle);
-    padding: 0vh 0vh 0.25vh 0.5vh; }
+    padding: 0vh 0vh 0.5vh 0.5vh; }
   div.control-collection > .name {
     text-transform: uppercase; }
   div.control-collection > .context {
@@ -628,10 +628,29 @@ div.control-collection {
     div.control-collection form > .row.special-effects label {
       font-size: var(--control-subtitle);
       padding-left: 0.5vh; }
-    div.control-collection > .row.adjust-filter input,
-    div.control-collection form > .row.adjust-filter input {
-      padding: 0vh 1vh 0vh 0vh;
-      width: 100%; }
+  div.control-collection div.adjust-filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 1rem; }
+    div.control-collection div.adjust-filter label {
+      width: 6rem;
+      margin-right: 0.25rem; }
+    div.control-collection div.adjust-filter div.slider-icon svg {
+      width: 1.8vw;
+      height: 1.8vw; }
+      div.control-collection div.adjust-filter div.slider-icon svg path {
+        fill: lightgray;
+        stroke-width: 1px; }
+      div.control-collection div.adjust-filter div.slider-icon svg:hover path {
+        fill: white; }
+    div.control-collection div.adjust-filter input {
+      padding: 0;
+      width: 10rem; }
+    div.control-collection div.adjust-filter output {
+      width: 2.5rem;
+      padding-left: 0.5rem; }
 
 div.row.select-filter:hover {
   color: white;

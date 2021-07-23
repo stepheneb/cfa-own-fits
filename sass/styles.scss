@@ -767,7 +767,7 @@ div.control-collection {
   }
   > .subtitle {
     font-size: var(--control-subtitle);
-    padding: 0vh 0vh 0.25vh 0.5vh;
+    padding: 0vh 0vh 0.5vh 0.5vh;
   }
   > .name {
     text-transform: uppercase;
@@ -807,13 +807,40 @@ div.control-collection {
         padding-left: 0.5vh;
       }
     }
-    &.adjust-filter {
-      label {
+  }
+  div.adjust-filter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 1rem;
+
+    label {
+      width: 6rem;
+      margin-right: 0.25rem;
+    }
+    div.slider-icon {
+      svg {
+        width: 1.8vw;
+        height: 1.8vw;
+        path {
+          fill: lightgray;
+          stroke-width: 1px;
+        }
+        &:hover {
+          path {
+            fill: white;
+          }
+        }
       }
-      input {
-        padding: 0vh 1vh 0vh 0vh;
-        width: 100%;
-      }
+    }
+    input {
+      padding: 0;
+      width: 10rem;
+    }
+    output {
+      width: 2.5rem;
+      padding-left: 0.5rem;
     }
   }
 }
