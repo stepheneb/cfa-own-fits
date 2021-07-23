@@ -41,9 +41,9 @@ let brightness = () => {
   let html = `
     <div class='adjust-filter '>
       <label for='brightness'>Brightness</label>
-      <div class='slider-icon'>${plusIcon}</div>
+      <div id='brightness-step-down' class='slider-icon' data-step='down'>${minusIcon}</div>
       <input type='range' id='brightness' name='brightness'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='brightnessvalue.value=value'/>
-      <div class='slider-icon'>${minusIcon}</div>
+      <div id='brightness-step-up' class='slider-icon'  data-step='up'>${plusIcon}</div>
       <output id="brightnessvalue">${val}</output>
     </div>
   `;
@@ -57,9 +57,9 @@ let contrast = () => {
   let html = `
     <div class='adjust-filter'>
       <label for='contrast'>Contrast</label>
-      <div class='slider-icon'>${plusIcon}</div>
+      <div id='contrast-step-down' class='slider-icon' data-step='down'>${minusIcon}</div>
       <input type='range' id='contrast' name='contrast'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='contrastvalue.value=value'/>
-      <div class='slider-icon'>${minusIcon}</div>
+      <div id='contrast-step-up' class='slider-icon' data-step='up'>${plusIcon}</div>
       <output id="contrastvalue">${val}</output>
     </div>
   `;
@@ -135,6 +135,17 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
   function callback() {
     let debounceTime = 125;
 
+    let brightnessElem = document.getElementById("brightness");
+    let contrastElem = document.getElementById("contrast");
+
+    let brightnessStepDownElem = document.getElementById("brightness-step-down");
+    let brightnessStepUpElem = document.getElementById("brightness-step-up");
+    let brightnessValueElem = document.getElementById("brightnessvalue");
+
+    let contrastStepDownElem = document.getElementById("contrast-step-down");
+    let contrastStepUpElem = document.getElementById("contrast-step-up");
+    let contrastValueElem = document.getElementById("contrastvalue");
+
     const listenerDebounceBrightness = u.debounce((e) => {
       source = page.selectedSource;
       let brightness = e.target.valueAsNumber;
@@ -148,16 +159,51 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
       render(source);
     }, debounceTime);
 
-    let elem;
-    elem = document.getElementById("brightness");
-    elem.addEventListener('input', listenerDebounceBrightness);
+    const listenerBrightnessStep = (e) => {
+      let source = page.selectedSource;
+      let direction = e.target.dataset.step;
+      let brightness = source.brightness;
+      if (direction == 'up') {
+        brightness += 0.05;
+      } else {
+        brightness -= 0.05;
+      }
+      brightness = Math.min(2, Math.max(0, brightness));
+      source.brightness = brightness;
+      brightnessElem.valueAsNumber = brightness;
+      brightnessValueElem.innerText = u.roundNumber(brightness, 3);
+      render(source);
+    };
 
-    elem = document.getElementById("contrast");
-    elem.addEventListener('input', listenerDebounceContrast);
+    const listenerContrastStep = (e) => {
+      let source = page.selectedSource;
+      let direction = e.target.dataset.step;
+      let contrast = source.contrast;
+      if (direction == 'up') {
+        contrast += 0.05;
+      } else {
+        contrast -= 0.05;
+      }
+      contrast = Math.min(2, Math.max(0, contrast));
+      source.contrast = contrast;
+      contrastElem.valueAsNumber = contrast;
+      contrastValueElem.innerText = u.roundNumber(contrast, 3);
+      render(source);
+    };
+
+    brightnessElem.addEventListener('input', listenerDebounceBrightness);
+    contrastElem.addEventListener('input', listenerDebounceContrast);
+
+    brightnessStepDownElem.addEventListener('click', listenerBrightnessStep);
+    brightnessStepUpElem.addEventListener('click', listenerBrightnessStep);
+
+    contrastStepDownElem.addEventListener('click', listenerContrastStep);
+    contrastStepUpElem.addEventListener('click', listenerContrastStep);
 
     // elem = document.getElementById("color-shift");
     // elem.addEventListener('input', () => {});
 
+    let elem;
     elem = document.getElementById("scaling");
     if (elem) {
       elem.addEventListener('change', () => {

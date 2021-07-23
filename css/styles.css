@@ -640,6 +640,7 @@ div.control-collection {
       width: 6.5rem;
       margin-right: 0.25rem; }
     div.control-collection div.adjust-filter div.slider-icon svg {
+      pointer-events: none;
       width: 1.7vw;
       height: 1.7vw; }
       div.control-collection div.adjust-filter div.slider-icon svg path {

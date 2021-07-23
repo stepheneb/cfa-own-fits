@@ -824,6 +824,7 @@ div.control-collection {
     }
     div.slider-icon {
       svg {
+        pointer-events: none;
         width: 1.7vw;
         height: 1.7vw;
         path {
