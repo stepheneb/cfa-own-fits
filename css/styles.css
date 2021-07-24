@@ -3,7 +3,8 @@
   padding: 0; }
 
 html {
-  overflow-y: hidden; }
+  overflow-y: hidden;
+  user-select: none; }
 
 /* color variables */
 /* https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties */
