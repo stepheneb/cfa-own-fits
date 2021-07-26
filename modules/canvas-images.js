@@ -896,7 +896,7 @@ class CanvasImages {
 
   renderColorMaps() {
     let id, canvas;
-    let [nx, ny] = [256, 16];
+    let [nx, ny] = [256, 12];
     let colormaps = cmap.names().map(name => {
       id = `select-cmap-${name}-canvas`;
       canvas = document.getElementById(id);
@@ -951,7 +951,7 @@ class CanvasImages {
 
   renderPreviewPalette(source) {
     let width = this.previewPalette.width;
-    let height = 16;
+    let height = 10;
     this.renderPalette(this.previewPalette, source.filter, width, height);
   }
 

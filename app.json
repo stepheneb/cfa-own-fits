@@ -13,7 +13,7 @@
     "continue": "Continue >"
   },
   "telescopeData": {
-    "prologue": "This image was taken with the",
+    "prologue": "These images were taken with the",
     "telescopes": [
       {
         "key": "hubble",

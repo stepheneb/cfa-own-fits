@@ -21,7 +21,8 @@ html {
   --brighter-green: #cfffbb;
   --bright-teal: #3ddaf6;
   --dark-teal: #2b88ac;
-  --dark-blue: #032741;
+  --dark-blue: #053852;
+  --darker-blue: #032741;
   --bright-blue: #1197f9;
   --bright-pink: #f33c85;
   --bright-red: #ff0000;
@@ -32,6 +33,9 @@ html {
   --canvas-container-border-color-fullscreen: #222;
   --translucent-gray: rgba(32, 32, 32, 0.6);
 
+  --dark-blue-gradient: rgba(8, 86, 112, 1);
+  --darker-blue-gradient: rgba(3, 39, 65, 1);
+
   /* font sizes */
   --menu-page-title: 7.4vh;
   --menu-page-subtitle: 3vh;
@@ -41,8 +45,9 @@ html {
   --menu-category-page-name: 1.7vh;
   --menu-category-page-telescope: 1.5vh;
   --menu-activity-page-title: 2.8vh;
-  --page-title: 3.4vh;
-  --page-subtitle: 2vh;
+  --page-title: 4.6vh;
+  --page-subtitle: 2.4vh;
+  --telescope-title: 2vh;
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
   --control-subtitle: 1.6vh;
@@ -634,8 +639,29 @@ header.menu-activity-page-title {
 }
 
 .activity-page {
-  margin: 1.5vh 1vw 0vh 1vw;
+  margin: 6vh 4vw 0vh 4vw;
   height: 92vh;
+}
+
+.col-main-content {
+  flex: 0 0 auto;
+  width: 87%;
+}
+
+.col-right-content {
+  flex: 0 0 auto;
+  width: 13%;
+  height: 83vh;
+}
+
+.col-left {
+  flex: 0 0 auto;
+  width: 31%;
+}
+
+.col-main {
+  flex: 0 0 auto;
+  width: 69%;
 }
 
 .activity-page-menu > .row {
@@ -652,15 +678,21 @@ header.menu-activity-page-title {
 .page-navigation {
   font-size: 1.2vh;
   margin: 1vw;
-  z-index: 200;
+  z-index: 25;
 }
 
 .page-navigation-button {
   background-color: var(--almost-black);
   color: var(--bright-green);
   border-color: var(--bright-green);
-  font-size: 1.2vh;
+  font-size: 1.4vh;
   margin-right: 1vh;
+}
+
+#save-and-send-button {
+  font-size: 2.4vh;
+  padding: 0.75rem 1rem;
+  border-width: 2px;
 }
 
 .left-column {
@@ -710,11 +742,10 @@ button {
 }
 
 .page-header {
-  margin: 0vh 0vh 1.5vh 0vh;
+  margin: 0vh 0vh 1vh 0vh;
 }
 
 .page-title {
-  font-size: 3.4vh;
   font-size: var(--page-title);
   padding: 0.5rem 0rem;
   color: var(--bright-green);
@@ -727,13 +758,13 @@ button {
 .page-subtitle {
   line-height: 120%;
   font-size: var(--page-subtitle);
-  padding: 0.5rem 0rem;
+  padding: 1rem 0rem;
   color: var(--bright-teal);
 }
 
 div.control-collection {
-  background-color: var(--dark-teal);
-  background-color: #042842;
+  background-color: var(--dark-blue);
+  // background-color: #042842;
   padding: 1vh 1vh;
   div.find-apollo {
     width: 100%;
@@ -754,9 +785,9 @@ div.control-collection {
   }
   &.select-layer,
   .color-maps {
-    margin-bottom: 1vh;
-    padding-bottom: 0.2vh;
-    padding-top: 0.2vh;
+    margin-bottom: 0vh;
+    padding-bottom: 1.2vh;
+    padding-top: 1vh;
   }
   &.special-effects {
     margin-top: 1vh;
@@ -765,17 +796,21 @@ div.control-collection {
   > .title {
     color: var(--bright-green);
     font-size: var(--control-title);
+    font-weight: 500;
     padding: 0vh 0vh 0.5vh 0.5vh;
   }
   > .subtitle {
     font-size: var(--control-subtitle);
+    font-weight: 500;
     padding: 0vh 0vh 0.5vh 0.5vh;
   }
   &.adjust-layer {
-    margin-top: 1vh;
-    margin-bottom: 1vh;
+    margin-top: 0vh;
+    margin-bottom: 0vh;
+    padding-top: 2vh;
+    padding-bottom: 1vh;
     > .subtitle {
-      margin-bottom: 1vh;
+      margin-bottom: 2.4vh;
     }
   }
   > .name {
@@ -825,6 +860,8 @@ div.control-collection {
     margin-bottom: 1.5rem;
 
     label {
+      font-size: 1.9vh;
+      font-weight: 500;
       width: 6.5rem;
       margin-right: 0.25rem;
     }
@@ -854,7 +891,7 @@ div.control-collection {
     input[type="range"] {
       -webkit-appearance: none;
       padding: 0;
-      width: 10rem;
+      width: 14rem;
       &::-webkit-slider-runnable-track {
         -webkit-appearance: none;
         margin-top: 0rem;
@@ -976,9 +1013,12 @@ div.filter-palette {
 }
 
 .image-name {
+  margin: 0;
+  padding: 1vh 0vh 0vh 0vh;
   font-size: var(--page-subtitle);
   color: var(--bright-teal);
   text-transform: uppercase;
+  align-self: baseline;
 }
 
 .page-image {
@@ -1068,16 +1108,33 @@ div.main-image-content {
 }
 
 #under-main-image-row {
-  margin-top: 1vh;
-  margin-left: 1vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+}
+
+div.under-main-layer-selectors {
+  margin: 0;
+  padding: 1vh;
+  width: 65%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--dark-blue);
+  // background: radial-gradient(
+  //   var(--dark-blue-gradient),
+  //   10%,
+  //   var(--darker-blue-gradient)
+  // );
   .subtitle {
     font-size: var(--control-subtitle);
+    font-weight: 500;
   }
 }
 
 form#image-select-main-layer {
-  margin-right: 10vh;
 }
 
 div.shrinking-spacer {
@@ -1089,7 +1146,7 @@ div.telescope-container {
   flex: 0 1 auto;
   div.about-telescope {
     padding: 0.75rem 0rem;
-    font-size: var(--page-subtitle);
+    font-size: var(--telescope-title);
     text-transform: uppercase;
   }
   div.telescope-image-container {
@@ -1209,7 +1266,7 @@ div#preview-image-container {
 
 div#preview-image-canvas-container {
   position: relative;
-  height: 30vh;
+  height: 24vh;
   width: 100%;
   margin: 0;
   background-color: var(--almost-black);
@@ -1570,7 +1627,7 @@ div#micc-container {
 div#main-image-canvas-container {
   position: relative;
   width: 100%;
-  height: 74vh;
+  height: 70vh;
   margin: 0;
   padding: 0;
   background-color: black;
@@ -1621,7 +1678,7 @@ div#main-image-canvas-container {
 
 div#main-canvas-wrapper {
   position: relative;
-  height: 74vh;
+  height: 70vh;
   margin: 0;
   padding: 0;
   left: 50%;
@@ -1866,13 +1923,27 @@ div.histogram-container {
 }
 
 div.select-layer {
-  padding: 0em 1em;
+  padding: 0em 0.5em;
+  background-color: var(--dark-blue);
+  // background: radial-gradient(
+  //   var(--darker-blue-gradient),
+  //   90%,
+  //   var(--dark-blue-gradient)
+  // );
+  .subtitle {
+    font-size: var(--control-subtitle);
+    font-weight: 500;
+  }
+
   div.eyes-input {
     text-transform: uppercase;
     font-size: var(--main-layer-selector);
+    font-weight: 500;
+    margin-right: 0.25vw;
   }
   label {
     font-size: var(--control-subtitle);
+    font-weight: 500;
     &.eyes-input {
       display: inline-block;
       width: 44px;

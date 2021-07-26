@@ -25,6 +25,7 @@ navigation.menu = (renderedCallbacks) => {
   let id = "page-navigation";
   return `
     <div class="page-navigation fixed-bottom d-flex flex-row justify-content-start">
+    ${btnStartOver()}
       <div class="ps-1 pe-1 ms-auto">
         <div class="d-flex flex-row">
           ${renderDev.fullScreenButton(id, document, renderedCallbacks)}

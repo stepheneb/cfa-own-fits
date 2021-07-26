@@ -20,6 +20,7 @@ let multiWaveTitle = null;
 let menuCategoryObservation = null;
 
 let content = null;
+let btnStartOver = null;
 
 let selectedCategoryElement = null;
 let selectedCategoryPagesElement = null;
@@ -74,6 +75,12 @@ renderMenu.page = (categorytype) => {
   checkBrowser();
   splash.hideAll();
   renderedCallbacks.forEach(func => func());
+
+  btnStartOver = document.getElementById('btn-start-over');
+  btnStartOver.addEventListener('click', () => {
+    splash.showSplash2();
+  });
+
   router.updateHash(hash);
 };
 

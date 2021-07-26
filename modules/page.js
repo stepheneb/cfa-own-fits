@@ -172,7 +172,7 @@ class Page {
 
     case 'find-apollo':
       this.leftColumnHtml = `
-        <div class='col-3 pr-1 m-0'>
+        <div class='col-left pr-1 m-0'>
           ${this.renderApolloLandingLeftColumn()}
         </div>
       `;
@@ -183,7 +183,7 @@ class Page {
 
     case 'rgb':
       this.leftColumnHtml = `
-          <div class='col-3 pr-1 m-0'>
+          <div class='col-left pr-1 m-0'>
             ${this.renderImageSelectFilterLayerToAdjust()}
             ${this.renderImageLayerPreview()}
             ${adjustImage.renderRGB(this, this.registeredCallbacks)}
@@ -199,7 +199,7 @@ class Page {
 
     case 'multi-wave':
       this.leftColumnHtml = `
-            <div class='col-3 pr-1 m-0'>
+            <div class='col-left pr-1 m-0'>
               ${this.renderImageSelectFilterLayerToAdjust()}
               ${this.renderImageLayerPreview()}
               ${adjustImage.renderRGB(this, this.registeredCallbacks)}
@@ -215,7 +215,7 @@ class Page {
 
     case 'masterpiece':
       this.leftColumnHtml = `
-        <div class='col-3 pr-1 m-0'>
+        <div class='col-left pr-1 m-0'>
           ${colorMaps.render(this, this.registeredCallbacks)}
           ${specialEffects.render(this, this.registeredCallbacks)}
           ${adjustImage.renderMasterpiece(this, this.registeredCallbacks)}
@@ -231,7 +231,7 @@ class Page {
 
     case 'animate':
       this.leftColumnHtml = `
-            <div class='left-column col-3 pr-1 m-0'>
+            <div class='left-column col-left pr-1 m-0'>
               <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
               ${animate.render(this, this.registeredCallbacks)}
               <div class="control-collection">
@@ -247,7 +247,7 @@ class Page {
 
     let html = `
       <div id='${this.id}' class='activity-page row' data-categorytype="${this.type}" data-pagename="${this.name}">
-        <div class="col-10">
+        <div class="col-main-content">
 
           ${this.renderPageHeader(this)}
           <div class="row">
@@ -255,7 +255,7 @@ class Page {
             ${this.mainImageHtml}
           </div>
         </div>
-        <div class="col-2 d-flex flex-column justify-content-start">
+        <div class="col-right-content d-flex flex-column justify-content-start">
           <div class="shrinking-spacer"></div>
           ${this.rightColumnHtml}
         </div>
@@ -319,6 +319,11 @@ class Page {
         renderMenu.page(this.type);
       }
       document.body.classList.remove('nofadeout');
+    });
+
+    this.btnStartOver = document.getElementById('btn-start-over');
+    this.btnStartOver.addEventListener('click', () => {
+      splash.showSplash2();
     });
 
     router.updateHash(`run/${this.type}/${this.name}`);
@@ -496,7 +501,7 @@ class Page {
       // images.resizeCanvas(this.image.destinations.main.canvas, this.image.nx, this.image.ny);
     };
     return `
-      <div id='main-image-content' class='main-image-content col-9'>
+      <div id='main-image-content' class='main-image-content col-main'>
         <div id="micc-container">
           <div id='${this.miccCanvasContainerId}' class="">
               ${renderDev.fullScreenButton(this.miccCanvasContainerId, '#micc', this.registeredCallbacks, optionalFunc)}
@@ -551,7 +556,7 @@ class Page {
     }
 
     return `
-      <div id="${id}" class="d-flex flex-row justify-content-between">
+      <div id="${id}">
         ${underImageRow}
       </div>
     `;
@@ -561,12 +566,13 @@ class Page {
     let sources = this.image.sources;
     let source, checkedState, name;
     let html = `
-      <div class="subtitle pe-4">
-        <span class="solid-right-arrow">&#11157</span>
-        Combine to reveal a full-color image
-      </div>
-      <form id="image-select-main-layer">
-        <div class="d-flex flex-row justify-content-start align-items-center">
+      <div class='under-main-layer-selectors'>
+        <div class="subtitle pe-4">
+          <span class="solid-right-arrow">&#11157</span>
+          Combine to reveal a full-color image
+        </div>
+        <form id="image-select-main-layer">
+          <div class="d-flex flex-row justify-content-start align-items-center">
     `;
     for (var i = 0; i < sources.length; i++) {
       source = sources[i];
@@ -575,7 +581,7 @@ class Page {
         name = source.name;
         html += `
           <div class="select-layer d-flex flex-row justify-content-start align-items-center">
-            <div class="pe-2 eyes-input">${name}</div>
+            <div class="eyes-input">${name}</div>
             <div>
               <input class='eyes-input' type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>
               <label class="pe-2 eyes-input" for='select-layer-${name}'></label>
@@ -585,8 +591,9 @@ class Page {
       }
     }
     html += `
-        </div>
-      </form>
+          </div>
+        </form>
+      </div>
       <div class="image-name pe-2">
         ${this.image.name}
       </div>

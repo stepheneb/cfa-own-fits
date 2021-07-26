@@ -101,4 +101,8 @@ splash.hideAll = () => {
   splash2Elem.style.display = "none";
 };
 
+splash.showSplash2 = () => {
+  splash2Elem.style.display = "block";
+};
+
 export default splash;
