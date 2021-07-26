@@ -29,11 +29,11 @@ splash.show = () => {
       </div>
     `;
     app.splashRendered = true;
-  }
-  splashElem.style.zIndex = "100";
-  splashElem.style.display = "block";
+    splashElem.style.zIndex = "100";
+    splashElem.style.display = "block";
 
-  splashElem.addEventListener('click', splashListener);
+    splashElem.addEventListener('click', splashListener);
+  }
   // router.pageRendered('splash');
 
   let splash2ContentId = 'splash2-content';
@@ -102,7 +102,9 @@ splash.hideAll = () => {
 };
 
 splash.showSplash2 = () => {
+  router.updateHash('');
   splash2Elem.style.display = "block";
+  splashElem.style.display = "none";
 };
 
 export default splash;
