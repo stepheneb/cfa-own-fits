@@ -170,6 +170,7 @@ renderMenu.addMenuListeners = (ctype) => {
     function listener(e) {
       e.stopPropagation();
       connectLine.classList.remove('show');
+      separatorLine.classList.remove('show');
       categoryPagesVisible = false;
       renderMenu.startCategoryActivityPage(ctype, page);
     }
@@ -298,12 +299,10 @@ renderMenu.transitionListener = () => {
 
 renderMenu.drawSeparatorLine = () => {
   let expanded = true;
+  separatorLine.classList.add('show');
   let x1, x2, y1, y2;
   if (menuCategoryObservation.classList.contains('not-selected') || menuCategoryObservation.classList.contains('selected')) {
     expanded = false;
-    separatorLine.classList.add('show');
-  } else {
-    separatorLine.classList.add('show');
   }
   let boundingRect1 = multiWaveImage.getBoundingClientRect();
   let boundingRect2 = observationImage.getBoundingClientRect();
