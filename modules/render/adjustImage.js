@@ -41,9 +41,9 @@ let brightness = () => {
   let html = `
     <div class='adjust-filter '>
       <label for='brightness'>Brightness</label>
-      <div id='brightness-step-down' class='slider-icon' data-step='down'>${minusIcon}</div>
+      <div id='brightness-step-down' class='slider-icon step-down' data-step='down'>${minusIcon}</div>
       <input type='range' id='brightness' name='brightness'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='brightnessvalue.value=value'/>
-      <div id='brightness-step-up' class='slider-icon'  data-step='up'>${plusIcon}</div>
+      <div id='brightness-step-up' class='slider-icon step-up'  data-step='up'>${plusIcon}</div>
       <output id="brightnessvalue">${val}</output>
     </div>
   `;
@@ -57,9 +57,9 @@ let contrast = () => {
   let html = `
     <div class='adjust-filter'>
       <label for='contrast'>Contrast</label>
-      <div id='contrast-step-down' class='slider-icon' data-step='down'>${minusIcon}</div>
+      <div id='contrast-step-down' class='slider-icon step-down' data-step='down'>${minusIcon}</div>
       <input type='range' id='contrast' name='contrast'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='contrastvalue.value=value'/>
-      <div id='contrast-step-up' class='slider-icon' data-step='up'>${plusIcon}</div>
+      <div id='contrast-step-up' class='slider-icon step-up' data-step='up'>${plusIcon}</div>
       <output id="contrastvalue">${val}</output>
     </div>
   `;
