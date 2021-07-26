@@ -21,7 +21,8 @@ html {
   --brighter-green: #cfffbb;
   --bright-teal: #3ddaf6;
   --dark-teal: #2b88ac;
-  --bright-blue: #032741;
+  --dark-blue: #032741;
+  --bright-blue: #1197f9;
   --bright-pink: #f33c85;
   --bright-red: #ff0000;
   --medium-red: #800000;
@@ -655,8 +656,11 @@ header.menu-activity-page-title {
 }
 
 .page-navigation-button {
-  background-color: black;
+  background-color: var(--almost-black);
+  color: var(--bright-green);
+  border-color: var(--bright-green);
   font-size: 1.2vh;
+  margin-right: 1vh;
 }
 
 .left-column {
@@ -1050,6 +1054,11 @@ svg.fsClose {
 
 div#btn-toggle-developer-tools-page-navigation {
   margin-right: 4vh;
+  button {
+    color: var(--bright-blue);
+    border-color: var(--bright-blue);
+    background-color: var(--b);
+  }
 }
 
 /* http://stackoverflow.com/questions/7615009/disable-interpolation-when-scaling-a-canvas */

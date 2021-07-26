@@ -311,7 +311,8 @@ class Page {
     // run callbacks registered after interactive components are rendered
     this.registeredCallbacks.forEach(func => func(this));
 
-    document.getElementById('btn-back').addEventListener('click', () => {
+    this.btnBack = document.getElementById('btn-back');
+    this.btnBack.addEventListener('click', () => {
       if (this.type == "observation") {
         bootstrap.Modal.getInstance(this.observationModalElem).hide();
       } else {
