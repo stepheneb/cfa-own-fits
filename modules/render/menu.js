@@ -297,9 +297,11 @@ renderMenu.transitionListener = () => {
 };
 
 renderMenu.drawSeparatorLine = () => {
-  if (menuCategoryObservation.classList.contains('not-selected') ||
-    menuCategoryObservation.classList.contains('selected')) {
-    separatorLine.classList.remove('show');
+  let expanded = true;
+  let x1, x2, y1, y2;
+  if (menuCategoryObservation.classList.contains('not-selected') || menuCategoryObservation.classList.contains('selected')) {
+    expanded = false;
+    separatorLine.classList.add('show');
   } else {
     separatorLine.classList.add('show');
   }
@@ -308,10 +310,16 @@ renderMenu.drawSeparatorLine = () => {
   let boundingRect3 = multiWaveTitle.getBoundingClientRect();
   let xshift = (boundingRect2.left - boundingRect1.right) / 2;
   let yextend = (boundingRect1.bottom - boundingRect1.top) * 0.07;
-  let x1 = boundingRect1.right + xshift;
-  let x2 = x1;
-  let y1 = boundingRect3.bottom + yextend;
-  let y2 = boundingRect2.top - yextend;
+  x1 = boundingRect1.right + xshift;
+  x2 = x1;
+
+  if (expanded) {
+    y1 = boundingRect3.bottom + yextend;
+    y2 = boundingRect2.top - yextend;
+  } else {
+    y1 = boundingRect2.top - yextend + window.screen.height * 0.005;
+    y2 = y1 + window.screen.height * 0.17;
+  }
   separatorLine.setAttribute('x1', x1);
   separatorLine.setAttribute('y1', y1);
   separatorLine.setAttribute('x2', x2);
