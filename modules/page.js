@@ -424,9 +424,15 @@ class Page {
     function renderButtonsAndPalletes(p) {
       let sources = p.image.sources;
       let html = '';
+      let name;
       for (var i = 0; i < sources.length; i++) {
         let source = sources[i];
         if (source.type == "rawdata") {
+          name = source.name;
+          if (p.type == 'rgb') {
+            name += ' Filter';
+          }
+
           html += `
             <div class='row select-filter c-custom-checkbox'>
 
@@ -439,7 +445,7 @@ class Page {
 
               <div class='label-palette col-10'>
                 <canvas id='label-icon-${i}' class='label-icon'></canvas>
-                <label for='select-rgb-${i}'>${source.name} Filter</label>
+                <label for='select-rgb-${i}'>${name}</label>
                 ${p.renderPalette(source, i)}
               </div>
             </div>
@@ -479,13 +485,13 @@ class Page {
       `;
     }
 
-    function multiWaveTelescopeName(page) {
-      return `
-      <div id="multi-wave-telescope-name" class="label">
-        ${page.telescopes.find(t => t.key == page.selectedSource.telescope).name}
-      </div>
-      `;
-    }
+    // function multiWaveTelescopeName(page) {
+    //   return `
+    //   <div id="multi-wave-telescope-name" class="label">
+    //     ${page.telescopes.find(t => t.key == page.selectedSource.telescope).name}
+    //   </div>
+    //   `;
+    // }
   }
 
   renderApolloLandingLeftColumn() {
