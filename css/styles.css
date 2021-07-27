@@ -45,7 +45,7 @@ html {
   --telescope-title: 2vh;
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
-  --control-subtitle: 1.6vh;
+  --control-subtitle: 1.8vh;
   --main-layer-selector: 2vh;
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
@@ -620,6 +620,7 @@ div.control-collection {
   div.control-collection .color-maps {
     margin-bottom: 0vh;
     padding-bottom: 1.2vh;
+    padding-left: 1.5vh;
     padding-top: 1vh; }
   div.control-collection.special-effects {
     margin-top: 1vh;
@@ -649,19 +650,94 @@ div.control-collection {
   div.control-collection form > .row {
     margin: 0.75em 0em;
     max-height: 4vh; }
-    div.control-collection > .row .effect:hover,
-    div.control-collection > .row .select-filter:hover,
-    div.control-collection form > .row .effect:hover,
-    div.control-collection form > .row .select-filter:hover {
-      color: white;
-      font-weight: bold; }
-    div.control-collection > .row.select-filter input,
-    div.control-collection form > .row.select-filter input {
-      margin: 0vh 0vh 0vh 0vh;
-      padding: 0; }
-    div.control-collection > .row.select-filter label,
-    div.control-collection form > .row.select-filter label {
-      font-size: var(--control-subtitle); }
+    div.control-collection > .row .effect,
+    div.control-collection > .row .select-filter,
+    div.control-collection form > .row .effect,
+    div.control-collection form > .row .select-filter {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; }
+      div.control-collection > .row .effect:hover,
+      div.control-collection > .row .select-filter:hover,
+      div.control-collection form > .row .effect:hover,
+      div.control-collection form > .row .select-filter:hover {
+        color: white;
+        font-weight: bold; }
+    div.control-collection > .row.select-filter.c-custom-checkbox,
+    div.control-collection form > .row.select-filter.c-custom-checkbox {
+      cursor: pointer;
+      display: flex;
+      align-items: start;
+      --checked-state-bg-color: hsl(350, 95%, 58%);
+      --checked-state-check-color: #fff;
+      --outline-color: var(--checked-state-bg-color);
+      --outline-offset: 2px; }
+    div.control-collection > .row.select-filter svg,
+    div.control-collection form > .row.select-filter svg {
+      /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
+      width: 2.4em;
+      height: 2.4em;
+      margin: 0;
+      padding: 0em 0.2em;
+      align-self: center;
+      margin-right: 0.5em;
+      stroke: var(--bright-teal); }
+      div.control-collection > .row.select-filter svg *,
+      div.control-collection form > .row.select-filter svg * {
+        transition: all 0.1s linear; }
+    div.control-collection > .row.select-filter input[type="radio"] + svg > circle.selected,
+    div.control-collection form > .row.select-filter input[type="radio"] + svg > circle.selected {
+      opactity: 0.0001; }
+    div.control-collection > .row.select-filter input[type="radio"]:checked + svg > circle.selected,
+    div.control-collection form > .row.select-filter input[type="radio"]:checked + svg > circle.selected {
+      display: inline; }
+    div.control-collection > .row.select-filter input[type="radio"]:not(:checked) + svg > circle.selected,
+    div.control-collection form > .row.select-filter input[type="radio"]:not(:checked) + svg > circle.selected {
+      display: none; }
+    div.control-collection > .row.select-filter input[type="radio"]:not(:checked) ~ div.label-palette,
+    div.control-collection form > .row.select-filter input[type="radio"]:not(:checked) ~ div.label-palette {
+      filter: brightness(50%); }
+    div.control-collection > .row.select-filter input[type="radio"],
+    div.control-collection form > .row.select-filter input[type="radio"] {
+      position: absolute;
+      /* set same dimensions as the SVG */
+      width: 2.2em;
+      height: 2.2em;
+      /* hide it */
+      opacity: 0.00001; }
+    div.control-collection > .row.select-filter div.label-palette,
+    div.control-collection form > .row.select-filter div.label-palette {
+      background-color: white;
+      padding-left: 0.35vh;
+      border-radius: 2px;
+      height: 3.8vh;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start; }
+      div.control-collection > .row.select-filter div.label-palette label,
+      div.control-collection form > .row.select-filter div.label-palette label {
+        margin-left: 1vh;
+        font-size: var(--control-subtitle);
+        font-weight: 500;
+        color: black; }
+      div.control-collection > .row.select-filter div.label-palette canvas,
+      div.control-collection form > .row.select-filter div.label-palette canvas {
+        width: 6vw;
+        height: 2vh;
+        padding: 0;
+        margin: 0;
+        margin-left: auto;
+        object-fit: fill;
+        border: 1px solid var(--almost-black); }
+      div.control-collection > .row.select-filter div.label-palette canvas.label-icon,
+      div.control-collection form > .row.select-filter div.label-palette canvas.label-icon {
+        width: 3.8vh;
+        height: 3.1vh;
+        padding: 0;
+        margin: 0;
+        background-color: var(--almost-black);
+        object-fit: contain;
+        filter: grayscale(100%) brightness(150%) contrast(125%); }
     div.control-collection > .row.special-effects input,
     div.control-collection form > .row.special-effects input {
       margin: 0vh 0vh 0vh 0vh;

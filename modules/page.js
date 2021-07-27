@@ -423,14 +423,18 @@ class Page {
         let source = sources[i];
         if (source.type == "rawdata") {
           html += `
-            <div class='row select-filter'>
-              <div class="col-1 d-flex align-items-center p-0">
-                <input id='select-rgb-${i}' type='radio' name='select-rgb' value='${i}'>
-              </div>
-              <div class="col-3 d-flex justify-content-start align-items-center">
-                <label for='select-rgb-${i}'>${source.name}</label>
-              </div>
-              <div class="col-8 filter-palette d-flex align-items-center">
+            <div class='row select-filter c-custom-checkbox'>
+
+                <input id='select-rgb-${i}' class='col-2' type='radio' name='select-rgb' value='${i}'>
+                <svg width="36" height="36" viewBox="-10 -8 40 40" aria-hidden="true" focusable="false">
+                  <circle cx="12" cy="12" r='16' fill="none" stroke-width="4" />
+                  <circle class='selected' cx="12" cy="12" r='8' fill="white" stroke-width="0" />
+
+                </svg>
+
+              <div class='label-palette col-10'>
+                <canvas id='label-icon-${i}' class='label-icon'></canvas>
+                <label for='select-rgb-${i}'>${source.name} Filter</label>
                 ${p.renderPalette(source, i)}
               </div>
             </div>

@@ -50,7 +50,7 @@ html {
   --telescope-title: 2vh;
   --animate-icons: 3.2vh;
   --control-title: 1.6vh;
-  --control-subtitle: 1.6vh;
+  --control-subtitle: 1.8vh;
   --main-layer-selector: 2vh;
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
@@ -795,6 +795,7 @@ div.control-collection {
   .color-maps {
     margin-bottom: 0vh;
     padding-bottom: 1.2vh;
+    padding-left: 1.5vh;
     padding-top: 1vh;
   }
   &.special-effects {
@@ -835,18 +836,107 @@ div.control-collection {
     max-height: 4vh;
     .effect,
     .select-filter {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
       &:hover {
         color: white;
         font-weight: bold;
       }
     }
     &.select-filter {
-      input {
-        margin: 0vh 0vh 0vh 0vh;
-        padding: 0;
+      &.c-custom-checkbox {
+        cursor: pointer;
+
+        display: flex;
+        align-items: start;
+
+        --checked-state-bg-color: hsl(350, 95%, 58%);
+        --checked-state-check-color: #fff;
+        --outline-color: var(--checked-state-bg-color);
+        --outline-offset: 2px;
       }
-      label {
-        font-size: var(--control-subtitle);
+      svg {
+        /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
+        width: 2.4em;
+        height: 2.4em;
+        margin: 0;
+        padding: 0em 0.2em;
+        align-self: center;
+        margin-right: 0.5em;
+        stroke: var(--bright-teal);
+        * {
+          transition: all 0.1s linear;
+        }
+      }
+      input[type="radio"] + svg > circle.selected {
+        opactity: 0.0001;
+      }
+
+      input[type="radio"]:checked + svg > circle.selected {
+        display: inline;
+      }
+
+      input[type="radio"]:not(:checked) + svg > circle.selected {
+        display: none;
+      }
+
+      // input[type="radio"]:focus + svg {
+      //   outline: 3px solid var(--outline-color);
+      //   outline-offset: var(--outline-offset);
+      // }
+      //
+      // input[type="radio"]:focus:not(:focus-visible) + svg {
+      //   outline: none;
+      // }
+
+      input[type="radio"]:not(:checked) ~ div.label-palette {
+        filter: brightness(50%);
+      }
+
+      input[type="radio"] {
+        position: absolute;
+        /* set same dimensions as the SVG */
+        width: 2.2em;
+        height: 2.2em;
+        /* hide it */
+        opacity: 0.00001;
+      }
+
+      div.label-palette {
+        background-color: white;
+        padding-left: 0.35vh;
+        border-radius: 2px;
+        height: 3.8vh;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        label {
+          margin-left: 1vh;
+          font-size: var(--control-subtitle);
+          font-weight: 500;
+          color: black;
+        }
+        canvas {
+          width: 6vw;
+          height: 2vh;
+          padding: 0;
+          margin: 0;
+          margin-left: auto;
+          object-fit: fill;
+          border: 1px solid var(--almost-black);
+        }
+        canvas.label-icon {
+          width: 3.8vh;
+          height: 3.1vh;
+          padding: 0;
+          margin: 0;
+          background-color: var(--almost-black);
+          object-fit: contain;
+          filter: grayscale(100%) brightness(150%) contrast(125%);
+        }
       }
     }
     &.special-effects {
@@ -931,6 +1021,7 @@ div.control-collection {
     }
   }
 }
+
 //
 // input[type="range"]::-webkit-slider-thumb {
 //   -webkit-appearance: none;

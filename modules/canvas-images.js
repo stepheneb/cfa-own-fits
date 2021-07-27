@@ -203,6 +203,7 @@ class CanvasImages {
       case 'multi-wave':
         this.initializeMainCanvases(this.type);
         this.initializePreviewCanvas(this.selectedSource);
+        this.renderLabelIcons();
         if (app.dev) {
           this.page.imageInspect.connect(this);
           logger.imageData(this, this.selectedSource);
@@ -947,6 +948,46 @@ class CanvasImages {
         ctx.drawImage(imageBitmap, 0, 0);
       });
     this.renderPreviewPalette(source);
+  }
+
+  renderLabelIcons() {
+    let id, canvas;
+    let [width, height] = [this.nx, this.ny];
+    let sources = this.rawdataSources;
+    let labelIcons = sources.map((source, i) => {
+      id = `label-icon-${i}`;
+      canvas = document.getElementById(id);
+      return [source, canvas];
+    });
+    labelIcons.forEach(([source, canvas]) => {
+      this.renderLabelIcon(canvas, source, width, height);
+    });
+  }
+
+  renderLabelIcon(canvas, source, width, height) {
+    let that = this;
+    init(canvas, width, height);
+    render(canvas, source, width, height);
+
+    function init(canvas, nx, ny) {
+      canvas.ctx = canvas.getContext('2d');
+      canvas.ctx.fillStyle = "rgb(0,0,0)";
+      canvas.ctx.imageSmoothingEnabled = true;
+      canvas.ctx.globalCompositeOperation = "source-over";
+      canvas.width = nx;
+      canvas.height = ny;
+    }
+
+    function render(canvas, source, nx, ny) {
+      let sourceCanvas = that.layerCanvasNamed(source.name);
+      let sourceCtx = sourceCanvas.getContext('2d');
+      let imageData = sourceCtx.getImageData(0, 0, nx, ny);
+      let ctx = canvas.getContext('2d');
+      createImageBitmap(imageData, 0, 0, nx, ny)
+        .then(imageBitmap => {
+          ctx.drawImage(imageBitmap, 0, 0);
+        });
+    }
   }
 
   renderPreviewPalette(source) {
