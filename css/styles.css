@@ -621,7 +621,7 @@ div.control-collection {
     margin-bottom: 0vh;
     padding-bottom: 1.2vh;
     padding-left: 1.5vh;
-    padding-top: 1vh; }
+    padding-top: 1.2vh; }
   div.control-collection.special-effects {
     margin-top: 1vh;
     margin-bottom: 1vh; }
@@ -637,10 +637,10 @@ div.control-collection {
   div.control-collection.adjust-layer {
     margin-top: 0vh;
     margin-bottom: 0vh;
-    padding-top: 2vh;
-    padding-bottom: 1vh; }
+    padding-top: 1.4vh;
+    padding-bottom: 0.1vh; }
     div.control-collection.adjust-layer > .subtitle {
-      margin-bottom: 2.4vh; }
+      margin-bottom: 1.4vh; }
   div.control-collection > .name {
     text-transform: uppercase; }
   div.control-collection > .context {
@@ -675,8 +675,8 @@ div.control-collection {
     div.control-collection > .row.select-filter svg,
     div.control-collection form > .row.select-filter svg {
       /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
-      width: 2.4em;
-      height: 2.4em;
+      width: 2.2em;
+      height: 2.2em;
       margin: 0;
       padding: 0em 0.2em;
       align-self: center;
@@ -696,7 +696,7 @@ div.control-collection {
       display: none; }
     div.control-collection > .row.select-filter input[type="radio"]:not(:checked) ~ div.label-palette,
     div.control-collection form > .row.select-filter input[type="radio"]:not(:checked) ~ div.label-palette {
-      filter: brightness(50%); }
+      filter: brightness(50%) opacity(75%); }
     div.control-collection > .row.select-filter input[type="radio"],
     div.control-collection form > .row.select-filter input[type="radio"] {
       position: absolute;
@@ -708,7 +708,7 @@ div.control-collection {
     div.control-collection > .row.select-filter div.label-palette,
     div.control-collection form > .row.select-filter div.label-palette {
       background-color: white;
-      padding-left: 0.35vh;
+      padding-left: 0.25vh;
       border-radius: 2px;
       height: 3.8vh;
       display: flex;
@@ -732,7 +732,7 @@ div.control-collection {
       div.control-collection > .row.select-filter div.label-palette canvas.label-icon,
       div.control-collection form > .row.select-filter div.label-palette canvas.label-icon {
         width: 3.8vh;
-        height: 3.1vh;
+        height: 3.5vh;
         padding: 0;
         margin: 0;
         background-color: var(--almost-black);
@@ -929,7 +929,7 @@ div.main-image-content {
 div.under-main-layer-selectors {
   margin: 0;
   padding: 1vh;
-  width: 75%;
+  width: 78%;
   display: flex;
   align-items: center;
   justify-content: space-between;
