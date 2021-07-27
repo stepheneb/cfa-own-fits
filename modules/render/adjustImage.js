@@ -121,8 +121,90 @@ adjustImage.renderScaling = page => {
   `;
 };
 
-adjustImage.renderRGB = (page, registeredCallbacks) => {
+adjustImage.processCallback = (page, renderFunc) => {
   let source = page.selectedSource;
+  let debounceTime = 125;
+
+  let brightnessElem = document.getElementById("brightness");
+  let contrastElem = document.getElementById("contrast");
+
+  let brightnessStepDownElem = document.getElementById("brightness-step-down");
+  let brightnessStepUpElem = document.getElementById("brightness-step-up");
+  let brightnessValueElem = document.getElementById("brightnessvalue");
+
+  let contrastStepDownElem = document.getElementById("contrast-step-down");
+  let contrastStepUpElem = document.getElementById("contrast-step-up");
+  let contrastValueElem = document.getElementById("contrastvalue");
+
+  const listenerDebounceBrightness = u.debounce((e) => {
+    source = page.selectedSource;
+    let brightness = e.target.valueAsNumber;
+    source.brightness = brightness;
+    renderFunc(page);
+  }, debounceTime);
+
+  const listenerDebounceContrast = u.debounce((e) => {
+    source = page.selectedSource;
+    source.contrast = e.target.valueAsNumber;
+    renderFunc(page);
+  }, debounceTime);
+
+  const listenerBrightnessStep = (e) => {
+    let source = page.selectedSource;
+    let direction = e.target.dataset.step;
+    let brightness = source.brightness;
+    if (direction == 'up') {
+      brightness += 0.05;
+    } else {
+      brightness -= 0.05;
+    }
+    brightness = Math.min(2, Math.max(0, brightness));
+    source.brightness = brightness;
+    brightnessElem.valueAsNumber = brightness;
+    brightnessValueElem.innerText = u.roundNumber(brightness, 3);
+    renderFunc(page);
+  };
+
+  const listenerContrastStep = (e) => {
+    let source = page.selectedSource;
+    let direction = e.target.dataset.step;
+    let contrast = source.contrast;
+    if (direction == 'up') {
+      contrast += 0.05;
+    } else {
+      contrast -= 0.05;
+    }
+    contrast = Math.min(2, Math.max(0, contrast));
+    source.contrast = contrast;
+    contrastElem.valueAsNumber = contrast;
+    contrastValueElem.innerText = u.roundNumber(contrast, 3);
+    renderFunc(page);
+  };
+
+  brightnessElem.addEventListener('input', listenerDebounceBrightness);
+  contrastElem.addEventListener('input', listenerDebounceContrast);
+
+  brightnessStepDownElem.addEventListener('click', listenerBrightnessStep);
+  brightnessStepUpElem.addEventListener('click', listenerBrightnessStep);
+
+  contrastStepDownElem.addEventListener('click', listenerContrastStep);
+  contrastStepUpElem.addEventListener('click', listenerContrastStep);
+
+  // elem = document.getElementById("color-shift");
+  // elem.addEventListener('input', () => {});
+
+  let elem;
+  elem = document.getElementById("scaling");
+  if (elem) {
+    elem.addEventListener('change', () => {
+      source = page.selectedSource;
+      source.scaling = event.target.value;
+      renderFunc(page);
+    });
+  }
+};
+
+adjustImage.renderRGB = (page, registeredCallbacks) => {
   registeredCallbacks.push(callback);
   return `
     <div class='control-collection adjust-layer'>
@@ -132,88 +214,11 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
     </div>
   `;
 
-  function callback() {
-    let debounceTime = 125;
+  function callback(page) {
+    adjustImage.processCallback(page, render);
 
-    let brightnessElem = document.getElementById("brightness");
-    let contrastElem = document.getElementById("contrast");
-
-    let brightnessStepDownElem = document.getElementById("brightness-step-down");
-    let brightnessStepUpElem = document.getElementById("brightness-step-up");
-    let brightnessValueElem = document.getElementById("brightnessvalue");
-
-    let contrastStepDownElem = document.getElementById("contrast-step-down");
-    let contrastStepUpElem = document.getElementById("contrast-step-up");
-    let contrastValueElem = document.getElementById("contrastvalue");
-
-    const listenerDebounceBrightness = u.debounce((e) => {
-      source = page.selectedSource;
-      let brightness = e.target.valueAsNumber;
-      source.brightness = brightness;
-      render(source);
-    }, debounceTime);
-
-    const listenerDebounceContrast = u.debounce((e) => {
-      source = page.selectedSource;
-      source.contrast = e.target.valueAsNumber;
-      render(source);
-    }, debounceTime);
-
-    const listenerBrightnessStep = (e) => {
+    function render(page) {
       let source = page.selectedSource;
-      let direction = e.target.dataset.step;
-      let brightness = source.brightness;
-      if (direction == 'up') {
-        brightness += 0.05;
-      } else {
-        brightness -= 0.05;
-      }
-      brightness = Math.min(2, Math.max(0, brightness));
-      source.brightness = brightness;
-      brightnessElem.valueAsNumber = brightness;
-      brightnessValueElem.innerText = u.roundNumber(brightness, 3);
-      render(source);
-    };
-
-    const listenerContrastStep = (e) => {
-      let source = page.selectedSource;
-      let direction = e.target.dataset.step;
-      let contrast = source.contrast;
-      if (direction == 'up') {
-        contrast += 0.05;
-      } else {
-        contrast -= 0.05;
-      }
-      contrast = Math.min(2, Math.max(0, contrast));
-      source.contrast = contrast;
-      contrastElem.valueAsNumber = contrast;
-      contrastValueElem.innerText = u.roundNumber(contrast, 3);
-      render(source);
-    };
-
-    brightnessElem.addEventListener('input', listenerDebounceBrightness);
-    contrastElem.addEventListener('input', listenerDebounceContrast);
-
-    brightnessStepDownElem.addEventListener('click', listenerBrightnessStep);
-    brightnessStepUpElem.addEventListener('click', listenerBrightnessStep);
-
-    contrastStepDownElem.addEventListener('click', listenerContrastStep);
-    contrastStepUpElem.addEventListener('click', listenerContrastStep);
-
-    // elem = document.getElementById("color-shift");
-    // elem.addEventListener('input', () => {});
-
-    let elem;
-    elem = document.getElementById("scaling");
-    if (elem) {
-      elem.addEventListener('change', () => {
-        source = page.selectedSource;
-        source.scaling = event.target.value;
-        render(source);
-      });
-    }
-
-    function render(source) {
       adjustImage.renderRGBUpdate(page, source);
     }
   }
@@ -232,7 +237,6 @@ adjustImage.renderRGBUpdate = (page, source) => {
 };
 
 adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
-  let source = page.selectedSource;
   registeredCallbacks.push(callback);
   return `
     <div class='control-collection adjust-layer'>
@@ -242,54 +246,8 @@ adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
     </div>
   `;
 
-  function callback() {
-    let debounceTime = 125;
-
-    const listenerDebounceBrightness = u.debounce((e) => {
-      let brightness = e.target.valueAsNumber;
-      page.canvasImages.rawdataSources.forEach(source => {
-        source.brightness = brightness;
-      });
-      render(page);
-    }, debounceTime);
-
-    const listenerDebounceContrast = u.debounce((e) => {
-      let contrast = e.target.valueAsNumber;
-      page.canvasImages.rawdataSources.forEach(source => {
-        source.contrast = contrast;
-      });
-      render(page);
-    }, debounceTime);
-
-    let elem;
-    elem = document.getElementById("brightness");
-    elem.addEventListener('input', listenerDebounceBrightness);
-
-    elem = document.getElementById("contrast");
-    elem.addEventListener('input', listenerDebounceContrast);
-
-    // elem = document.getElementById("color-shift");
-    // elem.addEventListener('input', () => {});
-
-    elem = document.getElementById("scaling");
-    if (elem) {
-      elem.addEventListener('change', (event) => {
-        let scaling = event.target.value;
-        page.canvasImages.rawdataSources.forEach(source => {
-          source.scaling = scaling;
-        });
-        render(page);
-      });
-
-      elem.addEventListener('change', () => {
-        source = page.selectedSource;
-        source.scaling = event.target.value;
-        render(page);
-      });
-    }
-
-    // elem = document.getElementById("color-shift");
-    // elem.addEventListener('input', () => {});
+  function callback(page) {
+    adjustImage.processCallback(page, render);
 
     function render(page) {
       adjustImage.renderMasterpieceUpdate(page);
