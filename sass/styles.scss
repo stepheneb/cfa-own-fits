@@ -905,8 +905,8 @@ div.control-collection {
       input[type="radio"] {
         position: absolute;
         /* set same dimensions as the SVG */
-        width: 2.2em;
-        height: 2.2em;
+        width: 21vw;
+        height: 2.4em;
         /* hide it */
         opacity: 0.00001;
       }
@@ -919,12 +919,14 @@ div.control-collection {
         display: flex;
         align-items: center;
         justify-content: flex-start;
+        pointer-events: none;
 
         label {
           margin-left: 1vh;
           font-size: var(--control-subtitle);
           font-weight: 500;
           color: black;
+          pointer-events: none;
         }
         canvas {
           width: 6vw;
@@ -934,6 +936,7 @@ div.control-collection {
           margin-left: auto;
           object-fit: fill;
           border: 1px solid var(--almost-black);
+          pointer-events: none;
         }
         canvas.label-icon {
           width: 3.8vh;
@@ -943,6 +946,7 @@ div.control-collection {
           background-color: var(--almost-black);
           object-fit: contain;
           filter: grayscale(100%) brightness(150%) contrast(125%);
+          pointer-events: none;
         }
       }
     }
