@@ -12,14 +12,6 @@ colorMaps.render = (page, registeredCallbacks) => {
     cmapNameGroups.push([names[i], names[i + 1]]);
   }
 
-  // let cmaps = [
-  //   ['grey', 'plasma'],
-  //   ['rainbow', 'firesky'],
-  //   ['inferno', 'watermelon'],
-  //   ['bluegreen', 'red'],
-  //   ['cool', 'green'],
-  //   ['magma', 'blue'],
-  // ];
   let getId = cmap => `select-cmap-${cmap}`;
   let cmapsHtml = '';
   cmapNameGroups.forEach(row => {
@@ -50,7 +42,8 @@ colorMaps.render = (page, registeredCallbacks) => {
   return html;
 
   function callback() {
-
+    let gray = document.getElementById(getId('gray'));
+    gray.classList.add('selected');
     cmapNameGroups.forEach(row => {
       row.forEach(cmapName => {
         id = getId(cmapName);
