@@ -339,15 +339,29 @@ class CanvasImages {
   }
 
   initializePreviewZoomCanvas(source) {
-    this.initializePreviewCanvas(source);
+    initCanvas(this, source);
     let c = document.createElement("canvas");
     c.id = 'preview-zoom-canvas';
     c.classList = 'preview-zoom-canvas';
     this.initializeCanvas(c);
-    this.previewContainer.append(c);
+    this.previewCanvasContainer.append(c);
     this.previewZoomCanvas = c;
     c.width = this.nx / 10;
     c.height = this.ny / 10;
+
+    function initCanvas(that, source) {
+      that.previewCanvasContainer = document.getElementById('preview-image-canvas-container');
+      let c = document.createElement("canvas");
+      c.id = 'preview-image-canvas';
+      c.classList = 'preview-image-canvas';
+      that.initializeCanvas(c);
+      that.previewCanvasContainer.prepend(c);
+      that.previewCanvas = c;
+      c.width = that.nx;
+      c.height = that.ny;
+      that.renderPreview(source, false);
+      return c;
+    }
   }
 
   initializePreviewCanvas(source) {
@@ -938,7 +952,7 @@ class CanvasImages {
     }
   }
 
-  renderPreview(source) {
+  renderPreview(source, pallette = true) {
     let sourceCanvas = this.layerCanvasNamed(source.name);
     let sourceCtx = sourceCanvas.getContext('2d');
     let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
@@ -947,7 +961,10 @@ class CanvasImages {
       .then(imageBitmap => {
         ctx.drawImage(imageBitmap, 0, 0);
       });
-    this.renderPreviewPalette(source);
+    if (pallette) {
+      this.renderPreviewPalette(source);
+
+    }
   }
 
   renderLabelIcons() {
