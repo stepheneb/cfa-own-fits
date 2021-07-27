@@ -406,10 +406,15 @@ class Page {
       this.imageInspect.connectUpdate(this.canvasImages);
     }
     this.canvasImages.renderPreview(this.selectedSource);
-    if (this.type == "multi-wave") {
-      let telescopeName = document.getElementById('multi-wave-telescope-name');
-      telescopeName.textContent = this.telescopes.find(t => t.key == this.selectedSource.telescope).name;
-    }
+
+    // if (this.type == "multi-wave") {
+    //   let telescopeName = document.getElementById('multi-wave-telescope-name');
+    //   telescopeName.textContent = this.telescopes.find(t => t.key == this.selectedSource.telescope).name;
+    // }
+
+    let filterName = document.getElementById('filter-name');
+    filterName.textContent = this.selectedSource.filter;
+
     if (app.dev) {
       logger.imageData(this.canvasImages, this.canvasImages.selectedSource);
     }
@@ -427,7 +432,7 @@ class Page {
 
                 <input id='select-rgb-${i}' class='col-2' type='radio' name='select-rgb' value='${i}'>
                 <svg width="36" height="36" viewBox="-10 -8 40 40" aria-hidden="true" focusable="false">
-                  <circle cx="12" cy="12" r='16' fill="none" stroke-width="4" />
+                  <circle cx="12" cy="12" r='16' fill="none" stroke-width="3" />
                   <circle class='selected' cx="12" cy="12" r='8' fill="white" stroke-width="0" />
 
                 </svg>
@@ -462,9 +467,7 @@ class Page {
       return `
         <div id="preview-image-container" class="">
           <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
-            <div id="multi-wave-telescope-name" class="label">
-              ${this.telescopes.find(t => t.key == this.selectedSource.telescope).name}
-            </div>
+            ${filterName(this)}
           </div>
         </div>
       `;
@@ -473,6 +476,22 @@ class Page {
         <div id="preview-image-container" class="">
           <div id="preview-image-canvas-container" class="row d-flex justify-content-center"></div>
         </div>
+      `;
+    }
+
+    function filterName(page) {
+      return `
+      <div id="filter-name" class="label">
+        ${page.selectedSource.filter}
+      </div>
+      `;
+    }
+
+    function multiWaveTelescopeName(page) {
+      return `
+      <div id="multi-wave-telescope-name" class="label">
+        ${page.telescopes.find(t => t.key == page.selectedSource.telescope).name}
+      </div>
       `;
     }
   }
@@ -572,7 +591,7 @@ class Page {
     let source, checkedState, name;
     let html = `
       <div class='under-main-layer-selectors'>
-        <div class="subtitle pe-4">
+        <div class="subtitle">
           <span class="solid-right-arrow">&#11157</span>
           Combine to reveal a full-color image
         </div>
@@ -604,6 +623,7 @@ class Page {
       </div>
     `;
     return html;
+
   }
 
   renderUnderMainImageMasterpiece() {
