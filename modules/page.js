@@ -588,7 +588,7 @@ class Page {
     let sources = this.image.sources;
     let source, checkedState, name;
     let html = `
-      <div class='under-main-layer-controls'>
+      <div class='under-main-layer-controls ${this.type}'>
         <div class="subtitle">
           <span class="solid-right-arrow">&#11157</span>
           Combine to reveal a full-color image

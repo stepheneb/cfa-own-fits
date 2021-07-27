@@ -1202,7 +1202,13 @@ div.main-image-content {
 div.under-main-layer-controls {
   margin: 0;
   padding: 1vh;
-  width: 78%;
+  width: 74%;
+  &.rgb {
+    width: 72%;
+  }
+  &.multi-wave {
+    width: 76%;
+  }
   &.masterpiece {
     width: 62%;
   }

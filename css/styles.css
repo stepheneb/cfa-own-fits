@@ -935,11 +935,15 @@ div.main-image-content {
 div.under-main-layer-controls {
   margin: 0;
   padding: 1vh;
-  width: 78%;
+  width: 74%;
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: var(--dark-blue); }
+  div.under-main-layer-controls.rgb {
+    width: 72%; }
+  div.under-main-layer-controls.multi-wave {
+    width: 76%; }
   div.under-main-layer-controls.masterpiece {
     width: 62%; }
   div.under-main-layer-controls .subtitle {
