@@ -711,13 +711,18 @@ header.menu-activity-page-title {
 }
 
 button.scale {
-  width: 4vh;
+  width: 2.4em;
+  height: 2.2em;
   background-color: black;
   font-size: 2vh;
   font-weight: 600;
   color: white;
   padding: 0;
   margin: 0 1vh;
+  svg {
+    width: 1.5em;
+    height: 1.5em;
+  }
 }
 
 .h1,
@@ -1194,10 +1199,13 @@ div.main-image-content {
   justify-content: space-between;
 }
 
-div.under-main-layer-selectors {
+div.under-main-layer-controls {
   margin: 0;
   padding: 1vh;
   width: 78%;
+  &.masterpiece {
+    width: 62%;
+  }
   display: flex;
   align-items: center;
   justify-content: space-between;

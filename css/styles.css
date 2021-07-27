@@ -549,13 +549,17 @@ header.menu-activity-page-title {
   margin-bottom: 1em; }
 
 button.scale {
-  width: 4vh;
+  width: 2.4em;
+  height: 2.2em;
   background-color: black;
   font-size: 2vh;
   font-weight: 600;
   color: white;
   padding: 0;
   margin: 0 1vh; }
+  button.scale svg {
+    width: 1.5em;
+    height: 1.5em; }
 
 .h1,
 h1 {
@@ -928,7 +932,7 @@ div.main-image-content {
   align-items: center;
   justify-content: space-between; }
 
-div.under-main-layer-selectors {
+div.under-main-layer-controls {
   margin: 0;
   padding: 1vh;
   width: 78%;
@@ -936,7 +940,9 @@ div.under-main-layer-selectors {
   align-items: center;
   justify-content: space-between;
   background-color: var(--dark-blue); }
-  div.under-main-layer-selectors .subtitle {
+  div.under-main-layer-controls.masterpiece {
+    width: 62%; }
+  div.under-main-layer-controls .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500; }
 

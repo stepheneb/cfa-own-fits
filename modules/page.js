@@ -588,7 +588,7 @@ class Page {
     let sources = this.image.sources;
     let source, checkedState, name;
     let html = `
-      <div class='under-main-layer-selectors'>
+      <div class='under-main-layer-controls'>
         <div class="subtitle">
           <span class="solid-right-arrow">&#11157</span>
           Combine to reveal a full-color image
@@ -627,12 +627,14 @@ class Page {
   renderUnderMainImageMasterpiece() {
     let html = '';
     html += `
-      <div class="pe-4"><span class="solid-right-arrow">&#11157</span> Pinch to zoom or pan or use the buttons</div>
-      <form id="image-select-main-layer">
-        <div class="d-flex flex-row justify-content-start align-items-center">
-          ${this.renderScalingButtons()}
-        </div>
-      </form>
+      <div class='under-main-layer-controls masterpiece'>
+        <div class="subtitle"><span class="solid-right-arrow">&#11157</span> Pinch to zoom or pan or use the buttons</div>
+        <form id="image-select-main-layer">
+          <div class="d-flex flex-row justify-content-start align-items-center">
+            ${this.renderScalingButtons()}
+          </div>
+        </form>
+      </div>
       <div class="image-name pe-2">
         ${this.image.name}
       </div>
