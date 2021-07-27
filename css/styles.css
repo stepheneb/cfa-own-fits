@@ -957,6 +957,9 @@ div.telescope-container {
       width: 100%;
       object-fit: contain; }
 
+#animate-player {
+  margin: 6vh 0vh; }
+
 #animate-controls {
   margin: 2vh 0.5vh;
   font-size: var(--animate-icons); }
