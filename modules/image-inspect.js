@@ -654,7 +654,9 @@ class ImageInspect {
       this.canvasImages.scaling.removeListener();
     }
 
-    this.canvasImages.scaling.removeListener();
+    if (this.canvasImages.scaling) {
+      this.canvasImages.scaling.removeListener();
+    }
   }
 
   getWidthHeight(elem) {
