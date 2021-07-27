@@ -463,21 +463,13 @@ class Page {
   }
 
   renderImageLayerPreview() {
-    if (this.type == "multi-wave") {
-      return `
-        <div id="preview-image-container" class="">
-          <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
-            ${filterName(this)}
-          </div>
+    return `
+      <div id="preview-image-container" class="">
+        <div id="preview-image-canvas-container" class="row d-flex justify-content-center">
+          ${filterName(this)}
         </div>
-      `;
-    } else {
-      return `
-        <div id="preview-image-container" class="">
-          <div id="preview-image-canvas-container" class="row d-flex justify-content-center"></div>
-        </div>
-      `;
-    }
+      </div>
+    `;
 
     function filterName(page) {
       return `
