@@ -536,6 +536,7 @@ class Page {
       checkboxes = Array.from(e.currentTarget.querySelectorAll('input[type="checkbox"'));
       this.image.selectedMainLayers = checkboxes.map(elem => elem.checked ? '1' : '0').join('');
       this.canvasImages.renderCanvasRGB();
+      telescopes.updateVisibility(this);
       if (app.dev) {
         this.imageInspect.connectUpdate(this.canvasImages);
       }
