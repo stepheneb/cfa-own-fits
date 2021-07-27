@@ -773,7 +773,10 @@ button {
 div.control-collection {
   background-color: var(--dark-blue);
   // background-color: #042842;
-  padding: 1vh 1vh;
+  margin: 0;
+  padding: 2vh 2vh;
+  div.colormaps {
+  }
   div.find-apollo {
     width: 100%;
     height: 22vh;
@@ -799,8 +802,6 @@ div.control-collection {
     padding-top: 1.2vh;
   }
   &.special-effects {
-    margin-top: 1vh;
-    margin-bottom: 1vh;
   }
   > .title {
     color: var(--bright-green);

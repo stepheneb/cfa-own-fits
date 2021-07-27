@@ -231,17 +231,17 @@ class Page {
 
     case 'animate':
       this.leftColumnHtml = `
-            <div class='left-column col-left pr-1 m-0'>
-              <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
-              ${animate.render(this, this.registeredCallbacks)}
-              <div class="control-collection">
-                <div class="context">${this.context}</div>
-              </div>
-            </div>
-          `;
+        <div class='left-column col-left pr-1 m-0'>
+          <div class="control-collection">
+            <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.animatetext}</div>
+            ${animate.render(this, this.registeredCallbacks)}
+            <div class="context">${this.context}</div>
+          </div>
+        </div>
+      `;
       this.mainImageHtml = `
-            ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
-          `;
+        ${this.renderMainImageContent(this, this.type, this.registeredCallbacks)}
+      `;
       break;
     }
 

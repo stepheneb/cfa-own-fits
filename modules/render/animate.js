@@ -7,7 +7,8 @@
 let animate = {};
 
 animate.render = (page, registeredCallbacks) => {
-  let id = 'animate-controls';
+  let id = 'animate-player';
+  let idControls = 'animate-controls';
   let stepBackId = 'animate-step-back';
   let playId = "animate-play";
   let pauseId = "animate-pause";
@@ -17,49 +18,51 @@ animate.render = (page, registeredCallbacks) => {
   let previewImageNextNameId = "preview-image-next-name";
 
   let html = `
-    <div class="row">
-      <div class="col-4 m-0 p-0">
-        <div class="animate-left px-2 mt-2 mb-2 pt-2 pb-2">
-          <div id="preview-image-back-canvas-container" class="animate"></div>
+    <div id='${id}'>
+      <div class="row">
+        <div class="col-4 m-0 p-0">
+          <div class="animate-left px-2 mt-2 mb-2 pt-2 pb-2">
+            <div id="preview-image-back-canvas-container" class="animate"></div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div id="${previewImageBackNameId}" class="px-2 pt- pb-1">name</div>
+          </div>
         </div>
-        <div class="d-flex justify-content-center">
-          <div id="${previewImageBackNameId}" class="px-2 pt- pb-1">name</div>
+        <div class="col-4 animate-center px-2 pt-3 pb-2">
+          <div id="preview-image-center-canvas-container" class="animate"></div>
+          <div class="d-flex justify-content-center">
+            <div id="${previewImageCenterNameId}" class="px-2 pt-3 pb-1">name</div>
+          </div>
         </div>
-      </div>
-      <div class="col-4 animate-center px-2 pt-3 pb-2">
-        <div id="preview-image-center-canvas-container" class="animate"></div>
-        <div class="d-flex justify-content-center">
-          <div id="${previewImageCenterNameId}" class="px-2 pt-3 pb-1">name</div>
+        <div class="col-4 m-0 p-0">
+          <div class="animate-right px-2 mt-2 mb-2 pt-2 pb-2">
+            <div id="preview-image-next-canvas-container" class="animate"></div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <div id="${previewImageNextNameId}" class="px-2 pt- pb-1">name</div>
+          </div>
         </div>
-      </div>
-      <div class="col-4 m-0 p-0">
-        <div class="animate-right px-2 mt-2 mb-2 pt-2 pb-2">
-          <div id="preview-image-next-canvas-container" class="animate"></div>
-        </div>
-        <div class="d-flex justify-content-center">
-          <div id="${previewImageNextNameId}" class="px-2 pt- pb-1">name</div>
-        </div>
-      </div>
-    </div>
-
-    <div id="${id}" class="d-flex flex-row justify-content-evenly align-items-center">
-
-      <div type="button" id="${stepBackId}" class="animate-control step back unselectable d-flex flex-row align-items-center">
-        <div class="label">back</div>
-        <div class="bi bi-skip-start-fill"></div>
       </div>
 
-      <div id="${playId}" class="animate-control playpause unselectable">
-        <i class="bi bi-play-circle"></i>
-      </div>
+      <div id="${idControls}" class="d-flex flex-row justify-content-evenly align-items-center">
 
-      <div id="${pauseId}" class="animate-control playpause unselectable">
-        <i class="bi bi-pause-circle"></i>
-      </div>
+        <div type="button" id="${stepBackId}" class="animate-control step back unselectable d-flex flex-row align-items-center">
+          <div class="label">back</div>
+          <div class="bi bi-skip-start-fill"></div>
+        </div>
 
-      <div id="${stepForwardId}"  type="button" class="animate-control animate-control step next unselectable d-flex flex-row align-items-center">
-        <div class="bi bi-skip-end-fill"></div>
-        <div class="label">next</div>
+        <div id="${playId}" class="animate-control playpause unselectable">
+          <i class="bi bi-play-circle"></i>
+        </div>
+
+        <div id="${pauseId}" class="animate-control playpause unselectable">
+          <i class="bi bi-pause-circle"></i>
+        </div>
+
+        <div id="${stepForwardId}"  type="button" class="animate-control animate-control step next unselectable d-flex flex-row align-items-center">
+          <div class="bi bi-skip-end-fill"></div>
+          <div class="label">next</div>
+        </div>
       </div>
     </div>
   `;
