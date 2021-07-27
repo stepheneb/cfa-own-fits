@@ -49,8 +49,8 @@ html {
   --page-subtitle: 2.4vh;
   --telescope-title: 2vh;
   --animate-icons: 3.2vh;
-  --control-title: 1.6vh;
-  --control-subtitle: 1.8vh;
+  --control-title: 1.8vh;
+  --control-subtitle: 1.7vh;
   --main-layer-selector: 2vh;
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
@@ -807,7 +807,8 @@ div.control-collection {
     color: var(--bright-green);
     font-size: var(--control-title);
     font-weight: 500;
-    padding: 0vh 0vh 0.5vh 0.5vh;
+    text-transform: uppercase;
+    padding: 0vh 0vh 1vh 1vh;
   }
   > .subtitle {
     font-size: var(--control-subtitle);
@@ -961,7 +962,7 @@ div.control-collection {
     label {
       font-size: 1.9vh;
       font-weight: 500;
-      width: 7rem;
+      width: 7.5rem;
       margin-right: 0.25rem;
     }
     div.slider-icon {
@@ -1042,7 +1043,8 @@ div.color-maps {
 
 div.select-cmap {
   padding: 0;
-  height: 2.5vh;
+  margin-right: 2px;
+  height: 3vh;
   &.selected {
     color: white;
     font-weight: unset;
@@ -1058,11 +1060,13 @@ div.select-cmap {
   }
   div.label {
     padding-left: 0rem;
+    font-weight: 500;
     text-transform: uppercase;
   }
   div.canvas {
     padding: 0.25rem 0.25rem 0.25rem 0rem;
     canvas {
+      border: 1px solid white;
       object-fit: fill;
     }
   }
