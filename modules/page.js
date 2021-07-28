@@ -31,6 +31,7 @@ class Page {
     Object.assign(this, page);
     this.id = `page-${this.type}-${this.name}`;
     this.registeredCallbacks = [];
+    this.closeCallbacks = [];
 
     let mb_elems = document.getElementsByClassName('modal-backdrop');
     while (mb_elems.length > 0) {
@@ -114,6 +115,8 @@ class Page {
   close() {
     this.canvasImages.close();
     this.animate = null;
+    // run close callbacks registered after interactive components are rendered
+    this.closeCallbacks.forEach(func => func(this));
   }
 
   get selectedSource() {
@@ -754,11 +757,19 @@ class Page {
           max = scaling.maxScale;
           rangeElem.max = max;
         }
-      }
+      };
+
       rangeElem.addEventListener('input', listenerZoomSLider);
       zoomOutElem.addEventListener('click', listenerZoomStep);
       zoomInElem.addEventListener('click', listenerZoomStep);
 
+      page.closeCallbacks.push(close);
+
+      function close() {
+        rangeElem.removeEventListener('input', listenerZoomSLider);
+        zoomOutElem.removeEventListener('click', listenerZoomStep);
+        zoomInElem.removeEventListener('click', listenerZoomStep);
+      }
     }
   }
 }
