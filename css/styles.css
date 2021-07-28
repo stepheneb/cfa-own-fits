@@ -609,7 +609,7 @@ div.control-collection {
   margin: 0;
   padding: 1vh 1vh 1vh 1vh;
   background-color: var(--darker-blue);
-  box-shadow: inset 4px 4px 12px 5px var(--medium-blue-rgba), inset -4px -4px 12px 5px var(--medium-blue-rgba); }
+  box-shadow: inset 4px 4px 16px var(--medium-blue-rgba), inset -4px -4px 16px var(--medium-blue-rgba); }
   div.control-collection div.find-apollo {
     margin: 1vh -1vh 4vh -1vh;
     height: 22vh;
