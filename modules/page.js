@@ -707,7 +707,7 @@ class Page {
         <div class='zoom'>
           <label for='zoomin-out'></label>
           <div id='${zoomOutId}' class='slider-icon step-down' data-step='out'>${svg.minusIcon}</div>
-          <input type='range' id='${id}' name='brightness'  min='${min}' max='${max}' value='${val}'/>
+          <input type='range' id='${id}' name='brightness'  min='${min}' max='${max}' value='${val}' step='0.01'/>
           <div id='${zoomInId}' class='slider-icon step-up'  data-step='in'>${svg.plusIcon}</div>
         </div>
       `;
@@ -727,8 +727,8 @@ class Page {
       });
 
       const listenerZoomSLider = (e) => {
-        setRangeMax();
         let newScale = e.target.valueAsNumber;
+        setRangeMax();
         scaling.scaleCanvasContinuousValue(newScale, stopAtMax1to1);
       };
 
