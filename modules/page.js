@@ -12,6 +12,7 @@ import colorMaps from './render/colorMaps.js';
 import animate from './render/animate.js';
 import specialEffects from './render/specialEffects.js';
 import adjustImage from './render/adjustImage.js';
+import svg from './render/svg.js';
 import telescopes from './render/telescopes.js';
 import saveAndSend from './render/saveAndSend.js';
 import observation from './render/observation.js';
@@ -20,6 +21,7 @@ import renderMenu from './render/menu.js';
 import renderDev from './render/dev.js';
 import splash from './render/splash.js';
 import checkBrowser from './check-browser.js';
+import u from './utilities.js';
 import logger from './logger.js';
 
 class Page {
@@ -624,16 +626,13 @@ class Page {
 
   }
 
+  // renderScalingButtons or renderZoomSlider
   renderUnderMainImageMasterpiece() {
     let html = '';
     html += `
       <div class='under-main-layer-controls masterpiece'>
         <div class="subtitle"><span class="solid-right-arrow">&#11157</span> Pinch to zoom or pan or use the buttons</div>
-        <form id="image-select-main-layer">
-          <div class="d-flex flex-row justify-content-start align-items-center">
-            ${this.renderScalingButtons()}
-          </div>
-        </form>
+        ${this.renderZoomSlider(this.registeredCallbacks)}
       </div>
       <div class="image-name pe-2">
         ${this.image.name}
@@ -688,6 +687,79 @@ class Page {
       </div>
     `;
     return html;
+  }
+
+  renderZoomSlider(registeredCallbacks) {
+    let id = 'zoomin-out';
+    let zoomOutId = 'zoomout-step-out';
+    let zoomInId = 'zoomout-step-in';
+    let min = 1;
+    let val = 1;
+    let max = 10;
+    let stopAtMax1to1 = true;
+    if (this.type == 'find-apollo') {
+      stopAtMax1to1 = false;
+    }
+    let html = `
+        <div class='zoom'>
+          <label for='zoomin-out'></label>
+          <div id='${zoomOutId}' class='slider-icon step-down' data-step='out'>${svg.minusIcon}</div>
+          <input type='range' id='${id}' name='brightness'  min='${min}' max='${max}' value='${val}'/>
+          <div id='${zoomInId}' class='slider-icon step-up'  data-step='in'>${svg.plusIcon}</div>
+        </div>
+      `;
+    registeredCallbacks.push(callback);
+    return html;
+
+    function callback(page) {
+      let scaling = null;
+      let rangeElem = document.getElementById(id);
+      let zoomOutElem = document.getElementById(zoomOutId);
+      let zoomInElem = document.getElementById(zoomInId);
+
+      page.canvasImages.addScalingListener('loaded', (s) => {
+        scaling = s;
+        rangeElem.min = scaling.minScale;
+        rangeElem.max = scaling.maxScale1to1;
+      });
+
+      const listenerZoomSLider = (e) => {
+        setRangeMax();
+        let newScale = e.target.valueAsNumber;
+        scaling.scaleCanvasContinuousValue(newScale, stopAtMax1to1);
+      };
+
+      const listenerZoomStep = (e) => {
+        setRangeMax();
+        let direction = e.target.dataset.step;
+        if (direction == 'in') {
+          if (scaling.scale < max) {
+            scaling.scaling = 'zoomin';
+            scaling.scaleCanvas(stopAtMax1to1);
+          }
+        } else {
+          if (scaling.scale > scaling.minScale) {
+            scaling.scaling = 'zoomout';
+            scaling.scaleCanvas();
+          }
+        }
+        rangeElem.valueAsNumber = scaling.scale;
+      };
+
+      const setRangeMax = () => {
+        if (stopAtMax1to1) {
+          max = scaling.maxScale1to1;
+          rangeElem.max = max;
+        } else {
+          max = scaling.maxScale;
+          rangeElem.max = max;
+        }
+      }
+      rangeElem.addEventListener('input', listenerZoomSLider);
+      zoomOutElem.addEventListener('click', listenerZoomStep);
+      zoomInElem.addEventListener('click', listenerZoomStep);
+
+    }
   }
 }
 

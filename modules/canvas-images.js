@@ -21,6 +21,8 @@ class CanvasImages {
     this.findApolloSiteContainerId = page.findApolloSiteContainerId;
     this.findApolloSiteCanvasId = page.findApolloSiteCanvasId;
 
+    this.scalingCallbacks = [];
+
     this.image = page.image;
     this.sources = this.image.sources;
     this.brightnessContrastTransforms = {};
@@ -295,15 +297,22 @@ class CanvasImages {
       this.mainCanvasWrapper.append(c);
       this.scalingCanvas = c;
       this.scaling = new Scaling(c, imageBitmap, previewZoomCanvas, findApolloSiteContainerId, sourceCtx, this.image.landing);
-      if (typeof this.callback == 'function') {
-        this.scaling.addListener(this.callback);
-      }
+      this.scalingCallbacks.forEach((callback) => {
+        let [type, func] = callback;
+        if (typeof func == 'function') {
+          if (type == 'loaded') {
+            func(this.scaling);
+          } else {
+            this.scaling.addListener(type, func);
+          }
+        }
+      });
     });
   }
 
-  addListener(callback) {
+  addScalingListener(type, callback) {
     if (typeof callback == 'function') {
-      this.callback = callback;
+      this.scalingCallbacks.push([type, callback]);
     }
   }
 

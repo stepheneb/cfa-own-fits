@@ -16,6 +16,10 @@ class Scaling {
     this.imageWidth = 0;
     this.imageHeight = 0;
 
+    this.eventListenerTypes = {
+      change: []
+    };
+
     this.previousImageWidth = 0;
     this.previousImageHeight = 0;
 
@@ -52,7 +56,8 @@ class Scaling {
     // this.imageData = this.ctx.getImageData();
     this.nx = sourceImageBitmap.width;
     this.ny = sourceImageBitmap.height;
-    this.scale = 1;
+    this.minScale = 1;
+    this.scale = this.minScale;
     this.maxScale1to1 = 0;
     this.maxScale = 0;
     this.ratio = 0;
@@ -92,6 +97,7 @@ class Scaling {
     this.redraw = null;
     this.dxOld = 0;
     this.dyOld = 0;
+
     this.startup();
   }
 
@@ -125,10 +131,14 @@ class Scaling {
   }
 
   setupButtons() {
-    [this.zoomInButton, this.zoomOutButton, this.zoomResetButton] = document.querySelectorAll('div.scale button');
-    this.zoomInButton.addEventListener('click', this.buttonListener);
-    this.zoomOutButton.addEventListener('click', this.buttonListener);
-    this.zoomResetButton.addEventListener('click', this.buttonListener);
+    let buttons = document.querySelectorAll('div.scale button');
+    if (buttons.length > 0) {
+      [this.zoomInButton, this.zoomOutButton, this.zoomResetButton] = document.querySelectorAll('div.scale button');
+      this.zoomInButton.addEventListener('click', this.buttonListener);
+      this.zoomOutButton.addEventListener('click', this.buttonListener);
+      this.zoomResetButton.addEventListener('click', this.buttonListener);
+      this.zoomButtonsEnabled = true;
+    }
   }
 
   resetScaling() {
@@ -241,21 +251,40 @@ class Scaling {
     this.ctx.msImageSmoothingEnabled = false;
   }
 
-  scaleCanvas() {
+  scaleCanvas(max1to1 = false) {
     // let previousScale = this.scale;
     switch (this.scaling) {
     case 'zoomout':
       this.scale = this.scale / this.scaleFactor;
-      if (this.scale < 1) this.scale = 1;
+      if (this.scale < this.minScale) this.scale = this.minScale;
       break;
     case 'zoomin':
       this.scale = this.scale * this.scaleFactor;
-      this.scale = Math.min(this.scale, this.maxScale);
+      if (max1to1) {
+        this.scale = Math.min(this.scale, this.maxScale1to1);
+      } else {
+        this.scale = Math.min(this.scale, this.maxScale);
+      }
       break;
     case 'zoomreset':
       this.scale = 1;
       break;
     }
+    this.finishScaleCanvas();
+  }
+
+  scaleCanvasContinuousValue(newScale, max1to1 = false) {
+    this.scale = newScale;
+    if (this.scale < this.minScale) this.scale = this.minScale;
+    if (max1to1) {
+      this.scale = Math.min(this.scale, this.maxScale1to1);
+    } else {
+      this.scale = Math.min(this.scale, this.maxScale);
+    }
+    this.finishScaleCanvas();
+  }
+
+  finishScaleCanvas() {
     this.resetMainUIVars();
     // let change = this.scale - previousScale;
     // console.log([this.scaling, ', scale: ', this.scale, ' change: ', change]);
@@ -271,7 +300,7 @@ class Scaling {
   scaleCanvasTouch() {
     if (this.lastDistance > this.distance) {
       this.scale = this.scale / this.scaleFactor;
-      if (this.scale < 1) this.scale = 1;
+      if (this.scale < this.minScale) this.scale = this.minScale;
     } else if (this.lastDistance < this.distance) {
       this.scale = this.scale * this.scaleFactor;
       this.scale = Math.min(this.scale, this.maxScale);
@@ -346,7 +375,7 @@ class Scaling {
     }
     this.scalingCanvasDrawfinished = true;
     this.mainCanvasWrapper.style.width = this.imageWidth + 'px';
-    this.sendEvent();
+    this.sendChangeEvent();
   }
 
   scalingCanvasDrawArgs() {
@@ -375,48 +404,54 @@ class Scaling {
     return argstr;
   }
 
-  // if (this.callback instanceof Function)
-  sendEvent() {
-    if (typeof this.callback == 'function') {
-      let scalingEvent = {
-        offset: {
-          x: this.offsetX,
-          y: this.offsetY
-        },
-        move: {
-          x: this.moveX,
-          y: this.moveY
-        },
-        scale: this.scale,
-        delta: {
-          x: this.dx,
-          y: this.dy
-        },
-        bitmap: {
-          width: this.sourceImageBitmap.width,
-          height: this.sourceImageBitmap.height
-        },
-        scaleCanvas: {
-          width: this.scalingCanvas.width,
-          height: this.scalingCanvas.height
-        },
-        image: {
-          width: this.imageWidth,
-          height: this.imageHeight
-        }
-      };
-      this.callback(scalingEvent);
-    }
-  }
-
-  addListener(callback) {
+  addListener(type, callback) {
     if (typeof callback == 'function') {
-      this.callback = callback;
+      switch (type) {
+      case 'change':
+        this.eventListenerTypes.change.push(callback);
+        break;
+      }
     }
   }
 
-  removeListener() {
-    this.callback = null;
+  removeListeners() {
+    this.eventListenerTypes.change = [];
+  }
+
+  sendChangeEvent() {
+    let scalingEvent = {
+      offset: {
+        x: this.offsetX,
+        y: this.offsetY
+      },
+      move: {
+        x: this.moveX,
+        y: this.moveY
+      },
+      scale: this.scale,
+      delta: {
+        x: this.dx,
+        y: this.dy
+      },
+      bitmap: {
+        width: this.sourceImageBitmap.width,
+        height: this.sourceImageBitmap.height
+      },
+      scaleCanvas: {
+        width: this.scalingCanvas.width,
+        height: this.scalingCanvas.height
+      },
+      image: {
+        width: this.imageWidth,
+        height: this.imageHeight
+      }
+    };
+    this.eventListenerTypes.change.forEach((callback) => {
+      if (typeof callback == 'function') {
+        // alternative test: if (callback instanceof Function)
+        callback(scalingEvent);
+      }
+    });
   }
 
   checkIfMatchingApolloSiteScale() {
@@ -547,15 +582,17 @@ class Scaling {
   }
 
   updateZoomButtons() {
-    this.zoomInButton.disabled = false;
-    this.zoomOutButton.disabled = false;
-    this.zoomResetButton.disabled = false;
-    if (this.scale >= this.maxScale) {
-      this.zoomInButton.disabled = true;
-    }
-    if (this.scale == 1) {
-      this.zoomOutButton.disabled = true;
-      this.zoomResetButton.disabled = true;
+    if (this.zoomButtonsEnabled) {
+      this.zoomInButton.disabled = false;
+      this.zoomOutButton.disabled = false;
+      this.zoomResetButton.disabled = false;
+      if (this.scale >= this.maxScale) {
+        this.zoomInButton.disabled = true;
+      }
+      if (this.scale == this.minScale) {
+        this.zoomOutButton.disabled = true;
+        this.zoomResetButton.disabled = true;
+      }
     }
   }
 

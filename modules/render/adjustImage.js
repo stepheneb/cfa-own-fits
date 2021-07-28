@@ -3,36 +3,11 @@
 
 import u from '../utilities.js';
 import logger from '../logger.js';
+import svg from './svg.js';
 
 let adjustImage = {};
 
 let stepSize = 0.05;
-
-// let plusIcon = `
-// <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-//   <path d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16z"/>
-// </svg>
-// `;
-
-let plusIcon = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">
-    <circle cx="17" cy="17" r="15" fill="#fff" id="Layer_1"/>
-    <path d="M18.22 15.7h3.26c.21 0 .35.04.43.13s.12.24.12.44v1.34c0 .37-.18.55-.55.55h-3.26v3.31c0 .38-.19.58-.58.58h-1.42c-.38 0-.58-.19-.58-.58v-3.31h-3.26c-.37 0-.55-.18-.55-.55v-1.34c0-.21.04-.36.12-.44s.22-.13.43-.13h3.26v-3.29c0-.38.19-.58.58-.58h1.42c.38 0 .58.19.58.58v3.29z" id="Layer_3"/>
-  </svg>
-  `;
-
-// let minusIcon = `
-//   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-//     <path d="M10 20a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zm5-9v2H5V9h10z"/>
-//   </svg>
-// `;
-
-let minusIcon = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34">
-    <circle cx="17" cy="17" r="15" fill="#fff" id="Layer_1"/>
-    <path d="M19.29 18.22h-4.56c-.34 0-.5-.17-.5-.5V16.3c0-.35.17-.53.5-.53h4.56c.34 0 .5.18.5.53v1.42c.01.33-.16.5-.5.5z" id="_x2D_"/>
-  </svg>
-`;
 
 let brightness = () => {
   let min = 0;
@@ -41,9 +16,9 @@ let brightness = () => {
   let html = `
     <div class='adjust-filter '>
       <label for='brightness'>Brightness</label>
-      <div id='brightness-step-down' class='slider-icon step-down' data-step='down'>${minusIcon}</div>
+      <div id='brightness-step-down' class='slider-icon step-down' data-step='down'>${svg.minusIcon}</div>
       <input type='range' id='brightness' name='brightness'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='brightnessvalue.value=value'/>
-      <div id='brightness-step-up' class='slider-icon step-up'  data-step='up'>${plusIcon}</div>
+      <div id='brightness-step-up' class='slider-icon step-up'  data-step='up'>${svg.plusIcon}</div>
       <output id="brightnessvalue">${val}</output>
     </div>
   `;
@@ -57,9 +32,9 @@ let contrast = () => {
   let html = `
     <div class='adjust-filter'>
       <label for='contrast'>Contrast</label>
-      <div id='contrast-step-down' class='slider-icon step-down' data-step='down'>${minusIcon}</div>
+      <div id='contrast-step-down' class='slider-icon step-down' data-step='down'>${svg.minusIcon}</div>
       <input type='range' id='contrast' name='contrast'  min='${min}' max='${max}' value='${val}' step='${stepSize}' oninput='contrastvalue.value=value'/>
-      <div id='contrast-step-up' class='slider-icon step-up' data-step='up'>${plusIcon}</div>
+      <div id='contrast-step-up' class='slider-icon step-up' data-step='up'>${svg.plusIcon}</div>
       <output id="contrastvalue">${val}</output>
     </div>
   `;

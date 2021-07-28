@@ -620,13 +620,13 @@ class ImageInspect {
       this.indicatorElem.classList.add('show');
 
       if (this.page.type == 'masterpiece') {
-        this.canvasImages.addListener(scalingEvent);
+        this.canvasImages.addScalingListener('change', scalingChange);
       }
 
       this.enabled = true;
     }
 
-    function scalingEvent(se) {
+    function scalingChange(se) {
       console.log(se);
       console.log(that.indicatorPos);
       // this.canvasTargetRect

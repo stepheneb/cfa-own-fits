@@ -8,7 +8,8 @@ telescopes.updateVisibility = page => {
   let scopes = page.telescopes;
   let id, elem;
   visibilityOff(scopes);
-  for (let i = 0; i < 3; i++) {
+  let count = Math.min(page.canvasImages.rawdataSources.length, 3);
+  for (let i = 0; i < count; i++) {
     if (enabled[i] == '1') {
       let key = page.image.sources[i].telescope;
       let index = page.telescopes.findIndex(obj => obj.key == key);
