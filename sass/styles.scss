@@ -1225,12 +1225,9 @@ div.under-main-layer-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--dark-blue);
-  // background: radial-gradient(
-  //   var(--dark-blue-gradient),
-  //   10%,
-  //   var(--darker-blue-gradient)
-  // );
+  background-color: var(--darker-blue);
+  box-shadow: inset 4px 4px 16px var(--medium-blue-rgba),
+    inset -4px -4px 16px var(--medium-blue-rgba);
   .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500;
@@ -2040,7 +2037,7 @@ div.histogram-container {
 
 div.select-main-image-layer {
   padding: 0em 0.5em;
-  background-color: var(--dark-blue);
+  background-color: var(--darker-blue);
   // background: radial-gradient(
   //   var(--darker-blue-gradient),
   //   90%,

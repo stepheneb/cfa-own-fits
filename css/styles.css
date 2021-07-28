@@ -927,7 +927,8 @@ div.under-main-layer-controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--dark-blue); }
+  background-color: var(--darker-blue);
+  box-shadow: inset 4px 4px 16px var(--medium-blue-rgba), inset -4px -4px 16px var(--medium-blue-rgba); }
   div.under-main-layer-controls.rgb {
     width: 72%; }
   div.under-main-layer-controls.multi-wave {
@@ -1595,7 +1596,7 @@ div.histogram-container {
 
 div.select-main-image-layer {
   padding: 0em 0.5em;
-  background-color: var(--dark-blue); }
+  background-color: var(--darker-blue); }
   div.select-main-image-layer .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500; }
