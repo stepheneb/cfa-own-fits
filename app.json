@@ -1811,7 +1811,7 @@
                   "large": "rawdata/m51-multi/775x1168/Chandra_M51_Xray_lowerRes.bmp"
                 },
                 "filter": "blue",
-                "min": 1,
+                "min": 0,
                 "max": 298,
                 "scaling": "log",
                 "brightness": 1,
