@@ -1036,7 +1036,8 @@ div.zoom-preview-content {
     float: left; }
 
 div#preview-image-container {
-  border: 2px solid var(--canvas-container-border-color); }
+  border: 2px solid var(--canvas-container-border-color);
+  margin: 1vh -1vh 3vh -1vh; }
 
 div#preview-image-canvas-container {
   position: relative;
