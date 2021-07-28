@@ -170,7 +170,6 @@ div#splash2 {
     width: 10vw;
     background-color: transparent;
     border-color: var(--bright-green);
-    // border: 2px solid var(--light-green);
   }
 }
 
@@ -994,7 +993,6 @@ div.control-collection {
           border-radius: 0;
           height: 6px;
           width: 20px;
-          // color: #032741;
           background: #3ddaf6;
           cursor: ew-resize;
           box-shadow: 0 0 2px 0 #555;
@@ -1101,7 +1099,6 @@ div.filter-palette {
   padding: 0.25rem 0.25rem 0.25rem 0rem;
   max-height: 4vh;
   canvas {
-    // height: fit-content;
     object-fit: fill;
   }
 }
@@ -1288,7 +1285,6 @@ div.telescope-container {
   .animate-control {
     color: var(--green);
     padding: 0.1rem 0.5rem;
-    // cursor: none;
     .label {
       font-size: 55%;
       text-transform: uppercase;
@@ -1367,7 +1363,6 @@ div.zoom-preview-content {
 div#preview-image-container {
   border: 2px solid var(--canvas-container-border-color);
   margin: 1vh -1vh 3vh -1vh;
-  // border-radius: 3px;
 }
 
 div#preview-image-canvas-container {
@@ -1590,7 +1585,6 @@ div#observation-modal .modal-body {
       }
       padding: 0.5vh 2vh;
       button.btn-close {
-        // display: none;
         min-width: 3vw;
         font-size: 6vh;
         color: white;
@@ -1754,7 +1748,6 @@ div#main-image-canvas-container {
     padding: 0;
     margin: 0;
     top: 0;
-    // left: 0;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, 0%);
@@ -1810,8 +1803,6 @@ div#main-canvas-wrapper {
 }
 
 canvas#main-image-canvas-red {
-  // height: 100%;
-  // width: 100%;
   object-fit: contain;
 }
 
@@ -1825,7 +1816,6 @@ span.touchinfo {
   text-align: center;
   top: 50%;
   transform: translate(-50%, -50%);
-  // width: calc(90% - 40px);
 }
 
 div.main-image-content:not(:root):fullscreen {
@@ -2038,11 +2028,6 @@ div.histogram-container {
 div.select-main-image-layer {
   padding: 0em 0.5em;
   background-color: var(--darker-blue);
-  // background: radial-gradient(
-  //   var(--darker-blue-gradient),
-  //   90%,
-  //   var(--dark-blue-gradient)
-  // );
   .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500;
