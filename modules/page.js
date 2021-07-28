@@ -184,10 +184,10 @@ class Page {
     case 'rgb':
       this.leftColumnHtml = `
           <div class='col-left pr-1 m-0'>
-            ${this.renderImageSelectFilterLayerToAdjust()}
-            ${this.renderImageLayerPreview()}
-            ${adjustImage.renderRGB(this, this.registeredCallbacks)}
             <div class="control-collection">
+              ${this.renderImageSelectFilterLayerToAdjust()}
+              ${this.renderImageLayerPreview()}
+              ${adjustImage.renderRGB(this, this.registeredCallbacks)}
               <div class="context">${this.context}</div>
             </div>
           </div>
@@ -200,10 +200,10 @@ class Page {
     case 'multi-wave':
       this.leftColumnHtml = `
             <div class='col-left pr-1 m-0'>
-              ${this.renderImageSelectFilterLayerToAdjust()}
-              ${this.renderImageLayerPreview()}
-              ${adjustImage.renderRGB(this, this.registeredCallbacks)}
               <div class="control-collection">
+                ${this.renderImageSelectFilterLayerToAdjust()}
+                ${this.renderImageLayerPreview()}
+                ${adjustImage.renderRGB(this, this.registeredCallbacks)}
                 <div class="context">${this.context}</div>
               </div>
             </div>
@@ -216,10 +216,10 @@ class Page {
     case 'masterpiece':
       this.leftColumnHtml = `
         <div class='col-left pr-1 m-0'>
-          ${colorMaps.render(this, this.registeredCallbacks)}
-          ${specialEffects.render(this, this.registeredCallbacks)}
-          ${adjustImage.renderMasterpiece(this, this.registeredCallbacks)}
-          <div class="control-collection">
+          <div class='control-collection'>
+            ${colorMaps.render(this, this.registeredCallbacks)}
+            ${specialEffects.render(this, this.registeredCallbacks)}
+            ${adjustImage.renderMasterpiece(this, this.registeredCallbacks)}
             <div class="context">${this.context}</div>
           </div>
         </div>
@@ -455,7 +455,7 @@ class Page {
       return html;
     }
     return `
-      <div id="image-select-filter-layer-to-adjust"  class='control-collection select-layer'>
+      <div id="image-select-filter-layer-to-adjust"  class='select-layer'>
         <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.selectfiltertext}</div>
         ${renderButtonsAndPalletes(this)}
       </div>
@@ -503,9 +503,9 @@ class Page {
         <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${this.findtext}</div>
         <div id="${this.findApolloSiteContainerId}" class="${this.type}">
           <canvas id="${this.findApolloSiteCanvasId}"></canvas>
+          <div class="name">${this.image.site}</div>
         </div>
-        <div class="name">${this.image.site}</div>
-        <div class="zoom-preview-content mt-4 mb-2">
+        <div class="zoom-preview-content">
           <div class="label">${this.youaretext}</div>
           <div class="zoom-rect-container">
             <div id="preview-image-canvas-container" class="zoomrect"></div>
@@ -602,7 +602,7 @@ class Page {
       if (source.type == "rawdata") {
         name = source.name;
         html += `
-          <div class="select-layer d-flex flex-row justify-content-start align-items-center">
+          <div class="select-main-image-layer d-flex flex-row justify-content-start align-items-center">
             <div class="eyes-input">${name}</div>
             <div>
               <input class='eyes-input' type='checkbox' id='select-layer-${name}' name='select-layer-${name}' ${checkedState} value='0'>

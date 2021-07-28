@@ -29,8 +29,10 @@ html {
   --canvas-container-border-color: lightgray;
   --canvas-container-border-color-fullscreen: #222;
   --translucent-gray: rgba(32, 32, 32, 0.6);
-  --dark-blue-gradient: rgba(8, 86, 112, 1);
-  --darker-blue-gradient: rgba(3, 39, 65, 1);
+  --medium-blue-rgba: rgba(8, 80, 117, 0.25);
+  --dark-blue-rgba: rgba(5, 56, 82, 0.25);
+  --dark-blue2-rgba: rgba(4, 47, 73, 0.25);
+  --darker-blue-rgba: rgba(3, 39, 65, 0.25);
   /* font sizes */
   --menu-page-title: 7.4vh;
   --menu-page-subtitle: 3vh;
@@ -604,13 +606,13 @@ button {
   color: var(--bright-teal); }
 
 div.control-collection {
-  background-color: var(--dark-blue);
   margin: 0;
-  padding: 2vh 2vh; }
+  padding: 1vh 1vh 1vh 1vh;
+  background-color: var(--darker-blue);
+  box-shadow: inset 4px 4px 12px 5px var(--medium-blue-rgba), inset -4px -4px 12px 5px var(--medium-blue-rgba); }
   div.control-collection div.find-apollo {
-    width: 100%;
+    margin: 1vh -1vh 4vh -1vh;
     height: 22vh;
-    margin: 0.5vh 0vh;
     background-color: var(--almost-black);
     border: 2px solid var(--canvas-container-border-color); }
     div.control-collection div.find-apollo.matchingscale {
@@ -621,169 +623,136 @@ div.control-collection {
       padding: 0;
       margin: 0;
       object-fit: cover; }
-  div.control-collection.select-layer,
-  div.control-collection .color-maps {
-    margin-bottom: 0vh;
-    padding-bottom: 1.2vh;
-    padding-left: 1.5vh;
-    padding-top: 1.2vh; }
-  div.control-collection > .title {
-    color: var(--bright-green);
-    font-size: var(--control-title);
-    font-weight: 500;
-    text-transform: uppercase;
-    padding: 0vh 0vh 1vh 1vh; }
-  div.control-collection > .subtitle {
-    font-size: var(--control-subtitle);
-    font-weight: 500;
-    padding: 0vh 0vh 0.5vh 0.5vh; }
-  div.control-collection.adjust-layer {
-    margin-top: 0vh;
-    margin-bottom: 0vh;
-    padding-top: 1.4vh;
-    padding-bottom: 0.1vh; }
-    div.control-collection.adjust-layer > .subtitle {
-      margin-bottom: 1.4vh; }
-  div.control-collection > .name {
-    text-transform: uppercase; }
-  div.control-collection > .context {
-    font-size: var(--control-subtitle);
-    padding: 0.5vh 0vh 0.25vh 0.5vh; }
-  div.control-collection > .row,
-  div.control-collection form > .row {
-    margin: 0.75em 0em;
+  div.control-collection div.select-layer,
+  div.control-collection div.color-maps,
+  div.control-collection div.special-effects,
+  div.control-collection div.adjust-layer,
+  div.control-collection div.select-layer {
+    margin: 1vh 0vh 3vh 0vh;
+    padding: 0; }
+  div.control-collection div.color-maps > .row {
+    margin: 1vh 0.5vh;
+    padding: 0; }
+  div.control-collection div.special-effects form > .row {
+    margin: 1.5vh 1vh;
     max-height: 4vh; }
-    div.control-collection > .row .effect,
-    div.control-collection > .row .select-filter,
-    div.control-collection form > .row .effect,
-    div.control-collection form > .row .select-filter {
+  div.control-collection div.special-effects input {
+    margin: 0vh 0vh 0vh 0vh;
+    padding: 0; }
+  div.control-collection div.special-effects label {
+    font-size: var(--control-subtitle);
+    padding-left: 0.5vh; }
+  div.control-collection div.select-layer .row {
+    margin: 1.5vh 1vh;
+    max-height: 4vh; }
+    div.control-collection div.select-layer .row.select-filter {
       display: flex;
       align-items: center;
       justify-content: flex-start; }
-      div.control-collection > .row .effect:hover,
-      div.control-collection > .row .select-filter:hover,
-      div.control-collection form > .row .effect:hover,
-      div.control-collection form > .row .select-filter:hover {
+      div.control-collection div.select-layer .row.select-filter:hover {
         color: white;
         font-weight: bold; }
-    div.control-collection > .row.select-filter.c-custom-checkbox,
-    div.control-collection form > .row.select-filter.c-custom-checkbox {
-      cursor: pointer;
-      display: flex;
-      align-items: start;
-      --checked-state-bg-color: hsl(350, 95%, 58%);
-      --checked-state-check-color: #fff;
-      --outline-color: var(--checked-state-bg-color);
-      --outline-offset: 2px; }
-    div.control-collection > .row.select-filter svg,
-    div.control-collection form > .row.select-filter svg {
-      /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
-      width: 2.2em;
-      height: 2.2em;
-      margin: 0;
-      padding: 0em 0.2em;
-      align-self: center;
-      margin-right: 0.5em;
-      stroke: var(--bright-teal); }
-      div.control-collection > .row.select-filter svg *,
-      div.control-collection form > .row.select-filter svg * {
-        transition: all 0.1s linear; }
-    div.control-collection > .row.select-filter input[type="radio"] + svg > circle.selected,
-    div.control-collection form > .row.select-filter input[type="radio"] + svg > circle.selected {
-      opactity: 0.0001; }
-    div.control-collection > .row.select-filter input[type="radio"]:checked + svg > circle.selected,
-    div.control-collection form > .row.select-filter input[type="radio"]:checked + svg > circle.selected {
-      display: inline; }
-    div.control-collection > .row.select-filter input[type="radio"]:not(:checked) + svg > circle.selected,
-    div.control-collection form > .row.select-filter input[type="radio"]:not(:checked) + svg > circle.selected {
-      display: none; }
-    div.control-collection > .row.select-filter input[type="radio"]:not(:checked) ~ div.label-palette,
-    div.control-collection form > .row.select-filter input[type="radio"]:not(:checked) ~ div.label-palette {
-      filter: brightness(50%) opacity(75%); }
-    div.control-collection > .row.select-filter input[type="radio"],
-    div.control-collection form > .row.select-filter input[type="radio"] {
-      position: absolute;
-      /* set same dimensions as the SVG */
-      width: 21vw;
-      height: 2.4em;
-      /* hide it */
-      opacity: 0.00001; }
-    div.control-collection > .row.select-filter div.label-palette,
-    div.control-collection form > .row.select-filter div.label-palette {
-      background-color: white;
-      padding-left: 0.25vh;
-      border-radius: 2px;
-      height: 3.8vh;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      pointer-events: none; }
-      div.control-collection > .row.select-filter div.label-palette label,
-      div.control-collection form > .row.select-filter div.label-palette label {
-        margin-left: 1vh;
-        font-size: var(--control-subtitle);
-        font-weight: 500;
-        color: black;
-        pointer-events: none; }
-      div.control-collection > .row.select-filter div.label-palette canvas,
-      div.control-collection form > .row.select-filter div.label-palette canvas {
-        width: 6vw;
-        height: 2vh;
-        padding: 0;
-        margin: 0;
-        margin-left: auto;
-        object-fit: fill;
-        border: 1px solid var(--almost-black);
-        pointer-events: none; }
-      div.control-collection > .row.select-filter div.label-palette canvas.label-icon,
-      div.control-collection form > .row.select-filter div.label-palette canvas.label-icon {
-        width: 3.8vh;
-        height: 3.5vh;
-        padding: 0;
-        margin: 0;
-        background-color: var(--almost-black);
-        object-fit: contain;
-        filter: grayscale(100%) brightness(150%) contrast(125%);
-        pointer-events: none; }
-    div.control-collection > .row.special-effects input,
-    div.control-collection form > .row.special-effects input {
-      margin: 0vh 0vh 0vh 0vh;
-      padding: 0; }
-    div.control-collection > .row.special-effects label,
-    div.control-collection form > .row.special-effects label {
-      font-size: var(--control-subtitle);
-      padding-left: 0.5vh; }
-  div.control-collection div.adjust-filter {
+      div.control-collection div.select-layer .row.select-filter.c-custom-checkbox {
+        cursor: pointer;
+        display: flex;
+        align-items: start;
+        --checked-state-bg-color: hsl(350, 95%, 58%);
+        --checked-state-check-color: #fff;
+        --outline-color: var(--checked-state-bg-color);
+        --outline-offset: 2px; }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox svg {
+          /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
+          width: 2.2em;
+          height: 2.2em;
+          margin: 0;
+          padding: 0em 0.2em;
+          align-self: center;
+          margin-right: 0.5em;
+          stroke: var(--bright-teal); }
+          div.control-collection div.select-layer .row.select-filter.c-custom-checkbox svg * {
+            transition: all 0.1s linear; }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox input[type="radio"] + svg > circle.selected {
+          opactity: 0.0001; }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox input[type="radio"]:checked + svg > circle.selected {
+          display: inline; }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox input[type="radio"]:not(:checked) + svg > circle.selected {
+          display: none; }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox input[type="radio"]:not(:checked) ~ div.label-palette {
+          filter: brightness(50%) opacity(75%); }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox input[type="radio"] {
+          position: absolute;
+          /* set same dimensions as the SVG */
+          width: 21vw;
+          height: 2.4em;
+          /* hide it */
+          opacity: 0.00001; }
+        div.control-collection div.select-layer .row.select-filter.c-custom-checkbox div.label-palette {
+          background-color: white;
+          padding-left: 0.25vh;
+          border-radius: 2px;
+          height: 3.8vh;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          pointer-events: none; }
+          div.control-collection div.select-layer .row.select-filter.c-custom-checkbox div.label-palette label {
+            margin-left: 1vh;
+            font-size: var(--control-subtitle);
+            font-weight: 500;
+            color: black;
+            pointer-events: none; }
+          div.control-collection div.select-layer .row.select-filter.c-custom-checkbox div.label-palette canvas {
+            width: 6vw;
+            height: 2vh;
+            padding: 0;
+            margin: 0;
+            margin-left: auto;
+            object-fit: fill;
+            border: 1px solid var(--almost-black);
+            pointer-events: none; }
+          div.control-collection div.select-layer .row.select-filter.c-custom-checkbox div.label-palette canvas.label-icon {
+            width: 3.8vh;
+            height: 3.5vh;
+            padding: 0;
+            margin: 0;
+            background-color: var(--almost-black);
+            object-fit: contain;
+            filter: grayscale(100%) brightness(150%) contrast(125%);
+            pointer-events: none; }
+  div.control-collection div.adjust-layer > .subtitle {
+    margin-bottom: 1.4vh; }
+  div.control-collection div.adjust-layer div.adjust-filter {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-left: 1vh;
     margin-bottom: 1.5rem; }
-    div.control-collection div.adjust-filter label {
+    div.control-collection div.adjust-layer div.adjust-filter label {
       font-size: 1.9vh;
       font-weight: 500;
       width: 7.5rem;
       margin-right: 0.25rem; }
-    div.control-collection div.adjust-filter div.slider-icon {
+    div.control-collection div.adjust-layer div.adjust-filter div.slider-icon {
       z-index: 1; }
-      div.control-collection div.adjust-filter div.slider-icon svg {
+      div.control-collection div.adjust-layer div.adjust-filter div.slider-icon svg {
         pointer-events: none;
         width: 1.7vw;
         height: 1.7vw; }
-        div.control-collection div.adjust-filter div.slider-icon svg path {
+        div.control-collection div.adjust-layer div.adjust-filter div.slider-icon svg path {
           fill: var(--dark-teal);
           stroke-width: 1px; }
-        div.control-collection div.adjust-filter div.slider-icon svg:hover path {
+        div.control-collection div.adjust-layer div.adjust-filter div.slider-icon svg:hover path {
           fill: white; }
-      div.control-collection div.adjust-filter div.slider-icon.step-down {
+      div.control-collection div.adjust-layer div.adjust-filter div.slider-icon.step-down {
         margin-right: -3px; }
-      div.control-collection div.adjust-filter div.slider-icon.step-up {
+      div.control-collection div.adjust-layer div.adjust-filter div.slider-icon.step-up {
         margin-left: -3px; }
-    div.control-collection div.adjust-filter input[type="range"] {
+    div.control-collection div.adjust-layer div.adjust-filter input[type="range"] {
       -webkit-appearance: none;
       padding: 0;
       width: 14rem; }
-      div.control-collection div.adjust-filter input[type="range"]::-webkit-slider-runnable-track {
+      div.control-collection div.adjust-layer div.adjust-filter input[type="range"]::-webkit-slider-runnable-track {
         -webkit-appearance: none;
         margin-top: 0rem;
         color: var(--bright-blue);
@@ -795,7 +764,7 @@ div.control-collection {
         cursor: ew-resize;
         box-shadow: 0 0 2px 0 #555;
         transition: background 0.3s ease-in-out; }
-      div.control-collection div.adjust-filter input[type="range"]::-webkit-slider-thumb {
+      div.control-collection div.adjust-layer div.adjust-filter input[type="range"]::-webkit-slider-thumb {
         -webkit-appearance: none;
         border: 1px solid #000000;
         height: 1.5rem;
@@ -804,9 +773,24 @@ div.control-collection {
         background: #bff5aa;
         cursor: pointer;
         margin-top: -0.5rem; }
-    div.control-collection div.adjust-filter output {
+    div.control-collection div.adjust-layer div.adjust-filter output {
       width: 2.5rem;
       padding-left: 0.5rem; }
+  div.control-collection .title {
+    color: var(--bright-green);
+    font-size: var(--control-title);
+    font-weight: 500;
+    text-transform: uppercase;
+    margin: 0vh 0vh 1vh 2vh; }
+  div.control-collection .subtitle {
+    font-size: var(--control-subtitle);
+    font-weight: 500;
+    padding: 0vh 0vh 0.5vh 0.5vh; }
+  div.control-collection .name {
+    text-transform: uppercase; }
+  div.control-collection .context {
+    font-size: var(--control-subtitle);
+    margin: 1vh 0vh 1vh 1vh; }
 
 div.row.select-filter:hover {
   color: white;
@@ -1046,6 +1030,7 @@ div#preview-image-next-name {
 div.zoom-preview-content {
   border: 2px solid var(--bright-teal);
   padding: 0.5vh 1vh 1vh 1vh;
+  margin: 1vh -1vh 3vh -1vh;
   background-color: black; }
   div.zoom-preview-content > .label {
     float: left; }
@@ -1607,35 +1592,35 @@ div.histogram-container {
     input[type="radio"]:checked {
       --s: 0.5; } }
 
-div.select-layer {
+div.select-main-image-layer {
   padding: 0em 0.5em;
   background-color: var(--dark-blue); }
-  div.select-layer .subtitle {
+  div.select-main-image-layer .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500; }
-  div.select-layer div.eyes-input {
+  div.select-main-image-layer div.eyes-input {
     text-transform: uppercase;
     font-size: var(--main-layer-selector);
     font-weight: 500;
     margin-right: 0.25vw; }
-  div.select-layer label {
+  div.select-main-image-layer label {
     font-size: var(--control-subtitle);
     font-weight: 500; }
-    div.select-layer label.eyes-input {
+    div.select-main-image-layer label.eyes-input {
       display: inline-block;
       width: 44px;
       height: 44px;
       cursor: pointer;
       background-image: url(../images/eyes/eyeclosed.svg); }
-  div.select-layer input[type="checkbox"].eyes-input {
+  div.select-main-image-layer input[type="checkbox"].eyes-input {
     display: none; }
-  div.select-layer input[type="checkbox"]:checked + label.eyes-input {
+  div.select-main-image-layer input[type="checkbox"]:checked + label.eyes-input {
     background-image: url(../images/eyes/eyeopen.svg); }
-  div.select-layer label.eyes-input:has(> input[type="checkbox"]:checked) {
+  div.select-main-image-layer label.eyes-input:has(> input[type="checkbox"]:checked) {
     display: inline-block;
     width: 44px;
     height: 44px;
     background-image: url(../images/eyes/eyeopen.svg); }
-  div.select-layer input {
+  div.select-main-image-layer input {
     padding: 0vh 0vh 0vh 1vh;
     width: 100%; }

@@ -33,8 +33,10 @@ html {
   --canvas-container-border-color-fullscreen: #222;
   --translucent-gray: rgba(32, 32, 32, 0.6);
 
-  --dark-blue-gradient: rgba(8, 86, 112, 1);
-  --darker-blue-gradient: rgba(3, 39, 65, 1);
+  --medium-blue-rgba: rgba(8, 80, 117, 0.25);
+  --dark-blue-rgba: rgba(5, 56, 82, 0.25);
+  --dark-blue2-rgba: rgba(4, 47, 73, 0.25);
+  --darker-blue-rgba: rgba(3, 39, 65, 0.25);
 
   /* font sizes */
   --menu-page-title: 7.4vh;
@@ -776,16 +778,14 @@ button {
 }
 
 div.control-collection {
-  background-color: var(--dark-blue);
-  // background-color: #042842;
   margin: 0;
-  padding: 2vh 2vh;
-  div.colormaps {
-  }
+  padding: 1vh 1vh 1vh 1vh;
+  background-color: var(--darker-blue);
+  box-shadow: inset 4px 4px 12px 5px var(--medium-blue-rgba),
+    inset -4px -4px 12px 5px var(--medium-blue-rgba);
   div.find-apollo {
-    width: 100%;
+    margin: 1vh -1vh 4vh -1vh;
     height: 22vh;
-    margin: 0.5vh 0vh;
     background-color: var(--almost-black);
     border: 2px solid var(--canvas-container-border-color);
     &.matchingscale {
@@ -799,237 +799,243 @@ div.control-collection {
       object-fit: cover;
     }
   }
-  &.select-layer,
-  .color-maps {
-    margin-bottom: 0vh;
-    padding-bottom: 1.2vh;
-    padding-left: 1.5vh;
-    padding-top: 1.2vh;
+  div.select-layer,
+  div.color-maps,
+  div.special-effects,
+  div.adjust-layer,
+  div.select-layer {
+    margin: 1vh 0vh 3vh 0vh;
+    padding: 0;
   }
-  &.special-effects {
+  div.color-maps {
+    > .row {
+      margin: 1vh 0.5vh;
+      padding: 0;
+    }
   }
-  > .title {
+  div.special-effects {
+    form > .row {
+      margin: 1.5vh 1vh;
+      max-height: 4vh;
+    }
+    input {
+      margin: 0vh 0vh 0vh 0vh;
+      padding: 0;
+    }
+    label {
+      font-size: var(--control-subtitle);
+      padding-left: 0.5vh;
+    }
+  }
+  div.select-layer {
+    .row {
+      margin: 1.5vh 1vh;
+      max-height: 4vh;
+      &.select-filter {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+
+        &:hover {
+          color: white;
+          font-weight: bold;
+        }
+        &.c-custom-checkbox {
+          cursor: pointer;
+
+          display: flex;
+          align-items: start;
+
+          --checked-state-bg-color: hsl(350, 95%, 58%);
+          --checked-state-check-color: #fff;
+          --outline-color: var(--checked-state-bg-color);
+          --outline-offset: 2px;
+          svg {
+            /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
+            width: 2.2em;
+            height: 2.2em;
+            margin: 0;
+            padding: 0em 0.2em;
+            align-self: center;
+            margin-right: 0.5em;
+            stroke: var(--bright-teal);
+            * {
+              transition: all 0.1s linear;
+            }
+          }
+          input[type="radio"] + svg > circle.selected {
+            opactity: 0.0001;
+          }
+
+          input[type="radio"]:checked + svg > circle.selected {
+            display: inline;
+          }
+
+          input[type="radio"]:not(:checked) + svg > circle.selected {
+            display: none;
+          }
+
+          // input[type="radio"]:focus + svg {
+          //   outline: 3px solid var(--outline-color);
+          //   outline-offset: var(--outline-offset);
+          // }
+          //
+          // input[type="radio"]:focus:not(:focus-visible) + svg {
+          //   outline: none;
+          // }
+
+          input[type="radio"]:not(:checked) ~ div.label-palette {
+            filter: brightness(50%) opacity(75%);
+          }
+
+          input[type="radio"] {
+            position: absolute;
+            /* set same dimensions as the SVG */
+            width: 21vw;
+            height: 2.4em;
+            /* hide it */
+            opacity: 0.00001;
+          }
+
+          div.label-palette {
+            background-color: white;
+            padding-left: 0.25vh;
+            border-radius: 2px;
+            height: 3.8vh;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            pointer-events: none;
+
+            label {
+              margin-left: 1vh;
+              font-size: var(--control-subtitle);
+              font-weight: 500;
+              color: black;
+              pointer-events: none;
+            }
+            canvas {
+              width: 6vw;
+              height: 2vh;
+              padding: 0;
+              margin: 0;
+              margin-left: auto;
+              object-fit: fill;
+              border: 1px solid var(--almost-black);
+              pointer-events: none;
+            }
+            canvas.label-icon {
+              width: 3.8vh;
+              height: 3.5vh;
+              padding: 0;
+              margin: 0;
+              background-color: var(--almost-black);
+              object-fit: contain;
+              filter: grayscale(100%) brightness(150%) contrast(125%);
+              pointer-events: none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  div.adjust-layer {
+    > .subtitle {
+      margin-bottom: 1.4vh;
+    }
+
+    div.adjust-filter {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      margin-left: 1vh;
+      margin-bottom: 1.5rem;
+
+      label {
+        font-size: 1.9vh;
+        font-weight: 500;
+        width: 7.5rem;
+        margin-right: 0.25rem;
+      }
+      div.slider-icon {
+        z-index: 1;
+        svg {
+          pointer-events: none;
+          width: 1.7vw;
+          height: 1.7vw;
+          path {
+            fill: var(--dark-teal);
+            stroke-width: 1px;
+          }
+          &:hover {
+            path {
+              fill: white;
+            }
+          }
+        }
+        &.step-down {
+          margin-right: -3px;
+        }
+        &.step-up {
+          margin-left: -3px;
+        }
+      }
+      input[type="range"] {
+        -webkit-appearance: none;
+        padding: 0;
+        width: 14rem;
+        &::-webkit-slider-runnable-track {
+          -webkit-appearance: none;
+          margin-top: 0rem;
+          color: var(--bright-blue);
+          border: none;
+          border-radius: 0;
+          height: 6px;
+          width: 20px;
+          // color: #032741;
+          background: #3ddaf6;
+          cursor: ew-resize;
+          box-shadow: 0 0 2px 0 #555;
+          transition: background 0.3s ease-in-out;
+        }
+        &::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          border: 1px solid #000000;
+          height: 1.5rem;
+          width: 0.5rem;
+          border-radius: 2px;
+          background: #bff5aa;
+          cursor: pointer;
+          margin-top: -0.5rem;
+        }
+      }
+      output {
+        width: 2.5rem;
+        padding-left: 0.5rem;
+      }
+    }
+  }
+
+  .title {
     color: var(--bright-green);
     font-size: var(--control-title);
     font-weight: 500;
     text-transform: uppercase;
-    padding: 0vh 0vh 1vh 1vh;
+    margin: 0vh 0vh 1vh 2vh;
   }
-  > .subtitle {
+  .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500;
     padding: 0vh 0vh 0.5vh 0.5vh;
   }
-  &.adjust-layer {
-    margin-top: 0vh;
-    margin-bottom: 0vh;
-    padding-top: 1.4vh;
-    padding-bottom: 0.1vh;
-    > .subtitle {
-      margin-bottom: 1.4vh;
-    }
-  }
-  > .name {
+  .name {
     text-transform: uppercase;
   }
-  > .context {
+  .context {
     font-size: var(--control-subtitle);
-    padding: 0.5vh 0vh 0.25vh 0.5vh;
-  }
-
-  > .row,
-  form > .row {
-    margin: 0.75em 0em;
-    max-height: 4vh;
-    .effect,
-    .select-filter {
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-
-      &:hover {
-        color: white;
-        font-weight: bold;
-      }
-    }
-    &.select-filter {
-      &.c-custom-checkbox {
-        cursor: pointer;
-
-        display: flex;
-        align-items: start;
-
-        --checked-state-bg-color: hsl(350, 95%, 58%);
-        --checked-state-check-color: #fff;
-        --outline-color: var(--checked-state-bg-color);
-        --outline-offset: 2px;
-      }
-      svg {
-        /* set SVG dimensions in ems; i.e. relative to the font size so that it scales with the size of the font. */
-        width: 2.2em;
-        height: 2.2em;
-        margin: 0;
-        padding: 0em 0.2em;
-        align-self: center;
-        margin-right: 0.5em;
-        stroke: var(--bright-teal);
-        * {
-          transition: all 0.1s linear;
-        }
-      }
-      input[type="radio"] + svg > circle.selected {
-        opactity: 0.0001;
-      }
-
-      input[type="radio"]:checked + svg > circle.selected {
-        display: inline;
-      }
-
-      input[type="radio"]:not(:checked) + svg > circle.selected {
-        display: none;
-      }
-
-      // input[type="radio"]:focus + svg {
-      //   outline: 3px solid var(--outline-color);
-      //   outline-offset: var(--outline-offset);
-      // }
-      //
-      // input[type="radio"]:focus:not(:focus-visible) + svg {
-      //   outline: none;
-      // }
-
-      input[type="radio"]:not(:checked) ~ div.label-palette {
-        filter: brightness(50%) opacity(75%);
-      }
-
-      input[type="radio"] {
-        position: absolute;
-        /* set same dimensions as the SVG */
-        width: 21vw;
-        height: 2.4em;
-        /* hide it */
-        opacity: 0.00001;
-      }
-
-      div.label-palette {
-        background-color: white;
-        padding-left: 0.25vh;
-        border-radius: 2px;
-        height: 3.8vh;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        pointer-events: none;
-
-        label {
-          margin-left: 1vh;
-          font-size: var(--control-subtitle);
-          font-weight: 500;
-          color: black;
-          pointer-events: none;
-        }
-        canvas {
-          width: 6vw;
-          height: 2vh;
-          padding: 0;
-          margin: 0;
-          margin-left: auto;
-          object-fit: fill;
-          border: 1px solid var(--almost-black);
-          pointer-events: none;
-        }
-        canvas.label-icon {
-          width: 3.8vh;
-          height: 3.5vh;
-          padding: 0;
-          margin: 0;
-          background-color: var(--almost-black);
-          object-fit: contain;
-          filter: grayscale(100%) brightness(150%) contrast(125%);
-          pointer-events: none;
-        }
-      }
-    }
-    &.special-effects {
-      input {
-        margin: 0vh 0vh 0vh 0vh;
-        padding: 0;
-      }
-      label {
-        font-size: var(--control-subtitle);
-        padding-left: 0.5vh;
-      }
-    }
-  }
-  div.adjust-filter {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
-    margin-bottom: 1.5rem;
-
-    label {
-      font-size: 1.9vh;
-      font-weight: 500;
-      width: 7.5rem;
-      margin-right: 0.25rem;
-    }
-    div.slider-icon {
-      z-index: 1;
-      svg {
-        pointer-events: none;
-        width: 1.7vw;
-        height: 1.7vw;
-        path {
-          fill: var(--dark-teal);
-          stroke-width: 1px;
-        }
-        &:hover {
-          path {
-            fill: white;
-          }
-        }
-      }
-      &.step-down {
-        margin-right: -3px;
-      }
-      &.step-up {
-        margin-left: -3px;
-      }
-    }
-    input[type="range"] {
-      -webkit-appearance: none;
-      padding: 0;
-      width: 14rem;
-      &::-webkit-slider-runnable-track {
-        -webkit-appearance: none;
-        margin-top: 0rem;
-        color: var(--bright-blue);
-        border: none;
-        border-radius: 0;
-        height: 6px;
-        width: 20px;
-        // color: #032741;
-        background: #3ddaf6;
-        cursor: ew-resize;
-        box-shadow: 0 0 2px 0 #555;
-        transition: background 0.3s ease-in-out;
-      }
-      &::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        border: 1px solid #000000;
-        height: 1.5rem;
-        width: 0.5rem;
-        border-radius: 2px;
-        background: #bff5aa;
-        cursor: pointer;
-        margin-top: -0.5rem;
-      }
-    }
-    output {
-      width: 2.5rem;
-      padding-left: 0.5rem;
-    }
+    margin: 1vh 0vh 1vh 1vh;
   }
 }
 
@@ -1354,6 +1360,7 @@ div#preview-image-next-name {
 div.zoom-preview-content {
   border: 2px solid var(--bright-teal);
   padding: 0.5vh 1vh 1vh 1vh;
+  margin: 1vh -1vh 3vh -1vh;
   background-color: black;
   > .label {
     float: left;
@@ -2030,7 +2037,7 @@ div.histogram-container {
   }
 }
 
-div.select-layer {
+div.select-main-image-layer {
   padding: 0em 0.5em;
   background-color: var(--dark-blue);
   // background: radial-gradient(

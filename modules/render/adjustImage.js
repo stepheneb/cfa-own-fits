@@ -207,7 +207,7 @@ adjustImage.processCallback = (page, renderFunc) => {
 adjustImage.renderRGB = (page, registeredCallbacks) => {
   registeredCallbacks.push(callback);
   return `
-    <div class='control-collection adjust-layer'>
+    <div class='adjust-layer'>
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       ${brightness(page)}
       ${contrast(page)}
@@ -239,7 +239,7 @@ adjustImage.renderRGBUpdate = (page, source) => {
 adjustImage.renderMasterpiece = (page, registeredCallbacks) => {
   registeredCallbacks.push(callback);
   return `
-    <div class='control-collection adjust-layer'>
+    <div class='adjust-layer'>
       <div class='subtitle'><span class="solid-right-arrow">&#11157</span>${page.adjustimagetext}</div>
       ${brightness(page)}
       ${contrast(page)}
