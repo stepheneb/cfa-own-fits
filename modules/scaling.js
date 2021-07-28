@@ -1111,7 +1111,7 @@ class Scaling {
 
   }
 
-  previewZoomUpLeaveEnd(name) {
+  previewZoomUpLeaveEnd() {
     if (this.previewZoomDragStarted || this.previewZoomIsDragging) {
       this.lastChangeIn = "pzc";
       this.lastPreviewZoomMove = {
