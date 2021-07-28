@@ -7,15 +7,29 @@ telescopes.updateVisibility = page => {
   let enabled = page.image.selectedMainLayers;
   let scopes = page.telescopes;
   let id, elem;
-  scopes.forEach((scope, i) => {
+  visibilityOff(scopes);
+  for (let i = 0; i < 3; i++) {
+    if (enabled[i] == '1') {
+      let key = page.image.sources[i].telescope;
+      let index = page.telescopes.findIndex(obj => obj.key == key);
+      scopes[index].visible = true;
+    }
+  }
+  scopes.forEach((scope) => {
     id = scope.key;
     elem = document.getElementById(id);
-    if (enabled[i] == '1') {
+    if (scope.visible) {
       elem.style.display = "block";
     } else {
       elem.style.display = "none";
     }
   });
+
+  function visibilityOff(scopes) {
+    scopes.forEach((scope) => {
+      scope.visible = false;
+    });
+  }
 };
 
 telescopes.render = (page, registeredCallbacks) => {
