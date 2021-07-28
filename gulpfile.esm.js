@@ -7,7 +7,13 @@ import cp from 'child_process';
 import jest from 'gulp-jest';
 
 //SASS
-import sass from "gulp-sass";
+
+import gulpSass from "gulp-sass";
+import nodeSass from "node-sass";
+const sass = gulpSass(nodeSass);
+
+// var sass = require('gulp-sass')(require('sass'));
+// import sass from "gulp-sass";
 // Post CSS and Plugins
 // import postcss from "gulp-postcss";
 // import autoprefixer from "gulp-autoprefixer";
@@ -54,7 +60,7 @@ const runJest = () => {
 };
 
 const watch = () => {
-  // "./rawdata/**/*.bmp", 
+  // "./rawdata/**/*.bmp",
   gulp.watch(["*.html", "./css/*.css", "main.js", "./modules/**/*.js", "./images/**/*", "app.json"], reload);
   gulp.watch(myGlobs.scssSource, compileSass);
 };
