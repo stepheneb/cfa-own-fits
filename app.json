@@ -126,6 +126,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -207,6 +208,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -287,6 +289,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -371,6 +374,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -451,6 +455,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -531,6 +536,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL000/543x543/wac_gl000-R.bmp",
                   "medium": "rawdata/WAC_GL000/1086x1086/wac_gl000-R.bmp",
@@ -603,6 +609,7 @@
               {
                 "type": "rawdata",
                 "name": "green",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_G.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_G.bmp",
@@ -672,6 +679,7 @@
               {
                 "type": "rawdata",
                 "name": "gray",
+                "telescope": "lro",
                 "path": {
                   "small": "rawdata/WAC_GL180/543x543/wac_gl180_0.125-R.bmp",
                   "medium": "rawdata/WAC_GL180/1086x1086/wac_gl180_0.125-R.bmp",
@@ -744,6 +752,7 @@
               {
                 "type": "rawdata",
                 "name": "jupiter1",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/h_jupiter_01/400x400/01_h_jupiter_343_070301x_drz_sci.bmp",
                   "medium": "rawdata/h_jupiter_01/800x800/01_h_jupiter_343_070301x_drz_sci.bmp",
@@ -763,6 +772,7 @@
               {
                 "type": "rawdata",
                 "name": "jupiter2",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/h_jupiter_02/400x400/02_h_jupiter_410_070301x2_drz_sci.bmp",
                   "medium": "rawdata/h_jupiter_02/800x800/02_h_jupiter_410_070301x2_drz_sci.bmp",
@@ -782,6 +792,7 @@
               {
                 "type": "rawdata",
                 "name": "jupiter3",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/h_jupiter_03/400x400/03_h_jupiter_410_070301y_drz_sci.bmp",
                   "medium": "rawdata/h_jupiter_03/800x800/03_h_jupiter_410_070301y_drz_sci.bmp",
@@ -867,6 +878,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-1",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_02__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_02__20_28_23_34__SDO_AIA_AIA_171.bmp",
@@ -887,6 +899,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-2",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/512x512/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_03__20_28_11_34__SDO_AIA_AIA_171/1024x1024/2014_01_03__20_28_11_34__SDO_AIA_AIA_171.bmp",
@@ -907,6 +920,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-3",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_04__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_04__20_28_23_34__SDO_AIA_AIA_171.bmp",
@@ -927,6 +941,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-4",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_05__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_05__20_28_23_34__SDO_AIA_AIA_171.bmp",
@@ -947,6 +962,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-5",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_06__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_06__20_28_23_34__SDO_AIA_AIA_171.bmp",
@@ -967,6 +983,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-6",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/512x512/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_07__20_28_11_34__SDO_AIA_AIA_171/1024x1024/2014_01_07__20_28_11_34__SDO_AIA_AIA_171.bmp",
@@ -987,6 +1004,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-7",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/512x512/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_08__20_28_11_34__SDO_AIA_AIA_171/1024x1024/2014_01_08__20_28_11_34__SDO_AIA_AIA_171.bmp",
@@ -1007,6 +1025,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-8",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/512x512/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_09__20_28_23_35__SDO_AIA_AIA_171/1024x1024/2014_01_09__20_28_23_35__SDO_AIA_AIA_171.bmp",
@@ -1027,6 +1046,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-9",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/512x512/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_10__20_28_23_34__SDO_AIA_AIA_171/1024x1024/2014_01_10__20_28_23_34__SDO_AIA_AIA_171.bmp",
@@ -1047,6 +1067,7 @@
               {
                 "type": "rawdata",
                 "name": "sun-uv-10",
+                "telescope": "sdo",
                 "path": {
                   "small": "rawdata/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/512x512/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.bmp",
                   "medium": "rawdata/2014_01_11__20_27_59_34__SDO_AIA_AIA_171/1024x1024/2014_01_11__20_27_59_34__SDO_AIA_AIA_171.bmp",
@@ -1119,6 +1140,7 @@
               {
                 "type": "rawdata",
                 "name": "red",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f658Red.bmp",
                   "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f658Red.bmp",
@@ -1138,6 +1160,7 @@
               {
                 "type": "rawdata",
                 "name": "green",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f656Green.bmp",
                   "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f656Green.bmp",
@@ -1157,6 +1180,7 @@
               {
                 "type": "rawdata",
                 "name": "blue",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/HST_Lagoon/650x625/HST_Lagoon_f502Blue.bmp",
                   "medium": "rawdata/HST_Lagoon/1300x1250/HST_Lagoon_f502Blue.bmp",
@@ -1221,6 +1245,7 @@
               {
                 "type": "rawdata",
                 "name": "red",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_R.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_R.bmp",
@@ -1240,6 +1265,7 @@
               {
                 "type": "rawdata",
                 "name": "green",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_G.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_G.bmp",
@@ -1259,6 +1285,7 @@
               {
                 "type": "rawdata",
                 "name": "blue",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/m51/596x900/m51_optical_B.bmp",
                   "medium": "rawdata/m51/1192x1800/m51_optical_B.bmp",
@@ -1324,6 +1351,7 @@
               {
                 "type": "rawdata",
                 "name": "red",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/heic2007a/532x366/heic2007a-R.bmp",
                   "medium": "rawdata/heic2007a/1065x732/heic2007a-R.bmp",
@@ -1343,6 +1371,7 @@
               {
                 "type": "rawdata",
                 "name": "green",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/heic2007a/532x366/heic2007a-G.bmp",
                   "medium": "rawdata/heic2007a/1065x732/heic2007a-G.bmp",
@@ -1362,6 +1391,7 @@
               {
                 "type": "rawdata",
                 "name": "blue",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/heic2007a/532x366/heic2007a-B.bmp",
                   "medium": "rawdata/heic2007a/1065x732/heic2007a-B.bmp",
@@ -1427,6 +1457,7 @@
               {
                 "type": "rawdata",
                 "name": "red",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/potw1345a/530x526/potw1345a-R.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-R.bmp",
@@ -1446,6 +1477,7 @@
               {
                 "type": "rawdata",
                 "name": "green",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/potw1345a/530x526/potw1345a-G.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-G.bmp",
@@ -1465,6 +1497,7 @@
               {
                 "type": "rawdata",
                 "name": "blue",
+                "telescope": "hubble",
                 "path": {
                   "small": "rawdata/potw1345a/530x526/potw1345a-B.bmp",
                   "medium": "rawdata/potw1345a/1060x1052/potw1345a-B.bmp",
@@ -1530,6 +1563,7 @@
               {
                 "type": "rawdata",
                 "name": "red",
+                "telescope": "juno",
                 "path": {
                   "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-red.bmp",
                   "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-red.bmp",
@@ -1549,6 +1583,7 @@
               {
                 "type": "rawdata",
                 "name": "green",
+                "telescope": "juno",
                 "path": {
                   "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-green.bmp",
                   "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-green.bmp",
@@ -1568,6 +1603,7 @@
               {
                 "type": "rawdata",
                 "name": "blue",
+                "telescope": "juno",
                 "path": {
                   "small": "rawdata/Juno_Jupiter_Set6/400x400/JNCE_2016346_03C00118_V02-blue.bmp",
                   "medium": "rawdata/Juno_Jupiter_Set6/800x800/JNCE_2016346_03C00118_V02-blue.bmp",
