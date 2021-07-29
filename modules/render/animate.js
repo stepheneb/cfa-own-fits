@@ -72,7 +72,7 @@ animate.render = (page, registeredCallbacks) => {
   return html;
 
   function callback() {
-    let container = document.getElementById(id);
+    let controls = document.getElementById(idControls);
     let stepBack = document.getElementById(stepBackId);
     let play = document.getElementById(playId);
     let pause = document.getElementById(pauseId);
@@ -95,7 +95,7 @@ animate.render = (page, registeredCallbacks) => {
     });
 
     play.addEventListener('click', () => {
-      container.classList.add('playing');
+      controls.classList.add('playing');
       animationStep(1);
       page.animate = setInterval(() => {
         animationStep(1);
@@ -112,7 +112,7 @@ animate.render = (page, registeredCallbacks) => {
     });
 
     function animationStop() {
-      container.classList.remove('playing');
+      controls.classList.remove('playing');
       if (page.animate) {
         clearInterval(page.animate);
       }

@@ -1381,14 +1381,13 @@ div.telescope-container {
   div#animate-pause {
     display: none;
   }
-}
-
-#animate-controls.playing {
-  div#animate-play {
-    display: none;
-  }
-  div#animate-pause {
-    display: block;
+  &.playing {
+    div#animate-play {
+      display: none;
+    }
+    div#animate-pause {
+      display: block;
+    }
   }
 }
 
