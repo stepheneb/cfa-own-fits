@@ -698,7 +698,7 @@ class Page {
     let zoomInId = 'zoomout-step-in';
     let min = 1;
     let val = 1;
-    let max = 10;
+    let max = 2;
     let stopAtMax1to1 = true;
     if (this.type == 'find-apollo') {
       stopAtMax1to1 = false;
@@ -722,27 +722,36 @@ class Page {
 
       page.canvasImages.addScalingListener('loaded', (s) => {
         scaling = s;
-        rangeElem.min = scaling.minScale;
-        rangeElem.max = scaling.maxScale1to1;
+        setRangeMinMax();
       });
 
+      //
+      // event handlers
+      //
+
+      // handles changes in thumb position in slider
+      // and updates image scaling
       const listenerZoomSLider = (e) => {
-        setRangeMax();
-        let newScale = e.target.valueAsNumber;
+        setRangeMinMax();
+        let newScale = valSliderToScaling(e.target.valueAsNumber);
         scaling.scaleCanvasContinuousValue(newScale);
       };
 
+      // handles changes in scaling generate by user gestures
+      // and updates thumb position in slider
       const listenerScalingZoom = (scalingEvent) => {
-        setRangeMax();
-        let newScale = scalingEvent.scale;
-        rangeElem.valueAsNumber = newScale;
+        setRangeMinMax();
+        let newSliderVal = valScalingToSlider(scalingEvent.scale);
+        rangeElem.valueAsNumber = newSliderVal;
       };
 
+      // handles clicks in the plus and minus buttons on each
+      // end of slider and updates image scaling
       const listenerZoomStep = (e) => {
-        setRangeMax();
+        setRangeMinMax();
         let direction = e.target.dataset.step;
         if (direction == 'in') {
-          if (scaling.scale < max) {
+          if (scaling.scale < valSliderToScaling(max)) {
             scaling.scaling = 'zoomin';
             scaling.scaleCanvas();
           }
@@ -755,14 +764,15 @@ class Page {
         rangeElem.valueAsNumber = scaling.scale;
       };
 
-      const setRangeMax = () => {
+      const setRangeMinMax = () => {
         if (stopAtMax1to1) {
-          max = scaling.maxScale1to1;
+          max = valScalingToSlider(scaling.maxScale1to1);
           rangeElem.max = max;
         } else {
-          max = scaling.maxScale;
+          max = valScalingToSlider(scaling.maxScale);
           rangeElem.max = max;
         }
+        rangeElem.min = valScalingToSlider(scaling.minScale);
       };
 
       rangeElem.addEventListener('input', listenerZoomSLider);
@@ -772,6 +782,14 @@ class Page {
       page.canvasImages.addScalingListener('change', listenerScalingZoom);
 
       page.closeCallbacks.push(close);
+
+      function valScalingToSlider(val) {
+        return Math.log(val);
+      }
+
+      function valSliderToScaling(val) {
+        return Math.exp(val);
+      }
 
       function close() {
         rangeElem.removeEventListener('input', listenerZoomSLider);
