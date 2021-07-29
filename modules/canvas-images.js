@@ -316,6 +316,16 @@ class CanvasImages {
     }
   }
 
+  removeScalingListener(type, callback) {
+    if (typeof callback == 'function' && this.scalingCallbacks.length > 0) {
+      let index = this.scalingCallbacks.findIndex(item => item[0] == type && item[1] == callback);
+      if (index >= 0) {
+        this.scaling.removeListener(type, callback);
+        this.scalingCallbacks.splice(index, 1);
+      }
+    }
+  }
+
   updateScalingLayer() {
     let canvas = this.canvasRGB;
     let ctx = canvas.getContext('2d');

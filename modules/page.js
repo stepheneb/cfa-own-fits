@@ -727,9 +727,15 @@ class Page {
       });
 
       const listenerZoomSLider = (e) => {
-        let newScale = e.target.valueAsNumber;
         setRangeMax();
-        scaling.scaleCanvasContinuousValue(newScale, stopAtMax1to1);
+        let newScale = e.target.valueAsNumber;
+        scaling.scaleCanvasContinuousValue(newScale);
+      };
+
+      const listenerScalingZoom = (scalingEvent) => {
+        setRangeMax();
+        let newScale = scalingEvent.scale;
+        rangeElem.valueAsNumber = newScale;
       };
 
       const listenerZoomStep = (e) => {
@@ -738,7 +744,7 @@ class Page {
         if (direction == 'in') {
           if (scaling.scale < max) {
             scaling.scaling = 'zoomin';
-            scaling.scaleCanvas(stopAtMax1to1);
+            scaling.scaleCanvas();
           }
         } else {
           if (scaling.scale > scaling.minScale) {
@@ -762,6 +768,8 @@ class Page {
       rangeElem.addEventListener('input', listenerZoomSLider);
       zoomOutElem.addEventListener('click', listenerZoomStep);
       zoomInElem.addEventListener('click', listenerZoomStep);
+
+      page.canvasImages.addScalingListener('change', listenerScalingZoom);
 
       page.closeCallbacks.push(close);
 

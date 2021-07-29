@@ -20,6 +20,10 @@ class Scaling {
       change: []
     };
 
+    // https://github.com/mdn/dom-examples/blob/master/pointerevents/Pinch_zoom_gestures.html
+    this.evCache = [];
+    this.prevDiff = -1;
+
     this.previousImageWidth = 0;
     this.previousImageHeight = 0;
 
@@ -56,12 +60,15 @@ class Scaling {
     // this.imageData = this.ctx.getImageData();
     this.nx = sourceImageBitmap.width;
     this.ny = sourceImageBitmap.height;
+
+    this.max1to1 = true;
     this.minScale = 1;
     this.scale = this.minScale;
     this.maxScale1to1 = 0;
     this.maxScale = 0;
     this.ratio = 0;
     this.scaleFactor = 1.08;
+    this.gestureScaleFactor = 1.02;
     this.scaleDraw = null;
     this.distance = 0;
 
@@ -164,6 +171,9 @@ class Scaling {
 
     if (this.findApolloSiteContainerId) {
       this.findApolloSiteContainer = document.getElementById(this.findApolloSiteContainerId);
+      this.max1to1 = false;
+    } else {
+      this.max1to1 = true;
     }
 
     this.calcMaxScale();
@@ -173,6 +183,13 @@ class Scaling {
     this.showTouchTooltip();
 
     this.mainEvents = [
+      ['pointerdown', this.listenerMouseDownTouchStart],
+      ['pointermove', this.listenerMouseMoveTouchMove],
+      ['pointerup', this.listenerMouseUpTouchEnd],
+      ['pointercancel', this.listenerMouseUpTouchEnd],
+      ['pointerout', this.listenerMouseUpTouchEnd],
+      ['pointerleave', this.listenerMouseUpTouchEnd],
+
       ['mousedown', this.listenerMouseDownTouchStart],
       ['touchstart', this.listenerMouseDownTouchStart],
 
@@ -209,7 +226,7 @@ class Scaling {
 
     if (this.previewZoomCanvas) {
       this.previewZoomEvents.forEach((eventItem) => {
-        this.previewZoomCanvas.addEventListener(eventItem[0], eventItem[1]);
+        this.previewZoomCanvas.addEventListener(eventItem[0], eventItem[1], true);
       });
     }
   }
@@ -251,7 +268,7 @@ class Scaling {
     this.ctx.msImageSmoothingEnabled = false;
   }
 
-  scaleCanvas(max1to1 = false) {
+  scaleCanvas() {
     // let previousScale = this.scale;
     switch (this.scaling) {
     case 'zoomout':
@@ -260,7 +277,7 @@ class Scaling {
       break;
     case 'zoomin':
       this.scale = this.scale * this.scaleFactor;
-      if (max1to1) {
+      if (this.max1to1) {
         this.scale = Math.min(this.scale, this.maxScale1to1);
       } else {
         this.scale = Math.min(this.scale, this.maxScale);
@@ -273,10 +290,10 @@ class Scaling {
     this.finishScaleCanvas();
   }
 
-  scaleCanvasContinuousValue(newScale, max1to1 = false) {
+  scaleCanvasContinuousValue(newScale) {
     this.scale = newScale;
     if (this.scale < this.minScale) this.scale = this.minScale;
-    if (max1to1) {
+    if (this.max1to1) {
       this.scale = Math.min(this.scale, this.maxScale1to1);
     } else {
       this.scale = Math.min(this.scale, this.maxScale);
@@ -414,7 +431,16 @@ class Scaling {
     }
   }
 
-  removeListeners() {
+  removeListener(type, callback) {
+    if (typeof callback == 'function' && this.eventListenerTypes.change.length > 0) {
+      let index = this.eventListenerTypes.change.findIndex(func => func == callback);
+      if (index >= 0) {
+        this.eventListenerTypes.change.splice(index, 1);
+      }
+    }
+  }
+
+  removeAllListeners() {
     this.eventListenerTypes.change = [];
   }
 
@@ -597,6 +623,16 @@ class Scaling {
   }
 
   /// Event Handling ...
+
+  removePointerEvent(e) {
+    // Remove this event from the target's cache
+    for (var i = 0; i < this.evCache.length; i++) {
+      if (this.evCache[i].pointerId == e.pointerId) {
+        this.evCache.splice(i, 1);
+        break;
+      }
+    }
+  }
 
   buttonListener(e) {
     this.scaling = e.currentTarget.dataset.scale;
@@ -787,7 +823,9 @@ class Scaling {
     } else if (
       e.type == "mousedown" ||
       e.type == "mouseup" ||
-      e.type == "mousemove"
+      e.type == "mousemove" ||
+      e.type == 'pointerdown' ||
+      e.type == 'pointermove'
     ) {
       pos.x = e.pageX;
       pos.y = e.pageY;
@@ -797,95 +835,115 @@ class Scaling {
     return [pos, touch];
   }
 
+  // Also supports
+  // Two finger pinch-zoom gestures
+  // https://github.com/mdn/dom-examples/blob/master/pointerevents/Pinch_zoom_gestures.html
+  //
   listenerMouseDownTouchStart(e) {
+    // The pointerdown event signals the start of a touch interaction.
+    // This event is cached to support 2-finger gestures
+    if (e.pointerId) {
+      this.evCache.push(e);
+    }
     var [pos, touch] = this.pointerEvents(e);
 
-    if (e.type === "touchstart" && touch.length === 2) {
-      // touch = e.originalEvent.touches || e.originalEvent.changedTouches;
-      touch = e.touches || e.changedTouches;
-      this.scaling = true;
+    if (this.evCache.length < 2) {
+      this.dragStarted = true;
+      this.isDragging = this.scaling = false;
 
-      // Pinch detection credits: http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch/11183333#11183333
-      this.lastDistance = Math.sqrt(
-        (touch[0].clientX - touch[1].clientX) *
-        (touch[0].clientX - touch[1].clientX) +
-        (touch[0].clientY - touch[1].clientY) *
-        (touch[0].clientY - touch[1].clientY)
-      );
-    }
-    this.dragStarted = true;
-    this.isDragging = this.scaling = false;
+      this.startCoords = {
+        x: pos.x - this.lastMove.x,
+        y: pos.y - this.lastMove.y
+      };
 
-    this.startCoords = {
-      x: pos.x - this.lastMove.x,
-      y: pos.y - this.lastMove.y
-    };
-
-    this.previewZoomStartCoords = {
-      x: this.applyScaleToMoveX(this.startCoords.x),
-      y: this.applyScaleToMoveY(this.startCoords.y)
-    };
-
-    this.lastDraggedPos.x = pos.x;
-    this.lastDraggedPos.y = pos.y;
-
-    this.lastChangeIn = "main";
-
-    this.queueCanvasDraw();
-
-    if (app.dev) {
-      console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
-      console.log(this.scalingCanvasDrawArgs());
-    }
-
-  }
-
-  listenerMouseMoveTouchMove(e) {
-    e.preventDefault();
-    let [pos, touch] = this.pointerEvents(e);
-
-    if (!this.dragStarted && !this.scaling) {
-      return;
-    }
-
-    if (this.canDrag() && this.dragStarted) {
-      this.isDragging = true;
-    }
-
-    if (this.isDragging && !this.scaling) {
-      this.moveX = (pos.x - this.startCoords.x);
-      this.moveY = (pos.y - this.startCoords.y);
-
-      this.calcMainWidthsHeightsLimitMoves();
-
-      this.previewZoomMoveX = this.applyScaleToMoveX(this.moveX);
-      this.previewZoomMoveY = this.applyScaleToMoveX(this.moveY);
+      this.previewZoomStartCoords = {
+        x: this.applyScaleToMoveX(this.startCoords.x),
+        y: this.applyScaleToMoveY(this.startCoords.y)
+      };
 
       this.lastDraggedPos.x = pos.x;
       this.lastDraggedPos.y = pos.y;
 
-      this.lastDraggedPreviewZoomPos.x = this.applyScaleToMoveX(pos.x);
-      this.lastDraggedPreviewZoomPos.y = this.applyScaleToMoveY(pos.y);
+      this.lastChangeIn = "main";
 
-      // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
       this.queueCanvasDraw();
 
-      // console.log(`move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
-
-    } else if (this.scaling === true) {
-      if (e instanceof TouchEvent) {
-
-        //Pinch detection credits: http://stackoverflow.com/questions/11183174/simplest-way-to-detect-a-pinch/11183333#11183333
-        this.distance = Math.sqrt(
-          (touch[0].clientX - touch[1].clientX) *
-          (touch[0].clientX - touch[1].clientX) +
-          (touch[0].clientY - touch[1].clientY) *
-          (touch[0].clientY - touch[1].clientY)
-        );
+      if (app.dev) {
+        // console.log(['start startCoords:', this.startCoords.x, this.startCoords.y, ', pos: ', pos.x, pos.y, ', lastMove: ', this.lastMove.x, this.lastMove.y, ', dragStarted: ', this.dragStarted]);
+        // console.log(this.scalingCanvasDrawArgs());
       }
-      this.scaleDraw = requestAnimationFrame(this.scaleCanvasTouch);
+    }
+  }
 
-      this.lastChangeIn = "main";
+  listenerMouseMoveTouchMove(e) {
+    // Find this event in the cache and update its record with this event
+    for (var i = 0; i < this.evCache.length; i++) {
+      if (e.pointerId == this.evCache[i].pointerId) {
+        this.evCache[i] = e;
+        break;
+      }
+    }
+
+    // If two pointers are down, check for pinch gestures
+    if (this.evCache.length == 2) {
+
+      if (app.dev) {
+        console.log('evCache.length == 2');
+      }
+
+      // Calculate the distance between the two pointers
+      var dx = Math.abs(this.evCache[0].clientX - this.evCache[1].clientX);
+      var dy = Math.abs(this.evCache[0].clientY - this.evCache[1].clientY);
+      var curDiff = Math.sqrt(dx * dx + dy * dy);
+
+      if (this.prevDiff > 0) {
+        this.scaling = true;
+        if (curDiff > this.prevDiff) {
+          // The distance between the two pointers has increased
+          let newScale = this.scale * this.gestureScaleFactor;
+          this.scaleCanvasContinuousValue(newScale, true);
+        }
+        if (curDiff < this.prevDiff) {
+          // The distance between the two pointers has decreased
+          let newScale = this.scale / this.gestureScaleFactor;
+          this.scaleCanvasContinuousValue(newScale, true);
+        }
+      }
+      // Cache the distance for the next move event
+      this.prevDiff = curDiff;
+    } else {
+      if (!this.dragStarted && !this.scaling) {
+        return;
+      }
+      e.preventDefault();
+      this.scaling = false;
+      let [pos, touch] = this.pointerEvents(e);
+
+      if (this.canDrag() && this.dragStarted) {
+        this.isDragging = true;
+      }
+
+      if (this.isDragging && !this.scaling) {
+        this.moveX = (pos.x - this.startCoords.x);
+        this.moveY = (pos.y - this.startCoords.y);
+
+        this.calcMainWidthsHeightsLimitMoves();
+
+        this.previewZoomMoveX = this.applyScaleToMoveX(this.moveX);
+        this.previewZoomMoveY = this.applyScaleToMoveX(this.moveY);
+
+        this.lastDraggedPos.x = pos.x;
+        this.lastDraggedPos.y = pos.y;
+
+        this.lastDraggedPreviewZoomPos.x = this.applyScaleToMoveX(pos.x);
+        this.lastDraggedPreviewZoomPos.y = this.applyScaleToMoveY(pos.y);
+
+        // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
+        this.queueCanvasDraw();
+
+        // console.log(`move: ${this.moveX}, ${this.moveY}; pos: ${pos.x}, ${pos.y}`);
+
+      }
     }
   }
 
@@ -939,9 +997,18 @@ class Scaling {
   }
 
   listenerMouseUpTouchEnd(e) {
+    // if (this.scaling) {
+    // Remove this pointer from the cache
+    this.removePointerEvent(e);
+    // this.scaling = false;
+
+    // If the number of pointers down is less than two then reset diff tracker
+    if (this.evCache.length < 2) this.prevDiff = -1;
+    // } else {
     // var pos = this.pointerEvents(e);
     e.preventDefault();
     this.listenerUpLeaveEnd('up-end');
+    // }
   }
 
   /*

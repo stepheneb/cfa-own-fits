@@ -924,6 +924,9 @@ div.filter-palette {
 #scaling .scaling-radio {
   margin: 0vh 1vh 0vh 0.5vh; }
 
+#scaling-image-canvas {
+  touch-action: none; }
+
 div.btn-tf > svg {
   width: 2.4vh;
   height: 2.4vh;

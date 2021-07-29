@@ -1209,6 +1209,10 @@ div.filter-palette {
   }
 }
 
+#scaling-image-canvas {
+  touch-action: none;
+}
+
 div.btn-tf > svg {
   width: 2.4vh;
   height: 2.4vh;
