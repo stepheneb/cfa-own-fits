@@ -316,8 +316,8 @@ renderMenu.drawSeparatorLine = () => {
     y1 = boundingRect3.bottom + yextend;
     y2 = boundingRect2.top - yextend;
   } else {
-    y1 = boundingRect2.top - yextend + window.screen.height * 0.005;
-    y2 = y1 + window.screen.height * 0.17;
+    y1 = boundingRect2.top - yextend + document.body.clientHeight * 0.005;
+    y2 = y1 + document.body.clientHeight * 0.25;
   }
   separatorLine.setAttribute('x1', x1);
   separatorLine.setAttribute('y1', y1);
