@@ -16,8 +16,9 @@ class Scaling {
     this.imageWidth = 0;
     this.imageHeight = 0;
 
-    this.eventListenerTypes = {
-      change: []
+    this.eventListeners = {
+      change: [],
+      resize: []
     };
 
     // https://github.com/mdn/dom-examples/blob/master/pointerevents/Pinch_zoom_gestures.html
@@ -64,10 +65,11 @@ class Scaling {
     this.max1to1 = true;
     this.minScale = 1;
     this.scale = this.minScale;
-    this.maxScale1to1 = 0;
-    this.maxScale = 0;
+    this.maxScale1to1 = 2;
+    this.maxScale = 2;
+
     this.ratio = 0;
-    this.scaleFactor = 1.08;
+    this.scaleFactor = 1.05;
     this.gestureScaleFactor = 1.02;
     this.scaleDraw = null;
     this.distance = 0;
@@ -176,7 +178,6 @@ class Scaling {
       this.max1to1 = true;
     }
 
-    this.calcMaxScale();
     this.setupButtons();
     this.handleResize();
     this.updateZoomButtons();
@@ -422,29 +423,51 @@ class Scaling {
   }
 
   addListener(type, callback) {
-    if (typeof callback == 'function') {
-      switch (type) {
-      case 'change':
-        this.eventListenerTypes.change.push(callback);
-        break;
-      }
+    if (typeof callback == 'function' && this.eventListeners[type]) {
+      this.eventListeners[type].push(callback);
     }
   }
 
   removeListener(type, callback) {
-    if (typeof callback == 'function' && this.eventListenerTypes.change.length > 0) {
-      let index = this.eventListenerTypes.change.findIndex(func => func == callback);
-      if (index >= 0) {
-        this.eventListenerTypes.change.splice(index, 1);
+    if (typeof callback == 'function') {
+      let callbacks = this.eventListeners[type];
+      let matchingIndicies = [];
+      if (callbacks && callbacks.length > 0) {
+        for (const [i, item] of callbacks.entries()) {
+          if (callback == item[1]) {
+            matchingIndicies.push(i);
+          }
+        }
+        matchingIndicies.reverse().forEach((i) => callbacks.splice(i, 1));
       }
     }
   }
 
   removeAllListeners() {
-    this.eventListenerTypes.change = [];
+    for (const type in this.eventListeners) {
+      this.eventListeners[type] = [];
+    }
   }
 
   sendChangeEvent() {
+    this.eventListeners.change.forEach((callback) => {
+      if (typeof callback == 'function') {
+        // alternative test: if (callback instanceof Function)
+        callback(this.generateScalingEvent());
+      }
+    });
+  }
+
+  sendResizeEvent() {
+    this.eventListeners.resize.forEach((callback) => {
+      if (typeof callback == 'function') {
+        // alternative test: if (callback instanceof Function)
+        callback(this.generateScalingEvent());
+      }
+    });
+  }
+
+  generateScalingEvent() {
     let scalingEvent = {
       offset: {
         x: this.offsetX,
@@ -472,12 +495,7 @@ class Scaling {
         height: this.imageHeight
       }
     };
-    this.eventListenerTypes.change.forEach((callback) => {
-      if (typeof callback == 'function') {
-        // alternative test: if (callback instanceof Function)
-        callback(scalingEvent);
-      }
-    });
+    return scalingEvent;
   }
 
   checkIfMatchingApolloSiteScale() {
@@ -583,6 +601,8 @@ class Scaling {
         this.clientDimensions = this.getWidthHeight(this.scalingCanvas.parentElement);
         this.resizeCanvas(this.scalingCanvas);
         this.reCalculatePreviewZoomRect();
+        this.calcMaxScale();
+        this.sendResizeEvent();
       });
     });
   }
