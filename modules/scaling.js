@@ -156,6 +156,7 @@ class Scaling {
   }
 
   startup() {
+    this.mainCanvasWrapper = document.getElementById('main-canvas-wrapper');
     this.setupScaling2DContext();
     if (this.isTouchDevice()) {
       this.scaleFactor = 1.02;
@@ -165,10 +166,6 @@ class Scaling {
       this.hideTouchTooltip();
     }
 
-    window.addEventListener('resize', () => {
-      this.handleResize();
-    });
-
     // Startup ...
 
     if (this.findApolloSiteContainerId) {
@@ -177,11 +174,6 @@ class Scaling {
     } else {
       this.max1to1 = true;
     }
-
-    this.setupButtons();
-    this.handleResize();
-    this.updateZoomButtons();
-    this.showTouchTooltip();
 
     this.mainEvents = [
       ['pointerdown', this.listenerMouseDownTouchStart],
@@ -230,6 +222,28 @@ class Scaling {
         this.previewZoomCanvas.addEventListener(eventItem[0], eventItem[1], true);
       });
     }
+
+    this.setupButtons();
+    this.handleResize();
+    this.updateZoomButtons();
+    this.showTouchTooltip();
+
+    window.addEventListener('resize', () => {
+      this.handleResize();
+    });
+
+  }
+
+  handleResize() {
+    // Remove explicitly set style.width attribute on
+    // this.mainCanvasWrapper.style.width before reflow after resize
+    // happens so mainCanvasWrapper can initially expand to fill it's parent container
+    this.mainCanvasWrapper.style.width = null;
+    this.redraw = requestAnimationFrame(() => {
+      this.resizeCanvas(this.scalingCanvas);
+      this.reCalculatePreviewZoomRect();
+      this.sendResizeEvent();
+    });
   }
 
   close() {
@@ -270,7 +284,6 @@ class Scaling {
   }
 
   scaleCanvas() {
-    // let previousScale = this.scale;
     switch (this.scaling) {
     case 'zoomout':
       this.scale = this.scale / this.scaleFactor;
@@ -303,16 +316,8 @@ class Scaling {
   }
 
   finishScaleCanvas() {
-    this.resetMainUIVars();
-    // let change = this.scale - previousScale;
-    // console.log([this.scaling, ', scale: ', this.scale, ' change: ', change]);
     this.updateZoomButtons();
     this.queueCanvasDraw();
-    // this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
-  }
-
-  resetMainUIVars() {
-    // this.moveX = this.moveY = 0;
   }
 
   scaleCanvasTouch() {
@@ -331,6 +336,7 @@ class Scaling {
   }
 
   calcMainWidthsHeightsLimitMoves() {
+    this.clientDimensions = this.getWidthHeight(this.scalingCanvas.parentElement);
     this.previousImageWidth = this.imageWidth;
     this.previousImageHeight = this.imageHeight;
     this.imageWidth = this.sourceImageBitmap.width * this.ratio * this.scale;
@@ -393,21 +399,26 @@ class Scaling {
     }
     this.scalingCanvasDrawfinished = true;
     this.mainCanvasWrapper.style.width = this.imageWidth + 'px';
+    this.mainCanvasWrapper.style.height = '70vh';
+    // console.log(this.scalingCanvasDrawArgs());
     this.sendChangeEvent();
   }
 
   scalingCanvasDrawArgs() {
     let argstr = `
+    imageWidth and height to draw source into destination
+      dWidth: ${this.imageWidth}
+      dHeight: ${this.imageHeight}
+    ctx destination:
+      width: ${this.scalingCanvas.width}
+      height: ${this.scalingCanvas.height}
+    maxScale1to1: ${this.maxScale1to1}
     scalingCanvasDraw inputs:
       offset: ${this.offsetX}, ${this.offsetY}
       move: ${this.moveX}, ${this.moveY}
     scale: ${this.scale}
-    maxScale1to1: ${this.maxScale1to1}
     ratio: ${this.ratio}
     ratio * scale: ${this.ratio * this.scale}
-    ctx destination:
-      width: ${this.scalingCanvas.width}
-      height: ${this.scalingCanvas.height}
     ctx.drawImage args:
       source imageBitmap:
         width: ${this.sourceImageBitmap.width}
@@ -415,9 +426,6 @@ class Scaling {
       top-left corner in destination to place source image
         dx: ${this.dx}
         dy: ${this.dy}
-      width and height to draw source into destination
-        dWidth: ${this.imageWidth}
-        dHeight: ${this.imageHeight}
     `;
     return argstr;
   }
@@ -595,20 +603,9 @@ class Scaling {
     return { width: elem.clientWidth, height: elem.clientHeight };
   }
 
-  handleResize() {
-    this.redraw = requestAnimationFrame(() => {
-      setTimeout(() => {
-        this.clientDimensions = this.getWidthHeight(this.scalingCanvas.parentElement);
-        this.resizeCanvas(this.scalingCanvas);
-        this.reCalculatePreviewZoomRect();
-        this.calcMaxScale();
-        this.sendResizeEvent();
-      });
-    });
-  }
-
   resizeCanvas(c) {
-    let { clientWidth, clientHeight } = this.clientDimensions;
+    this.clientDimensions = this.getWidthHeight(this.scalingCanvas.parentElement);
+    let clientWidth, clientHeight;
     clientWidth = this.clientDimensions.width;
     clientHeight = this.clientDimensions.height;
     let sourceAspectRatio = this.nx / this.ny;
@@ -966,17 +963,6 @@ class Scaling {
       }
     }
   }
-
-  // queueCanvasDraw() {
-  //   this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
-  //   // if (!this.tick) {
-  //   //   this.redraw = requestAnimationFrame(() => {
-  //   //     this.scalingCanvasDraw();
-  //   //     this.tick = false;
-  //   //   });
-  //   //   this.tick = true;
-  //   // }
-  // }
 
   queueCanvasDraw() {
     this.redraw = requestAnimationFrame(this.scalingCanvasDraw);
