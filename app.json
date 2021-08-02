@@ -1881,10 +1881,78 @@
       "pages": [
         {
           "name": "MW9",
-          "poster": "https://mo-www.cfa.harvard.edu/OWN/images/Stars/lagoon_lg.jpg",
+          "poster": "./images/targets/LagoonNebula210613052132_12_07_2021.png",
           "title": "Lagoon Nebula",
           "subtitle": "Request your own observation and have the image emailed to you.",
           "description": "Resembling a pool of light in the sky, the Lagoon Nebula is a giant cloud of hot hydrogen gas glowing from the intense light of newborn stars. The Lagoon Nebula, like other star-forming regions, can give us an insight into the environment that gave birth to our own Sun 5 billion years ago. What color does the Lagoon look in your OWN color image?",
+          "telescope": "hubble",
+          "startdate": "0401",
+          "enddate": "1015",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        },
+        {
+          "name": "WP",
+          "poster": "./images/targets/WhirlpoolGal210610045421_12_07_2021 (1).png",
+          "title": "Whirlpool Galaxy",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Description ... lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..",
+          "startdate": "0101",
+          "enddate": "1231",
+          "telescope": "hubble",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        },
+        {
+          "name": "CG",
+          "poster": "./images/targets/M82CigarGalaxy.png",
+          "title": "Cigar Galaxy",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Description ... lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..",
+          "startdate": "0101",
+          "enddate": "1231",
+          "telescope": "hubble",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        },
+        {
+          "name": "MOON",
+          "poster": "./images/targets/Moon210721044224_26_07_2021.png",
+          "title": "Moon",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Description ... lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..",
+          "startdate": "0101",
+          "enddate": "1231",
+          "telescope": "hubble",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        },
+        {
+          "name": "SUN",
+          "poster": "./images/targets/SunspotsFrame.png",
+          "title": "Sun",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Description ... lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..",
+          "startdate": "0101",
+          "enddate": "1231",
+          "telescope": "hubble",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        },
+        {
+          "name": "HSC",
+          "poster": "./images/targets/HerculesClus210613041830_12_07_2021.png",
+          "title": "Hercules Star Cluster",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Description ... lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..",
+          "startdate": "0101",
+          "enddate": "1231",
+          "telescope": "hubble",
+          "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
+        },
+        {
+          "name": "OR",
+          "poster": "./images/targets/OrionNebulaGreenM210318003031_26_07_2021.png",
+          "title": "Orion Nebula",
+          "subtitle": "Request your own observation and have the image emailed to you.",
+          "description": "Description ... lLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..",
+          "startdate": "1016",
+          "enddate": "0401",
           "telescope": "hubble",
           "observationtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ..."
         }

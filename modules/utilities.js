@@ -75,4 +75,18 @@ utilities.debounce = (callback, wait) => {
   };
 };
 
+utilities.getMonthDayStr = (d) => {
+  return (d.getMonth() + 1).toString().padStart(2, '0') + (d.getDay() + 1).toString().padStart(2, '0');
+};
+
+utilities.getMonthDayStrNow = () => {
+  let now = new Date();
+  return utilities.getMonthDayStr(now);
+};
+
+utilities.getMonthDayNow = () => {
+  let now = new Date();
+  return Number.parseInt(utilities.getMonthDayStr(now));
+};
+
 export default utilities;

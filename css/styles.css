@@ -346,6 +346,8 @@ div.menu-category-page {
   overflow: hidden;
   white-space: nowrap;
   line-height: 2vh; }
+  div.menu-category-page.hide {
+    display: none; }
   div.menu-category-page .image-wrapper {
     height: 80%;
     width: 100%;
@@ -768,7 +770,7 @@ div.control-collection {
             padding: 0;
             margin: 0;
             background-color: var(--almost-black);
-            object-fit: contain;
+            object-fit: cover;
             filter: grayscale(100%) brightness(150%) contrast(125%);
             pointer-events: none; }
   div.control-collection div.adjust-layer > .subtitle {
@@ -1013,7 +1015,7 @@ div.telescope-container {
       background-color: black;
       height: 100%;
       width: 100%;
-      object-fit: contain; }
+      object-fit: cover; }
 
 #animate-player {
   margin: 6vh 0vh; }
@@ -1213,7 +1215,7 @@ div.animate-center {
           background-color: black;
           height: 100%;
           width: 100%;
-          object-fit: contain; }
+          object-fit: cover; }
       .modal-dialog .modal-content .modal-header button.btn-close {
         min-width: 3vw;
         font-size: 6vh;
@@ -1337,10 +1339,10 @@ div#observation-modal .modal-body {
         margin: 0vh 2vh; }
       #save-and-send-modal .modal-dialog .modal-content .modal-body .image-container,
       #observation-modal .modal-dialog .modal-content .modal-body .image-container {
-        margin-left: 2vh;
+        margin-left: 1vh;
         margin-top: 0.5vh;
         height: 30vh;
-        width: 30vh;
+        width: 34vh;
         padding: 0;
         background-color: black;
         border: 2px solid var(--canvas-container-border-color);
@@ -1350,7 +1352,7 @@ div#observation-modal .modal-body {
           background-color: black;
           height: 100%;
           width: 100%;
-          object-fit: contain; }
+          object-fit: cover; }
 
 #save-and-send-enter-email-button,
 #observation-enter-email-button,

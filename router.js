@@ -12,6 +12,9 @@ let router = {};
 router.route = () => {
   [router.path, router.props] = router.getHash(window.location.hash);
   app.dev = router.props.has("dev");
+  if (router.props.has("now")) {
+    app.now = router.props.get("now");
+  }
   if (app.dev) {
     document.body.classList.add('dev');
   } else {

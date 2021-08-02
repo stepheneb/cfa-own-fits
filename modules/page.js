@@ -21,7 +21,6 @@ import renderMenu from './render/menu.js';
 import renderDev from './render/dev.js';
 import splash from './render/splash.js';
 import checkBrowser from './check-browser.js';
-import u from './utilities.js';
 import logger from './logger.js';
 
 class Page {

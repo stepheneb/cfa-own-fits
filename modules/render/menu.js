@@ -9,6 +9,7 @@ import navigation from './navigation.js';
 import checkBrowser from '../check-browser.js';
 import Page from '../page.js';
 import splash from './splash.js';
+import observation from './observation.js';
 
 let renderMenu = {};
 let connectLine = null;
@@ -396,8 +397,12 @@ renderMenu.categoryPageCollection = category => {
         </div>
       `;
     } else {
+      let hide = 'hide';
+      if (observation.active(page)) {
+        hide = '';
+      }
       html += `
-          <div id="${id}" class="menu-category-page">
+          <div id="${id}" class="menu-category-page  ${hide}">
             <div class="image-wrapper">
               <img src="${page.poster}"></img>
             </div>

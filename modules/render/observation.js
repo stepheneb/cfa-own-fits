@@ -2,7 +2,25 @@
 /*global app  */
 /*global bootstrap  */
 
+import u from '../utilities.js';
+
 let observation = {};
+
+observation.active = (page) => {
+  let start = Number.parseInt(page.startdate);
+  let end = Number.parseInt(page.enddate);
+  let now = u.getMonthDayNow();
+  if (app.now) {
+    now = Number.parseInt(app.now);
+  }
+  let visible = false;
+  if (start < end) {
+    visible = now >= start && now <= end;
+  } else {
+    visible = (now >= start && now <= 1231) || (now <= end);
+  }
+  return visible;
+};
 
 observation.render = (page, registeredCallbacks) => {
   // let title = "Take your own image tonight";
@@ -27,7 +45,7 @@ observation.render = (page, registeredCallbacks) => {
               <div class="col-3">
                 <div class="salutation">Wait and See!</div>
                 <div class="about-your-image">
-                  We'll take your image of <span class="image-name pe-2"> ${page.title} </span> tonight.
+                  We'll take your image of the <span class="image-name pe-2"> ${page.title}</span> tonight.
                 </div>
                 <div class="context">
                   <p>${page.observationtext}</p>
@@ -104,9 +122,7 @@ observation.render = (page, registeredCallbacks) => {
 
       alert(result);
     };
-
   }
-
 };
 
 export default observation;
