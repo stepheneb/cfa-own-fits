@@ -503,7 +503,8 @@ header.menu-activity-page-title {
 
 .activity-page {
   margin: 6vh 4vw 0vh 4vw;
-  height: 92vh; }
+  height: 92vh;
+  z-index: 1; }
 
 .col-main-content {
   flex: 0 0 auto;
@@ -534,7 +535,7 @@ header.menu-activity-page-title {
 .page-navigation {
   font-size: 1.2vh;
   margin: 1vw;
-  z-index: 25; }
+  z-index: 0; }
 
 .page-navigation-button {
   background-color: var(--almost-black);
