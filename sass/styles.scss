@@ -1595,8 +1595,8 @@ div.animate-center {
   }
 }
 
-#save-and-send-modal.fade,
-#observation-modal.fade {
+.save-and-send-modal.fade,
+.observation.modal.fade {
   transition: opacity 0.15s linear;
 }
 
@@ -1607,13 +1607,13 @@ body.fadeout .modal-backdrop.show {
 
 body.nofadeout .modal-backdrop.show {
   opacity: 0;
-  top: 12vh;
-  height: 76vh;
+  top: 20;
+  height: 66vh;
 }
 
 body.nofadeout .modal {
-  top: 12vh;
-  height: 76vh;
+  top: 20vh;
+  height: 66vh;
 }
 
 body.nofadeout .activity-page {
@@ -1628,19 +1628,16 @@ body:not(.dev) #btn-toggle-developer-tools-page-navigation {
   display: none;
 }
 
-div#observation-image-container {
-}
-
 div#observation-modal .modal-body {
-  height: 45vh;
+  height: 48vh;
 }
 
 #save-and-send-modal .modal-dialog,
 #observation-modal .modal-dialog {
   max-width: none;
   width: 100vw;
-  height: 45vh;
-  padding-left: 2vw;
+  height: 48vh;
+  padding-left: 4vw;
   background-color: black;
   .modal-content {
     background-color: black;
@@ -1670,7 +1667,7 @@ div#observation-modal .modal-body {
       }
     }
     .modal-body {
-      height: 45vh;
+      height: 48vh;
       width: 100%;
       font-size: var(--page-title);
       color: var(--bright-teal);
@@ -1678,6 +1675,9 @@ div#observation-modal .modal-body {
       line-height: 120%;
       .salutation {
         text-transform: uppercase;
+      }
+      .col-left {
+        width: 22vw;
       }
       .about-your-image {
         margin-top: 1vh;
@@ -1689,6 +1689,7 @@ div#observation-modal .modal-body {
       }
       .image-name {
         font-size: var(--page-title);
+        font-weight: 500;
       }
       .context {
         margin-top: 2vh;
@@ -1719,20 +1720,27 @@ div#observation-modal .modal-body {
         }
       }
       .image-container {
-        margin-left: 1vh;
-        margin-top: 0.5vh;
-        height: 30vh;
-        width: 34vh;
+        margin: 0.5vh 1vh;
+        height: 40vh;
+        width: 54vh;
         padding: 0;
         background-color: black;
-        border: 2px solid var(--canvas-container-border-color);
-        border-radius: 3px;
+        border: 3px solid var(--canvas-container-border-color);
+        border-radius: 1px;
+        &.telescope {
+          width: 34vh;
+        }
 
         img {
           background-color: black;
           height: 100%;
           width: 100%;
           object-fit: cover;
+        }
+        .label {
+          font-size: var(--save-and-send-context);
+          color: var(--bright-teal);
+          text-transform: uppercase;
         }
       }
     }

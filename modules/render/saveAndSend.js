@@ -18,7 +18,7 @@ saveandsend.render = (page, registeredCallbacks) => {
     </button>`;
 
   let modalHtml = `
-    <div class="modal fade" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
+    <div class="modal fade save-and-send" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
