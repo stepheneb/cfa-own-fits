@@ -1,0 +1,23 @@
+<!doctype html>
+<body>
+<form id="formElem">
+  <input type="text" name="kiosk_id" value="3">
+  <input type="text" name="email" value="stephen.bannasch@gmail.com">
+  <input type="text" name="observation" value="Whirlpool Galaxy (M51)">
+  <input type="text" name="datetime_when_user_made_request_at_kiosk" value="2021-06-03 10:13:36.214899-0400">
+  <input type="text" name="credential" value="1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927">
+  <input type="submit">
+</form>
+<script>
+  formElem.onsubmit = async (e) => {
+    e.preventDefault();
+    let response = await fetch('telescope.php', {
+      method: 'POST',
+      body: new FormData(formElem)
+    });
+      //alert (response);
+    let result = await response.json();
+    alert('message ='+result.message+' \nkiosk_id = '+result.kiosk_id+' \nemail = '+result.email+' \nobservation = '+result.observation+' \ndatetime_when_user_made_request_at_kiosk = '+result.datetime_when_user_made_request_at_kiosk+' \ncredential = '+result.credential);
+  };
+</script>
+</body>
