@@ -25,24 +25,47 @@ observation.active = (page) => {
 observation.render = (page, registeredCallbacks) => {
   // let title = "Take your own image tonight";
   let id = "observation";
-  let modalId = `${id}-modal`;
+  let modalId1 = `${id}-modal1`;
   let enterEmailButtonId = `${id}-enter-email-button`;
+
+  let modalId2 = `${id}-modal2`;
   let sendEmailButtonId = `${id}-send-email-button`;
+
+  let modalId3 = `${id}-modal3`;
+
   let sendEmailFormId = `${id}-send-email-form`;
 
+  function telescope() {
+    return `
+      <div class="image-container telescope">
+        <img src='./images/micro-observatory.jpg'>
+        <div class='label'>Our Telescope</div>
+      </div>
+      `;
+  }
+
+  function image() {
+    return `
+      <div class="image-container">
+        <img src=${page.poster}>
+        <div class='label'>${page.title}</div>
+      </div>
+      `;
+  }
+
   let modalHtmls = `
-    <div class="modal fade observation" id="${modalId}" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
+    <div class="modal fade observation" id="${modalId1}" tabindex="-1" aria-labelledby="${modalId1}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="${modalId}-title">${page.category.title2}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title" id="${modalId1}-title">${page.category.title2}</h5>
+            <button id="${modalId1}-button" type="button" class="btn-close" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body one">
             <div class="row">
-              <div class="col-left">
+              <div class="col-left d-flex flex-column justify-content-start">
                 <div class="salutation">Wait and See!</div>
                 <div class="about-your-image">
                   We'll take your image of the <span class="image-name">${page.title}</span> tonight.
@@ -51,36 +74,28 @@ observation.render = (page, registeredCallbacks) => {
                   <p>${page.observationtext}</p>
                   <p>Enter your email to send your astrophoto creation to yourself.</p>
                 </div>
+                <div class='column-middle-spacer'></div>
                 <button id="${enterEmailButtonId}" type="button" class="btn btn-outline-primary btn-small page-navigation-button">
                   ENTER EMAIL
                 </button>
               </div>
-              <div class="image-container telescope">
-                <img src='./images/micro-observatory.jpg'>
-                <div class='label'>Our Telescope</div>
-              </div>
-              <div class="image-container">
-                <img src=${page.poster}>
-                <div class='label'>${page.title}</div>
-              </div>
+              ${telescope()}
+              ${image()}
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-large btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="modal fade observation" id="${modalId}2" tabindex="-1" aria-labelledby="${modalId}-title" aria-hidden="true">
+    <div class="modal fade observation" id="${modalId2}" tabindex="-1" aria-labelledby="${modalId2}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="${modalId}2-title">${page.category.title2}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <h5 class="modal-title" id="${modalId2}-title">${page.category.title2}</h5>
+            <button id="${modalId2}-button" type="button" class="btn-close" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body two">
             <div class="row">
               <div class="col-3">
                 <div class="salutation">Wait and See!</div>
@@ -91,55 +106,116 @@ observation.render = (page, registeredCallbacks) => {
                   <p>${page.observationtext}</p>
                   <p>Enter your email to send your astrophoto creation to yourself.</p>
                 </div>
-                <button id="${enterEmailButtonId}" type="button" class="btn btn-outline-primary btn-small page-navigation-button">
-                  ENTER EMAIL
-                </button>
               </div>
-              <div id="enter-email" class="col-6 enter-email">
-                <form id="${sendEmailFormId}" class="row" autocomplete="off">
+              <div id="enter-email" class="enter-email">
+                <form id="${sendEmailFormId}" autocomplete="off">
                   <label for="email">Your Email:</label>
-                  <input id="email" type="email" class="col-9" name="email" required minlength="4" maxlength="45" size="30" autocomplete="none"></input>
-                  <input id="email-kiosk-id" type="hidden" name='kiosk_id' value="${app.kiosk_id}"></input>
-                  <input id="email-observation" type="hidden" name='observation' value="${page.title}"></input>
-                  <input id="email-date" type="hidden" name='datetime_when_user_made_request_at_kiosk' value="${new Date().toISOString()}"></input>
-                  <input id="email-credential" type="hidden" name='credential' value="1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927"></input>
-                  <button id="${sendEmailButtonId}" type="submit" class="col-3 btn btn-outline-primary btn-small page-navigation-button" autocomplete="none">
-                    SEND EMAIL
-                  </button>
+                  <div class='d-flex flex-row justify-content-start align-items-center'>
+                    <input id="email" type="email"name="email" required minlength="4" maxlength="45" size="30" autocomplete="none"></input>
+                    <input id="email-kiosk-id" type="hidden" name='kiosk_id' value="${app.kiosk_id}"></input>
+                    <input id="email-observation" type="hidden" name='observation' value="${page.title}"></input>
+                    <input id="email-date" type="hidden" name='datetime_when_user_made_request_at_kiosk' value="${new Date().toISOString()}"></input>
+                    <input id="email-credential" type="hidden" name='credential' value="1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927"></input>
+                    <button id="${sendEmailButtonId}" type="submit" class="btn btn-outline-primary btn-small page-navigation-button" autocomplete="none">
+                      SEND EMAIL
+                    </button>
+                  </div>
                 </form>
               </div>
-              <div class="image-container">
-                <img src=${page.poster}>
-              </div>
+              ${telescope()}
+              ${image()}
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-large btn-secondary" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
     </div>
+    <div class="modal fade observation" id="${modalId3}" tabindex="-1" aria-labelledby="${modalId3}-title" aria-hidden="true">
+      <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="${modalId3}-title">${page.category.title2}</h5>
+            <button id="${modalId3}-button" type="button" class="btn-close" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body three">
+            <div class="row">
+              <div class="col-3">
+                <div class="salutation">Wait and See!</div>
+                <div class="about-your-image">
+                  We'll take your image of the <span class="image-name pe-2"> ${page.title}</span> tonight.
+                </div>
+                <div class="context">
+                  <p>${page.observationtext}</p>
+                </div>
+              </div>
+              <div class="thanks">
+                <div class='salutation'>Thank You!</div>
+                <div class='details'>
+                  We will send your image to yourname@website.com
+                </div>
+              </div>
+              ${telescope()}
+              ${image()}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   `;
 
   registeredCallbacks.push(callback);
 
-  return [modalHtmls, modalId];
+  return [modalHtmls, modalId3];
 
   function callback() {
-    let modal = document.getElementById(modalId);
+    let modal1 = document.getElementById(modalId1);
+    let modal2 = document.getElementById(modalId2);
+    let modal3 = document.getElementById(modalId3);
+
+    let modal1CloseButton = document.getElementById(modalId1 + '-button');
+    let modal2CloseButton = document.getElementById(modalId2 + '-button');
+    let modal3CloseButton = document.getElementById(modalId3 + '-button');
+
+    let bsModal1 = new bootstrap.Modal(modal1, {});
+    let bsModal2 = new bootstrap.Modal(modal2, {});
+    let bsModal3 = new bootstrap.Modal(modal3, {});
+
+    let enterEmailButton = document.getElementById(enterEmailButtonId);
+
     let sendEmailForm = document.getElementById(sendEmailFormId);
 
-    modal.addEventListener('show.bs.modal', function () {
+    modal1.addEventListener('show.bs.modal', function () {
       document.body.classList.add('nofadeout');
     });
 
-    modal.addEventListener('shown.bs.modal', function () {});
+    modal2.addEventListener('show.bs.modal', function () {
+      document.body.classList.add('nofadeout');
+    });
 
-    modal.addEventListener('hide.bs.modal', function () {
+    modal3.addEventListener('show.bs.modal', function () {
+      document.body.classList.add('nofadeout');
+    });
+
+    modal1.addEventListener('hide.bs.modal', function () {
       document.body.classList.remove('nofadeout');
     });
 
-    new bootstrap.Modal(modal, {}).show();
+    modal2.addEventListener('hide.bs.modal', function () {
+      document.body.classList.remove('nofadeout');
+    });
+
+    modal3.addEventListener('hide.bs.modal', function () {
+      document.body.classList.remove('nofadeout');
+    });
+
+    bsModal1.show();
+
+    enterEmailButton.addEventListener('click', () => {
+      bsModal1.hide();
+      bsModal2.show();
+    });
 
     sendEmailForm.onsubmit = async (e) => {
       e.preventDefault();
@@ -152,16 +228,30 @@ observation.render = (page, registeredCallbacks) => {
       formData.append("datetime_when_user_made_request_at_kiosk", new Date().toISOString());
       formData.append("credential", "1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927");
 
-      let response = await fetch('https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php', {
-        method: 'POST',
-        mode: "cors",
-        body: formData
-      });
+      // let response = await fetch('https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php', {
+      //   method: 'POST',
+      //   mode: "cors",
+      //   body: formData
+      // });
+      //
+      // let result = response.ok;
 
-      let result = response.ok;
+      bsModal2.hide();
+      bsModal3.show();
 
-      alert(result);
+      // alert(result);
+
     };
+
+    modal1CloseButton.addEventListener('click', hideAll);
+    modal2CloseButton.addEventListener('click', hideAll);
+    modal3CloseButton.addEventListener('click', hideAll);
+
+    function hideAll() {
+      bsModal1.hide();
+      bsModal2.hide();
+      bsModal3.hide();
+    }
   }
 };
 

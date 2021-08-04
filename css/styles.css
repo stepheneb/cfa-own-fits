@@ -51,7 +51,7 @@ html {
   --main-layer-selector: 2vh;
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
-  --send-email-input: 1.6vh;
+  --send-email-input: 2.4vh;
   --splash2-title: 8vh;
   --splash2-intro: 6vh; }
 
@@ -1252,120 +1252,6 @@ body.nofadeout #btn-toggle-developer-tools-page-navigation {
 body:not(.dev) #btn-toggle-developer-tools-page-navigation {
   display: none; }
 
-div#observation-modal .modal-body {
-  height: 48vh; }
-
-#save-and-send-modal .modal-dialog,
-#observation-modal .modal-dialog {
-  max-width: none;
-  width: 100vw;
-  height: 48vh;
-  padding-left: 4vw;
-  background-color: black; }
-  #save-and-send-modal .modal-dialog .modal-content,
-  #observation-modal .modal-dialog .modal-content {
-    background-color: black;
-    border: none; }
-    #save-and-send-modal .modal-dialog .modal-content button,
-    #observation-modal .modal-dialog .modal-content button {
-      width: fit-content; }
-    #save-and-send-modal .modal-dialog .modal-content .modal-header,
-    #observation-modal .modal-dialog .modal-content .modal-header {
-      background-color: black;
-      border: none;
-      padding: 0.5vh 2vh; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-header h5,
-      #observation-modal .modal-dialog .modal-content .modal-header h5 {
-        font-size: var(--page-title);
-        color: var(--bright-green);
-        text-transform: uppercase; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-header button.btn-close,
-      #observation-modal .modal-dialog .modal-content .modal-header button.btn-close {
-        min-width: 3vw;
-        font-size: 6vh;
-        color: white; }
-    #save-and-send-modal .modal-dialog .modal-content .modal-footer,
-    #observation-modal .modal-dialog .modal-content .modal-footer {
-      border: none; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-footer button,
-      #observation-modal .modal-dialog .modal-content .modal-footer button {
-        display: none; }
-    #save-and-send-modal .modal-dialog .modal-content .modal-body,
-    #observation-modal .modal-dialog .modal-content .modal-body {
-      height: 48vh;
-      width: 100%;
-      font-size: var(--page-title);
-      color: var(--bright-teal);
-      background-color: black;
-      line-height: 120%; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .salutation,
-      #observation-modal .modal-dialog .modal-content .modal-body .salutation {
-        text-transform: uppercase; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .col-left,
-      #observation-modal .modal-dialog .modal-content .modal-body .col-left {
-        width: 22vw; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .about-your-image,
-      #observation-modal .modal-dialog .modal-content .modal-body .about-your-image {
-        margin-top: 1vh;
-        line-height: 100%;
-        font-size: var(--about-your-image); }
-        #save-and-send-modal .modal-dialog .modal-content .modal-body .about-your-image .image-name,
-        #observation-modal .modal-dialog .modal-content .modal-body .about-your-image .image-name {
-          font-size: var(--about-your-image); }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .image-name,
-      #observation-modal .modal-dialog .modal-content .modal-body .image-name {
-        font-size: var(--page-title);
-        font-weight: 500; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .context,
-      #observation-modal .modal-dialog .modal-content .modal-body .context {
-        margin-top: 2vh;
-        font-size: var(--save-and-send-context);
-        line-height: 110%;
-        color: white; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .enter-email label,
-      #observation-modal .modal-dialog .modal-content .modal-body .enter-email label {
-        padding-left: 0;
-        padding-bottom: 0.25vh;
-        line-height: 100%;
-        font-size: var(--send-email-input); }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .enter-email input,
-      #observation-modal .modal-dialog .modal-content .modal-body .enter-email input {
-        padding: 0vh 1vh;
-        background-color: black;
-        color: white;
-        border: 1px solid var(--bright-teal);
-        border-radius: 2px;
-        letter-spacing: 1px; }
-        #save-and-send-modal .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"],
-        #observation-modal .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"] {
-          display: none; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .enter-email button,
-      #observation-modal .modal-dialog .modal-content .modal-body .enter-email button {
-        margin: 0vh 2vh; }
-      #save-and-send-modal .modal-dialog .modal-content .modal-body .image-container,
-      #observation-modal .modal-dialog .modal-content .modal-body .image-container {
-        margin: 0.5vh 1vh;
-        height: 40vh;
-        width: 54vh;
-        padding: 0;
-        background-color: black;
-        border: 3px solid var(--canvas-container-border-color);
-        border-radius: 1px; }
-        #save-and-send-modal .modal-dialog .modal-content .modal-body .image-container.telescope,
-        #observation-modal .modal-dialog .modal-content .modal-body .image-container.telescope {
-          width: 34vh; }
-        #save-and-send-modal .modal-dialog .modal-content .modal-body .image-container img,
-        #observation-modal .modal-dialog .modal-content .modal-body .image-container img {
-          background-color: black;
-          height: 100%;
-          width: 100%;
-          object-fit: cover; }
-        #save-and-send-modal .modal-dialog .modal-content .modal-body .image-container .label,
-        #observation-modal .modal-dialog .modal-content .modal-body .image-container .label {
-          font-size: var(--save-and-send-context);
-          color: var(--bright-teal);
-          text-transform: uppercase; }
-
 #save-and-send-enter-email-button,
 #observation-enter-email-button,
 #observation-send-email-button {
@@ -1374,6 +1260,171 @@ div#observation-modal .modal-body {
   border-color: var(--bright-green);
   margin-top: 1vh;
   margin-left: 3vw; }
+
+div.modal.observation .modal-body,
+div.modal.save-and-send .modal-body {
+  height: 48vh; }
+
+div.modal.observation .modal-dialog,
+div.modal.save-and-send .modal-dialog {
+  max-width: none;
+  width: 100vw;
+  height: 48vh;
+  padding-left: 4vw;
+  background-color: black; }
+  div.modal.observation .modal-dialog .modal-content,
+  div.modal.save-and-send .modal-dialog .modal-content {
+    background-color: black;
+    border: none; }
+    div.modal.observation .modal-dialog .modal-content button,
+    div.modal.save-and-send .modal-dialog .modal-content button {
+      width: fit-content; }
+    div.modal.observation .modal-dialog .modal-content .modal-header,
+    div.modal.save-and-send .modal-dialog .modal-content .modal-header {
+      background-color: black;
+      border: none;
+      padding: 0.5vh 2vh; }
+      div.modal.observation .modal-dialog .modal-content .modal-header h5,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-header h5 {
+        font-size: var(--page-title);
+        color: var(--bright-green);
+        text-transform: uppercase; }
+      div.modal.observation .modal-dialog .modal-content .modal-header button.btn-close,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-header button.btn-close {
+        min-width: 3vw;
+        font-size: 6vh;
+        color: white; }
+    div.modal.observation .modal-dialog .modal-content .modal-footer,
+    div.modal.save-and-send .modal-dialog .modal-content .modal-footer {
+      border: none; }
+      div.modal.observation .modal-dialog .modal-content .modal-footer button,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-footer button {
+        display: none; }
+    div.modal.observation .modal-dialog .modal-content .modal-body,
+    div.modal.save-and-send .modal-dialog .modal-content .modal-body {
+      height: 48vh;
+      width: 100%;
+      font-size: var(--page-title);
+      color: var(--bright-teal);
+      background-color: black;
+      line-height: 120%; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .salutation,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .salutation {
+        font-size: 80%;
+        text-transform: uppercase; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .col-left,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .col-left {
+        width: 22vw; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .about-your-image,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .about-your-image {
+        margin-top: 1vh;
+        line-height: 100%;
+        font-size: var(--about-your-image); }
+        div.modal.observation .modal-dialog .modal-content .modal-body .about-your-image .image-name,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .about-your-image .image-name {
+          font-size: var(--about-your-image); }
+      div.modal.observation .modal-dialog .modal-content .modal-body .image-name,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .image-name {
+        font-size: var(--page-title);
+        font-weight: 500; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .context,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .context {
+        margin-top: 2vh;
+        font-size: var(--save-and-send-context);
+        line-height: 110%;
+        color: white; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email label,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email label {
+        padding-left: 0;
+        padding-bottom: 0.25vh;
+        line-height: 100%;
+        font-size: var(--send-email-input); }
+      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email input,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email input {
+        padding: 0vh 1vh;
+        background-color: black;
+        color: white;
+        border: 1px solid var(--bright-teal);
+        border-radius: 2px;
+        letter-spacing: 1px; }
+        div.modal.observation .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"],
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"] {
+          display: none; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email button,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email button {
+        margin: 0vh 2vh; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .image-container,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .image-container {
+        margin: 0.5vh 1vh;
+        height: 40vh;
+        width: 54vh;
+        padding: 0;
+        background-color: black;
+        border: 3px solid var(--canvas-container-border-color);
+        border-radius: 1px; }
+        div.modal.observation .modal-dialog .modal-content .modal-body .image-container.telescope,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .image-container.telescope {
+          width: 34vh; }
+        div.modal.observation .modal-dialog .modal-content .modal-body .image-container img,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .image-container img {
+          background-color: black;
+          height: 100%;
+          width: 100%;
+          object-fit: cover; }
+        div.modal.observation .modal-dialog .modal-content .modal-body .image-container .label,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .image-container .label {
+          font-size: var(--save-and-send-context);
+          color: var(--bright-teal);
+          text-transform: uppercase; }
+      div.modal.observation .modal-dialog .modal-content .modal-body.two .enter-email, div.modal.observation .modal-dialog .modal-content .modal-body.three .enter-email,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .enter-email,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email {
+        width: 62vh; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .enter-email form input[type="email"], div.modal.observation .modal-dialog .modal-content .modal-body.three .enter-email form input[type="email"],
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .enter-email form input[type="email"],
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email form input[type="email"] {
+          width: 75%;
+          font-size: var(--send-email-input);
+          font-weight: 500; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .enter-email form button, div.modal.observation .modal-dialog .modal-content .modal-body.three .enter-email form button,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .enter-email form button,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email form button {
+          width: 25%;
+          height: 5.5vh; }
+      div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks {
+        width: 62vh;
+        margin-top: 6vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks .salutation, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks .salutation,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks .salutation,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks .salutation {
+          color: var(--bright-teal);
+          font-size: 6vh; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks .details, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks .details,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks .details,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks .details {
+          margin-top: 1vh;
+          color: var(--bright-teal);
+          font-size: 3vh;
+          max-width: 60%;
+          text-align: center;
+          line-height: normal; }
+      div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container, div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container {
+        width: 30vh; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container.telescope, div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container.telescope,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container.telescope,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container.telescope {
+          width: 24vh; }
+
+#observation-send-email-button {
+  margin: 0vh 0vh 0vh 1vh; }
 
 canvas {
   height: 100%;

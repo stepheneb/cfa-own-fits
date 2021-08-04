@@ -304,10 +304,11 @@ class Page {
       break;
 
     case 'observation':
-      this.observationModalElem = document.getElementById(this.observationModalElemId);
-      // bootstrap.Modal.getInstance(this.observationModalElem).show();
-      this.observationModalElem.addEventListener('hidden.bs.modal', () => {
-        renderMenu.page(this.type);
+      this.observationModalCloseButtons = document.querySelectorAll('div.observation.modal button.btn-close');
+      this.observationModalCloseButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          this.hideAllObservationModalsAndRenderMenu();
+        });
       });
       break;
     }
@@ -316,13 +317,9 @@ class Page {
     this.registeredCallbacks.forEach(func => func(this));
 
     this.btnBack = document.getElementById('btn-back');
+    // this.btnBack.addEventListener('click', this.returnToPageMenu);
     this.btnBack.addEventListener('click', () => {
-      if (this.type == "observation") {
-        bootstrap.Modal.getInstance(this.observationModalElem).hide();
-      } else {
-        renderMenu.page(this.type);
-      }
-      document.body.classList.remove('nofadeout');
+      this.returnToPageMenu();
     });
 
     this.btnStartOver = document.getElementById('btn-start-over');
@@ -332,6 +329,26 @@ class Page {
 
     router.updateHash(`run/${this.type}/${this.name}`);
 
+  }
+
+  returnToPageMenu() {
+    if (this.type == "observation") {
+      this.hideAllObservationModalsAndRenderMenu();
+    } else {
+      renderMenu.page(this.type);
+    }
+    document.body.classList.remove('nofadeout');
+  }
+
+  hideAllObservationModalsAndRenderMenu() {
+    this.observationModals = document.querySelectorAll('div.observation.modal');
+    this.observationModals.forEach(elem => {
+      let bs = bootstrap.Modal.getInstance(elem);
+      if (bs._isShown) {
+        bs.hide();
+      }
+    });
+    renderMenu.page(this.type);
   }
 
   renderDevSideBar(page, registeredCallbacks) {
