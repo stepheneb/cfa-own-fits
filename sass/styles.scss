@@ -1792,7 +1792,7 @@ div.modal.save-and-send .modal-dialog {
             line-height: normal;
           }
         }
-        .image-container {
+        .image-container:not(.save-and-send) {
           width: 30vh;
           &.telescope {
             width: 24vh;
@@ -1803,17 +1803,7 @@ div.modal.save-and-send .modal-dialog {
   }
 }
 
-#observation-send-email-button {
-  margin: 0vh 0vh 0vh 1vh;
-}
-
-canvas {
-  height: 100%;
-  width: 100%;
-  object-fit: contain;
-}
-
-div#save-and-send-canvas-container {
+div.save-and-send.image-container {
   position: relative;
   min-height: 30vh;
   min-width: 30vh;
@@ -1851,6 +1841,16 @@ div#save-and-send-canvas-container {
       background-color: var(--almost-black);
     }
   }
+}
+
+#observation-send-email-button {
+  margin: 0vh 0vh 0vh 1vh;
+}
+
+canvas {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
 }
 
 div#micc-container {

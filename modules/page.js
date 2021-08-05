@@ -327,6 +327,13 @@ class Page {
       splash.showSplash2();
     });
 
+    this.saveAndSendModalCloseButtons = document.querySelectorAll('div.save-and-send.modal button.btn-close');
+    this.saveAndSendModalCloseButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        this.hideAllSaveAndSendModalsAndRenderMenu();
+      });
+    });
+
     router.updateHash(`run/${this.type}/${this.name}`);
 
   }
@@ -343,6 +350,17 @@ class Page {
   hideAllObservationModalsAndRenderMenu() {
     this.observationModals = document.querySelectorAll('div.observation.modal');
     this.observationModals.forEach(elem => {
+      let bs = bootstrap.Modal.getInstance(elem);
+      if (bs._isShown) {
+        bs.hide();
+      }
+    });
+    renderMenu.page(this.type);
+  }
+
+  hideAllSaveAndSendModalsAndRenderMenu() {
+    this.saveAndSendModals = document.querySelectorAll('div.save-and-send.modal');
+    this.saveAndSendModals.forEach(elem => {
       let bs = bootstrap.Modal.getInstance(elem);
       if (bs._isShown) {
         bs.hide();

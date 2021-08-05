@@ -1415,24 +1415,16 @@ div.modal.save-and-send .modal-dialog {
           max-width: 60%;
           text-align: center;
           line-height: normal; }
-      div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container, div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container,
-      div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container,
-      div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container {
+      div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send), div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send),
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send),
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send) {
         width: 30vh; }
-        div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container.telescope, div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container.telescope,
-        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container.telescope,
-        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container.telescope {
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send).telescope, div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send).telescope,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send).telescope,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send).telescope {
           width: 24vh; }
 
-#observation-send-email-button {
-  margin: 0vh 0vh 0vh 1vh; }
-
-canvas {
-  height: 100%;
-  width: 100%;
-  object-fit: contain; }
-
-div#save-and-send-canvas-container {
+div.save-and-send.image-container {
   position: relative;
   min-height: 30vh;
   min-width: 30vh;
@@ -1441,28 +1433,36 @@ div#save-and-send-canvas-container {
   background-color: black;
   border: 3px solid var(--canvas-container-border-color);
   border-radius: 3px; }
-  div#save-and-send-canvas-container:fullscreen {
+  div.save-and-send.image-container:fullscreen {
     width: 90vw;
     height: 80vh;
     border: 3px solid var(--canvas-container-border-color-fullscreen); }
-  div#save-and-send-canvas-container canvas {
+  div.save-and-send.image-container canvas {
     position: absolute;
     padding: 0;
     margin: 0;
     background-color: gray;
     object-fit: contain; }
-    div#save-and-send-canvas-container canvas.red {
+    div.save-and-send.image-container canvas.red {
       background-color: red; }
-    div#save-and-send-canvas-container canvas.green {
+    div.save-and-send.image-container canvas.green {
       background-color: green; }
-    div#save-and-send-canvas-container canvas.blue {
+    div.save-and-send.image-container canvas.blue {
       background-color: blue; }
-    div#save-and-send-canvas-container canvas.layer {
+    div.save-and-send.image-container canvas.layer {
       cursor: all-scroll;
       background-color: var(--almost-black); }
-    div#save-and-send-canvas-container canvas:last-child {
+    div.save-and-send.image-container canvas:last-child {
       display: block;
       background-color: var(--almost-black); }
+
+#observation-send-email-button {
+  margin: 0vh 0vh 0vh 1vh; }
+
+canvas {
+  height: 100%;
+  width: 100%;
+  object-fit: contain; }
 
 div#micc-container {
   display: flex;

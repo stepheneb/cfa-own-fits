@@ -200,6 +200,7 @@ class CanvasImages {
         this.rawdata.push(rawdata);
       });
       this.rawdataSources.forEach(source => logger.rawData(this, source));
+      this.initializeSaveAndSendCanvas();
       switch (this.type) {
       case 'rgb':
       case 'multi-wave':
@@ -232,7 +233,6 @@ class CanvasImages {
         this.initializeAnimateCanvas(this.selectedSource);
         break;
       }
-      this.initializeSaveAndSendCanvas();
       this.spinner.hide("then imageBufferItems");
     }).catch(function (e) {
       spinner.cancel("fetchError");
@@ -409,17 +409,30 @@ class CanvasImages {
   }
 
   initializeSaveAndSendCanvas() {
-    this.saveAndSendContainer = document.getElementById('save-and-send-canvas-container');
-    let c = document.createElement("canvas");
-    c.id = 'save-and-send-canvas';
-    c.classList = 'save-and-send-canvas';
-    this.initializeCanvas(c);
-    this.saveAndSendContainer.prepend(c);
-    this.saveAndSendCanvas = c;
-    c.width = this.nx;
-    c.height = this.ny;
-    this.renderSaveAndSend();
-    return c;
+    this.saveAndSendCanvases = [];
+    this.saveAndSendContainers = document.querySelectorAll('div.save-and-send.image-container');
+    this.saveAndSendContainers.forEach(div => {
+      let c = document.createElement("canvas");
+      c.classList = 'save-and-send-canvas';
+      this.initializeCanvas(c);
+      div.prepend(c);
+      c.width = this.nx;
+      c.height = this.ny;
+      this.saveAndSendCanvases.push(c);
+    });
+  }
+
+  renderSaveAndSend() {
+    let sourceCanvas = this.canvasRGB;
+    let sourceCtx = sourceCanvas.getContext('2d');
+    let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
+    this.saveAndSendCanvases.forEach(c => {
+      let ctx = c.getContext('2d');
+      createImageBitmap(imageData, 0, 0, this.nx, this.ny)
+        .then(imageBitmap => {
+          ctx.drawImage(imageBitmap, 0, 0);
+        });
+    });
   }
 
   initializeAnimateCanvas(source) {
@@ -711,6 +724,7 @@ class CanvasImages {
       if (len == 3) {
         this.renderCanvasRGB3();
       }
+      this.renderSaveAndSend();
     }
   }
 
@@ -1030,17 +1044,6 @@ class CanvasImages {
     let width = this.previewPalette.width;
     let height = 10;
     this.renderPalette(this.previewPalette, source.filter, width, height);
-  }
-
-  renderSaveAndSend() {
-    let sourceCanvas = this.canvasRGB;
-    let sourceCtx = sourceCanvas.getContext('2d');
-    let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
-    let ctx = this.saveAndSendCanvas.getContext('2d');
-    createImageBitmap(imageData, 0, 0, this.nx, this.ny)
-      .then(imageBitmap => {
-        ctx.drawImage(imageBitmap, 0, 0);
-      });
   }
 
   renderAnimatePreviews(source) {
