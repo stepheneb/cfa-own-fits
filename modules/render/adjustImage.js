@@ -202,7 +202,7 @@ adjustImage.renderRGB = (page, registeredCallbacks) => {
 adjustImage.renderRGBUpdate = (page, source) => {
   let canvas = page.canvasImages.layerCanvasNamed(source.filter);
   page.canvasImages.renderCanvasLayer(source, canvas);
-  page.canvasImages.renderCanvasRGB();
+  page.canvasImages.renderCanvasRGB(page.type);
   page.canvasImages.renderPreview(source);
   if (app.dev) {
     logger.imageData(page.canvasImages, source);
@@ -245,7 +245,7 @@ adjustImage.renderMasterpieceUpdate = (page) => {
       canvas = page.canvasImages.layerCanvasNamed(source.filter);
       page.canvasImages.renderCanvasLayer(source, canvas);
     });
-    page.canvasImages.renderCanvasRGB();
+    page.canvasImages.renderCanvasRGB(page.type);
     if (page.type == 'masterpiece') {
       page.canvasImages.renderMasterpiece();
       if (app.dev) {

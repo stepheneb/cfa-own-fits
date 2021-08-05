@@ -19,7 +19,7 @@ saveandsend.render = (page, registeredCallbacks) => {
   let saveAndSendButtonId = `${id}-button`;
 
   let saveAndSendButtonhtml = `
-    <button id="${saveAndSendButtonId}" type="button" class="btn btn-outline-primary btn-small page-navigation-button" data-bs-toggle="modal" data-bs-target="#${modalId1}">
+    <button id="${saveAndSendButtonId}" type="button" class="btn btn-outline-primary btn-small page-navigation-button">
       ${title}
     </button>`;
 
@@ -129,8 +129,9 @@ saveandsend.render = (page, registeredCallbacks) => {
               <div class="thanks">
                 <div class='salutation'>Thank You!</div>
                 <div class='details'>
-                  We will send your image to yourname@website.com
+                  We will send your image to <span id="your-email">yourname@website.com</span>
                 </div>
+                <a id="download-image" download="${page.title}" type="button" class="btn btn-success">Download your <span>${page.title}</span> image</a>
               </div>
               ${image()}
             </div>
@@ -157,9 +158,18 @@ saveandsend.render = (page, registeredCallbacks) => {
     let bsModal2 = new bootstrap.Modal(modal2, {});
     let bsModal3 = new bootstrap.Modal(modal3, {});
 
+    let saveAndSendButton = document.getElementById(saveAndSendButtonId);
+
     let enterEmailButton = document.getElementById(enterEmailButtonId);
 
     let sendEmailForm = document.getElementById(sendEmailFormId);
+
+    let yourEmail = document.getElementById('your-email');
+
+    saveAndSendButton.addEventListener('click', function () {
+      page.canvasImages.renderSaveAndSend();
+      bsModal1.show();
+    });
 
     modal1.addEventListener('show.bs.modal', function () {
       document.body.classList.add('nofadeout');
@@ -218,6 +228,8 @@ saveandsend.render = (page, registeredCallbacks) => {
       //   alert('message =' + result.message + ' \nkiosk_id = ' + result.kiosk_id + ' \nemail = ' + result.email + ' \nobservation = ' + result.observation + ' \ndatetime_when_user_made_request_at_kiosk = ' + result.datetime_when_user_made_request_at_kiosk + ' \ncredential = ' + result.credential);
       // }
 
+      yourEmail.innerText = email.value;
+
       bsModal2.hide();
       bsModal3.show();
     };
@@ -225,8 +237,6 @@ saveandsend.render = (page, registeredCallbacks) => {
     modal1CloseButton.addEventListener('click', hideAll);
     modal2CloseButton.addEventListener('click', hideAll);
     modal3CloseButton.addEventListener('click', hideAll);
-
-    // page.canvasImages.renderSaveAndSend();
 
     function hideAll() {
       bsModal1.hide();

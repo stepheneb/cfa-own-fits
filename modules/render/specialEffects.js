@@ -60,7 +60,7 @@ specialEffects.render = (page, registeredCallbacks) => {
       if (filters.length > 0) {
         page.canvasImages.renderMasterpiece();
       } else {
-        page.canvasImages.renderCanvasRGB();
+        page.canvasImages.renderCanvasRGB(page.type);
         page.canvasImages.renderMasterpiece();
       }
     });

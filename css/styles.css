@@ -13,6 +13,7 @@ html {
   --toggle-fullscreen: rgba(80, 80, 80, 128);
   --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
   --almost-black: #080808;
+  --almost-white: #e8e8e8;
   --green: #a4d292;
   --bright-green: #bff5aa;
   --brighter-green: #cfffbb;
@@ -52,6 +53,7 @@ html {
   --about-your-image: 2.8vh;
   --save-and-send-context: 2vh;
   --send-email-input: 2.4vh;
+  --send-email-button: 1.8vh;
   --splash2-title: 8vh;
   --splash2-intro: 6vh; }
 
@@ -1391,7 +1393,8 @@ div.modal.save-and-send .modal-dialog {
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .enter-email form button,
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email form button {
           width: 25%;
-          height: 5.5vh; }
+          height: 5.5vh;
+          font-size: var(--send-email-button); }
       div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks {
@@ -1415,6 +1418,18 @@ div.modal.save-and-send .modal-dialog {
           max-width: 60%;
           text-align: center;
           line-height: normal; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks a, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks a,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks a,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks a {
+          margin-top: 4vh;
+          font-size: 2vh;
+          color: var(--almost-white); }
+          div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks a span, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks a span,
+          div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks a span,
+          div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks a span {
+            color: white;
+            padding: 0vh 0.15vh;
+            font-weight: 500; }
       div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send), div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send),
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send),
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send) {

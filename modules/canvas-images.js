@@ -233,7 +233,6 @@ class CanvasImages {
         this.initializeAnimateCanvas(this.selectedSource);
         break;
       }
-      this.renderSaveAndSend();
       this.spinner.hide("then imageBufferItems");
     }).catch(function (e) {
       spinner.cancel("fetchError");
@@ -424,24 +423,14 @@ class CanvasImages {
   }
 
   renderSaveAndSend() {
-    let getSourceCanvas;
+    let getSourceCanvas, scalingEvent;
+    if (this.scaling) {
+      scalingEvent = this.scaling.generateScalingEvent();
+    }
     switch (this.type) {
     case 'rgb':
     case 'multi-wave':
-      getSourceCanvas = () => {
-        return this.canvasRGB;
-      };
-      break;
     case 'masterpiece':
-      getSourceCanvas = () => {
-        if (this.scaling) {
-          return this.canvasRGB;
-          // return this.scaling.scalingCanvas;
-        } else {
-          return this.canvasRGB;
-        }
-      };
-      break;
     case 'find-apollo':
       getSourceCanvas = () => {
         return this.canvasRGB;
@@ -457,11 +446,36 @@ class CanvasImages {
     let sourceCanvas = getSourceCanvas();
     let sourceCtx = sourceCanvas.getContext('2d');
     let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
-    this.saveAndSendCanvases.forEach(c => {
-      let ctx = c.getContext('2d');
-      createImageBitmap(imageData, 0, 0, this.nx, this.ny)
+
+    let sWidth = sourceCanvas.width;
+    let sHeight = sourceCanvas.height;
+    let sCopyWidth = sWidth;
+    let sCopyHeight = sHeight;
+    let dx = 0;
+    let dy = 0;
+    let dWidth = this.saveAndSendCanvases[0].width;
+    let dHeight = this.saveAndSendCanvases[0].height;
+    if (scalingEvent) {
+      dx = scalingEvent.delta.x;
+      dy = scalingEvent.delta.y;
+      dWidth = scalingEvent.image.width;
+      dHeight = scalingEvent.image.height;
+      sCopyWidth = scalingEvent.scaleCanvas.width;
+      sCopyHeight = scalingEvent.scaleCanvas.height;
+    }
+
+    this.saveAndSendCanvases.forEach(destinationCanvas => {
+      destinationCanvas.width = sCopyWidth;
+      destinationCanvas.height = sCopyHeight;
+      this.clearCanvas(destinationCanvas);
+
+      let ctx = destinationCanvas.getContext('2d');
+      createImageBitmap(imageData, 0, 0, sWidth, sHeight)
         .then(imageBitmap => {
-          ctx.drawImage(imageBitmap, 0, 0);
+          ctx.drawImage(imageBitmap, dx, dy, dWidth, dHeight);
+          let download = document.getElementById('download-image');
+          let image = destinationCanvas.toDataURL("image/jpeg", 0.9).replace("image/jpeg", "image/octet-stream");
+          download.setAttribute("href", image);
         });
     });
   }
@@ -759,7 +773,6 @@ class CanvasImages {
         this.renderCanvasRGB3();
       }
     }
-    this.renderSaveAndSend();
   }
 
   renderCanvasRGB1(source) {
@@ -865,7 +878,6 @@ class CanvasImages {
     if (len == 3) {
       this.renderMasterpiece3();
     }
-    this.renderSaveAndSend();
   }
 
   renderMasterpiece1(source) {

@@ -54,7 +54,6 @@ colorMaps.render = (page, registeredCallbacks) => {
           event.currentTarget.classList.add('selected');
           let id = event.currentTarget.dataset.cmap;
           page.image.cmapName = cmapName;
-          // page.canvasImages.renderCanvasRGB();
           page.canvasImages.scheduleCmap(cmapName);
           page.canvasImages.renderMasterpiece();
           console.log(`${id} clicked`);

@@ -80,6 +80,7 @@
           "subtitle": "The Lunar Reconnaissance Orbiter created this high-resolution map of the Moon’s surface. “Hi-res” images allow scientists to investigate small details.",
           "findtext": "Find the Apollo 11 site pictured below",
           "youaretext": "You are here",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "context": "In July, 1969, Apollo 11 carried the first humans to the surface of the Moon. NASA chose a landing site that was flat, smooth, and with relatively few craters.",
           "image": {
             "name": "Apollo Mission 11",
@@ -162,6 +163,7 @@
           "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the Moon’s surface. This image is made up of many smaller images stitched together.",
           "findtext": "Find the Apollo 12 site pictured below",
           "youaretext": "You are here",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "context": "The Apollo 12 Lunar Module landed on the Moon’s surface in November of 1969. This mission achieved a precision landing, just 535 feet from an earlier robotic spacecraft named Surveyor 3.",
           "image": {
             "name": "Apollo Mission 12",
@@ -243,6 +245,7 @@
           "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the Moon’s surface. This image, however, is not quite detailed enough to resolve signs of human visitation.",
           "findtext": "Find the Apollo 14 site pictured below",
           "youaretext": "You are here",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "context": "Apollo 14 (January 31, 1971 - February 9, 1971) was the third crewed mission to land on the Moon, after an on-board explosion forced Apollo 13 to return to Earth in a dramatic rescue operation.",
           "image": {
             "name": "Apollo Mission 14",
@@ -324,6 +327,7 @@
           "subtitle": "The Lunar Reconnaissance Orbiter created this high-resolution map of the Moon’s surface. “Hi-res” images allow scientists to investigate small details.",
           "findtext": "Find the Apollo 15 site pictured below",
           "youaretext": "You are here",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "context": "Apollo 15 took place from July 26, 1971 to August 7, 1971, and landed near a rugged mountain range named after the Italian Apennines. This mission was the first where astronauts used a Lunar Roving Vehicle.",
           "image": {
             "name": "Apollo Mission 15",
@@ -409,6 +413,7 @@
           "subtitle": "The Lunar Reconnaissance Orbiter created this high-resolution map of the Moon’s surface. “Hi-res” images allow scientists to investigate small details.",
           "findtext": "Find the Apollo 16 site pictured below",
           "youaretext": "You are here",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "context": "Apollo 16 landed in the lunar highlands, where the astronauts collected rocks to look for evidence of volcanic activity. No such evidence was found.",
           "image": {
             "name": "Apollo Mission 16",
@@ -490,6 +495,7 @@
           "subtitle": "The Lunar Reconnaissance Orbiter created a high-resolution map of the Moon’s surface. This image is made up of many smaller images stitched together.",
           "findtext": "Find the Apollo 17 site pictured below",
           "youaretext": "You are here",
+          "saveandsendtext": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor ...",
           "context": "The December, 1972 Apollo 17 mission was the last time humans walked on the Moon.",
           "image": {
             "name": "Apollo Mission 17",
