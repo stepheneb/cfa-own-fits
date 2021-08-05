@@ -233,6 +233,7 @@ class CanvasImages {
         this.initializeAnimateCanvas(this.selectedSource);
         break;
       }
+      this.renderSaveAndSend();
       this.spinner.hide("then imageBufferItems");
     }).catch(function (e) {
       spinner.cancel("fetchError");
@@ -423,7 +424,37 @@ class CanvasImages {
   }
 
   renderSaveAndSend() {
-    let sourceCanvas = this.canvasRGB;
+    let getSourceCanvas;
+    switch (this.type) {
+    case 'rgb':
+    case 'multi-wave':
+      getSourceCanvas = () => {
+        return this.canvasRGB;
+      };
+      break;
+    case 'masterpiece':
+      getSourceCanvas = () => {
+        if (this.scaling) {
+          return this.canvasRGB;
+          // return this.scaling.scalingCanvas;
+        } else {
+          return this.canvasRGB;
+        }
+      };
+      break;
+    case 'find-apollo':
+      getSourceCanvas = () => {
+        return this.canvasRGB;
+      };
+      break;
+    case 'animate':
+      getSourceCanvas = () => {
+        return this.layerCanvasNamed(this.selectedSource.name);
+      };
+      break;
+    }
+
+    let sourceCanvas = getSourceCanvas();
     let sourceCtx = sourceCanvas.getContext('2d');
     let imageData = sourceCtx.getImageData(0, 0, this.nx, this.ny);
     this.saveAndSendCanvases.forEach(c => {
@@ -724,8 +755,8 @@ class CanvasImages {
       if (len == 3) {
         this.renderCanvasRGB3();
       }
-      this.renderSaveAndSend();
     }
+    this.renderSaveAndSend();
   }
 
   renderCanvasRGB1(source) {
@@ -831,6 +862,7 @@ class CanvasImages {
     if (len == 3) {
       this.renderMasterpiece3();
     }
+    this.renderSaveAndSend();
   }
 
   renderMasterpiece1(source) {

@@ -144,7 +144,7 @@ saveandsend.render = (page, registeredCallbacks) => {
 
   return [saveAndSendButtonhtml, modalHtmls];
 
-  function callback() {
+  function callback(page) {
     let modal1 = document.getElementById(modalId1);
     let modal2 = document.getElementById(modalId2);
     let modal3 = document.getElementById(modalId3);
@@ -225,6 +225,8 @@ saveandsend.render = (page, registeredCallbacks) => {
     modal1CloseButton.addEventListener('click', hideAll);
     modal2CloseButton.addEventListener('click', hideAll);
     modal3CloseButton.addEventListener('click', hideAll);
+
+    // page.canvasImages.renderSaveAndSend();
 
     function hideAll() {
       bsModal1.hide();
