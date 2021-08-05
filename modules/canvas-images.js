@@ -455,7 +455,7 @@ class CanvasImages {
     let dy = 0;
     let dWidth = this.saveAndSendCanvases[0].width;
     let dHeight = this.saveAndSendCanvases[0].height;
-    if (scalingEvent) {
+    if (scalingEvent && scalingEvent.scale > 1) {
       dx = scalingEvent.delta.x;
       dy = scalingEvent.delta.y;
       dWidth = scalingEvent.image.width;
@@ -464,19 +464,32 @@ class CanvasImages {
       sCopyHeight = scalingEvent.scaleCanvas.height;
     }
 
-    this.saveAndSendCanvases.forEach(destinationCanvas => {
-      destinationCanvas.width = sCopyWidth;
-      destinationCanvas.height = sCopyHeight;
-      this.clearCanvas(destinationCanvas);
+    let updateDownload = async (destinationCanvas) => {
+      let download = document.getElementById('download-image');
+      let image = await destinationCanvas.toDataURL("image/jpeg", 0.9).replace("image/jpeg", "image/octet-stream");
+      download.setAttribute("href", image);
+      download.classList.remove('disabled');
+    };
 
-      let ctx = destinationCanvas.getContext('2d');
-      createImageBitmap(imageData, 0, 0, sWidth, sHeight)
-        .then(imageBitmap => {
+    Promise.all(
+      this.saveAndSendCanvases.map(destinationCanvas => {
+        destinationCanvas.width = sCopyWidth;
+        destinationCanvas.height = sCopyHeight;
+        this.clearCanvas(destinationCanvas);
+        return [
+          destinationCanvas.getContext('2d'),
+          createImageBitmap(imageData, 0, 0, sWidth, sHeight)
+        ];
+      })
+    ).then(responses => {
+      return Promise.all(responses.map(([ctx, p]) => {
+        p.then((imageBitmap) => {
           ctx.drawImage(imageBitmap, dx, dy, dWidth, dHeight);
-          let download = document.getElementById('download-image');
-          let image = destinationCanvas.toDataURL("image/jpeg", 0.9).replace("image/jpeg", "image/octet-stream");
-          download.setAttribute("href", image);
+          return true;
         });
+      }));
+    }).then(() => {
+      updateDownload(this.saveAndSendCanvases[0]);
     });
   }
 

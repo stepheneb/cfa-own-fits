@@ -1798,6 +1798,9 @@ div.modal.save-and-send .modal-dialog {
             margin-top: 4vh;
             font-size: 2vh;
             color: var(--almost-white);
+            &.disabled {
+              pointer-events: none;
+            }
             span {
               color: white;
               padding: 0vh 0.15vh;

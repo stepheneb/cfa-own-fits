@@ -131,7 +131,7 @@ saveandsend.render = (page, registeredCallbacks) => {
                 <div class='details'>
                   We will send your image to <span id="your-email">yourname@website.com</span>
                 </div>
-                <a id="download-image" download="${page.title}" type="button" class="btn btn-success">Download your <span>${page.title}</span> image</a>
+                <a id="download-image" download="${page.title}" type="button" class="btn btn-success" disabled>Download your <span>${page.title}</span> image</a>
               </div>
               ${image()}
             </div>
@@ -167,8 +167,8 @@ saveandsend.render = (page, registeredCallbacks) => {
     let yourEmail = document.getElementById('your-email');
 
     saveAndSendButton.addEventListener('click', function () {
-      page.canvasImages.renderSaveAndSend();
       bsModal1.show();
+      page.canvasImages.renderSaveAndSend();
     });
 
     modal1.addEventListener('show.bs.modal', function () {
