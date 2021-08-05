@@ -53,7 +53,7 @@ observation.render = (page, registeredCallbacks) => {
   }
 
   let modalHtmls = `
-    <div class="modal fade observation" id="${modalId1}" tabindex="-1" aria-labelledby="${modalId1}-title" aria-hidden="true">
+    <div class="modal fade observation" id="${modalId1}" data-bs-keyboard="false" tabindex="-1" aria-labelledby="${modalId1}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -86,7 +86,7 @@ observation.render = (page, registeredCallbacks) => {
       </div>
     </div>
 
-    <div class="modal fade observation" id="${modalId2}" tabindex="-1" aria-labelledby="${modalId2}-title" aria-hidden="true">
+    <div class="modal fade observation" id="${modalId2}" data-bs-keyboard="false" tabindex="-1" aria-labelledby="${modalId2}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -131,7 +131,7 @@ observation.render = (page, registeredCallbacks) => {
     </div>
 
 
-    <div class="modal fade observation" id="${modalId3}" tabindex="-1" aria-labelledby="${modalId3}-title" aria-hidden="true">
+    <div class="modal fade observation" id="${modalId3}" data-bs-keyboard="false" tabindex="-1" aria-labelledby="${modalId3}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
@@ -154,7 +154,7 @@ observation.render = (page, registeredCallbacks) => {
               <div class="thanks">
                 <div class='salutation'>Thank You!</div>
                 <div class='details'>
-                  We will send your image to yourname@website.com
+                  We will send your image to <span id="your-email">yourname@website.com</span>
                 </div>
               </div>
               ${telescope()}
@@ -188,6 +188,8 @@ observation.render = (page, registeredCallbacks) => {
 
     let sendEmailForm = document.getElementById(sendEmailFormId);
 
+    let yourEmail = document.getElementById('your-email');
+
     modal1.addEventListener('show.bs.modal', function () {
       document.body.classList.add('nofadeout');
     });
@@ -210,6 +212,21 @@ observation.render = (page, registeredCallbacks) => {
 
     modal3.addEventListener('hide.bs.modal', function () {
       document.body.classList.remove('nofadeout');
+    });
+
+    modal1.addEventListener('hidePrevented.bs.modal', function () {
+      document.body.classList.remove('nofadeout');
+      page.returnToPageMenu();
+    });
+
+    modal2.addEventListener('hidePrevented.bs.modal', function () {
+      document.body.classList.remove('nofadeout');
+      page.returnToPageMenu();
+    });
+
+    modal3.addEventListener('hidePrevented.bs.modal', function () {
+      document.body.classList.remove('nofadeout');
+      page.returnToPageMenu();
     });
 
     bsModal1.show();
@@ -246,6 +263,8 @@ observation.render = (page, registeredCallbacks) => {
       // function displayAlert(result) {
       //   alert('message =' + result.message + ' \nkiosk_id = ' + result.kiosk_id + ' \nemail = ' + result.email + ' \nobservation = ' + result.observation + ' \ndatetime_when_user_made_request_at_kiosk = ' + result.datetime_when_user_made_request_at_kiosk + ' \ncredential = ' + result.credential);
       // }
+
+      yourEmail.innerText = email.value;
 
       bsModal2.hide();
       bsModal3.show();
