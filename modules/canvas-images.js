@@ -587,10 +587,13 @@ class CanvasImages {
     return transform;
   }
 
-  clearCanvas(source) {
-    let canvas = this.layerCanvasNamed(source.name);
+  clearSourceCanvas(source) {
+    this.clearCanvas(this.layerCanvasNamed(source.name));
+  }
+
+  clearCanvas(canvas) {
     let ctx = canvas.getContext('2d');
-    ctx.clearRect(0, 0, this.nx, this.ny);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   renderCanvasLayer(source) {

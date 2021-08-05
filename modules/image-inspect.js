@@ -242,7 +242,7 @@ class ImageInspect {
             } else {
               source.filter = source.defaultValues.filter;
             }
-            page.canvasImages.clearCanvas(source);
+            page.canvasImages.clearSourceCanvas(source);
             adjustImage.renderRGBUpdate(page, source);
           });
         }
