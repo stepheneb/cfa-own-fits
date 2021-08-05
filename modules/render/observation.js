@@ -25,15 +25,14 @@ observation.active = (page) => {
 observation.render = (page, registeredCallbacks) => {
   // let title = "Take your own image tonight";
   let id = "observation";
+
   let modalId1 = `${id}-modal1`;
   let enterEmailButtonId = `${id}-enter-email-button`;
 
   let modalId2 = `${id}-modal2`;
-  let sendEmailButtonId = `${id}-send-email-button`;
+  let sendEmailFormId = `${id}-send-email-form`;
 
   let modalId3 = `${id}-modal3`;
-
-  let sendEmailFormId = `${id}-send-email-form`;
 
   function telescope() {
     return `
@@ -86,6 +85,7 @@ observation.render = (page, registeredCallbacks) => {
         </div>
       </div>
     </div>
+
     <div class="modal fade observation" id="${modalId2}" tabindex="-1" aria-labelledby="${modalId2}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -116,7 +116,7 @@ observation.render = (page, registeredCallbacks) => {
                     <input id="email-observation" type="hidden" name='observation' value="${page.title}"></input>
                     <input id="email-date" type="hidden" name='datetime_when_user_made_request_at_kiosk' value="${new Date().toISOString()}"></input>
                     <input id="email-credential" type="hidden" name='credential' value="1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927"></input>
-                    <button id="${sendEmailButtonId}" type="submit" class="btn btn-outline-primary btn-small page-navigation-button" autocomplete="none">
+                    <button type="submit" class="btn btn-outline-primary btn-small page-navigation-button" autocomplete="none">
                       SEND EMAIL
                     </button>
                   </div>
@@ -129,6 +129,8 @@ observation.render = (page, registeredCallbacks) => {
         </div>
       </div>
     </div>
+
+
     <div class="modal fade observation" id="${modalId3}" tabindex="-1" aria-labelledby="${modalId3}-title" aria-hidden="true">
       <div class="modal-dialog  modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -228,18 +230,25 @@ observation.render = (page, registeredCallbacks) => {
       formData.append("datetime_when_user_made_request_at_kiosk", new Date().toISOString());
       formData.append("credential", "1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927");
 
-      // let response = await fetch('https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php', {
+      // 'https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php
+      // observation.postUrl = 'https://lweb.cfa.harvard.edu/smgphp/otherworlds/OE/telescope.php';
+      //
+      // const response = await fetch(observation.postUrl, {
       //   method: 'POST',
-      //   mode: "cors",
+      //   mode: 'no-cors',
       //   body: formData
       // });
       //
-      // let result = response.ok;
+      // alert(response);
+      // let result = response.json();
+      // displayAlert(result);
+
+      // function displayAlert(result) {
+      //   alert('message =' + result.message + ' \nkiosk_id = ' + result.kiosk_id + ' \nemail = ' + result.email + ' \nobservation = ' + result.observation + ' \ndatetime_when_user_made_request_at_kiosk = ' + result.datetime_when_user_made_request_at_kiosk + ' \ncredential = ' + result.credential);
+      // }
 
       bsModal2.hide();
       bsModal3.show();
-
-      // alert(result);
 
     };
 
