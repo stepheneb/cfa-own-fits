@@ -34,22 +34,22 @@ html {
   --canvas-container-border-color-fullscreen: #222;
   --translucent-gray: rgba(32, 32, 32, 0.6);
 
-  --medium-blue-rgba: rgba(8, 80, 117, 0.25);
+  --medium-blue-rgba: rgba(8, 80, 117, 0.5);
   --dark-blue-rgba: rgba(5, 56, 82, 0.25);
   --dark-blue2-rgba: rgba(4, 47, 73, 0.25);
   --darker-blue-rgba: rgba(3, 39, 65, 0.25);
 
   /* font sizes */
-  --menu-page-title: 7.4vh;
-  --menu-page-subtitle: 3vh;
+  --page-title: 4.4vh;
+  --page-subtitle: 2.1vh;
+  --menu-page-title: 7.2vh;
+  --menu-page-subtitle: 2.6vh;
   --menu-activity-category-title: 2.2vh;
   --menu-activity-category-page-title: 2vh;
   --menu-activity-category-page-subtitle: 1.8vh;
   --menu-category-page-name: 1.7vh;
   --menu-category-page-telescope: 1.5vh;
   --menu-activity-page-title: 2.8vh;
-  --page-title: 4.6vh;
-  --page-subtitle: 2.4vh;
   --telescope-title: 2vh;
   --animate-icons: 3.2vh;
   --control-title: 1.8vh;
@@ -653,7 +653,7 @@ header.menu-activity-page-title {
 }
 
 .activity-page {
-  margin: 6vh 4vw 0vh 4vw;
+  margin: 5vh 4vw 0vh 4vw;
   height: 92vh;
   z-index: 1;
 }
@@ -762,12 +762,12 @@ button {
 }
 
 .page-header {
-  margin: 0vh 0vh 1vh 0vh;
+  margin: 0vh 0vh 1.5vh 0vh;
 }
 
 .page-title {
   font-size: var(--page-title);
-  padding: 1rem 0rem;
+  padding: 1rem 0rem 1rem 0rem;
   color: var(--bright-green);
   text-transform: uppercase;
   text-overflow: ellipsis;
@@ -776,9 +776,10 @@ button {
 }
 
 .page-subtitle {
+  width: 75%;
   line-height: 120%;
   font-size: var(--page-subtitle);
-  padding: 1rem 0rem;
+  padding: 0.5rem 0rem;
   color: var(--bright-teal);
 }
 
@@ -793,15 +794,18 @@ div.zoom {
   label {
     font-size: 2vh;
     font-weight: 500;
-    width: 3.5rem;
     margin-right: 0.25rem;
   }
   div.slider-icon {
     z-index: 1;
     svg {
+      circle {
+        stroke-width: 1px;
+        stroke: var(--bright-teal);
+      }
       pointer-events: none;
-      width: 2vw;
-      height: 2vw;
+      width: 2.2vw;
+      height: 2.2vw;
       path {
         fill: var(--dark-teal);
         stroke-width: 1px;
@@ -853,8 +857,8 @@ div.control-collection {
   margin: 0;
   padding: 1vh 1vh 1vh 1vh;
   background-color: var(--darker-blue);
-  box-shadow: inset 4px 4px 16px var(--medium-blue-rgba),
-    inset -4px -4px 16px var(--medium-blue-rgba);
+  box-shadow: inset 6px 6px 24px var(--medium-blue-rgba),
+    inset -6px -6px 24px var(--medium-blue-rgba);
   div.find-apollo {
     margin: 1vh -1vh 4vh -1vh;
     height: 22vh;
@@ -876,7 +880,7 @@ div.control-collection {
   div.special-effects,
   div.adjust-layer,
   div.select-layer {
-    margin: 1vh 0vh 3vh 0vh;
+    margin: 1.5vh 0vh 3.2vh 0vh;
     padding: 0;
   }
   div.color-maps {
@@ -1023,7 +1027,7 @@ div.control-collection {
       align-items: center;
       justify-content: flex-start;
       margin-left: 1vh;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
 
       label {
         font-size: 1.9vh;
@@ -1034,9 +1038,13 @@ div.control-collection {
       div.slider-icon {
         z-index: 1;
         svg {
+          circle {
+            stroke-width: 1px;
+            stroke: var(--bright-teal);
+          }
           pointer-events: none;
-          width: 1.7vw;
-          height: 1.7vw;
+          width: 1.8vw;
+          height: 1.8vw;
           path {
             fill: var(--dark-teal);
             stroke-width: 1px;
@@ -1074,12 +1082,12 @@ div.control-collection {
         &::-webkit-slider-thumb {
           -webkit-appearance: none;
           border: 1px solid #000000;
-          height: 1.5rem;
-          width: 0.5rem;
+          height: 1.65rem;
+          width: 0.7rem;
           border-radius: 2px;
           background: #bff5aa;
           cursor: pointer;
-          margin-top: -0.5rem;
+          margin-top: -0.6rem;
         }
       }
       output {
@@ -1288,13 +1296,13 @@ div.under-main-layer-controls {
   padding: 1vh;
   width: 74%;
   &.rgb {
-    width: 72%;
+    width: 68%;
   }
   &.multi-wave {
-    width: 76%;
+    width: 74%;
   }
   &.masterpiece {
-    width: 72%;
+    width: 67%;
   }
   display: flex;
   align-items: center;
@@ -1305,6 +1313,7 @@ div.under-main-layer-controls {
   .subtitle {
     font-size: var(--control-subtitle);
     font-weight: 500;
+    padding-bottom: 3px;
   }
 }
 
@@ -1312,7 +1321,7 @@ form#image-select-main-layer {
 }
 
 div.shrinking-spacer {
-  height: 12%;
+  height: 15%;
   flex: 0 4 auto;
 }
 
@@ -1324,7 +1333,7 @@ div.telescope-container {
     text-transform: uppercase;
   }
   div.telescope-image-container {
-    height: 16vh;
+    height: 15vh;
     width: 100%;
     background-color: black;
     border: 2px solid var(--dark-teal);

@@ -401,7 +401,7 @@ class Page {
   renderPageHeader() {
     return `
       <div class='row page-header'>
-        <div class='col-9 p-0'>
+        <div class='col-8 p-0'>
           <div class='page-title'>${this.category.title}</div>
           <div class='page-subtitle'>${this.subtitle}</div>
         </div>
