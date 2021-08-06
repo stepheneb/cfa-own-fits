@@ -1807,6 +1807,11 @@ div.modal.save-and-send .modal-dialog {
               font-weight: 500;
             }
           }
+          .stats {
+            margin-top: 0vh;
+            font-size: 2vh;
+            color: var(--almost-white);
+          }
         }
         .image-container:not(.save-and-send) {
           width: 30vh;

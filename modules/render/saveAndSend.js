@@ -132,6 +132,7 @@ saveandsend.render = (page, registeredCallbacks) => {
                   We will send your image to <span id="your-email">yourname@website.com</span>
                 </div>
                 <a id="download-image" download="${page.title}" type="button" class="btn btn-success" disabled>Download your <span>${page.title}</span> image</a>
+                <div id="download-stats" class='stats'></div>
               </div>
               ${image()}
             </div>

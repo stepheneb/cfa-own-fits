@@ -1434,6 +1434,12 @@ div.modal.save-and-send .modal-dialog {
             color: white;
             padding: 0vh 0.15vh;
             font-weight: 500; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks .stats, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks .stats,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks .stats,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks .stats {
+          margin-top: 0vh;
+          font-size: 2vh;
+          color: var(--almost-white); }
       div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send), div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send),
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send),
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send) {

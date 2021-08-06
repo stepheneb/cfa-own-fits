@@ -11,8 +11,8 @@ import Spinner from './spinner.js';
 // import layerHistogram from './layerHistogram.js';
 import cmap from './render/cmap.js';
 import canvasUtils from './canvasUtils.js';
-// import utilities from './utilities.js';
 import logger from './logger.js';
+import u from './utilities.js';
 
 class CanvasImages {
   constructor(page) {
@@ -466,9 +466,11 @@ class CanvasImages {
 
     let updateDownload = async (destinationCanvas) => {
       let download = document.getElementById('download-image');
+      let downloadStats = document.getElementById('download-stats');
       let image = await destinationCanvas.toDataURL("image/jpeg", 0.9).replace("image/jpeg", "image/octet-stream");
       download.setAttribute("href", image);
       download.classList.remove('disabled');
+      downloadStats.innerText = `dimensions: ${destinationCanvas.width} x ${destinationCanvas.height}, size: ${u.bytesToSize(image.length * 0.76)}`;
     };
 
     Promise.all(
