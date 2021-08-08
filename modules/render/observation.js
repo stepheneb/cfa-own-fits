@@ -97,7 +97,7 @@ observation.render = (page, registeredCallbacks) => {
           </div>
           <div class="modal-body two">
             <div class="row">
-              <div class="col-3">
+              <div class="col-left">
                 <div class="salutation">Wait and See!</div>
                 <div class="about-your-image">
                   We'll take your image of the <span class="image-name pe-2"> ${page.title}</span> tonight.
@@ -110,7 +110,7 @@ observation.render = (page, registeredCallbacks) => {
               <div id="enter-email" class="enter-email">
                 <form id="${sendEmailFormId}" autocomplete="off">
                   <label for="email">Your Email:</label>
-                  <div class='d-flex flex-row justify-content-start align-items-center'>
+                  <div class='d-flex flex-row justify-content-between align-items-center'>
                     <input id="email" type="email"name="email" required minlength="4" maxlength="45" size="30" autocomplete="none"></input>
                     <input id="email-kiosk-id" type="hidden" name='kiosk_id' value="${app.kiosk_id}"></input>
                     <input id="email-observation" type="hidden" name='observation' value="${page.title}"></input>
@@ -121,6 +121,7 @@ observation.render = (page, registeredCallbacks) => {
                     </button>
                   </div>
                 </form>
+                <div class="simple-keyboard"></div>
               </div>
               ${telescope()}
               ${image()}
@@ -142,7 +143,7 @@ observation.render = (page, registeredCallbacks) => {
           </div>
           <div class="modal-body three">
             <div class="row">
-              <div class="col-3">
+              <div class="col-left">
                 <div class="salutation">Wait and See!</div>
                 <div class="about-your-image">
                   We'll take your image of the <span class="image-name pe-2"> ${page.title}</span> tonight.
@@ -172,6 +173,14 @@ observation.render = (page, registeredCallbacks) => {
   return [modalHtmls, modalId3];
 
   function callback() {
+
+    const Keyboard = window.SimpleKeyboard.default;
+
+    let keyboard = new Keyboard({
+      onChange: input => onChange(input),
+      onKeyPress: button => onKeyPress(button)
+    });
+
     let modal1 = document.getElementById(modalId1);
     let modal2 = document.getElementById(modalId2);
     let modal3 = document.getElementById(modalId3);
@@ -275,11 +284,44 @@ observation.render = (page, registeredCallbacks) => {
     modal2CloseButton.addEventListener('click', hideAll);
     modal3CloseButton.addEventListener('click', hideAll);
 
+    /**
+     * Update simple-keyboard when input is changed directly
+     */
+    document.querySelector("input#email").addEventListener("input", event => {
+      keyboard.setInput(event.target.value);
+    });
+
+    console.log(keyboard);
+
+    function onChange(input) {
+      document.querySelector("input#email").value = input;
+      console.log("Input changed", input);
+    }
+
+    function onKeyPress(button) {
+      console.log("Button pressed", button);
+
+      /**
+       * If you want to handle the shift and caps lock buttons
+       */
+      if (button === "{shift}" || button === "{lock}") handleShift();
+    }
+
+    function handleShift() {
+      let currentLayout = keyboard.options.layoutName;
+      let shiftToggle = currentLayout === "default" ? "shift" : "default";
+
+      keyboard.setOptions({
+        layoutName: shiftToggle
+      });
+    }
+
     function hideAll() {
       bsModal1.hide();
       bsModal2.hide();
       bsModal3.hide();
     }
+
   }
 };
 

@@ -1701,7 +1701,7 @@ div.modal.save-and-send .modal-dialog {
         text-transform: uppercase;
       }
       .col-left {
-        width: 22vw;
+        width: 24vw;
       }
       .about-your-image {
         margin-top: 1vh;
@@ -1722,6 +1722,7 @@ div.modal.save-and-send .modal-dialog {
         color: white;
       }
       .enter-email {
+        padding: 0vh 2vh;
         label {
           padding-left: 0;
           padding-bottom: 0.25vh;
@@ -1739,8 +1740,13 @@ div.modal.save-and-send .modal-dialog {
             display: none;
           }
         }
+        .simple-keyboard {
+          margin-top: 2vh;
+          font-size: 1.5vh;
+          color: var(--almost-black);
+        }
         button {
-          margin: 0vh 2vh;
+          margin-left: 2vh;
         }
       }
       .image-container {
@@ -1770,7 +1776,7 @@ div.modal.save-and-send .modal-dialog {
       &.two,
       &.three {
         .enter-email {
-          width: 62vh;
+          width: 64vh;
           form {
             input[type="email"] {
               width: 75%;
@@ -1780,6 +1786,8 @@ div.modal.save-and-send .modal-dialog {
             button {
               width: 25%;
               height: 5.5vh;
+              margin-right: 0;
+              padding-right: 0;
               font-size: var(--send-email-button);
             }
           }
@@ -1823,14 +1831,18 @@ div.modal.save-and-send .modal-dialog {
           }
         }
         .image-container:not(.save-and-send) {
-          width: 30vh;
+          width: 28vh;
           &.telescope {
-            width: 24vh;
+            width: 22vh;
           }
         }
       }
     }
   }
+}
+
+.hg-theme-default .hg-button {
+  height: 50px;
 }
 
 div.save-and-send.image-container {

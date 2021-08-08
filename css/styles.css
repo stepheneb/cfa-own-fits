@@ -1324,7 +1324,7 @@ div.modal.save-and-send .modal-dialog {
         text-transform: uppercase; }
       div.modal.observation .modal-dialog .modal-content .modal-body .col-left,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body .col-left {
-        width: 22vw; }
+        width: 24vw; }
       div.modal.observation .modal-dialog .modal-content .modal-body .about-your-image,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body .about-your-image {
         margin-top: 1vh;
@@ -1343,26 +1343,34 @@ div.modal.save-and-send .modal-dialog {
         font-size: var(--save-and-send-context);
         line-height: 110%;
         color: white; }
-      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email label,
-      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email label {
-        padding-left: 0;
-        padding-bottom: 0.25vh;
-        line-height: 100%;
-        font-size: var(--send-email-input); }
-      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email input,
-      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email input {
-        padding: 0vh 1vh;
-        background-color: black;
-        color: white;
-        border: 1px solid var(--bright-teal);
-        border-radius: 2px;
-        letter-spacing: 1px; }
-        div.modal.observation .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"],
-        div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"] {
-          display: none; }
-      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email button,
-      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email button {
-        margin: 0vh 2vh; }
+      div.modal.observation .modal-dialog .modal-content .modal-body .enter-email,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email {
+        padding: 0vh 2vh; }
+        div.modal.observation .modal-dialog .modal-content .modal-body .enter-email label,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email label {
+          padding-left: 0;
+          padding-bottom: 0.25vh;
+          line-height: 100%;
+          font-size: var(--send-email-input); }
+        div.modal.observation .modal-dialog .modal-content .modal-body .enter-email input,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email input {
+          padding: 0vh 1vh;
+          background-color: black;
+          color: white;
+          border: 1px solid var(--bright-teal);
+          border-radius: 2px;
+          letter-spacing: 1px; }
+          div.modal.observation .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"],
+          div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email input[type="hidden"] {
+            display: none; }
+        div.modal.observation .modal-dialog .modal-content .modal-body .enter-email .simple-keyboard,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email .simple-keyboard {
+          margin-top: 2vh;
+          font-size: 1.5vh;
+          color: var(--almost-black); }
+        div.modal.observation .modal-dialog .modal-content .modal-body .enter-email button,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body .enter-email button {
+          margin-left: 2vh; }
       div.modal.observation .modal-dialog .modal-content .modal-body .image-container,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body .image-container {
         margin: 0.5vh 1vh;
@@ -1389,7 +1397,7 @@ div.modal.save-and-send .modal-dialog {
       div.modal.observation .modal-dialog .modal-content .modal-body.two .enter-email, div.modal.observation .modal-dialog .modal-content .modal-body.three .enter-email,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .enter-email,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email {
-        width: 62vh; }
+        width: 64vh; }
         div.modal.observation .modal-dialog .modal-content .modal-body.two .enter-email form input[type="email"], div.modal.observation .modal-dialog .modal-content .modal-body.three .enter-email form input[type="email"],
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .enter-email form input[type="email"],
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email form input[type="email"] {
@@ -1401,6 +1409,8 @@ div.modal.save-and-send .modal-dialog {
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .enter-email form button {
           width: 25%;
           height: 5.5vh;
+          margin-right: 0;
+          padding-right: 0;
           font-size: var(--send-email-button); }
       div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks,
@@ -1450,11 +1460,14 @@ div.modal.save-and-send .modal-dialog {
       div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send), div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send),
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send),
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send) {
-        width: 30vh; }
+        width: 28vh; }
         div.modal.observation .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send).telescope, div.modal.observation .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send).telescope,
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send).telescope,
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send).telescope {
-          width: 24vh; }
+          width: 22vh; }
+
+.hg-theme-default .hg-button {
+  height: 50px; }
 
 div.save-and-send.image-container {
   position: relative;

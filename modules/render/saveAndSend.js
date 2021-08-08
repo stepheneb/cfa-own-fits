@@ -41,7 +41,7 @@ saveandsend.render = (page, registeredCallbacks) => {
           </div>
           <div class="modal-body one">
             <div class="row">
-              <div class="col-3">
+              <div class="col-left">
                 <div class="salutation">Great Job!</div>
                 <div class="about-your-image">
                   Here's your image of the <span class="image-name pe-2"> ${page.image.name}.</span>
@@ -72,7 +72,7 @@ saveandsend.render = (page, registeredCallbacks) => {
           </div>
           <div class="modal-body two">
             <div class="row">
-              <div class="col-3">
+              <div class="col-left">
                 <div class="salutation">Great Job!</div>
                 <div class="about-your-image">
                   Here's your image of the <span class="image-name pe-2"> ${page.image.name}.</span>
@@ -85,7 +85,7 @@ saveandsend.render = (page, registeredCallbacks) => {
               <div id="enter-email" class="enter-email">
                 <form id="${sendEmailFormId}" autocomplete="off">
                   <label for="email">Your Email:</label>
-                  <div class='d-flex flex-row justify-content-start align-items-center'>
+                  <div class='d-flex flex-row justify-content-between align-items-center'>
                     <input id="email" type="email"name="email" required minlength="4" maxlength="45" size="30" autocomplete="none"></input>
                     <input id="email-kiosk-id" type="hidden" name='kiosk_id' value="${app.kiosk_id}"></input>
                     <input id="email-astronomical-object" type="hidden" name='astronomical-object' value="${page.title}"></input>
@@ -96,6 +96,7 @@ saveandsend.render = (page, registeredCallbacks) => {
                     </button>
                   </div>
                 </form>
+                <div class="simple-keyboard"></div>
               </div>
               ${image()}
             </div>
@@ -116,7 +117,7 @@ saveandsend.render = (page, registeredCallbacks) => {
           </div>
           <div class="modal-body three">
             <div class="row">
-              <div class="col-3">
+              <div class="col-left">
                 <div class="salutation">Great Job!</div>
                 <div class="about-your-image">
                   Here's your image of the <span class="image-name pe-2"> ${page.image.name}.</span>
@@ -147,6 +148,14 @@ saveandsend.render = (page, registeredCallbacks) => {
   return [saveAndSendButtonhtml, modalHtmls];
 
   function callback(page) {
+
+    const Keyboard = window.SimpleKeyboard.default;
+
+    let keyboard = new Keyboard({
+      onChange: input => onChange(input),
+      onKeyPress: button => onKeyPress(button)
+    });
+
     let modal1 = document.getElementById(modalId1);
     let modal2 = document.getElementById(modalId2);
     let modal3 = document.getElementById(modalId3);
@@ -238,6 +247,34 @@ saveandsend.render = (page, registeredCallbacks) => {
     modal1CloseButton.addEventListener('click', hideAll);
     modal2CloseButton.addEventListener('click', hideAll);
     modal3CloseButton.addEventListener('click', hideAll);
+
+    // update simple-keyboard when input is changed directly
+    document.querySelector("input#email").addEventListener("input", event => {
+      keyboard.setInput(event.target.value);
+    });
+
+    console.log(keyboard);
+
+    function onChange(input) {
+      document.querySelector("input#email").value = input;
+      // console.log("Input changed", input);
+    }
+
+    function onKeyPress(button) {
+      console.log("Button pressed", button);
+
+      // handle the shift and caps lock buttons
+      if (button === "{shift}" || button === "{lock}") handleShift();
+    }
+
+    function handleShift() {
+      let currentLayout = keyboard.options.layoutName;
+      let shiftToggle = currentLayout === "default" ? "shift" : "default";
+
+      keyboard.setOptions({
+        layoutName: shiftToggle
+      });
+    }
 
     function hideAll() {
       bsModal1.hide();
