@@ -251,22 +251,21 @@ observation.render = (page, registeredCallbacks) => {
       formData.append("datetime_when_user_made_request_at_kiosk", new Date().toISOString());
       formData.append("credential", "1114c7c1d689b28d3e21178c47136be21899050022084b856fea4277966f927");
 
-      // 'https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php
-      // observation.postUrl = 'https://lweb.cfa.harvard.edu/smgphp/otherworlds/OE/telescope.php';
-      //
-      // const response = await fetch(observation.postUrl, {
-      //   method: 'POST',
-      //   mode: 'no-cors',
-      //   body: formData
-      // });
-      //
-      // alert(response);
-      // let result = response.json();
-      // displayAlert(result);
+      observation.postUrl = 'https://waps.cfa.harvard.edu/microobservatory/own_kiosk/api/v1/requests/telescope.php';
 
-      // function displayAlert(result) {
-      //   alert('message =' + result.message + ' \nkiosk_id = ' + result.kiosk_id + ' \nemail = ' + result.email + ' \nobservation = ' + result.observation + ' \ndatetime_when_user_made_request_at_kiosk = ' + result.datetime_when_user_made_request_at_kiosk + ' \ncredential = ' + result.credential);
-      // }
+      const response = await fetch(observation.postUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
+
+      alert(response);
+      let result = response.json();
+      displayAlert(result);
+
+      function displayAlert(result) {
+        alert('message =' + result.message + ' \nkiosk_id = ' + result.kiosk_id + ' \nemail = ' + result.email + ' \nobservation = ' + result.observation + ' \ndatetime_when_user_made_request_at_kiosk = ' + result.datetime_when_user_made_request_at_kiosk + ' \ncredential = ' + result.credential);
+      }
 
       yourEmail.innerText = email.value;
 
