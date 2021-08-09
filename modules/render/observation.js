@@ -255,7 +255,6 @@ observation.render = (page, registeredCallbacks) => {
 
       const response = await fetch(observation.postUrl, {
         method: 'POST',
-        mode: 'no-cors',
         body: formData
       });
 
