@@ -1792,14 +1792,22 @@ div.modal.save-and-send .modal-dialog {
             }
           }
         }
-        .hg-theme-default .hg-button {
-          margin: 0px 2px;
-          height: 50px;
-          text-transform: none;
-          &[disabled] {
-            pointer-events: none;
+        .hg-theme-default {
+          background-color: transparent;
+          color: var(--bright-green);
+          .hg-button {
+            margin: 0px 2px;
+            height: 50px;
+            color: var(--bright-green);
+            border: 1px solid var(--bright-green);
+            background-color: transparent;
+            text-transform: none;
+            &[disabled] {
+              pointer-events: none;
+            }
           }
         }
+
         .thanks {
           width: 62vh;
           margin-top: 6vh;
