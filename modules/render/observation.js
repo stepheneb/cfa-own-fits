@@ -258,8 +258,7 @@ observation.render = (page, registeredCallbacks) => {
         body: formData
       });
 
-      alert(response);
-      let result = response.json();
+      let result = await response.json();
       displayAlert(result);
 
       function displayAlert(result) {
