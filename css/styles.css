@@ -1416,7 +1416,12 @@ div.modal.save-and-send .modal-dialog {
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default {
         background-color: transparent;
-        color: var(--bright-green); }
+        color: var(--bright-green);
+        padding: 0; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-row, div.modal.observation .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-row,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-row,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-row {
+          justify-content: flex-end; }
         div.modal.observation .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button, div.modal.observation .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button,
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button,
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button {

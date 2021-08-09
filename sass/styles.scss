@@ -1795,6 +1795,10 @@ div.modal.save-and-send .modal-dialog {
         .hg-theme-default {
           background-color: transparent;
           color: var(--bright-green);
+          padding: 0;
+          .hg-row {
+            justify-content: flex-end;
+          }
           .hg-button {
             margin: 0px 2px;
             height: 50px;
