@@ -15,6 +15,7 @@ html {
   /* colors */
   --toggle-fullscreen: rgba(80, 80, 80, 128);
   --toggle-fullscreen-hover: rgba(196, 196, 196, 196);
+  --dark-black: #282828;
   --almost-black: #080808;
   --almost-white: #e8e8e8;
   --green: #a4d292;
@@ -1811,12 +1812,14 @@ div.modal.save-and-send .modal-dialog {
             }
           }
           .hg-button-bksp {
+            background-color: var(--dark-black);
             span {
               font-family: bootstrap-icons;
               content: "\f541";
             }
           }
           .hg-button-shift {
+            background-color: var(--dark-black);
             span {
               font-family: bootstrap-icons;
               content: "\f159";
