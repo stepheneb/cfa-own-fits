@@ -1430,6 +1430,16 @@ div.modal.save-and-send .modal-dialog {
           div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button[disabled],
           div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button[disabled] {
             pointer-events: none; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button-bksp span, div.modal.observation .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button-bksp span,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button-bksp span,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button-bksp span {
+          font-family: bootstrap-icons;
+          content: "\f541"; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button-shift span, div.modal.observation .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button-shift span,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button-shift span,
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button-shift span {
+          font-family: bootstrap-icons;
+          content: "\f159"; }
       div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks {

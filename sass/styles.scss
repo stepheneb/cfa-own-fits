@@ -1806,6 +1806,18 @@ div.modal.save-and-send .modal-dialog {
               pointer-events: none;
             }
           }
+          .hg-button-bksp {
+            span {
+              font-family: bootstrap-icons;
+              content: "\f541";
+            }
+          }
+          .hg-button-shift {
+            span {
+              font-family: bootstrap-icons;
+              content: "\f159";
+            }
+          }
         }
 
         .thanks {
