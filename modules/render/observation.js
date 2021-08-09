@@ -2,6 +2,7 @@
 /*global app  */
 /*global bootstrap  */
 
+import emailKeyboard from './email-keyboard.js';
 import u from '../utilities.js';
 
 let observation = {};
@@ -121,6 +122,7 @@ observation.render = (page, registeredCallbacks) => {
                     </button>
                   </div>
                 </form>
+                ${emailKeyboard.render(page, registeredCallbacks)}
                 <div class="simple-keyboard"></div>
               </div>
               ${telescope()}
@@ -173,13 +175,6 @@ observation.render = (page, registeredCallbacks) => {
   return [modalHtmls, modalId3];
 
   function callback() {
-
-    const Keyboard = window.SimpleKeyboard.default;
-
-    let keyboard = new Keyboard({
-      onChange: input => onChange(input),
-      onKeyPress: button => onKeyPress(button)
-    });
 
     let modal1 = document.getElementById(modalId1);
     let modal2 = document.getElementById(modalId2);
@@ -283,38 +278,6 @@ observation.render = (page, registeredCallbacks) => {
     modal1CloseButton.addEventListener('click', hideAll);
     modal2CloseButton.addEventListener('click', hideAll);
     modal3CloseButton.addEventListener('click', hideAll);
-
-    /**
-     * Update simple-keyboard when input is changed directly
-     */
-    document.querySelector("input#email").addEventListener("input", event => {
-      keyboard.setInput(event.target.value);
-    });
-
-    console.log(keyboard);
-
-    function onChange(input) {
-      document.querySelector("input#email").value = input;
-      console.log("Input changed", input);
-    }
-
-    function onKeyPress(button) {
-      console.log("Button pressed", button);
-
-      /**
-       * If you want to handle the shift and caps lock buttons
-       */
-      if (button === "{shift}" || button === "{lock}") handleShift();
-    }
-
-    function handleShift() {
-      let currentLayout = keyboard.options.layoutName;
-      let shiftToggle = currentLayout === "default" ? "shift" : "default";
-
-      keyboard.setOptions({
-        layoutName: shiftToggle
-      });
-    }
 
     function hideAll() {
       bsModal1.hide();

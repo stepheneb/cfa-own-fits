@@ -1412,6 +1412,16 @@ div.modal.save-and-send .modal-dialog {
           margin-right: 0;
           padding-right: 0;
           font-size: var(--send-email-button); }
+      div.modal.observation .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button, div.modal.observation .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button,
+      div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button {
+        margin: 0px 2px;
+        height: 50px;
+        text-transform: none; }
+        div.modal.observation .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button[disabled], div.modal.observation .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button[disabled],
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .hg-theme-default .hg-button[disabled],
+        div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .hg-theme-default .hg-button[disabled] {
+          pointer-events: none; }
       div.modal.observation .modal-dialog .modal-content .modal-body.two .thanks, div.modal.observation .modal-dialog .modal-content .modal-body.three .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .thanks,
       div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .thanks {
@@ -1465,9 +1475,6 @@ div.modal.save-and-send .modal-dialog {
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.two .image-container:not(.save-and-send).telescope,
         div.modal.save-and-send .modal-dialog .modal-content .modal-body.three .image-container:not(.save-and-send).telescope {
           width: 22vh; }
-
-.hg-theme-default .hg-button {
-  height: 50px; }
 
 div.save-and-send.image-container {
   position: relative;
